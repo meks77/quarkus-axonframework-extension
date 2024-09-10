@@ -1,0 +1,5 @@
+name: quarkus-axonframework-extension
+title: Axonframework Extension
+version: dev
+nav:
+  - modules/ROOT/nav.adoc
