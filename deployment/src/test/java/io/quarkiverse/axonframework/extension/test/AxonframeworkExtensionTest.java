@@ -18,13 +18,16 @@ import io.quarkus.test.QuarkusUnitTest;
 public class AxonframeworkExtensionTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+    static final QuarkusUnitTest config = new QuarkusUnitTest().setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
-    @Inject EventGateway eventGateway;
-    @Inject EventBus eventBus;
-    @Inject CommandGateway commandGateway;
-    @Inject CommandBus commandBus;
+    @Inject
+    EventGateway eventGateway;
+    @Inject
+    EventBus eventBus;
+    @Inject
+    CommandGateway commandGateway;
+    @Inject
+    CommandBus commandBus;
 
     @Test
     public void eventGatewayIsProduced() {
@@ -45,5 +48,4 @@ public class AxonframeworkExtensionTest {
     public void commandBusIsProduced() {
         assertNotNull(commandBus);
     }
-
 }
