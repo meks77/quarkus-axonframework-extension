@@ -1,8 +1,15 @@
 package io.quarkiverse.axonframework.extension.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import jakarta.inject.Inject;
+
+import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.eventhandling.EventBus;
+import org.axonframework.eventhandling.gateway.EventGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -10,14 +17,33 @@ import io.quarkus.test.QuarkusUnitTest;
 
 public class AxonframeworkExtensionTest {
 
-    // Start unit test with your extension loaded
     @RegisterExtension
-    static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
+    static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
+    @Inject EventGateway eventGateway;
+    @Inject EventBus eventBus;
+    @Inject CommandGateway commandGateway;
+    @Inject CommandBus commandBus;
+
     @Test
-    public void writeYourOwnUnitTest() {
-        // Write your unit tests here - see the testing extension guide https://quarkus.io/guides/writing-extensions#testing-extensions for more information
-        Assertions.assertTrue(true, "Add some assertions to " + getClass().getName());
+    public void eventGatewayIsProduced() {
+        assertNotNull(eventGateway);
     }
+
+    @Test
+    public void eventBusIsProduced() {
+        assertNotNull(eventBus);
+    }
+
+    @Test
+    public void commandGatewayIsProduced() {
+        assertNotNull(commandGateway);
+    }
+
+    @Test
+    public void commandBusIsProduced() {
+        assertNotNull(commandBus);
+    }
+
 }
