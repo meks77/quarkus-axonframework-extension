@@ -2,6 +2,8 @@ package io.quarkiverse.axonframework.extension.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.UUID;
+
 import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.CommandBus;
@@ -10,7 +12,7 @@ import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.gateway.EventGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
@@ -47,5 +49,14 @@ public class AxonframeworkExtensionTest {
     @Test
     public void commandBusIsProduced() {
         assertNotNull(commandBus);
+    }
+
+    @Test
+    public void eventIsPersisted() {
+        eventGateway.publish(new ExampleEvent(UUID.randomUUID().toString(), "whatever"));
+    }
+
+    public record ExampleEvent(String id, String value) {
+
     }
 }
