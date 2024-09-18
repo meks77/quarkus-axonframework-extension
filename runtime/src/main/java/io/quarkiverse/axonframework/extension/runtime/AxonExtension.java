@@ -14,8 +14,9 @@ import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBus;
+import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.eventsourcing.snapshotting.SnapshotFilter;
+import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import io.quarkus.logging.Log;
@@ -25,9 +26,9 @@ import io.quarkus.runtime.Startup;
 @Singleton
 public class AxonExtension {
 
-    private Configuration configuration;
     @Inject
     AxonConfiguration axonConfiguration;
+    private Configuration configuration;
 
     public AxonExtension() {
     }
@@ -37,32 +38,36 @@ public class AxonExtension {
         if (configuration == null) {
             final Configurer configurer;
             Log.debug("creating the axon configuration");
-            AxonServerConfiguration axonServerConfiguration = AxonServerConfiguration.builder()
-                    .servers(
-                            "localhost:"
-                                    + axonConfiguration.server()
-                                            .grpcPort())
-                    .build();
-            // TODO: #3 How to configure the AxonServerEventStore? What are the correct properties?
             configurer = DefaultConfigurer.defaultConfiguration()
-                    .configureEventStore(conf -> AxonServerEventStore.builder()
-                            .eventSerializer(conf.eventSerializer())
-                            .snapshotSerializer(conf.serializer())
-                            .platformConnectionManager(
-                                    AxonServerConnectionManager.builder()
-                                            .axonServerConfiguration(
-                                                    axonServerConfiguration)
-                                            .build())
-                            .snapshotFilter(
-                                    SnapshotFilter.allowAll())
-                            .configuration(
-                                    axonServerConfiguration)
-                            .build())
+                    .registerComponent(AxonServerConfiguration.class,
+                            cfg -> axonServerConfiguration())
+                    .configureEventStore(this::axonserverEventStore)
                     .configureSerializer(conf -> JacksonSerializer.defaultSerializer())
                     .configureEventSerializer(confg -> JacksonSerializer.defaultSerializer());
             Log.info("starting axon");
             configuration = configurer.start();
         }
+    }
+
+    private AxonServerConfiguration axonServerConfiguration() {
+        return AxonServerConfiguration.builder()
+                .servers("localhost:" + axonConfiguration.server().grpcPort())
+                .build();
+    }
+
+    private EventStore axonserverEventStore(Configuration conf) {
+        Log.info("configure connection to axon server");
+        return AxonServerEventStore.builder()
+                .configuration(axonServerConfiguration())
+                .platformConnectionManager(conf.getComponent(AxonServerConnectionManager.class))
+                .defaultContext(axonConfiguration.server().context())
+                .messageMonitor(conf.messageMonitor(AxonServerEventStore.class, "eventStore"))
+                .snapshotSerializer(conf.serializer())
+                .eventSerializer(conf.eventSerializer())
+                .snapshotFilter(conf.snapshotFilter())
+                .upcasterChain(conf.upcasterChain())
+                .spanFactory(conf.getComponent(EventBusSpanFactory.class))
+                .build();
     }
 
     @Shutdown

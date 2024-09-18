@@ -22,5 +22,11 @@ public interface AxonConfiguration {
         @WithDefault("8124")
         int grpcPort();
 
+        /**
+         * the context of the server to which should be connected
+         */
+        @WithDefault("default")
+        String context();
+
     }
 }
