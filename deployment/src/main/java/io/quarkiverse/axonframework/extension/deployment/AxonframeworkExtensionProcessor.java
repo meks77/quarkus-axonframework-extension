@@ -37,7 +37,7 @@ class AxonframeworkExtensionProcessor {
         DockerImageName dockerImageName = DockerImageName.parse("axoniq/axonserver");
         GenericContainer<?> container = new GenericContainer<>(dockerImageName)
                 .withExposedPorts(8024, 8124, 8224)
-                .waitingFor(Wait.forLogMessage(".*Started AxonServer in.*", 1))
+                .waitingFor(Wait.forLogMessage(".*default: context default created.*", 1))
                 .withReuse(true)
                 .withEnv("axoniq.axonserver.standalone", "true");
         container.start();
