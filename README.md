@@ -1,36 +1,23 @@
-# Quarkus Axonframework Extension
+# Quarkus Axon framework extension
 
-[![Version](https://img.shields.io/maven-central/v/io.quarkiverse.axonframework-extension/quarkus-axonframework-extension?logo=apache-maven&style=flat-square)](https://central.sonatype.com/artifact/io.quarkiverse.axonframework-extension/quarkus-axonframework-extension-parent)
+## Goal
 
-## Welcome to Quarkiverse!
+The goal of this extension is to provide a solution which 
 
-Congratulations and thank you for creating a new Quarkus extension project in Quarkiverse!
+* simplifies the usage of the quarkus framework
+* provides dev services for the event stores
+* provides an integration similar to the spring integration
 
-Feel free to replace this content with the proper description of your new project and necessary instructions how to use
-and contribute to it.
+## Current state
 
-You can find the basic info, Quarkiverse policies and conventions
-in [the Quarkiverse wiki](https://github.com/quarkiverse/quarkiverse/wiki).
+* Event and command gateways and bus can be injected
+* Events and Commands can be published
+* a connection to the axon server is created
+* a dev service for the axon server is started
 
-In case you are creating a Quarkus extension project for the first time, please
-follow [Building My First Extension](https://quarkus.io/guides/building-my-first-extension) guide.
+## Future features
+The extension is just at the beginning. In the project tab are the some of the features, which are currently planned.
 
-Other useful articles related to Quarkus extension development can be found under
-the [Writing Extensions](https://quarkus.io/guides/#writing-extensions) guide category on
-the [Quarkus.io](https://quarkus.io) website.
+While implementing, new features will be created and the order of the features can change.
 
-Thanks again, good luck and have fun!
-
-## Documentation
-
-The documentation for this extension should be maintained as part of this repository and it is stored in the `docs/`
-directory.
-
-The layout should follow
-the [Antora's Standard File and Directory Set](https://docs.antora.org/antora/2.3/standard-directories/).
-
-Once the docs are ready to be published, please open a PR including this repository in
-the [Quarkiverse Docs Antora playbook](https://github.com/quarkiverse/quarkiverse-docs/blob/main/antora-playbook.yml#L7).
-See an example [here](https://github.com/quarkiverse/quarkiverse-docs/pull/1)
-
-Your documentation will then be published to the <https://docs.quarkiverse.io/> website.
+Help for implementing the features is welcome.
