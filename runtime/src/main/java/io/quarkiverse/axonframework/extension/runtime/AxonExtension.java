@@ -1,5 +1,8 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
@@ -29,6 +32,7 @@ public class AxonExtension {
     @Inject
     AxonConfiguration axonConfiguration;
     private Configuration configuration;
+    private final Set<Class<?>> aggregateClasses = new HashSet<>();
 
     public AxonExtension() {
     }
@@ -44,6 +48,7 @@ public class AxonExtension {
                     .configureEventStore(this::axonserverEventStore)
                     .configureSerializer(conf -> JacksonSerializer.defaultSerializer())
                     .configureEventSerializer(confg -> JacksonSerializer.defaultSerializer());
+            aggregateClasses.forEach(configurer::configureAggregate);
             Log.info("starting axon");
             configuration = configurer.start();
         }
@@ -101,5 +106,9 @@ public class AxonExtension {
     @ApplicationScoped
     public CommandGateway commandGateway() {
         return configuration.commandGateway();
+    }
+
+    public void registerAggregate(Class<?> aggregateClass) {
+        aggregateClasses.add(aggregateClass);
     }
 }
