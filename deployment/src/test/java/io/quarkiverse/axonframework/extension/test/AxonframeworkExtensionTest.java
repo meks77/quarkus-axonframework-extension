@@ -1,11 +1,7 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.UUID;
-
+import io.quarkus.test.QuarkusUnitTest;
 import jakarta.inject.Inject;
-
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
@@ -15,12 +11,16 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AxonframeworkExtensionTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest().setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+    static final QuarkusUnitTest config = new QuarkusUnitTest()
+            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
+                    .addClasses(Giftcard.class, Api.class));
 
     @Inject
     EventGateway eventGateway;
@@ -54,6 +54,16 @@ public class AxonframeworkExtensionTest {
     @Test
     public void eventIsPersisted() {
         eventGateway.publish(new ExampleEvent(UUID.randomUUID().toString(), "whatever"));
+    }
+
+    @Test
+    public void aggregateIsFound() {
+        commandGateway.sendAndWait(new Api.IssueCardCommand(UUID.randomUUID().toString(), 1));
+
+        // TODO: Implement the validation for the test
+        // this can only be done with further added functionality
+        // * retrieve the aggregate or prepare a projection
+        // * validate that the event was fired
     }
 
     public record ExampleEvent(String id, String value) {
