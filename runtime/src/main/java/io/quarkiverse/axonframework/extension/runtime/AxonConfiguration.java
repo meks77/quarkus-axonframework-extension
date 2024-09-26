@@ -16,6 +16,9 @@ public interface AxonConfiguration {
 
     interface ServerConfig {
 
+        @WithDefault("localhost")
+        String hostname();
+
         /**
          * the grpc port of the axon server.
          */

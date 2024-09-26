@@ -1,13 +1,12 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import io.quarkus.logging.Log;
+import io.quarkus.runtime.Shutdown;
+import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
@@ -22,9 +21,8 @@ import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
 
-import io.quarkus.logging.Log;
-import io.quarkus.runtime.Shutdown;
-import io.quarkus.runtime.Startup;
+import java.util.HashSet;
+import java.util.Set;
 
 @Singleton
 public class AxonExtension {
@@ -56,7 +54,7 @@ public class AxonExtension {
 
     private AxonServerConfiguration axonServerConfiguration() {
         return AxonServerConfiguration.builder()
-                .servers("localhost:" + axonConfiguration.server().grpcPort())
+                .servers(axonConfiguration.server().hostname() + ":" + axonConfiguration.server().grpcPort())
                 .build();
     }
 
