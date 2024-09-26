@@ -1,7 +1,11 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.UUID;
+
 import jakarta.inject.Inject;
+
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
@@ -11,9 +15,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import io.quarkus.test.QuarkusUnitTest;
 
 public class AxonframeworkExtensionTest {
 

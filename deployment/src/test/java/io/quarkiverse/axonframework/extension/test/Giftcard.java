@@ -1,11 +1,12 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import io.quarkiverse.axonframework.extension.test.Api.IssueCardCommand;
-import io.quarkus.logging.Log;
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 
-import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+import io.quarkiverse.axonframework.extension.test.Api.IssueCardCommand;
+import io.quarkus.logging.Log;
 
 public class Giftcard {
 
