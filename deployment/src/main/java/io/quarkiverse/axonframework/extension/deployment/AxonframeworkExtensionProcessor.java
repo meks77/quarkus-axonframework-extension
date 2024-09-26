@@ -51,7 +51,8 @@ class AxonframeworkExtensionProcessor {
                 .withExposedPorts(8024, 8124, 8224)
                 .waitingFor(Wait.forLogMessage(".*default: context default created.*", 1))
                 .withReuse(true)
-                .withEnv("axoniq.axonserver.standalone", "true");
+                .withEnv("axoniq.axonserver.standalone", "true")
+                .withEnv("AXONIQ_AXONSERVER_DEVMODE_ENABLED", "true");
         container.start();
         Integer uiPort = container.getMappedPort(8024);
         Log.infof("Axon Server UI listens to port %s", uiPort);
