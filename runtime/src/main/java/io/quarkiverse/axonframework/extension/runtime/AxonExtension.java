@@ -1,12 +1,13 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
-import io.quarkus.logging.Log;
-import io.quarkus.runtime.Shutdown;
-import io.quarkus.runtime.Startup;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
@@ -21,8 +22,9 @@ import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
 
-import java.util.HashSet;
-import java.util.Set;
+import io.quarkus.logging.Log;
+import io.quarkus.runtime.Shutdown;
+import io.quarkus.runtime.Startup;
 
 @Singleton
 public class AxonExtension {

@@ -10,7 +10,7 @@ final class AggregateBeanBuildItem extends MultiBuildItem {
         this.aggregateClass = aggregateClass;
     }
 
-    public Class<?> aggregateClass() {
+    Class<?> aggregateClass() {
         return aggregateClass;
     }
 

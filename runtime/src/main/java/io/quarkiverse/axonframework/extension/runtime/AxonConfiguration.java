@@ -16,6 +16,9 @@ public interface AxonConfiguration {
 
     interface ServerConfig {
 
+        /**
+         * the host name of the axon server.
+         */
         @WithDefault("localhost")
         String hostname();
 
