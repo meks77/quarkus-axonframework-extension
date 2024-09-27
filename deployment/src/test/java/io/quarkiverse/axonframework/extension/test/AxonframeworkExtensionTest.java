@@ -27,7 +27,7 @@ public class AxonframeworkExtensionTest {
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, Amount.class)
+                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
     @Inject
