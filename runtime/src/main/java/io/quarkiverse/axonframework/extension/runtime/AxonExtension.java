@@ -33,6 +33,7 @@ public class AxonExtension {
     AxonConfiguration axonConfiguration;
     private Configuration configuration;
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
+    private final Set<Object> evenhandlers = new HashSet<>();
 
     public AxonExtension() {
     }
@@ -49,6 +50,7 @@ public class AxonExtension {
                     .configureSerializer(conf -> JacksonSerializer.defaultSerializer())
                     .configureEventSerializer(confg -> JacksonSerializer.defaultSerializer());
             aggregateClasses.forEach(configurer::configureAggregate);
+            evenhandlers.forEach(handler -> registerEventHandler(handler, configurer));
             Log.info("starting axon");
             configuration = configurer.start();
         }
@@ -73,6 +75,19 @@ public class AxonExtension {
                 .upcasterChain(conf.upcasterChain())
                 .spanFactory(conf.getComponent(EventBusSpanFactory.class))
                 .build();
+    }
+
+    private void registerEventHandler(Object handler, Configurer configurer) {
+        Log.infof("registering event handler %s", handler.getClass().getName());
+        configurer.registerEventHandler(conf -> handler);
+    }
+
+    public void addAggregateForRegistration(Class<?> aggregateClass) {
+        aggregateClasses.add(aggregateClass);
+    }
+
+    public void addEventhandlerForRegistration(Object eventhandler) {
+        evenhandlers.add(eventhandler);
     }
 
     @Shutdown
@@ -106,9 +121,5 @@ public class AxonExtension {
     @ApplicationScoped
     public CommandGateway commandGateway() {
         return configuration.commandGateway();
-    }
-
-    public void registerAggregate(Class<?> aggregateClass) {
-        aggregateClasses.add(aggregateClass);
     }
 }

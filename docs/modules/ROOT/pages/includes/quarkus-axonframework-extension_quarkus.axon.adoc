@@ -8,6 +8,23 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
+a| [[quarkus-axonframework-extension_quarkus-axon-server-hostname]] [.property-path]##`quarkus.axon.server.hostname`##
+
+[.description]
+--
+the host name of the axon server.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_HOSTNAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_HOSTNAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`localhost`
+
 a| [[quarkus-axonframework-extension_quarkus-axon-server-grpc-port]] [.property-path]##`quarkus.axon.server.grpc-port`##
 
 [.description]

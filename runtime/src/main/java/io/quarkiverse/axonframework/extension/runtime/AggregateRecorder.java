@@ -9,7 +9,7 @@ public class AggregateRecorder {
 
     public void addAggregate(BeanContainer beanContainer, Class<?> aggregateClass) {
         Log.infof("Adding aggregate %s", aggregateClass);
-        beanContainer.beanInstance(AxonExtension.class).registerAggregate(aggregateClass);
+        beanContainer.beanInstance(AxonExtension.class).addAggregateForRegistration(aggregateClass);
     }
 
 }
