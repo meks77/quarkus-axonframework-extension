@@ -8,7 +8,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a| [[quarkus-axonframework-extension_quarkus-axon-server-hostname]] [.property-path]##`quarkus.axon.server.hostname`##
+a| [[quarkus-axonframework-extension_quarkus-axon-server-hostname]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-server-hostname[`quarkus.axon.server.hostname`]##
 
 [.description]
 --
@@ -25,7 +25,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`localhost`
 
-a| [[quarkus-axonframework-extension_quarkus-axon-server-grpc-port]] [.property-path]##`quarkus.axon.server.grpc-port`##
+a| [[quarkus-axonframework-extension_quarkus-axon-server-grpc-port]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-server-grpc-port[`quarkus.axon.server.grpc-port`]##
 
 [.description]
 --
@@ -42,7 +42,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |`8124`
 
-a| [[quarkus-axonframework-extension_quarkus-axon-server-context]] [.property-path]##`quarkus.axon.server.context`##
+a| [[quarkus-axonframework-extension_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-server-context[`quarkus.axon.server.context`]##
 
 [.description]
 --
