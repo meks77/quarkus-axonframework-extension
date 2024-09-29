@@ -1,23 +1,27 @@
 package io.quarkiverse.axonframework.extension.deployment;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.IndexView;
+import org.jetbrains.annotations.NotNull;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import io.quarkiverse.axonframework.extension.runtime.AggregateRecorder;
 import io.quarkiverse.axonframework.extension.runtime.AxonExtension;
+import io.quarkiverse.axonframework.extension.runtime.CommandhandlerRecorder;
 import io.quarkiverse.axonframework.extension.runtime.EventhandlerRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
@@ -46,7 +50,6 @@ class AxonframeworkExtensionProcessor {
     AdditionalBeanBuildItem axonConfiguration() {
         return AdditionalBeanBuildItem.builder()
                 .addBeanClass(AxonExtension.class)
-                //                .setUnremovable()
                 .build();
     }
 
@@ -76,12 +79,16 @@ class AxonframeworkExtensionProcessor {
     @Record(ExecutionTime.STATIC_INIT)
     void scanForAggregates(AggregateRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<AggregateBeanBuildItem> beanProducer) {
-        annotatedClasses(AggregateIdentifier.class, "aggregates",
-                annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(), beanArchiveIndex)
+        aggregateClasses(beanArchiveIndex)
                 .forEach(beanClass -> {
                     beanProducer.produce(new AggregateBeanBuildItem(beanClass));
                     Log.debugf("Configured bean: %s", beanClass);
                 });
+    }
+
+    private Stream<Class<?>> aggregateClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        return annotatedClasses(AggregateIdentifier.class, "aggregates",
+                annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(), beanArchiveIndex);
     }
 
     private Stream<Class<?>> annotatedClasses(Class<? extends Annotation> annotationType, String description,
@@ -147,7 +154,40 @@ class AxonframeworkExtensionProcessor {
     }
 
     @BuildStep
-    UnremovableBeanBuildItem markEventhandlersUnremovable(BeanArchiveIndexBuildItem beanArchiveIndex) {
-        return UnremovableBeanBuildItem.beanTypes(eventhandlerClasses(beanArchiveIndex).toArray(Class[]::new));
+    @Record(ExecutionTime.STATIC_INIT)
+    void scanForCommandhandler(CommandhandlerRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<CommandhandlerBeanBuildItem> beanProducer) {
+        commandhandlerClasses(beanArchiveIndex)
+                .forEach(clazz -> {
+                    beanProducer.produce(new CommandhandlerBeanBuildItem(clazz));
+                    Log.debugf("Configured commandhandler class: %s", clazz);
+                });
     }
+
+    private @NotNull Stream<Class<?>> commandhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        return annotatedClasses(CommandHandler.class, "commandhandlers",
+                annotationInstance -> annotationInstance.target().asMethod().declaringClass(), beanArchiveIndex)
+                .filter(commandhandlerClass -> aggregateClasses(beanArchiveIndex)
+                        .noneMatch(commandhandlerClass::equals));
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.RUNTIME_INIT)
+    void addCommandhandlersForRegistration(CommandhandlerRecorder recorder,
+            List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
+            BeanContainerBuildItem beanContainerBuildItem) {
+        for (CommandhandlerBeanBuildItem item : commandhandlerBeanBuildItems) {
+            Log.debugf("Register commandhandler %s", item.commandhandlerClass());
+            recorder.addCommandhandler(beanContainerBuildItem.getValue(), item.commandhandlerClass());
+        }
+    }
+
+    @BuildStep
+    UnremovableBeanBuildItem markEventhandlersUnremovable(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        ArrayList<Class<?>> unremovableItems = new ArrayList<>();
+        unremovableItems.addAll(eventhandlerClasses(beanArchiveIndex).toList());
+        unremovableItems.addAll(commandhandlerClasses(beanArchiveIndex).toList());
+        return UnremovableBeanBuildItem.beanTypes(unremovableItems.toArray(Class[]::new));
+    }
+
 }

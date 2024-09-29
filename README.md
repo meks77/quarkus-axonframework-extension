@@ -47,13 +47,17 @@ The following Axon Framework Type can simply be injected:
 * CommandGateway and
 * CommandBus
 
-### Aggregates and event handler
+### Aggregates, event handler and command handler
 
-Aggregates and event handler are detected automatically.
+Aggregates, event handler and command handler are detected automatically.
 
 ### Event store
 
 As Eventstore the Axon Server is used. The configuration for the connection is described in the [Extension Documentation](docs/modules/ROOT/pages/index.adoc)
+
+### Repositories
+
+Currently the Bean RepositorySupplier can be injected, which provides access to the repositories for aggregates. 
 
 ### Dev service for the Axon Server
 

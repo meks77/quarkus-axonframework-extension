@@ -9,4 +9,10 @@ public class Api {
 
     public record CardIssuedEvent(String id, int amount) {
     }
+
+    public record RedeemCardCommand(@TargetAggregateIdentifier String id, int amount) {
+    }
+
+    public record CardRedeemedEvent(String id, int amount) {
+    }
 }

@@ -27,7 +27,7 @@ public class AxonframeworkExtensionTest {
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class)
+                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, ExternalCommandHandler.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
     @Inject
@@ -67,13 +67,18 @@ public class AxonframeworkExtensionTest {
     }
 
     @RepeatedTest(10)
-    public void aggregateIsFound() {
+    public void aggregateIsFoundAndExternalCommandHandlerAreWorking() {
         var cardId = UUID.randomUUID().toString();
-        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 1));
+        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
         // the evenhandler has maybe to handle many old events, and is not ready immediately
         await().atMost(Duration.ofSeconds(20))
                 .pollDelay(Duration.ZERO)
-                .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 1))));
+                .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
+
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 1));
+        await().atMost(Duration.ofSeconds(20))
+                .pollDelay(Duration.ZERO)
+                .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
     }
 
     public record ExampleEvent(String id, String value) {

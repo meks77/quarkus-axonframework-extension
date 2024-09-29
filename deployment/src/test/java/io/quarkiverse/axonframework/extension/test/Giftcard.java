@@ -3,6 +3,7 @@ package io.quarkiverse.axonframework.extension.test;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 
 import io.quarkiverse.axonframework.extension.test.Api.IssueCardCommand;
@@ -11,14 +12,12 @@ import io.quarkus.logging.Log;
 public class Giftcard {
 
     @AggregateIdentifier
-    private final String id;
-    private final int currentAmount;
+    private String id;
+    private int currentAmount;
 
     @SuppressWarnings("unused")
     Giftcard() {
         // necesarry for the axon framework
-        id = null;
-        currentAmount = 0;
     }
 
     @CommandHandler
@@ -26,10 +25,21 @@ public class Giftcard {
         if (command == null) {
             throw new IllegalArgumentException("command mustn't be null");
         }
-        this.id = command.id();
-        this.currentAmount = command.initialAmount();
-        apply(new Api.CardIssuedEvent(id, currentAmount));
+        apply(new Api.CardIssuedEvent(command.id(), command.initialAmount()));
         Log.infof("new card with the id %s and the initial amount %s was issued", id, currentAmount);
     }
 
+    @EventSourcingHandler
+    public void handle(Api.CardIssuedEvent event) {
+        Log.infof("handling event %s", event);
+        this.id = event.id();
+        this.currentAmount = event.amount();
+    }
+
+    public void requestRedeem(int amount) {
+        if (this.currentAmount < amount) {
+            throw new IllegalArgumentException("amount must be greater than current amount");
+        }
+        apply(new Api.CardRedeemedEvent(id, amount));
+    }
 }
