@@ -10,12 +10,35 @@ The goal of this extension is to provide a solution which
 
 ## Current state
 
-* Event and command gateways and bus can be injected
-* Events and Commands can be published
-* a connection to the axon server is created
-* a dev service for the axon server is started
-* aggregates are automatically registered
-* event handlers are automatically registered
+### Injectable Beans
+
+* EventBus
+* EventGateway
+* CommandBus
+* CoammandGateway
+* QueryBus
+* QueryGateway can
+
+### supported message types 
+
+* Events
+* Commands
+* Queries
+
+### auto configuration
+
+#### automatically registered
+
+* aggregates
+* event handlers
+* command handlers
+* query handlers
+
+### supported event stores
+* axon server
+
+### dev services
+* for the axon server
 
 ## Future features
 The extension is just at the beginning. In the project tab are some of the features, which are currently planned.

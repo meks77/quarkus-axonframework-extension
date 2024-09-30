@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.queryhandling.QueryHandler;
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.IndexView;
@@ -19,10 +20,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
-import io.quarkiverse.axonframework.extension.runtime.AggregateRecorder;
-import io.quarkiverse.axonframework.extension.runtime.AxonExtension;
-import io.quarkiverse.axonframework.extension.runtime.CommandhandlerRecorder;
-import io.quarkiverse.axonframework.extension.runtime.EventhandlerRecorder;
+import io.quarkiverse.axonframework.extension.runtime.*;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
@@ -179,6 +177,33 @@ class AxonframeworkExtensionProcessor {
         for (CommandhandlerBeanBuildItem item : commandhandlerBeanBuildItems) {
             Log.debugf("Register commandhandler %s", item.commandhandlerClass());
             recorder.addCommandhandler(beanContainerBuildItem.getValue(), item.commandhandlerClass());
+        }
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.STATIC_INIT)
+    void scanForQueryhandler(QueryhandlerRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<QueryhandlerBeanBuildItem> beanProducer) {
+        queryhandlerClasses(beanArchiveIndex)
+                .forEach(clazz -> {
+                    beanProducer.produce(new QueryhandlerBeanBuildItem(clazz));
+                    Log.debugf("Configured queryhandler class: %s", clazz);
+                });
+    }
+
+    private @NotNull Stream<Class<?>> queryhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        return annotatedClasses(QueryHandler.class, "queryhandlers",
+                annotationInstance -> annotationInstance.target().asMethod().declaringClass(), beanArchiveIndex);
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.RUNTIME_INIT)
+    void addQueryhandlersForRegistration(QueryhandlerRecorder recorder,
+            List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
+            BeanContainerBuildItem beanContainerBuildItem) {
+        for (QueryhandlerBeanBuildItem item : queryhandlerBeanBuildItems) {
+            Log.debugf("Register queryhandler %s", item.queryhandlerClass());
+            recorder.addQueryhandler(beanContainerBuildItem.getValue(), item.queryhandlerClass());
         }
     }
 

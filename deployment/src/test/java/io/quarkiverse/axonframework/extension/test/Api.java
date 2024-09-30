@@ -15,4 +15,7 @@ public class Api {
 
     public record CardRedeemedEvent(String id, int amount) {
     }
+
+    public record GiftcardQuery(String id) {
+    }
 }

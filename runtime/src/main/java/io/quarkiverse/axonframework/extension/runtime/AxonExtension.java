@@ -20,6 +20,8 @@ import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.axonframework.queryhandling.QueryBus;
+import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import io.quarkus.logging.Log;
@@ -35,6 +37,7 @@ public class AxonExtension {
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
     private final Set<Object> evenhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
+    private final Set<Object> queryHandlers = new HashSet<>();
 
     public AxonExtension() {
     }
@@ -53,6 +56,7 @@ public class AxonExtension {
             aggregateClasses.forEach(configurer::configureAggregate);
             evenhandlers.forEach(handler -> registerEventHandler(handler, configurer));
             commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
+            queryHandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
             Log.info("starting axon");
             configuration = configurer.start();
         }
@@ -92,6 +96,10 @@ public class AxonExtension {
         evenhandlers.add(eventhandler);
     }
 
+    public void addQueryHandlerForRegistration(Object queryHandler) {
+        queryHandlers.add(queryHandler);
+    }
+
     @Shutdown
     void onShutdown() {
         Log.info("shutdown axon");
@@ -123,6 +131,18 @@ public class AxonExtension {
     @ApplicationScoped
     public CommandGateway commandGateway() {
         return configuration.commandGateway();
+    }
+
+    @Produces
+    @ApplicationScoped
+    public QueryGateway queryGateway() {
+        return configuration.queryGateway();
+    }
+
+    @Produces
+    @ApplicationScoped
+    public QueryBus queryBus() {
+        return configuration.queryBus();
     }
 
     @Produces

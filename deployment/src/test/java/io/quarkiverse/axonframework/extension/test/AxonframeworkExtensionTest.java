@@ -1,11 +1,13 @@
 package io.quarkiverse.axonframework.extension.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import jakarta.inject.Inject;
 
@@ -13,6 +15,7 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.gateway.EventGateway;
+import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -27,7 +30,8 @@ public class AxonframeworkExtensionTest {
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, ExternalCommandHandler.class)
+                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, ExternalCommandHandler.class,
+                            GiftcardQueryHandler.class, GiftcardView.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
     @Inject
@@ -38,6 +42,8 @@ public class AxonframeworkExtensionTest {
     CommandGateway commandGateway;
     @Inject
     CommandBus commandBus;
+    @Inject
+    QueryGateway queryGateway;
     @Inject
     GiftcardInMemoryHistory giftcardInMemoryHistory;
 
@@ -61,11 +67,6 @@ public class AxonframeworkExtensionTest {
         assertNotNull(commandBus);
     }
 
-    @Test
-    public void eventIsPersisted() {
-        eventGateway.publish(new ExampleEvent(UUID.randomUUID().toString(), "whatever"));
-    }
-
     @RepeatedTest(10)
     public void aggregateIsFoundAndExternalCommandHandlerAreWorking() {
         var cardId = UUID.randomUUID().toString();
@@ -79,9 +80,14 @@ public class AxonframeworkExtensionTest {
         await().atMost(Duration.ofSeconds(20))
                 .pollDelay(Duration.ZERO)
                 .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
+
+        CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId), GiftcardView.class);
+        assertThat(queryResult)
+                .succeedsWithin(Duration.ofSeconds(1))
+                .usingRecursiveComparison()
+                .isEqualTo(new GiftcardView(cardId, 9));
+
     }
 
-    public record ExampleEvent(String id, String value) {
 
-    }
 }
