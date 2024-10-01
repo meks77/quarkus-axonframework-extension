@@ -1,10 +1,13 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -20,6 +23,7 @@ import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.serialization.json.JacksonSerializer;
@@ -153,6 +157,22 @@ public class AxonExtension {
 
     public void addCommandhandlerForRegistration(Object commandhandler) {
         commandhandlers.add(commandhandler);
+    }
+
+    @Produces
+    @Dependent
+    public <T> Repository<T> repository(InjectionPoint injectionPoint) {
+        Class<T> aggregateClass = aggregateClass(
+                ((ParameterizedType) injectionPoint.getType()).getActualTypeArguments()[0].getTypeName());
+        return configuration.repository(aggregateClass);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Class<T> aggregateClass(String typeName) {
+        return (Class<T>) aggregateClasses.stream()
+                .filter(clazz -> clazz.getTypeName().equals(typeName))
+                .findFirst()
+                .orElse(null);
     }
 
 }

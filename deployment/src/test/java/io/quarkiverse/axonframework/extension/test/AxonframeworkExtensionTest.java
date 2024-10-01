@@ -15,6 +15,7 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.gateway.EventGateway;
+import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -46,6 +47,9 @@ public class AxonframeworkExtensionTest {
     QueryGateway queryGateway;
     @Inject
     GiftcardInMemoryHistory giftcardInMemoryHistory;
+
+    @Inject
+    Repository<Giftcard> giftcardRepository;
 
     @Test
     public void eventGatewayIsProduced() {
@@ -89,4 +93,8 @@ public class AxonframeworkExtensionTest {
 
     }
 
+    @Test
+    public void repositoryIsProduced() {
+        assertNotNull(giftcardRepository);
+    }
 }

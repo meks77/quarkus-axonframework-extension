@@ -17,7 +17,8 @@ The goal of this extension is to provide a solution which
 * CommandBus
 * CoammandGateway
 * QueryBus
-* QueryGateway can
+* QueryGateway
+* Repository\<T>(e.g. Repository\<GiftCard> if GiftCard is a aggregate)
 
 ### supported message types 
 
