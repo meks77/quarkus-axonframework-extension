@@ -28,6 +28,8 @@ import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.serialization.json.JacksonSerializer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;
 import io.quarkus.runtime.Startup;
@@ -37,6 +39,10 @@ public class AxonExtension {
 
     @Inject
     AxonConfiguration axonConfiguration;
+
+    @Inject
+    ObjectMapper objectMapper;
+
     private Configuration configuration;
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
     private final Set<Object> evenhandlers = new HashSet<>();
@@ -51,12 +57,13 @@ public class AxonExtension {
         if (configuration == null) {
             final Configurer configurer;
             Log.debug("creating the axon configuration");
+            JacksonSerializer jacksonSerializer = JacksonSerializer.builder().objectMapper(objectMapper).build();
             configurer = DefaultConfigurer.defaultConfiguration()
                     .registerComponent(AxonServerConfiguration.class,
                             cfg -> axonServerConfiguration())
                     .configureEventStore(this::axonserverEventStore)
-                    .configureSerializer(conf -> JacksonSerializer.defaultSerializer())
-                    .configureEventSerializer(confg -> JacksonSerializer.defaultSerializer());
+                    .configureSerializer(conf -> jacksonSerializer)
+                    .configureEventSerializer(confg -> jacksonSerializer);
             aggregateClasses.forEach(configurer::configureAggregate);
             evenhandlers.forEach(handler -> registerEventHandler(handler, configurer));
             commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
