@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.quarkiverse</groupId>
         <artifactId>quarkiverse-parent</artifactId>
-        <version>17</version>
+        <version>18</version>
     </parent>
     <groupId>io.quarkiverse.axonframework-extension</groupId>
     <artifactId>quarkus-axonframework-extension-parent</artifactId>
@@ -47,7 +47,7 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-bom</artifactId>
-                <version>4.10.1</version>
+                <version>4.10.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
