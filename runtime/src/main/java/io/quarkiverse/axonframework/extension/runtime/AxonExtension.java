@@ -11,24 +11,15 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
-import org.axonframework.axonserver.connector.AxonServerConfiguration;
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
-import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
-import org.axonframework.serialization.json.JacksonSerializer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;
@@ -38,10 +29,7 @@ import io.quarkus.runtime.Startup;
 public class AxonExtension {
 
     @Inject
-    AxonConfiguration axonConfiguration;
-
-    @Inject
-    ObjectMapper objectMapper;
+    AxonFrameworkConfigurer axonFrameworkConfigurer;
 
     private Configuration configuration;
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
@@ -49,54 +37,16 @@ public class AxonExtension {
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
 
-    public AxonExtension() {
-    }
-
     @Startup
     void init() {
         if (configuration == null) {
-            final Configurer configurer;
-            Log.debug("creating the axon configuration");
-            JacksonSerializer jacksonSerializer = JacksonSerializer.builder().objectMapper(objectMapper).build();
-            configurer = DefaultConfigurer.defaultConfiguration()
-                    .registerComponent(AxonServerConfiguration.class,
-                            cfg -> axonServerConfiguration())
-                    .configureEventStore(this::axonserverEventStore)
-                    .configureSerializer(conf -> jacksonSerializer)
-                    .configureEventSerializer(confg -> jacksonSerializer);
-            aggregateClasses.forEach(configurer::configureAggregate);
-            evenhandlers.forEach(handler -> registerEventHandler(handler, configurer));
-            commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
-            queryHandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
-            Log.info("starting axon");
+            axonFrameworkConfigurer.aggregateClasses(Set.copyOf(aggregateClasses));
+            axonFrameworkConfigurer.eventhandlers(Set.copyOf(evenhandlers));
+            axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
+            axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
+            final Configurer configurer = axonFrameworkConfigurer.configure();
             configuration = configurer.start();
         }
-    }
-
-    private AxonServerConfiguration axonServerConfiguration() {
-        return AxonServerConfiguration.builder()
-                .servers(axonConfiguration.server().hostname() + ":" + axonConfiguration.server().grpcPort())
-                .build();
-    }
-
-    private EventStore axonserverEventStore(Configuration conf) {
-        Log.info("configure connection to axon server");
-        return AxonServerEventStore.builder()
-                .configuration(axonServerConfiguration())
-                .platformConnectionManager(conf.getComponent(AxonServerConnectionManager.class))
-                .defaultContext(axonConfiguration.server().context())
-                .messageMonitor(conf.messageMonitor(AxonServerEventStore.class, "eventStore"))
-                .snapshotSerializer(conf.serializer())
-                .eventSerializer(conf.eventSerializer())
-                .snapshotFilter(conf.snapshotFilter())
-                .upcasterChain(conf.upcasterChain())
-                .spanFactory(conf.getComponent(EventBusSpanFactory.class))
-                .build();
-    }
-
-    private void registerEventHandler(Object handler, Configurer configurer) {
-        Log.infof("registering event handler %s", handler.getClass().getName());
-        configurer.registerEventHandler(conf -> handler);
     }
 
     public void addAggregateForRegistration(Class<?> aggregateClass) {

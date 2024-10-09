@@ -14,6 +14,11 @@ public interface AxonConfiguration {
      */
     ServerConfig server();
 
+    /**
+     * Configuration properties for the event processor.
+     */
+    Eventhandling eventhandling();
+
     interface ServerConfig {
 
         /**
@@ -35,4 +40,15 @@ public interface AxonConfiguration {
         String context();
 
     }
+
+    interface Eventhandling {
+
+        /**
+         * the mode of the event processor.
+         */
+        @WithDefault("subscribing")
+        Mode mode();
+
+    }
+
 }
