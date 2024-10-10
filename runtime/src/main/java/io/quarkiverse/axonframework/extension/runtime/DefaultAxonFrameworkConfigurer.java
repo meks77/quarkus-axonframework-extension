@@ -101,7 +101,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void registerEventHandler(Object handler, Configurer configurer) {
         Log.infof("registering event handler %s", handler.getClass().getName());
-        configurer.registerEventHandler(conf -> handler);
+        configurer.eventProcessing().registerEventHandler(conf -> handler);
     }
 
 }

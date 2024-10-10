@@ -35,6 +35,12 @@ The goal of this extension is to provide a solution which
 * command handlers
 * query handlers
 
+### supported event processors
+
+#### Subscribing processors
+* "simple" subscribing event processor
+* persistent streams
+
 ### supported event stores
 * axon server
 
