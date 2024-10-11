@@ -19,6 +19,12 @@ public interface AxonConfiguration {
      */
     Eventhandling eventhandling();
 
+    /**
+     * The name of the Axon application.
+     */
+    @WithDefault("quarkus-axon")
+    String axonApplicationName();
+
     interface ServerConfig {
 
         /**

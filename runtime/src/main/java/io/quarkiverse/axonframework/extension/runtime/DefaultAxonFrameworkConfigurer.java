@@ -81,6 +81,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     private AxonServerConfiguration axonServerConfiguration() {
         return AxonServerConfiguration.builder()
                 .servers(axonConfiguration.server().hostname() + ":" + axonConfiguration.server().grpcPort())
+                .componentName(axonConfiguration.axonApplicationName())
                 .build();
     }
 
