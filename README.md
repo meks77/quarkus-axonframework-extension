@@ -92,3 +92,29 @@ Currently the Bean RepositorySupplier can be injected, which provides access to 
 ### Dev service for the Axon Server
 
 If dev services are enabled and you have a container engine running(e.g. docker or podman), an axon server is automatically started, when starting the application in dev mode.
+
+### Event Processors
+
+#### Default event processors
+
+##### Subscribing Event Processors
+The simple subscribing event processor is enabled by default. There is nothing you need to do, to have the subscribing event processor active.
+
+##### Persistent Streams
+If you want to use persistent streams by default, configure
+
+```
+quarkus.axon.eventhandling.default-mode=persistent-stream
+```
+
+You can also configure 
+
+* the stream name
+* the message source name
+* the used context
+* the initial segments
+* the initial position
+* the filter and
+* the batch for processing the events
+
+For more details for the configuration please read the [configurations documentation](docs/modules/ROOT/pages/index.adoc)
