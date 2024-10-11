@@ -76,12 +76,6 @@ public interface AxonConfiguration {
         String context();
 
         /**
-         * The sequencing policy used for the persistent stream
-         */
-        @WithDefault("per-aggregate")
-        SequencingPolicy sequencingPolicy();
-
-        /**
          * The initial number of segments
          */
         @WithDefault("4")

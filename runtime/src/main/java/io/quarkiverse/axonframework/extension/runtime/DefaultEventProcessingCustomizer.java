@@ -46,7 +46,7 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         return new PersistentStreamProperties(
                 persistentStreamConf.streamname(),
                 persistentStreamConf.segments(),
-                persistentStreamConf.sequencingPolicy().axonName(),
+                SequencingPolicy.PER_AGGREGATE.axonName(),
                 Collections.emptyList(),
                 String.valueOf(persistentStreamConf.initialPosition()),
                 nullIfNone(persistentStreamConf.filter()));
@@ -60,6 +60,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         var streamConf = axonConfiguration.eventhandling().defaultPersistentStream();
         PersistentStreamProperties streamProperties = persistentStreamProperties(streamConf);
         return new PersistentStreamMessageSource(streamConf.messageSourceName(), conf, streamProperties,
-                executorService, streamConf.batchSize(), streamConf.filter());
+                executorService, streamConf.batchSize(), streamConf.context());
     }
 }

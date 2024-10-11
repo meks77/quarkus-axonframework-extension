@@ -127,23 +127,6 @@ endif::add-copy-button-to-env-var[]
 |string
 |`default`
 
-a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-sequencing-policy]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-sequencing-policy[`quarkus.axon.eventhandling.default-persistent-stream.sequencing-policy`]##
-
-[.description]
---
-The sequencing policy used for the persistent stream
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_PERSISTENT_STREAM_SEQUENCING_POLICY+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_PERSISTENT_STREAM_SEQUENCING_POLICY+++`
-endif::add-copy-button-to-env-var[]
---
-a|SequencingPolicy
-|`per-aggregate`
-
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-segments]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-segments[`quarkus.axon.eventhandling.default-persistent-stream.segments`]##
 
 [.description]
