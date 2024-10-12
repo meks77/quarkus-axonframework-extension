@@ -1,4 +1,4 @@
-package io.quarkiverse.axonframework.extension.test;
+package io.quarkiverse.axonframework.extension.test.model;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 

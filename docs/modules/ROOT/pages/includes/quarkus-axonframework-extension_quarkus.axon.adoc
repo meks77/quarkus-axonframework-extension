@@ -42,6 +42,23 @@ endif::add-copy-button-to-env-var[]
 |int
 |`8124`
 
+a| [[quarkus-axonframework-extension_quarkus-axon-server-http-port]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-server-http-port[`quarkus.axon.server.http-port`]##
+
+[.description]
+--
+the http port of the axon server.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_HTTP_PORT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_HTTP_PORT+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`8024`
+
 a| [[quarkus-axonframework-extension_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-server-context[`quarkus.axon.server.context`]##
 
 [.description]

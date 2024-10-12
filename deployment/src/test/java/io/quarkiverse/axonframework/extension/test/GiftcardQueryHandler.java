@@ -7,6 +7,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 
+import io.quarkiverse.axonframework.extension.test.model.Api;
+
 @ApplicationScoped
 public class GiftcardQueryHandler {
 

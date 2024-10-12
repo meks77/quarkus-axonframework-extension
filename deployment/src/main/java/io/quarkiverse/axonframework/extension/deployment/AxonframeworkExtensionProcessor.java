@@ -67,7 +67,9 @@ class AxonframeworkExtensionProcessor {
         Integer apiPort = container.getMappedPort(8124);
         Log.infof("Axon Server API listens to port %s", apiPort);
 
-        Map<String, String> configOverrides = Map.of("quarkus.axon.server.grpc-port", apiPort.toString());
+        Map<String, String> configOverrides = Map.of(
+                "quarkus.axon.server.grpc-port", apiPort.toString(),
+                "quarkus.axon.server.http-port", uiPort.toString());
         return new DevServicesResultBuildItem.RunningDevService(FEATURE, container.getContainerId(),
                 container::close, configOverrides)
                 .toBuildItem();
@@ -86,7 +88,8 @@ class AxonframeworkExtensionProcessor {
 
     private Stream<Class<?>> aggregateClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         return annotatedClasses(AggregateIdentifier.class, "aggregates",
-                annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(), beanArchiveIndex);
+                annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(),
+                beanArchiveIndex);
     }
 
     private Stream<Class<?>> annotatedClasses(Class<? extends Annotation> annotationType, String description,
@@ -132,7 +135,8 @@ class AxonframeworkExtensionProcessor {
 
     private Stream<Class<?>> eventhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         return annotatedClasses(EventHandler.class, "eventhandler methods",
-                annotationInstance -> annotationInstance.target().asMethod().declaringClass().asClass(), beanArchiveIndex);
+                annotationInstance -> annotationInstance.target().asMethod().declaringClass().asClass(),
+                beanArchiveIndex);
     }
 
     private void produceEventhandlerBeanBuildItem(BuildProducer<EventhandlerBeanBuildItem> beanProducer,

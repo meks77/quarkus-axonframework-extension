@@ -1,4 +1,4 @@
-package io.quarkiverse.axonframework.extension.test;
+package io.quarkiverse.axonframework.extension.test.model;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -8,7 +8,7 @@ import org.axonframework.modelling.command.Aggregate;
 import org.axonframework.modelling.command.Repository;
 
 @ApplicationScoped
-public class ExternalCommandHandler {
+public class DomainServiceExample {
 
     @Inject
     Repository<Giftcard> giftcardRepository;

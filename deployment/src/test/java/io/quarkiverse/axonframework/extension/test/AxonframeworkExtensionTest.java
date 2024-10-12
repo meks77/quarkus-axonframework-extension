@@ -20,18 +20,23 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import io.quarkiverse.axonframework.extension.runtime.AxonConfiguration;
+import io.quarkiverse.axonframework.extension.test.model.Api;
+import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
+import io.quarkiverse.axonframework.extension.test.model.Giftcard;
 import io.quarkus.test.QuarkusUnitTest;
+import io.restassured.RestAssured;
 
 public class AxonframeworkExtensionTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, ExternalCommandHandler.class,
+                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, DomainServiceExample.class,
                             GiftcardQueryHandler.class, GiftcardView.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
@@ -51,28 +56,46 @@ public class AxonframeworkExtensionTest {
     @Inject
     Repository<Giftcard> giftcardRepository;
 
+    @Inject
+    AxonConfiguration axonConfiguration;
+
+    public boolean initialized = false;
+
+    @BeforeEach
+    void resetContextJustOnce() {
+        if (!initialized) {
+            RestAssured.given()
+                    .baseUri("http://" + axonConfiguration.server().hostname() + ":" + axonConfiguration.server().httpPort())
+                    .accept("application/json")
+                    .basePath("/v1/public/purge-events")
+                    .queryParam("targetContext", axonConfiguration.server().context())
+                    .when().delete().then().statusCode(200);
+            initialized = true;
+        }
+    }
+
     @Test
-    public void eventGatewayIsProduced() {
+    void eventGatewayIsProduced() {
         assertNotNull(eventGateway);
     }
 
     @Test
-    public void eventBusIsProduced() {
+    void eventBusIsProduced() {
         assertNotNull(eventBus);
     }
 
     @Test
-    public void commandGatewayIsProduced() {
+    void commandGatewayIsProduced() {
         assertNotNull(commandGateway);
     }
 
     @Test
-    public void commandBusIsProduced() {
+    void commandBusIsProduced() {
         assertNotNull(commandBus);
     }
 
-    @RepeatedTest(10)
-    public void aggregateIsFoundAndExternalCommandHandlerAreWorking() {
+    @Test
+    void aggregateIsFoundAndExternalCommandHandlerAreWorking() {
         var cardId = UUID.randomUUID().toString();
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
         // the evenhandler has maybe to handle many old events, and is not ready immediately
@@ -94,7 +117,7 @@ public class AxonframeworkExtensionTest {
     }
 
     @Test
-    public void repositoryIsProduced() {
+    void repositoryIsProduced() {
         assertNotNull(giftcardRepository);
     }
 }

@@ -40,11 +40,16 @@ public interface AxonConfiguration {
         int grpcPort();
 
         /**
+         * the http port of the axon server.
+         */
+        @WithDefault("8024")
+        String httpPort();
+
+        /**
          * the context of the server to which should be connected
          */
         @WithDefault("default")
         String context();
-
     }
 
     interface Eventhandling {
