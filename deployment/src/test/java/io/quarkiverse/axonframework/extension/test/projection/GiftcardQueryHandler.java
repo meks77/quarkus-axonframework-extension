@@ -1,4 +1,4 @@
-package io.quarkiverse.axonframework.extension.test;
+package io.quarkiverse.axonframework.extension.test.projection;
 
 import java.util.*;
 

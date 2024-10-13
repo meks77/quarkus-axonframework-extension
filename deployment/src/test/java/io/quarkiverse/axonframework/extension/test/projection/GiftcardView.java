@@ -1,6 +1,6 @@
-package io.quarkiverse.axonframework.extension.test;
+package io.quarkiverse.axonframework.extension.test.projection;
 
-class GiftcardView {
+public class GiftcardView {
 
     private final String id;
 
@@ -12,7 +12,7 @@ class GiftcardView {
         id = null;
     }
 
-    GiftcardView(String id, int currentAmount) {
+    public GiftcardView(String id, int currentAmount) {
         this.id = id;
         this.currentAmount = currentAmount;
     }

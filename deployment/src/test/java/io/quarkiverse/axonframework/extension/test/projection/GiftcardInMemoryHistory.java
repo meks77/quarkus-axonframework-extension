@@ -1,4 +1,4 @@
-package io.quarkiverse.axonframework.extension.test;
+package io.quarkiverse.axonframework.extension.test.projection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class GiftcardInMemoryHistory {
         history.add(event);
     }
 
-    boolean wasEventHandled(Object event) {
+    public boolean wasEventHandled(Object event) {
         return history.contains(event);
     }
 
