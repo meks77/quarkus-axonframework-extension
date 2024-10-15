@@ -1,5 +1,23 @@
 package io.quarkiverse.axonframework.extension.deployment;
 
+import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.queryhandling.QueryHandler;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.IndexView;
+import org.jetbrains.annotations.NotNull;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.utility.DockerImageName;
+
 import io.quarkiverse.axonframework.extension.runtime.AxonExtension;
 import io.quarkiverse.axonframework.extension.runtime.AxonInitializationRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
@@ -15,23 +33,6 @@ import io.quarkus.deployment.builditem.DevServicesResultBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.dev.devservices.GlobalDevServicesConfig;
 import io.quarkus.logging.Log;
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.modelling.command.AggregateIdentifier;
-import org.axonframework.queryhandling.QueryHandler;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.IndexView;
-import org.jetbrains.annotations.NotNull;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.utility.DockerImageName;
-
-import java.lang.annotation.Annotation;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 class AxonframeworkExtensionProcessor {
 
@@ -75,8 +76,9 @@ class AxonframeworkExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForAggregates(@SuppressWarnings("unused") AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
-                           BuildProducer<AggregateBeanBuildItem> beanProducer) {
+    void scanForAggregates(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<AggregateBeanBuildItem> beanProducer) {
         aggregateClasses(beanArchiveIndex)
                 .forEach(beanClass -> {
                     beanProducer.produce(new AggregateBeanBuildItem(beanClass));
@@ -91,8 +93,8 @@ class AxonframeworkExtensionProcessor {
     }
 
     private Stream<Class<?>> annotatedClasses(Class<? extends Annotation> annotationType, String description,
-                                              Function<AnnotationInstance, ClassInfo> annotationToClassInfoTranslator,
-                                              BeanArchiveIndexBuildItem beanArchiveIndex) {
+            Function<AnnotationInstance, ClassInfo> annotationToClassInfoTranslator,
+            BeanArchiveIndexBuildItem beanArchiveIndex) {
         IndexView indexView = beanArchiveIndex.getIndex();
         Collection<AnnotationInstance> aggregateIdAnnotations = indexView.getAnnotations(annotationType);
         Log.debugf("found %s %s", aggregateIdAnnotations.size(), description);
@@ -112,8 +114,9 @@ class AxonframeworkExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
-                              BuildProducer<EventhandlerBeanBuildItem> beanProducer) {
+    void scanForEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<EventhandlerBeanBuildItem> beanProducer) {
         eventhandlerClasses(beanArchiveIndex)
                 .forEach(clazz -> {
                     produceEventhandlerBeanBuildItem(beanProducer, clazz);
@@ -128,18 +131,18 @@ class AxonframeworkExtensionProcessor {
     }
 
     private void produceEventhandlerBeanBuildItem(BuildProducer<EventhandlerBeanBuildItem> beanProducer,
-                                                  Class<?> eventhandlerClass) {
+            Class<?> eventhandlerClass) {
         beanProducer.produce(new EventhandlerBeanBuildItem(eventhandlerClass));
     }
 
     @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void startAxon(AxonInitializationRecorder recorder,
-                   List<AggregateBeanBuildItem> aggregateBeanBuildItems,
-                   List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
-                   List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
-                   List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
-                   BeanContainerBuildItem beanContainerBuildItem) {
+            List<AggregateBeanBuildItem> aggregateBeanBuildItems,
+            List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
+            List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
+            List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
+            BeanContainerBuildItem beanContainerBuildItem) {
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate");
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler");
         Set<Class<?>> commandhandlerClasses = classes(commandhandlerBeanBuildItems, "commandhandler");
@@ -162,8 +165,9 @@ class AxonframeworkExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForCommandhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
-                               BuildProducer<CommandhandlerBeanBuildItem> beanProducer) {
+    void scanForCommandhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<CommandhandlerBeanBuildItem> beanProducer) {
         commandhandlerClasses(beanArchiveIndex)
                 .forEach(clazz -> {
                     beanProducer.produce(new CommandhandlerBeanBuildItem(clazz));
@@ -180,8 +184,9 @@ class AxonframeworkExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForQueryhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
-                             BuildProducer<QueryhandlerBeanBuildItem> beanProducer) {
+    void scanForQueryhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<QueryhandlerBeanBuildItem> beanProducer) {
         queryhandlerClasses(beanArchiveIndex)
                 .forEach(clazz -> {
                     beanProducer.produce(new QueryhandlerBeanBuildItem(clazz));
