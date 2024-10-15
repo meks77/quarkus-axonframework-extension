@@ -1,26 +1,5 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.time.Duration;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import jakarta.inject.Inject;
-
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.queryhandling.QueryGateway;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import io.quarkiverse.axonframework.extension.runtime.AxonConfiguration;
 import io.quarkiverse.axonframework.extension.test.model.Api;
 import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
 import io.quarkiverse.axonframework.extension.test.model.Giftcard;
@@ -29,6 +8,23 @@ import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandl
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
 import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusUnitTest;
+import jakarta.inject.Inject;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.queryhandling.QueryGateway;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.time.Duration;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractConfigurationTest {
 
@@ -51,11 +47,6 @@ public abstract class AbstractConfigurationTest {
     QueryGateway queryGateway;
     @Inject
     GiftcardInMemoryHistory giftcardInMemoryHistory;
-
-    @Inject
-    AxonConfiguration axonConfiguration;
-
-    public boolean initialized = false;
 
     protected static FileAsset propertiesFile(String name) {
         Log.infof("provide properties file %s for java archive", name);

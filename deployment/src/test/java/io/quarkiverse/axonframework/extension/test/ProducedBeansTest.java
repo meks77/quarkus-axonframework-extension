@@ -1,9 +1,13 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import io.quarkiverse.axonframework.extension.test.model.Api;
+import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
+import io.quarkiverse.axonframework.extension.test.model.Giftcard;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
+import io.quarkus.test.QuarkusUnitTest;
 import jakarta.inject.Inject;
-
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
@@ -13,18 +17,10 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkiverse.axonframework.extension.runtime.AxonConfiguration;
-import io.quarkiverse.axonframework.extension.test.model.Api;
-import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
-import io.quarkiverse.axonframework.extension.test.model.Giftcard;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
-import io.quarkus.test.QuarkusUnitTest;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProducedBeansTest {
 
@@ -48,11 +44,6 @@ public class ProducedBeansTest {
 
     @Inject
     Repository<Giftcard> giftcardRepository;
-
-    @Inject
-    AxonConfiguration axonConfiguration;
-
-    public boolean initialized = false;
 
     @Test
     void eventGatewayIsProduced() {
