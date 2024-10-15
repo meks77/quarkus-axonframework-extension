@@ -1,6 +1,7 @@
 package io.quarkiverse.axonframework.extension.test.projection;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
