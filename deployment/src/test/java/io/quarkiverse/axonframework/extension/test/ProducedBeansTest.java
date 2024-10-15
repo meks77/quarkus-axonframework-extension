@@ -1,13 +1,9 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import io.quarkiverse.axonframework.extension.test.model.Api;
-import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
-import io.quarkiverse.axonframework.extension.test.model.Giftcard;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
-import io.quarkus.test.QuarkusUnitTest;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import jakarta.inject.Inject;
+
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventBus;
@@ -20,7 +16,13 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import io.quarkiverse.axonframework.extension.test.model.Api;
+import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
+import io.quarkiverse.axonframework.extension.test.model.Giftcard;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
+import io.quarkus.test.QuarkusUnitTest;
 
 public class ProducedBeansTest {
 

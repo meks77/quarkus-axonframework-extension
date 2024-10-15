@@ -1,14 +1,16 @@
 package io.quarkiverse.axonframework.extension.test;
 
-import io.quarkiverse.axonframework.extension.test.model.Api;
-import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
-import io.quarkiverse.axonframework.extension.test.model.Giftcard;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
-import io.quarkus.logging.Log;
-import io.quarkus.test.QuarkusUnitTest;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.time.Duration;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 import jakarta.inject.Inject;
+
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -17,14 +19,14 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.time.Duration;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.quarkiverse.axonframework.extension.test.model.Api;
+import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
+import io.quarkiverse.axonframework.extension.test.model.Giftcard;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
+import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
+import io.quarkus.logging.Log;
+import io.quarkus.test.QuarkusUnitTest;
 
 public abstract class AbstractConfigurationTest {
 
