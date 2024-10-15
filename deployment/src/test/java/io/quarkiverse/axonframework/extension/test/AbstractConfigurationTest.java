@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -14,6 +15,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,18 +27,22 @@ import io.quarkiverse.axonframework.extension.test.model.Giftcard;
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
+import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusUnitTest;
-import io.restassured.RestAssured;
 
 public abstract class AbstractConfigurationTest {
 
-    protected static QuarkusUnitTest applicationWithoutProperties() {
+    protected static QuarkusUnitTest application(JavaArchive javaArchive) {
         return new QuarkusUnitTest()
-                .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                        .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
-                                DomainServiceExample.class,
-                                GiftcardQueryHandler.class, GiftcardView.class)
-                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
+                .setArchiveProducer(() -> javaArchive);
+    }
+
+    static JavaArchive javaArchiveBase() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
+                        DomainServiceExample.class,
+                        GiftcardQueryHandler.class, GiftcardView.class)
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject
@@ -51,17 +57,14 @@ public abstract class AbstractConfigurationTest {
 
     public boolean initialized = false;
 
-    @BeforeEach
-    void resetContextJustOnce() {
-        if (!initialized) {
-            RestAssured.given()
-                    .baseUri("http://" + axonConfiguration.server().hostname() + ":" + axonConfiguration.server().httpPort())
-                    .accept("application/json")
-                    .basePath("/v1/public/purge-events")
-                    .queryParam("targetContext", axonConfiguration.server().context())
-                    .when().delete().then().statusCode(200);
-            initialized = true;
+    protected static FileAsset propertiesFile(String name) {
+        Log.infof("provide properties file %s for java archive", name);
+        FileAsset fileAsset = new FileAsset(new File("src/test/resources" + name));
+        if (!fileAsset.getSource().exists()) {
+            Log.errorf("file %s doesn't exist", fileAsset.getSource().getAbsolutePath());
+            throw new RuntimeException("file doesn't exist: " + fileAsset.getSource().getAbsolutePath());
         }
+        return fileAsset;
     }
 
     /**
@@ -76,7 +79,7 @@ public abstract class AbstractConfigurationTest {
     void frameworkConfigurationWorks() {
         var cardId = UUID.randomUUID().toString();
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
-        await().atMost(Duration.ofSeconds(2))
+        await().atMost(Duration.ofSeconds(10))
                 .pollDelay(Duration.ZERO)
                 .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
 

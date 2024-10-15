@@ -7,6 +7,6 @@ import io.quarkus.test.QuarkusUnitTest;
 public class ConfigurationWithDefaultsTest extends AbstractConfigurationTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = applicationWithoutProperties();
+    static final QuarkusUnitTest config = application(javaArchiveBase());
 
 }

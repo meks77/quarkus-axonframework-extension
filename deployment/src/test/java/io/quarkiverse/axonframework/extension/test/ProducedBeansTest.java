@@ -25,7 +25,6 @@ import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHi
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
 import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
 import io.quarkus.test.QuarkusUnitTest;
-import io.restassured.RestAssured;
 
 public class ProducedBeansTest {
 
@@ -54,19 +53,6 @@ public class ProducedBeansTest {
     AxonConfiguration axonConfiguration;
 
     public boolean initialized = false;
-
-    @BeforeEach
-    void resetContextJustOnce() {
-        if (!initialized) {
-            RestAssured.given()
-                    .baseUri("http://" + axonConfiguration.server().hostname() + ":" + axonConfiguration.server().httpPort())
-                    .accept("application/json")
-                    .basePath("/v1/public/purge-events")
-                    .queryParam("targetContext", axonConfiguration.server().context())
-                    .when().delete().then().statusCode(200);
-            initialized = true;
-        }
-    }
 
     @Test
     void eventGatewayIsProduced() {
