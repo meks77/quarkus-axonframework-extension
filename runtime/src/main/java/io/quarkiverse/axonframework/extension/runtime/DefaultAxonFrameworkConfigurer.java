@@ -54,7 +54,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
-        Log.info("starting axon");
         return configurer;
     }
 
@@ -101,7 +100,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void registerEventHandler(Object handler, Configurer configurer) {
-        Log.infof("registering event handler %s", handler.getClass().getName());
         configurer.eventProcessing().registerEventHandler(conf -> handler);
     }
 

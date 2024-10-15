@@ -2,7 +2,7 @@ package io.quarkiverse.axonframework.extension.deployment;
 
 import io.quarkus.builder.item.MultiBuildItem;
 
-final class EventhandlerBeanBuildItem extends MultiBuildItem {
+final class EventhandlerBeanBuildItem extends MultiBuildItem implements ClassProvider {
 
     private final Class<?> eventhandlerClass;
 
@@ -10,7 +10,8 @@ final class EventhandlerBeanBuildItem extends MultiBuildItem {
         this.eventhandlerClass = eventhandlerClass;
     }
 
-    Class<?> eventhandlerClass() {
+    @Override
+    public Class<?> itemClass() {
         return eventhandlerClass;
     }
 

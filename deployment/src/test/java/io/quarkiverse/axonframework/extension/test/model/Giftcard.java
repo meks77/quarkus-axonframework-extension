@@ -26,7 +26,7 @@ public class Giftcard {
             throw new IllegalArgumentException("command mustn't be null");
         }
         apply(new Api.CardIssuedEvent(command.id(), command.initialAmount()));
-        Log.infof("new card with the id %s and the initial amount %s was issued", id, currentAmount);
+        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(), currentAmount);
     }
 
     @EventSourcingHandler

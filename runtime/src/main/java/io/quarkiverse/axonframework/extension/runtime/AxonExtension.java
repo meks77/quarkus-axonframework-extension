@@ -23,7 +23,6 @@ import org.axonframework.queryhandling.QueryGateway;
 
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;
-import io.quarkus.runtime.Startup;
 
 @Singleton
 public class AxonExtension {
@@ -37,7 +36,6 @@ public class AxonExtension {
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
 
-    @Startup
     void init() {
         if (configuration == null) {
             axonFrameworkConfigurer.aggregateClasses(Set.copyOf(aggregateClasses));
@@ -45,6 +43,7 @@ public class AxonExtension {
             axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
             final Configurer configurer = axonFrameworkConfigurer.configure();
+            Log.info("starting axon");
             configuration = configurer.start();
         }
     }

@@ -2,7 +2,7 @@ package io.quarkiverse.axonframework.extension.deployment;
 
 import io.quarkus.builder.item.MultiBuildItem;
 
-final class AggregateBeanBuildItem extends MultiBuildItem {
+final class AggregateBeanBuildItem extends MultiBuildItem implements ClassProvider {
 
     private final Class<?> aggregateClass;
 
@@ -10,7 +10,8 @@ final class AggregateBeanBuildItem extends MultiBuildItem {
         this.aggregateClass = aggregateClass;
     }
 
-    Class<?> aggregateClass() {
+    @Override
+    public Class<?> itemClass() {
         return aggregateClass;
     }
 

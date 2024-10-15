@@ -2,7 +2,7 @@ package io.quarkiverse.axonframework.extension.deployment;
 
 import io.quarkus.builder.item.MultiBuildItem;
 
-final class CommandhandlerBeanBuildItem extends MultiBuildItem {
+final class CommandhandlerBeanBuildItem extends MultiBuildItem implements ClassProvider {
 
     private final Class<?> commandhandlerClass;
 
@@ -10,7 +10,8 @@ final class CommandhandlerBeanBuildItem extends MultiBuildItem {
         this.commandhandlerClass = commandhandlerClass;
     }
 
-    Class<?> commandhandlerClass() {
+    @Override
+    public Class<?> itemClass() {
         return commandhandlerClass;
     }
 
