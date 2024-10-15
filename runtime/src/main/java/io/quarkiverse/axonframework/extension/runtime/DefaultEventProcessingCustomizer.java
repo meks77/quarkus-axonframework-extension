@@ -27,7 +27,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
 
     @Override
     public void configureEventProcessing(EventProcessingConfigurer eventProcessingConfigurer) {
-        // TODO: automatic test for different modes
         if (axonConfiguration.eventhandling().defaultMode() == Mode.SUBSCRIBING) {
             eventProcessingConfigurer.usingSubscribingEventProcessors();
         } else if (axonConfiguration.eventhandling().defaultMode() == Mode.PERSISTENT_STREAM) {

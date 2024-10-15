@@ -35,7 +35,7 @@ public abstract class AbstractConfigurationTest {
                 .setArchiveProducer(() -> javaArchive);
     }
 
-    static JavaArchive javaArchiveBase() {
+    protected static JavaArchive javaArchiveBase() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
                         DomainServiceExample.class,
