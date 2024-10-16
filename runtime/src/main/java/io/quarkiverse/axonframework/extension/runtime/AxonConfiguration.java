@@ -40,12 +40,6 @@ public interface AxonConfiguration {
         int grpcPort();
 
         /**
-         * the http port of the axon server.
-         */
-        @WithDefault("8024")
-        String httpPort();
-
-        /**
          * the context of the server to which should be connected
          */
         @WithDefault("default")
@@ -96,7 +90,7 @@ public interface AxonConfiguration {
          * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
          */
         @WithDefault("0")
-        long initialPosition();
+        String initialPosition();
 
         /**
          * The filter to use for the stream. The syntax for this filter is from the axon server.
