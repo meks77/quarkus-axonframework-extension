@@ -33,6 +33,18 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
             eventProcessingConfigurer.usingSubscribingEventProcessors();
             eventProcessingConfigurer
                     .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
+        } else if (axonConfiguration.eventhandling().defaultMode() == Mode.TRACKING) {
+            eventProcessingConfigurer.usingTrackingEventProcessors();
+            // TODO: tracking event processor configurations
+            // * single thread
+            // * parallel(multiple threads)
+            //   * thread count
+            // * both
+            //   * batch size: default -1 -> default from axon framework
+            //   * thread factory: using virtual thread or not? using quarkus thread factory or not?
+            //   * initial segments count: default -1 -> default from axon framework
+            //   * initial tracking token: HEAD, TAIL; others not supported currently
+            //   * token claim interval: default -1 -> default from axon framework
         }
 
         // for later: custom processor per handler group
