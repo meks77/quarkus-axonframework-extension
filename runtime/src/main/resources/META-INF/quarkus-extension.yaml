@@ -1,9 +1,11 @@
-name: Axonframework Extension
-#description: Do something useful.
+name: "Axon Framework - Event Sourcing Solution"
+description: Using this extension the Axon Framework can be used for event-sourcing
 metadata:
-#  keywords:
-#    - axonframework-extension
+  keywords:
+    - "axon"
+    - "event sourcing"
+    - "cqrs"
 #  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
-#  categories:
-#    - "miscellaneous"
-#  status: "preview"
+  categories:
+    - "data"
+  status: "experimental"
