@@ -1,5 +1,7 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import static at.meks.validation.args.ArgValidator.validate;
+
 import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -10,6 +12,7 @@ import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessage
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventMessage;
+import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.axonframework.messaging.SubscribableMessageSource;
 
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
@@ -35,11 +38,11 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
                     .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
         } else if (axonConfiguration.eventhandling().defaultMode() == Mode.TRACKING) {
             eventProcessingConfigurer.usingTrackingEventProcessors();
+            int threadCount = axonConfiguration.eventhandling().defaultTrackingProcessor().threadCount();
+            validate().that(threadCount).isGreater(0);
+            eventProcessingConfigurer.registerTrackingEventProcessorConfiguration(conf -> TrackingEventProcessorConfiguration
+                    .forParallelProcessing(threadCount));
             // TODO: tracking event processor configurations
-            // * single thread
-            // * parallel(multiple threads)
-            //   * thread count
-            // * both
             //   * batch size: default -1 -> default from axon framework
             //   * thread factory: using virtual thread or not? using quarkus thread factory or not?
             //   * initial segments count: default -1 -> default from axon framework

@@ -32,6 +32,11 @@
             <groupId>org.axonframework</groupId>
             <artifactId>axon-server-connector</artifactId>
         </dependency>
+        <dependency>
+            <groupId>at.meks.easyvalidation</groupId>
+            <artifactId>args</artifactId>
+            <version>2.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -195,6 +195,23 @@ endif::add-copy-button-to-env-var[]
 |int
 |`100`
 
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-tracking-processor-thread-count]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-tracking-processor-thread-count[`quarkus.axon.eventhandling.default-tracking-processor.thread-count`]##
+
+[.description]
+--
+This is both the number of threads that a processor will start for processing, as well as the initial number of segments that will be created when the processor is first started.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_TRACKING_PROCESSOR_THREAD_COUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_TRACKING_PROCESSOR_THREAD_COUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`2`
+
 a| [[quarkus-axonframework-extension_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
 
 [.description]

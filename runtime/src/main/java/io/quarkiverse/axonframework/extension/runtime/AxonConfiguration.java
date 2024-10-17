@@ -59,6 +59,11 @@ public interface AxonConfiguration {
          */
         PersistentStreamConf defaultPersistentStream();
 
+        /**
+         * if modes is set to {@link Mode#TRACKING}
+         */
+        TrackingProcessorConf defaultTrackingProcessor();
+
     }
 
     interface PersistentStreamConf {
@@ -105,4 +110,14 @@ public interface AxonConfiguration {
         int batchSize();
     }
 
+    interface TrackingProcessorConf {
+
+        /**
+         * This is both the number of threads that a processor will start for processing, as well as the initial number of
+         * segments that will be created when the
+         * processor is first started.
+         */
+        @WithDefault("2")
+        int threadCount();
+    }
 }

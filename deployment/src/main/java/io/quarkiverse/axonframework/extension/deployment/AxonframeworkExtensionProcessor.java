@@ -67,8 +67,7 @@ class AxonframeworkExtensionProcessor {
         Log.infof("Axon Server API listens to port %s", apiPort);
 
         Map<String, String> configOverrides = Map.of(
-                "quarkus.axon.server.grpc-port", apiPort.toString(),
-                "quarkus.axon.server.http-port", uiPort.toString());
+                "quarkus.axon.server.grpc-port", apiPort.toString());
         return new DevServicesResultBuildItem.RunningDevService(FEATURE, container.getContainerId(),
                 container::close, configOverrides)
                 .toBuildItem();

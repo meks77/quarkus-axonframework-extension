@@ -1,6 +1,7 @@
 package io.quarkiverse.axonframework.extension.test.streamingprocessors.tep;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Optional;
 
@@ -15,11 +16,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import io.quarkiverse.axonframework.extension.test.AbstractConfigurationTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class WithDefaultsTest extends AbstractConfigurationTest {
+public class SingleThreadedTest extends AbstractConfigurationTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/streamingeventprocessors/tep/withDefaults.properties"),
+            javaArchiveBase().addAsResource(propertiesFile("/streamingeventprocessors/tep/singleThreaded.properties"),
                     "application.properties"));
 
     @Inject
@@ -33,6 +34,8 @@ public class WithDefaultsTest extends AbstractConfigurationTest {
         // I don't like this kind of assertion, but I found no better way, how to validate that it is a tracking processor
         assertThat(eventProcessorOptional).isPresent().get()
                 .isInstanceOf(TrackingEventProcessor.class);
+        var processor = (TrackingEventProcessor) eventProcessorOptional.get();
+        assertEquals(1, processor.activeProcessorThreads());
     }
 
 }
