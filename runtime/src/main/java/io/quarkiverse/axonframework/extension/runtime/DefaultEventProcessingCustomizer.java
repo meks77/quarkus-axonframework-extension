@@ -3,6 +3,7 @@ package io.quarkiverse.axonframework.extension.runtime;
 import static at.meks.validation.args.ArgValidator.validate;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
 import jakarta.enterprise.context.Dependent;
@@ -40,11 +41,15 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
             eventProcessingConfigurer.usingTrackingEventProcessors();
             int threadCount = axonConfiguration.eventhandling().defaultTrackingProcessor().threadCount();
             validate().that(threadCount).isGreater(0);
-            eventProcessingConfigurer.registerTrackingEventProcessorConfiguration(conf -> TrackingEventProcessorConfiguration
-                    .forParallelProcessing(threadCount));
+            TrackingEventProcessorConfiguration trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
+                    .forParallelProcessing(threadCount);
+            Optional.of(axonConfiguration.eventhandling().defaultTrackingProcessor().batchSize())
+                    .filter(size -> size > 1)
+                    .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
+
+            eventProcessingConfigurer.registerTrackingEventProcessorConfiguration(
+                    conf -> trackingEventProcessorConfiguration);
             // TODO: tracking event processor configurations
-            //   * batch size: default -1 -> default from axon framework
-            //   * thread factory: using virtual thread or not? using quarkus thread factory or not?
             //   * initial segments count: default -1 -> default from axon framework
             //   * initial tracking token: HEAD, TAIL; others not supported currently
             //   * token claim interval: default -1 -> default from axon framework

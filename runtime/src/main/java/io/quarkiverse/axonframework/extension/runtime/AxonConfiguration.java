@@ -113,11 +113,18 @@ public interface AxonConfiguration {
     interface TrackingProcessorConf {
 
         /**
-         * This is both the number of threads that a processor will start for processing, as well as the initial number of
+         * This is both the number of threads that a processor will start for processing, and the initial number of
          * segments that will be created when the
          * processor is first started.
          */
-        @WithDefault("2")
+        @WithDefault("1")
         int threadCount();
+
+        /**
+         * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
+         * framework is used.
+         */
+        @WithDefault("-1")
+        int batchSize();
     }
 }
