@@ -1,5 +1,7 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import java.util.concurrent.TimeUnit;
+
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -126,5 +128,37 @@ public interface AxonConfiguration {
          */
         @WithDefault("-1")
         int batchSize();
+
+        /**
+         * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+         */
+        @WithDefault("-1")
+        int initialSegments();
+
+        /**
+         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+         */
+        @WithDefault("tail")
+        InitialPosition initialPosition();
+
+        /**
+         * Sets the time to wait after a failed attempt to claim any token, before making another attempt.
+         */
+        TokenClaimInterval tokenClaim();
+    }
+
+    interface TokenClaimInterval {
+
+        /**
+         * The time to wait in between attempts to claim a token. If -1 the axon framework's default claim interval is used.
+         */
+        @WithDefault("-1")
+        long interval();
+
+        /**
+         * Specifies the time unit for the interval between token claim attempts.
+         */
+        @WithDefault("seconds")
+        TimeUnit timeUnit();
     }
 }

@@ -13,7 +13,10 @@ import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessage
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventMessage;
+import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
+import org.axonframework.eventhandling.TrackingToken;
+import org.axonframework.messaging.StreamableMessageSource;
 import org.axonframework.messaging.SubscribableMessageSource;
 
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
@@ -39,20 +42,7 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
                     .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
         } else if (axonConfiguration.eventhandling().defaultMode() == Mode.TRACKING) {
             eventProcessingConfigurer.usingTrackingEventProcessors();
-            int threadCount = axonConfiguration.eventhandling().defaultTrackingProcessor().threadCount();
-            validate().that(threadCount).isGreater(0);
-            TrackingEventProcessorConfiguration trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
-                    .forParallelProcessing(threadCount);
-            Optional.of(axonConfiguration.eventhandling().defaultTrackingProcessor().batchSize())
-                    .filter(size -> size > 1)
-                    .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
-
-            eventProcessingConfigurer.registerTrackingEventProcessorConfiguration(
-                    conf -> trackingEventProcessorConfiguration);
-            // TODO: tracking event processor configurations
-            //   * initial segments count: default -1 -> default from axon framework
-            //   * initial tracking token: HEAD, TAIL; others not supported currently
-            //   * token claim interval: default -1 -> default from axon framework
+            configureTrackingEventProcessor(eventProcessingConfigurer);
         }
 
         // for later: custom processor per handler group
@@ -61,13 +51,20 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         //                            streamProperties, executorService, persistentStreamConf.batchSize()));
     }
 
+    private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
+        var streamConf = axonConfiguration.eventhandling().defaultPersistentStream();
+        PersistentStreamProperties streamProperties = persistentStreamProperties(streamConf);
+        return new PersistentStreamMessageSource(streamConf.messageSourceName(), conf, streamProperties,
+                executorService, streamConf.batchSize(), streamConf.context());
+    }
+
     private PersistentStreamProperties persistentStreamProperties(AxonConfiguration.PersistentStreamConf persistentStreamConf) {
         return new PersistentStreamProperties(
                 persistentStreamConf.streamname(),
                 persistentStreamConf.segments(),
                 SequencingPolicy.PER_AGGREGATE.axonName(),
                 Collections.emptyList(),
-                String.valueOf(persistentStreamConf.initialPosition()),
+                persistentStreamConf.initialPosition(),
                 nullIfNone(persistentStreamConf.filter()));
     }
 
@@ -75,10 +72,42 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         return "none".equals(filter) ? null : filter;
     }
 
-    private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
-        var streamConf = axonConfiguration.eventhandling().defaultPersistentStream();
-        PersistentStreamProperties streamProperties = persistentStreamProperties(streamConf);
-        return new PersistentStreamMessageSource(streamConf.messageSourceName(), conf, streamProperties,
-                executorService, streamConf.batchSize(), streamConf.context());
+    private void configureTrackingEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
+        AxonConfiguration.TrackingProcessorConf trackingProcessorConf = axonConfiguration.eventhandling()
+                .defaultTrackingProcessor();
+        int threadCount = trackingProcessorConf.threadCount();
+        validate().that(threadCount).isGreater(0);
+        TrackingEventProcessorConfiguration trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
+                .forParallelProcessing(threadCount);
+
+        trackingEventProcessorConfiguration.andInitialTrackingToken(messageSource -> createToken(messageSource,
+                trackingProcessorConf.initialPosition()));
+
+        Optional.of(trackingProcessorConf.batchSize())
+                .filter(size -> size > 1)
+                .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
+
+        Optional.of(trackingProcessorConf.initialSegments())
+                .filter(segments -> segments >= 1)
+                .ifPresent(trackingEventProcessorConfiguration::andInitialSegmentsCount);
+
+        Optional.of(trackingProcessorConf.tokenClaim().interval())
+                .filter(interval -> interval > 0)
+                .ifPresent(interval -> trackingEventProcessorConfiguration.andTokenClaimInterval(interval,
+                        trackingProcessorConf.tokenClaim().timeUnit()));
+
+        eventProcessingConfigurer.registerTrackingEventProcessorConfiguration(
+                conf -> trackingEventProcessorConfiguration);
+    }
+
+    private TrackingToken createToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource,
+            InitialPosition startPosition) {
+        if (startPosition == InitialPosition.HEAD) {
+            return messageSource.createHeadToken();
+        } else if (startPosition == InitialPosition.TAIL) {
+            return messageSource.createTailToken();
+        }
+        throw new IllegalArgumentException(
+                "The intial position configuration of the tracking event processor must be head or tail.");
     }
 }
