@@ -40,15 +40,17 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
             eventProcessingConfigurer.usingSubscribingEventProcessors();
             eventProcessingConfigurer
                     .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
+            // for later: custom processor per handler group
+            //            eventProcessingConfigurer.registerSubscribingEventProcessor(${handler group name},
+            //                    conf -> new PersistentStreamMessageSource("eventstore", conf,
+            //                            streamProperties, executorService, persistentStreamConf.batchSize()));
         } else if (axonConfiguration.eventhandling().defaultMode() == Mode.TRACKING) {
             eventProcessingConfigurer.usingTrackingEventProcessors();
             configureTrackingEventProcessor(eventProcessingConfigurer);
+        } else if (axonConfiguration.eventhandling().defaultMode() == Mode.POOLED) {
+            eventProcessingConfigurer.usingPooledStreamingEventProcessors();
         }
 
-        // for later: custom processor per handler group
-        //            eventProcessingConfigurer.registerSubscribingEventProcessor(${handler group name},
-        //                    conf -> new PersistentStreamMessageSource("eventstore", conf,
-        //                            streamProperties, executorService, persistentStreamConf.batchSize()));
     }
 
     private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
