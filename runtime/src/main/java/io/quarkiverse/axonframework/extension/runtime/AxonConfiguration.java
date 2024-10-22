@@ -62,9 +62,14 @@ public interface AxonConfiguration {
         PersistentStreamConf defaultPersistentStream();
 
         /**
-         * if modes is set to {@link Mode#TRACKING}
+         * if mode is set to {@link Mode#TRACKING}
          */
         TrackingProcessorConf defaultTrackingProcessor();
+
+        /**
+         * if mode is set to {@link Mode#POOLED}
+         */
+        PooledStreamingProcessorConf defaultPooledProcessor();
 
     }
 
@@ -160,5 +165,48 @@ public interface AxonConfiguration {
          */
         @WithDefault("seconds")
         TimeUnit timeUnit();
+    }
+
+    interface PooledStreamingProcessorConf {
+
+        /**
+         * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
+         * framework is used.
+         */
+        @WithDefault("-1")
+        int batchSize();
+
+        /**
+         * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+         */
+        @WithDefault("-1")
+        int initialSegments();
+
+        /**
+         * Sets the maximum number of claimed segments for asynchronous processing. For more information please read axon
+         * documentation.
+         */
+        @WithDefault("-1")
+        int maxClaimedSegments();
+
+        /**
+         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+         */
+        @WithDefault("tail")
+        InitialPosition initialPosition();
+
+        /**
+         * Enables or disables the automatic the claim management. For more information please read the axon
+         * documentation(PooledStreamingEventProcessor.Builder#enableCoordinatorClaimExtension}
+         */
+        @WithDefault("false")
+        boolean enabledCoordinatorClaimExtension();
+
+        /**
+         * Sets the name of the event processor.
+         */
+        @WithDefault("quarkus-pooled-processor")
+        String name();
+
     }
 }

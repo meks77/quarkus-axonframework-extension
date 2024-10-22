@@ -49,6 +49,7 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
             configureTrackingEventProcessor(eventProcessingConfigurer);
         } else if (axonConfiguration.eventhandling().defaultMode() == Mode.POOLED) {
             eventProcessingConfigurer.usingPooledStreamingEventProcessors();
+            configurePooledEventProcessor(eventProcessingConfigurer);
         }
 
     }
@@ -111,5 +112,29 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         }
         throw new IllegalArgumentException(
                 "The intial position configuration of the tracking event processor must be head or tail.");
+    }
+
+    private void configurePooledEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
+        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
+            builder
+                    .name(axonConfiguration.eventhandling().defaultPooledProcessor().name())
+                    .initialToken(messageSource -> createToken(messageSource,
+                            axonConfiguration.eventhandling().defaultPooledProcessor().initialPosition()));
+            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().batchSize())
+                    .filter(size -> size > 0)
+                    .ifPresent(builder::batchSize);
+            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().initialSegments())
+                    .filter(segments -> segments > 0)
+                    .ifPresent(builder::initialSegmentCount);
+            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().maxClaimedSegments())
+                    .filter(segments -> segments > 0)
+                    .ifPresent(builder::maxClaimedSegments);
+            if (axonConfiguration.eventhandling().defaultPooledProcessor().enabledCoordinatorClaimExtension()) {
+                builder.enableCoordinatorClaimExtension();
+            }
+            return builder;
+        };
+
+        eventProcessingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig);
     }
 }

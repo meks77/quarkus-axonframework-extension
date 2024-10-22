@@ -6,12 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.config.Configuration;
+import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -49,6 +52,8 @@ public abstract class AbstractConfigurationTest {
     QueryGateway queryGateway;
     @Inject
     GiftcardInMemoryHistory giftcardInMemoryHistory;
+    @Inject
+    Configuration configuration;
 
     protected static FileAsset propertiesFile(String name) {
         Log.infof("provide properties file %s for java archive", name);
@@ -86,6 +91,14 @@ public abstract class AbstractConfigurationTest {
                 .succeedsWithin(Duration.ofSeconds(1))
                 .usingRecursiveComparison()
                 .isEqualTo(new GiftcardView(cardId, 9));
+
+        Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
+                "io.quarkiverse.axonframework.extension.test.projection");
+        assertThat(eventProcessorOptional).isPresent();
+        assertConfiguration(eventProcessorOptional.get());
+    }
+
+    protected void assertConfiguration(EventProcessor eventProcessor) {
 
     }
 

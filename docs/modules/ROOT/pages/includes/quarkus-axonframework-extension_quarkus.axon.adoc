@@ -297,6 +297,108 @@ endif::add-copy-button-to-env-var[]
 a|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html[TimeUnit]
 |`seconds`
 
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-batch-size]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-batch-size[`quarkus.axon.eventhandling.default-pooled-processor.batch-size`]##
+
+[.description]
+--
+Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_BATCH_SIZE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_BATCH_SIZE+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-initial-segments]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-initial-segments[`quarkus.axon.eventhandling.default-pooled-processor.initial-segments`]##
+
+[.description]
+--
+Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_INITIAL_SEGMENTS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_INITIAL_SEGMENTS+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-max-claimed-segments]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-max-claimed-segments[`quarkus.axon.eventhandling.default-pooled-processor.max-claimed-segments`]##
+
+[.description]
+--
+Sets the maximum number of claimed segments for asynchronous processing. For more information please read axon documentation.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_MAX_CLAIMED_SEGMENTS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_MAX_CLAIMED_SEGMENTS+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-initial-position]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-initial-position[`quarkus.axon.eventhandling.default-pooled-processor.initial-position`]##
+
+[.description]
+--
+First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_INITIAL_POSITION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_INITIAL_POSITION+++`
+endif::add-copy-button-to-env-var[]
+--
+a|InitialPosition
+|`tail`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-enabled-coordinator-claim-extension]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-enabled-coordinator-claim-extension[`quarkus.axon.eventhandling.default-pooled-processor.enabled-coordinator-claim-extension`]##
+
+[.description]
+--
+Enables or disables the automatic the claim management. For more information please read the axon documentation(PooledStreamingEventProcessor.Builder++#++enableCoordinatorClaimExtension++}++
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_ENABLED_COORDINATOR_CLAIM_EXTENSION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_ENABLED_COORDINATOR_CLAIM_EXTENSION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-name]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-pooled-processor-name[`quarkus.axon.eventhandling.default-pooled-processor.name`]##
+
+[.description]
+--
+Sets the name of the event processor.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_POOLED_PROCESSOR_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`quarkus-pooled-processor`
+
 a| [[quarkus-axonframework-extension_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
 
 [.description]
