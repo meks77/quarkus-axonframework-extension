@@ -2,9 +2,6 @@ package io.quarkiverse.axonframework.extension.test.streamingprocessors.tep;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.inject.Inject;
-
-import org.axonframework.config.Configuration;
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.TrackingEventProcessor;
 
