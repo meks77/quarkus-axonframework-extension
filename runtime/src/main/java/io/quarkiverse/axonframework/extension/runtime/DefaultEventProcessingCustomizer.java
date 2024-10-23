@@ -1,12 +1,16 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
 import static at.meks.validation.args.ArgValidator.validate;
+import static io.quarkiverse.axonframework.extension.runtime.AxonConfiguration.TokenStoreType.*;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
+import javax.sql.DataSource;
+
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
@@ -16,6 +20,7 @@ import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.axonframework.eventhandling.TrackingToken;
+import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
 import org.axonframework.messaging.StreamableMessageSource;
 import org.axonframework.messaging.SubscribableMessageSource;
 
@@ -31,6 +36,9 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
 
     @Inject
     ScheduledExecutorService executorService;
+
+    @Inject
+    Instance<DataSource> dataSource;
 
     @Override
     public void configureEventProcessing(EventProcessingConfigurer eventProcessingConfigurer) {
@@ -76,21 +84,28 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     }
 
     private void configureTrackingEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
-        AxonConfiguration.TrackingProcessorConf trackingProcessorConf = axonConfiguration.eventhandling()
-                .defaultTrackingProcessor();
+        AxonConfiguration.StreamingProcessorConf streamingProcessorConf = axonConfiguration.eventhandling()
+                .defaultStreamingProcessor();
+        if (dataSource.isResolvable() && streamingProcessorConf.tokenstore().type() == JDBC) {
+            eventProcessingConfigurer.registerTokenStore(conf -> JdbcTokenStore.builder()
+                    .connectionProvider(() -> dataSource.get().getConnection())
+                    .serializer(conf.serializer())
+                    .build());
+        }
+        AxonConfiguration.TrackingProcessorConf trackingProcessorConf = streamingProcessorConf.trackingProcessor();
         int threadCount = trackingProcessorConf.threadCount();
         validate().that(threadCount).isGreater(0);
         TrackingEventProcessorConfiguration trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
                 .forParallelProcessing(threadCount);
 
         trackingEventProcessorConfiguration.andInitialTrackingToken(messageSource -> createToken(messageSource,
-                trackingProcessorConf.initialPosition()));
+                streamingProcessorConf.initialPosition()));
 
-        Optional.of(trackingProcessorConf.batchSize())
+        Optional.of(streamingProcessorConf.batchSize())
                 .filter(size -> size > 1)
                 .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
 
-        Optional.of(trackingProcessorConf.initialSegments())
+        Optional.of(streamingProcessorConf.initialSegments())
                 .filter(segments -> segments >= 1)
                 .ifPresent(trackingEventProcessorConfiguration::andInitialSegmentsCount);
 
@@ -117,19 +132,20 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     private void configurePooledEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
             builder
-                    .name(axonConfiguration.eventhandling().defaultPooledProcessor().name())
+                    .name(axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor().name())
                     .initialToken(messageSource -> createToken(messageSource,
-                            axonConfiguration.eventhandling().defaultPooledProcessor().initialPosition()));
-            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().batchSize())
+                            axonConfiguration.eventhandling().defaultStreamingProcessor().initialPosition()));
+            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().batchSize())
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
-            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().initialSegments())
+            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().initialSegments())
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::initialSegmentCount);
-            Optional.of(axonConfiguration.eventhandling().defaultPooledProcessor().maxClaimedSegments())
+            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor().maxClaimedSegments())
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::maxClaimedSegments);
-            if (axonConfiguration.eventhandling().defaultPooledProcessor().enabledCoordinatorClaimExtension()) {
+            if (axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor()
+                    .enabledCoordinatorClaimExtension()) {
                 builder.enableCoordinatorClaimExtension();
             }
             return builder;

@@ -62,14 +62,9 @@ public interface AxonConfiguration {
         PersistentStreamConf defaultPersistentStream();
 
         /**
-         * if mode is set to {@link Mode#TRACKING}
+         * if mode is set to {@link Mode#TRACKING} or {@link Mode#POOLED}
          */
-        TrackingProcessorConf defaultTrackingProcessor();
-
-        /**
-         * if mode is set to {@link Mode#POOLED}
-         */
-        PooledStreamingProcessorConf defaultPooledProcessor();
+        StreamingProcessorConf defaultStreamingProcessor();
 
     }
 
@@ -117,15 +112,7 @@ public interface AxonConfiguration {
         int batchSize();
     }
 
-    interface TrackingProcessorConf {
-
-        /**
-         * This is both the number of threads that a processor will start for processing, and the initial number of
-         * segments that will be created when the
-         * processor is first started.
-         */
-        @WithDefault("1")
-        int threadCount();
+    interface StreamingProcessorConf {
 
         /**
          * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
@@ -145,6 +132,48 @@ public interface AxonConfiguration {
          */
         @WithDefault("tail")
         InitialPosition initialPosition();
+
+        /**
+         * the configuration of the token store for the streaming processor.
+         */
+        TokenStoreConf tokenstore();
+
+        /**
+         * if mode is set to {@link Mode#TRACKING}
+         */
+        TrackingProcessorConf trackingProcessor();
+
+        /**
+         * if mode is set to {@link Mode#POOLED}
+         */
+        PooledStreamingProcessorConf pooledProcessor();
+
+    }
+
+    interface TokenStoreConf {
+
+        /**
+         * The type of the token store.
+         */
+        @WithDefault("in-memory")
+        TokenStoreType type();
+
+    }
+
+    enum TokenStoreType {
+        JDBC,
+        IN_MEMORY
+    }
+
+    interface TrackingProcessorConf {
+
+        /**
+         * This is both the number of threads that a processor will start for processing, and the initial number of
+         * segments that will be created when the
+         * processor is first started.
+         */
+        @WithDefault("1")
+        int threadCount();
 
         /**
          * Sets the time to wait after a failed attempt to claim any token, before making another attempt.
@@ -170,30 +199,11 @@ public interface AxonConfiguration {
     interface PooledStreamingProcessorConf {
 
         /**
-         * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
-         * framework is used.
-         */
-        @WithDefault("-1")
-        int batchSize();
-
-        /**
-         * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
-         */
-        @WithDefault("-1")
-        int initialSegments();
-
-        /**
          * Sets the maximum number of claimed segments for asynchronous processing. For more information please read axon
          * documentation.
          */
         @WithDefault("-1")
         int maxClaimedSegments();
-
-        /**
-         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
-         */
-        @WithDefault("tail")
-        InitialPosition initialPosition();
 
         /**
          * Enables or disables the automatic the claim management. For more information please read the axon
