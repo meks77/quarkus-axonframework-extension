@@ -1,8 +1,11 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
 import static at.meks.validation.args.ArgValidator.validate;
-import static io.quarkiverse.axonframework.extension.runtime.AxonConfiguration.TokenStoreType.*;
+import static io.quarkiverse.axonframework.extension.runtime.AxonConfiguration.TokenStoreType.JDBC;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,9 +23,10 @@ import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.axonframework.eventhandling.TrackingToken;
-import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
+import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.axonframework.messaging.StreamableMessageSource;
 import org.axonframework.messaging.SubscribableMessageSource;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 import io.quarkus.arc.DefaultBean;
@@ -39,6 +43,9 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
 
     @Inject
     Instance<DataSource> dataSource;
+
+    @ConfigProperty(name = "quarkus.datasource.db-kind", defaultValue = "none")
+    String dbKind;
 
     @Override
     public void configureEventProcessing(EventProcessingConfigurer eventProcessingConfigurer) {
@@ -86,20 +93,16 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     private void configureTrackingEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
         AxonConfiguration.StreamingProcessorConf streamingProcessorConf = axonConfiguration.eventhandling()
                 .defaultStreamingProcessor();
-        if (dataSource.isResolvable() && streamingProcessorConf.tokenstore().type() == JDBC) {
-            eventProcessingConfigurer.registerTokenStore(conf -> JdbcTokenStore.builder()
-                    .connectionProvider(() -> dataSource.get().getConnection())
-                    .serializer(conf.serializer())
-                    .build());
-        }
+        configureAndSetupTokenstore(eventProcessingConfigurer, streamingProcessorConf);
+
         AxonConfiguration.TrackingProcessorConf trackingProcessorConf = streamingProcessorConf.trackingProcessor();
         int threadCount = trackingProcessorConf.threadCount();
         validate().that(threadCount).isGreater(0);
-        TrackingEventProcessorConfiguration trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
+        var trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
                 .forParallelProcessing(threadCount);
 
-        trackingEventProcessorConfiguration.andInitialTrackingToken(messageSource -> createToken(messageSource,
-                streamingProcessorConf.initialPosition()));
+        trackingEventProcessorConfiguration
+                .andInitialTrackingToken(messageSource -> createToken(messageSource, streamingProcessorConf.initialPosition()));
 
         Optional.of(streamingProcessorConf.batchSize())
                 .filter(size -> size > 1)
@@ -118,6 +121,23 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
                 conf -> trackingEventProcessorConfiguration);
     }
 
+    private void configureAndSetupTokenstore(EventProcessingConfigurer eventProcessingConfigurer,
+            AxonConfiguration.StreamingProcessorConf streamingProcessorConf) {
+        if (dataSource.isResolvable() && streamingProcessorConf.tokenstore().type() == JDBC) {
+            eventProcessingConfigurer.registerTokenStore(conf -> {
+                TokenSchema tokenSchema = TokenSchema.builder().build();
+                JdbcTokenStore store = JdbcTokenStore.builder()
+                        .connectionProvider(() -> dataSource.get().getConnection())
+                        .serializer(conf.serializer())
+                        .schema(tokenSchema)
+                        .build();
+                autoCreateJdbcTokenTable(tokenSchema, store);
+                return store;
+            });
+
+        }
+    }
+
     private TrackingToken createToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource,
             InitialPosition startPosition) {
         if (startPosition == InitialPosition.HEAD) {
@@ -130,21 +150,25 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     }
 
     private void configurePooledEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
+        AxonConfiguration.StreamingProcessorConf streamingProcessorConf = axonConfiguration.eventhandling()
+                .defaultStreamingProcessor();
+        configureAndSetupTokenstore(eventProcessingConfigurer, streamingProcessorConf);
+
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
             builder
-                    .name(axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor().name())
+                    .name(streamingProcessorConf.pooledProcessor().name())
                     .initialToken(messageSource -> createToken(messageSource,
-                            axonConfiguration.eventhandling().defaultStreamingProcessor().initialPosition()));
-            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().batchSize())
+                            streamingProcessorConf.initialPosition()));
+            Optional.of(streamingProcessorConf.batchSize())
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
-            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().initialSegments())
+            Optional.of(streamingProcessorConf.initialSegments())
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::initialSegmentCount);
-            Optional.of(axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor().maxClaimedSegments())
+            Optional.of(streamingProcessorConf.pooledProcessor().maxClaimedSegments())
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::maxClaimedSegments);
-            if (axonConfiguration.eventhandling().defaultStreamingProcessor().pooledProcessor()
+            if (streamingProcessorConf.pooledProcessor()
                     .enabledCoordinatorClaimExtension()) {
                 builder.enableCoordinatorClaimExtension();
             }
@@ -152,5 +176,31 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         };
 
         eventProcessingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig);
+    }
+
+    private void autoCreateJdbcTokenTable(TokenSchema tokenSchema, JdbcTokenStore store) {
+        if (!axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().autocreateTableForJdbcToken()) {
+            return;
+        }
+        TokenTableFactory tokenTableFactory;
+        boolean dbIsOracle = false;
+        boolean tableExists = false;
+        if (dbKind.equals("postgresql")) {
+            tokenTableFactory = PostgresTokenTableFactory.INSTANCE;
+        } else if (dbKind.equals("oracle")) {
+            dbIsOracle = true;
+            tokenTableFactory = Oracle11TokenTableFactory.INSTANCE;
+            try (Connection connection = dataSource.get().getConnection();
+                    ResultSet tables = connection.getMetaData().getTables(null, null, tokenSchema.tokenTable(), null)) {
+                tableExists = tables.next();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            tokenTableFactory = GenericTokenTableFactory.INSTANCE;
+        }
+        if (!dbIsOracle || !tableExists) {
+            store.createSchema(tokenTableFactory);
+        }
     }
 }

@@ -263,6 +263,23 @@ endif::add-copy-button-to-env-var[]
 a|TokenStoreType
 |`in-memory`
 
+a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-autocreate-table-for-jdbc-token[`quarkus.axon.eventhandling.default-streaming-processor.tokenstore.autocreate-table-for-jdbc-token`]##
+
+[.description]
+--
+sets if the database table should be created automatically for jdbc the token store.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_STREAMING_PROCESSOR_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_STREAMING_PROCESSOR_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tracking-processor-thread-count]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tracking-processor-thread-count[`quarkus.axon.eventhandling.default-streaming-processor.tracking-processor.thread-count`]##
 
 [.description]

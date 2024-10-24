@@ -158,6 +158,11 @@ public interface AxonConfiguration {
         @WithDefault("in-memory")
         TokenStoreType type();
 
+        /**
+         * sets if the database table should be created automatically for jdbc the token store.
+         */
+        @WithDefault("true")
+        boolean autocreateTableForJdbcToken();
     }
 
     enum TokenStoreType {
