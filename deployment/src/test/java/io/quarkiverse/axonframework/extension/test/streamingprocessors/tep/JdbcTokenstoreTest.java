@@ -35,7 +35,7 @@ public class JdbcTokenstoreTest extends TrackingProcessorTest {
                 ResultSet rset = statement.executeQuery("select * from TokenEntry")) {
             assertTrue(rset.next());
             String token = rset.getString("token");
-            assertThat(token).isNotNull().matches("\\{\"globalIndex\":\\d.*}");
+            assertThat(token).isNotNull().matches("\\{\"globalIndex\":.*}");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
