@@ -3,7 +3,10 @@ package io.quarkiverse.axonframework.extension.runtime;
 import java.util.Set;
 
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.control.RequestContextController;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.transaction.TransactionManager;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
@@ -14,11 +17,14 @@ import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
+import org.jboss.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.arc.DefaultBean;
+import io.quarkus.arc.log.LoggerName;
 import io.quarkus.logging.Log;
+import io.quarkus.narayana.jta.QuarkusTransaction;
 
 @Dependent
 @DefaultBean
@@ -32,6 +38,16 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     ObjectMapper objectMapper;
+
+    @Inject
+    Instance<TransactionManager> transactionManager;
+
+    @Inject
+    RequestContextController requestContextController;
+
+    @Inject
+    @LoggerName(AxonTransaction.LOGGER_NAME)
+    Logger trxLogger;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -49,6 +65,20 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventStore(this::axonserverEventStore)
                 .configureSerializer(conf -> jacksonSerializer)
                 .configureEventSerializer(confg -> jacksonSerializer);
+        if (transactionManager.isResolvable()) {
+            configurer.configureTransactionManager(conf -> () -> {
+                if (!QuarkusTransaction.isActive()) {
+                    trxLogger.trace("Begin transaction");
+                    requestContextController.activate();
+                    QuarkusTransaction.begin();
+                    return AxonTransaction.newTransaction();
+                } else {
+                    trxLogger.trace("join transaction");
+                    QuarkusTransaction.joiningExisting();
+                    return AxonTransaction.joinedTransaction();
+                }
+            });
+        }
         eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
         aggregateClasses.forEach(configurer::configureAggregate);
         eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));

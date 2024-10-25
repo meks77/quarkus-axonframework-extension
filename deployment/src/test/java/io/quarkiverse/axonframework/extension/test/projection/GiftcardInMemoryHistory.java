@@ -8,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.axonframework.eventhandling.EventHandler;
 
 import io.quarkiverse.axonframework.extension.test.model.Api;
+import io.quarkus.logging.Log;
 
 @ApplicationScoped
 public class GiftcardInMemoryHistory {
@@ -16,11 +17,13 @@ public class GiftcardInMemoryHistory {
 
     @EventHandler
     void handle(Api.CardIssuedEvent event) {
+        Log.infof("handling event %s", event);
         history.add(event);
     }
 
     @EventHandler
     void handle(Api.CardRedeemedEvent event) {
+        Log.infof("handling event %s", event);
         history.add(event);
     }
 
