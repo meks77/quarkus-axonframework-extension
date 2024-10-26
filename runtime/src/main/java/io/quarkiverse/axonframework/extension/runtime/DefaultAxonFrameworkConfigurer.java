@@ -1,6 +1,10 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import static io.quarkiverse.axonframework.extension.runtime.AxonConfiguration.TokenStoreType.JDBC;
+
 import java.util.Set;
+
+import javax.sql.DataSource;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.context.control.RequestContextController;
@@ -15,6 +19,9 @@ import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBusSpanFactory;
+import org.axonframework.eventhandling.tokenstore.TokenStore;
+import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
+import org.axonframework.eventhandling.tokenstore.jdbc.TokenSchema;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
 import org.jboss.logging.Logger;
@@ -48,6 +55,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     @LoggerName(AxonTransaction.LOGGER_NAME)
     Logger trxLogger;
+
+    @Inject
+    Instance<DataSource> dataSource;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -84,6 +94,17 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
+
+        if (dataSource.isResolvable()
+                && axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().type() == JDBC) {
+            TokenSchema tokenSchema = TokenSchema.builder().build();
+            JdbcTokenStore store = JdbcTokenStore.builder()
+                    .connectionProvider(() -> dataSource.get().getConnection())
+                    .serializer(jacksonSerializer)
+                    .schema(tokenSchema)
+                    .build();
+            configurer.registerComponent(TokenStore.class, conf -> store);
+        }
         return configurer;
     }
 

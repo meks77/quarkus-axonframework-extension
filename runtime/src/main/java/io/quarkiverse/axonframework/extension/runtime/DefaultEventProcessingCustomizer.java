@@ -23,6 +23,7 @@ import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.axonframework.eventhandling.TrackingToken;
+import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.axonframework.messaging.StreamableMessageSource;
 import org.axonframework.messaging.SubscribableMessageSource;
@@ -159,6 +160,7 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
                     .name(streamingProcessorConf.pooledProcessor().name())
                     .initialToken(messageSource -> createToken(messageSource,
                             streamingProcessorConf.initialPosition()));
+            builder.tokenStore(config.getComponent(TokenStore.class));
             Optional.of(streamingProcessorConf.batchSize())
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
