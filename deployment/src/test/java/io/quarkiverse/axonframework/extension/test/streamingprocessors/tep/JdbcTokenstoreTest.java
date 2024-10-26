@@ -32,7 +32,8 @@ public class JdbcTokenstoreTest extends TrackingProcessorTest {
         try (
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet rset = statement.executeQuery("select * from TokenEntry")) {
+                ResultSet rset = statement.executeQuery(
+                        "select * from TokenEntry where processorName = 'io.quarkiverse.axonframework.extension.test.projection'")) {
             assertTrue(rset.next());
             String token = rset.getString("token");
             assertThat(token).isNotNull().matches("\\{\"globalIndex\":.*}");
