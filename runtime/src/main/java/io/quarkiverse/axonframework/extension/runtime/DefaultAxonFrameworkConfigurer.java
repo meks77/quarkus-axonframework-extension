@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.arc.log.LoggerName;
 import io.quarkus.logging.Log;
-import io.quarkus.narayana.jta.QuarkusTransaction;
 
 @Dependent
 @DefaultBean
@@ -75,20 +74,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventStore(this::axonserverEventStore)
                 .configureSerializer(conf -> jacksonSerializer)
                 .configureEventSerializer(confg -> jacksonSerializer);
-        if (transactionManager.isResolvable()) {
-            configurer.configureTransactionManager(conf -> () -> {
-                if (!QuarkusTransaction.isActive()) {
-                    trxLogger.trace("Begin transaction");
-                    requestContextController.activate();
-                    QuarkusTransaction.begin();
-                    return AxonTransaction.newTransaction();
-                } else {
-                    trxLogger.trace("join transaction");
-                    QuarkusTransaction.joiningExisting();
-                    return AxonTransaction.joinedTransaction();
-                }
-            });
-        }
+        configureTransactionManagement(configurer);
         eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
         aggregateClasses.forEach(configurer::configureAggregate);
         eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
@@ -106,6 +92,13 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             configurer.registerComponent(TokenStore.class, conf -> store);
         }
         return configurer;
+    }
+
+    private void configureTransactionManagement(Configurer configurer) {
+        if (transactionManager.isResolvable()) {
+            configurer.configureTransactionManager(
+                    conf -> () -> AxonTransaction.beginOrJoinTransaction(requestContextController));
+        }
     }
 
     @Override

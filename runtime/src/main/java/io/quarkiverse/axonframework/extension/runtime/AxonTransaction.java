@@ -1,5 +1,7 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
+import jakarta.enterprise.context.control.RequestContextController;
+
 import org.axonframework.common.transaction.Transaction;
 import org.jboss.logging.Logger;
 
@@ -16,6 +18,19 @@ public class AxonTransaction implements Transaction {
     private static final Logger LOG = Logger.getLogger(LOGGER_NAME);
 
     private final boolean joined;
+
+    static AxonTransaction beginOrJoinTransaction(RequestContextController requestContextController) {
+        if (!QuarkusTransaction.isActive()) {
+            LOG.trace("Begin transaction");
+            requestContextController.activate();
+            QuarkusTransaction.begin();
+            return AxonTransaction.newTransaction();
+        } else {
+            LOG.trace("join transaction");
+            QuarkusTransaction.joiningExisting();
+            return AxonTransaction.joinedTransaction();
+        }
+    }
 
     static AxonTransaction newTransaction() {
         return instance;
