@@ -27,6 +27,11 @@ public interface AxonConfiguration {
     @WithDefault("quarkus-axon")
     String axonApplicationName();
 
+    /**
+     * configuration of metrics.
+     */
+    MetricsConf metrics();
+
     interface ServerConfig {
 
         /**
@@ -223,5 +228,20 @@ public interface AxonConfiguration {
         @WithDefault("quarkus-pooled-processor")
         String name();
 
+    }
+
+    interface MetricsConf {
+
+        /**
+         * enables or disable the metrics of the axon framework.
+         */
+        @WithDefault("true")
+        boolean enabled();
+
+        /**
+         * enables or disables tags for the metrics.
+         */
+        @WithDefault("true")
+        boolean withTags();
     }
 }

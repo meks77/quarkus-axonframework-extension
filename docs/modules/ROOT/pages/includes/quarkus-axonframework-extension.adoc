@@ -399,6 +399,40 @@ endif::add-copy-button-to-env-var[]
 |string
 |`quarkus-axon`
 
+a| [[quarkus-axonframework-extension_quarkus-axon-metrics-enabled]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-metrics-enabled[`quarkus.axon.metrics.enabled`]##
+
+[.description]
+--
+enables or disable the metrics of the axon framework.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_METRICS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_METRICS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
+a| [[quarkus-axonframework-extension_quarkus-axon-metrics-with-tags]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-metrics-with-tags[`quarkus.axon.metrics.with-tags`]##
+
+[.description]
+--
+enables or disables tags for the metrics.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_METRICS_WITH_TAGS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_METRICS_WITH_TAGS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 |===
 
 

@@ -196,3 +196,11 @@ Currently, 2 different token stores are supported.
 To configure the token store using the config key `quarkus.axon.eventhandling.default-streaming-processor.tokenstore.type`.
 
 Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure. 
+
+### Other Features
+
+#### Metrics
+
+Metrics are automatically enabled, as soon as the quarkus metrics extension(micrometer) is activated.
+
+You can disable the metrics and configure tags are used.

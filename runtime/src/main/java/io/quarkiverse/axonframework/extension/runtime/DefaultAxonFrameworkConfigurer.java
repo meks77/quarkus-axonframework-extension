@@ -23,13 +23,13 @@ import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.TokenSchema;
 import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.axonframework.micrometer.GlobalMetricRegistry;
 import org.axonframework.serialization.json.JacksonSerializer;
-import org.jboss.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.quarkus.arc.DefaultBean;
-import io.quarkus.arc.log.LoggerName;
 import io.quarkus.logging.Log;
 
 @Dependent
@@ -52,11 +52,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     RequestContextController requestContextController;
 
     @Inject
-    @LoggerName(AxonTransaction.LOGGER_NAME)
-    Logger trxLogger;
+    Instance<DataSource> dataSource;
 
     @Inject
-    Instance<DataSource> dataSource;
+    Instance<MeterRegistry> meterRegistry;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -74,13 +73,20 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventStore(this::axonserverEventStore)
                 .configureSerializer(conf -> jacksonSerializer)
                 .configureEventSerializer(confg -> jacksonSerializer);
-        configureTransactionManagement(configurer);
         eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
         aggregateClasses.forEach(configurer::configureAggregate);
         eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
 
+        configureTransactionManagement(configurer);
+        configureTokenstoreIfNecessary(jacksonSerializer, configurer);
+        configureMetrics(configurer);
+
+        return configurer;
+    }
+
+    private void configureTokenstoreIfNecessary(JacksonSerializer jacksonSerializer, Configurer configurer) {
         if (dataSource.isResolvable()
                 && axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().type() == JDBC) {
             TokenSchema tokenSchema = TokenSchema.builder().build();
@@ -91,7 +97,21 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                     .build();
             configurer.registerComponent(TokenStore.class, conf -> store);
         }
-        return configurer;
+    }
+
+    private void configureMetrics(Configurer configurer) {
+        if (axonConfiguration.metrics().enabled() && metricsExtensionIsAvailable()) {
+            GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry.get());
+            if (axonConfiguration.metrics().withTags()) {
+                globalMetricRegistry.registerWithConfigurerWithDefaultTags(configurer);
+            } else {
+                globalMetricRegistry.registerWithConfigurer(configurer);
+            }
+        }
+    }
+
+    private boolean metricsExtensionIsAvailable() {
+        return meterRegistry.isResolvable();
     }
 
     private void configureTransactionManagement(Configurer configurer) {

@@ -26,6 +26,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.axonframework</groupId>
             <artifactId>axon-configuration</artifactId>
         </dependency>
@@ -36,6 +41,10 @@
         <dependency>
             <groupId>org.axonframework</groupId>
             <artifactId>axon-server-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-micrometer</artifactId>
         </dependency>
         <dependency>
             <groupId>at.meks.easyvalidation</groupId>
