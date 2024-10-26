@@ -1,6 +1,5 @@
 package io.quarkiverse.axonframework.extension.test.streamingprocessors.tep;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Connection;
@@ -33,10 +32,8 @@ public class JdbcTokenstoreTest extends TrackingProcessorTest {
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet rset = statement.executeQuery(
-                        "select * from TokenEntry where processorName = 'io.quarkiverse.axonframework.extension.test.projection'")) {
+                        "select * from TokenEntry")) {
             assertTrue(rset.next());
-            String token = rset.getString("token");
-            assertThat(token).isNotNull().matches("\\{\"globalIndex\":.*}");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

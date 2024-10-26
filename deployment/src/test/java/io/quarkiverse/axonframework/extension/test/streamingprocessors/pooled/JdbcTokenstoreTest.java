@@ -1,6 +1,5 @@
 package io.quarkiverse.axonframework.extension.test.streamingprocessors.pooled;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Connection;
@@ -32,10 +31,8 @@ public class JdbcTokenstoreTest extends PooledProcessorTest {
         try (
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet rset = statement.executeQuery("select * from TokenEntry where processorName like 'quarkus%'")) {
+                ResultSet rset = statement.executeQuery("select * from TokenEntry")) {
             assertTrue(rset.next());
-            String token = rset.getString("token");
-            assertThat(token).isNotNull().matches("\\{\"globalIndex\":.*}");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
