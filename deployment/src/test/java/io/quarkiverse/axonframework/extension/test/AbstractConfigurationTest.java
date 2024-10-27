@@ -46,6 +46,31 @@ public abstract class AbstractConfigurationTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
+    //    /**
+    //     * if this clas is not an inner class, a ClassNotFoundException occurs
+    //     */
+    //    public static class TestJavaArchive {
+    //
+    //        private final JavaArchive javaArchive;
+    //
+    //        public TestJavaArchive() {
+    //            javaArchive = ShrinkWrap.create(JavaArchive.class)
+    //                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
+    //                            DomainServiceExample.class,
+    //                            GiftcardQueryHandler.class, GiftcardView.class)
+    //                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    //        }
+    //
+    //        public JavaArchive toJavaArchive() {
+    //            return javaArchive;
+    //        }
+    //
+    //        public TestJavaArchive addAsResource(FileAsset fileAsset, String resourceName) {
+    //            javaArchive.addAsResource(fileAsset, resourceName);
+    //            return TestJavaArchive.this;
+    //        }
+    //    }
+
     @Inject
     CommandGateway commandGateway;
     @Inject

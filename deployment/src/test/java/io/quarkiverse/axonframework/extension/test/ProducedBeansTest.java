@@ -10,28 +10,17 @@ import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryGateway;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkiverse.axonframework.extension.test.model.Api;
-import io.quarkiverse.axonframework.extension.test.model.DomainServiceExample;
 import io.quarkiverse.axonframework.extension.test.model.Giftcard;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardInMemoryHistory;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardQueryHandler;
-import io.quarkiverse.axonframework.extension.test.projection.GiftcardView;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class ProducedBeansTest {
+public class ProducedBeansTest extends AbstractConfigurationTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, DomainServiceExample.class,
-                            GiftcardQueryHandler.class, GiftcardView.class)
-                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
+            .setArchiveProducer(AbstractConfigurationTest::javaArchiveBase);
 
     @Inject
     EventGateway eventGateway;
