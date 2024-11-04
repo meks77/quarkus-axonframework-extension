@@ -72,7 +72,7 @@ public class AxonExtension {
 
     private void givenAxonTimeToCleanup() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
