@@ -24,7 +24,7 @@ public class HotReplacement implements HotReplacementSetup {
     private void scanForFileChanges(HotReplacementContext context) {
         try {
             boolean hasChanges = context.doScan(false);
-            LOG.info("Filechange scan finished with {}", hasChanges);
+            LOG.debug("Filechange scan finished with {}", hasChanges);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
