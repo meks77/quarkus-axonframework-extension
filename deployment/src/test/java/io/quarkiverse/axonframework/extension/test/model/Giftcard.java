@@ -31,7 +31,7 @@ public class Giftcard {
 
     @EventSourcingHandler
     public void handle(Api.CardIssuedEvent event) {
-        Log.infof("handling event %s", event);
+        Log.debugf("handling event %s", event);
         this.id = event.id();
         this.currentAmount = event.amount();
     }

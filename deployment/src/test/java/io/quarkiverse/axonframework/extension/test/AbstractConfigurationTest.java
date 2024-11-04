@@ -38,7 +38,7 @@ public abstract class AbstractConfigurationTest {
                 .setArchiveProducer(() -> javaArchive);
     }
 
-    protected static JavaArchive javaArchiveBase() {
+    public static JavaArchive javaArchiveBase() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
                         DomainServiceExample.class,
@@ -46,41 +46,7 @@ public abstract class AbstractConfigurationTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    //    /**
-    //     * if this clas is not an inner class, a ClassNotFoundException occurs
-    //     */
-    //    public static class TestJavaArchive {
-    //
-    //        private final JavaArchive javaArchive;
-    //
-    //        public TestJavaArchive() {
-    //            javaArchive = ShrinkWrap.create(JavaArchive.class)
-    //                    .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
-    //                            DomainServiceExample.class,
-    //                            GiftcardQueryHandler.class, GiftcardView.class)
-    //                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-    //        }
-    //
-    //        public JavaArchive toJavaArchive() {
-    //            return javaArchive;
-    //        }
-    //
-    //        public TestJavaArchive addAsResource(FileAsset fileAsset, String resourceName) {
-    //            javaArchive.addAsResource(fileAsset, resourceName);
-    //            return TestJavaArchive.this;
-    //        }
-    //    }
-
-    @Inject
-    CommandGateway commandGateway;
-    @Inject
-    QueryGateway queryGateway;
-    @Inject
-    GiftcardInMemoryHistory giftcardInMemoryHistory;
-    @Inject
-    Configuration configuration;
-
-    protected static FileAsset propertiesFile(String name) {
+    public static FileAsset propertiesFile(String name) {
         Log.infof("provide properties file %s for java archive", name);
         FileAsset fileAsset = new FileAsset(new File("src/test/resources" + name));
         if (!fileAsset.getSource().exists()) {
@@ -89,6 +55,16 @@ public abstract class AbstractConfigurationTest {
         }
         return fileAsset;
     }
+
+    @Inject
+    CommandGateway commandGateway;
+    @Inject
+    QueryGateway queryGateway;
+    @Inject
+    GiftcardInMemoryHistory giftcardInMemoryHistory;
+
+    @Inject
+    Configuration configuration;
 
     /**
      * Tests the configuration and integration of the framework by performing a sequence of actions and confirming their

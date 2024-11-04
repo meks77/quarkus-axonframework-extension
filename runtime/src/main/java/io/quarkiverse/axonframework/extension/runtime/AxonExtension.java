@@ -62,10 +62,19 @@ public class AxonExtension {
 
     @Shutdown
     void onShutdown() {
-        Log.info("shutdown axon");
         if (configuration != null) {
+            Log.info("shutdown axon");
             configuration.shutdown();
             configuration = null;
+            givenAxonTimeToCleanup();
+        }
+    }
+
+    private void givenAxonTimeToCleanup() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
