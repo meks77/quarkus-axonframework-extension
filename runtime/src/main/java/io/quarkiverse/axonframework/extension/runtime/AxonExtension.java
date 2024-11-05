@@ -1,6 +1,7 @@
 package io.quarkiverse.axonframework.extension.runtime;
 
 import java.lang.reflect.ParameterizedType;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,15 +21,22 @@ import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;
+import io.smallrye.mutiny.Uni;
 
 @Singleton
 public class AxonExtension {
 
     @Inject
     AxonFrameworkConfigurer axonFrameworkConfigurer;
+    @Inject
+    AxonConfiguration axonConfiguration;
+
+    @ConfigProperty(name = "quarkus.profile", defaultValue = "prod")
+    String profile;
 
     private Configuration configuration;
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
@@ -44,6 +52,7 @@ public class AxonExtension {
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
             final Configurer configurer = axonFrameworkConfigurer.configure();
             Log.info("starting axon");
+            Log.debugf("with axon configuration " + System.identityHashCode(configurer));
             configuration = configurer.start();
         }
     }
@@ -62,11 +71,24 @@ public class AxonExtension {
 
     @Shutdown
     void onShutdown() {
-        Log.info("shutdown axon");
         if (configuration != null) {
+            Log.info("shutdown axon");
+            Log.debugf("with axon configuration " + System.identityHashCode(configuration));
             configuration.shutdown();
+            if (profile.equals("dev") && !shutdownWaitDuration().isNegative() && !shutdownWaitDuration().isZero()) {
+                Log.debugf("wait started");
+                Uni.createFrom().nullItem().onItem().delayIt().by(shutdownWaitDuration()).await().indefinitely();
+                Log.debugf("wait ended");
+            }
+
             configuration = null;
         }
+    }
+
+    private Duration shutdownWaitDuration() {
+        AxonConfiguration.ShutdownWait shutdownWait = axonConfiguration.liveReload().shutdown().waitDuration();
+        return Duration.of(shutdownWait.amount(),
+                TimeUnitConverter.toTemporalUnit(shutdownWait.unit()));
     }
 
     @Produces
