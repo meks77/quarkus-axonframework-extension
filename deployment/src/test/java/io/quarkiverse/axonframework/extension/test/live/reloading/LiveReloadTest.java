@@ -9,6 +9,7 @@ import org.awaitility.Awaitility;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkiverse.axonframework.extension.test.AbstractConfigurationTest;
@@ -28,8 +29,11 @@ public class LiveReloadTest {
     /**
      * Repeated tests because reloading causes a timing issue in the axon framework or the axon server,
      * which doesn't occur each time. Before suspending the shutdown process, ~50 % of live reloads failed.
+     * On a MacBook Pro M1 it works(90 of 90 attempts) with a wait of 500ms after shutting down the axon configuration.
+     * In the build with github actions, even 10 seconds didn't help
      */
     @RepeatedTest(4)
+    @Tag("live-reload")
     public void testCommandHandlerChange() {
         String grpcPort = RestAssured.given().accept("text/plain").when().get(
                 "/config/axonserverPort").then().statusCode(200).extract().body().asString();
@@ -45,7 +49,7 @@ public class LiveReloadTest {
                         "giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));",
                         "throw new java.lang.IllegalStateException(\"whatever\");"));
 
-        Awaitility.await().atMost(10, TimeUnit.SECONDS)
+        Awaitility.await().atMost(5, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> assertThatException()
                         .isThrownBy(() -> commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 2)))

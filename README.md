@@ -52,10 +52,8 @@ The goal of this extension is to provide a solution which
 
 * transaction handling
 * JDBC token store
-
-### dev services
-
-* for the axon server
+* dev service for the axon server
+* live reloading
 
 ## Future features
 
@@ -204,3 +202,10 @@ Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for mo
 Metrics are automatically enabled, as soon as the quarkus metrics extension(micrometer) is activated.
 
 You can disable the metrics and configure tags are used.
+
+#### Live reloading
+Live reloading works with a schedule process, which checks if sources changed.
+For some reason, when shutting down the axon configuration, it must be wait, that the new configuration works well. 
+
+If the wait time is too less, an error can occur that no command handler for your command is available.
+If that happens, please try to increase the wait time. For details please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
