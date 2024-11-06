@@ -7,8 +7,8 @@ import jakarta.ws.rs.Path;
 import org.axonframework.queryhandling.QueryGateway;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import at.meks.quarkiverse.axonframework.example.projection.GiftcardDto;
 import at.meks.quarkiverse.axonframework.example.projection.GiftcardQuery;
-import at.meks.quarkiverse.axonframework.example.projection.GiftcardView;
 import io.smallrye.mutiny.Uni;
 
 @Path("giftcard")
@@ -18,9 +18,9 @@ public class GiftcardResource {
     QueryGateway queryGateway;
 
     @GET
-    public Uni<GiftcardView> getGiftcard(@RestQuery String id) {
+    public Uni<GiftcardDto> getGiftcard(@RestQuery String id) {
         return Uni.createFrom()
-                .future(() -> queryGateway.query(new GiftcardQuery(id), GiftcardView.class));
+                .future(() -> queryGateway.query(new GiftcardQuery(id), GiftcardDto.class));
     }
 
 }

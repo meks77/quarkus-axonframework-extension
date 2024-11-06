@@ -2,6 +2,7 @@
 
 include::./includes/attributes.adoc[]
 :examples-java-source: ./../../../../examples/src/main/java/at/meks/quarkiverse/axonframework/example
+:examples-java-test-source: ./../../../../examples/src/test/java/at/meks/quarkiverse/axonframework/example
 
 This guide explains how to use quarkus together with the axon framework.
 
@@ -10,6 +11,19 @@ This guide explains how to use quarkus together with the axon framework.
 Axon Framework assists developers in implementing message-driven applications. That means that you can implement applications using Event Sourcing and CQRS.
 
 == Creating an Event Sourcing Application
+
+=== The domain
+
+Giftcards can be issued with an initial amount. +
+Those giftcards can then be used for payments. +
+Under some circumstances, it is necessary to cancel the last payment.
+
+=== Example architecture
+The model handles the commands.
+
+A rest service for requesting the current amount of the card uses a query. The query is handled by an in-memory projection.
+
+The commands are submitted by a test.
 
 === Getting started
 
@@ -26,20 +40,75 @@ Add the following import to your build file:
 
 You can now create the commands, events and the model.
 
+==== Events and Commands
+
 [source,java]
 ----
 include::{examples-java-source}/model/Api.java[]
 ----
+
+==== Model
+
+The model contains the domain logic. It contains the handlers
+
+* CommandHandler and
+* EventSourcingHandler
+
+As example for an domain service, the Command UndoLatestRedemptionCommand is handled not by the root aggregate, but by a domain service.
+
+The EventSourcingHandler methods, are necessary, for tracking state of the aggregate, which is used for validation.
 
 [source,java]
 ----
 include::{examples-java-source}/model/Giftcard.java[]
 ----
 
+===== Domain service
+The domain service gets the repository for the giftcard injected. +
+It handles the undo command, by loading the aggregate from the repository, and then invoking a method on the aggregate.
+
+This is useful if more aggregates are modified by one command.
+
 [source,java]
 ----
 include::{examples-java-source}/model/DomainServiceExample.java[]
 ----
+
+==== Projection
+The current amount is build and queried using a projection.
+
+The project listens to the necessary events using the annotation EventHandler and updates the amount of each gift card in memory in a simple map.
+
+It also handle the query with a method annotated by QueryHandler. It gets the amount from the in memory map and returns the id and the amount of the card.
+
+[source,java]
+----
+include::{examples-java-source}/projection/GiftcardProjection.java[]
+----
+
+
+==== Rest Service
+
+The rest service gets the QueryGateway injected, and queries a card by id, using the GiftcardQuery.
+
+[source,java]
+----
+include::{examples-java-source}/interfaces/rest/GiftcardResource.java[]
+----
+
+==== Test
+
+The test submits the commands using the injected CommandGateway. +
+It uses the rest service to verify the expected current amount of the gift card. +
+It also verifies that exceptions are thrown if commands are not valid.
+
+[source,java]
+----
+include::{examples-java-test-source}/ApplicationTest.java[]
+----
+
+
+
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference

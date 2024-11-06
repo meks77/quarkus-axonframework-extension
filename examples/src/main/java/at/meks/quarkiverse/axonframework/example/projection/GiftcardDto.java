@@ -1,18 +1,18 @@
 package at.meks.quarkiverse.axonframework.example.projection;
 
-public class GiftcardView {
+public class GiftcardDto {
 
     private final String id;
 
     private int currentAmount;
 
     @SuppressWarnings("unused")
-    GiftcardView() {
+    GiftcardDto() {
         // needed by jackson
         id = null;
     }
 
-    public GiftcardView(String id, int currentAmount) {
+    public GiftcardDto(String id, int currentAmount) {
         this.id = id;
         this.currentAmount = currentAmount;
     }

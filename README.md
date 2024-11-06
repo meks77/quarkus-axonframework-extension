@@ -8,6 +8,11 @@ The goal of this extension is to provide a solution which
 * provides dev services for the event stores
 * provides an integration similar to the spring integration
 
+## Documentation & User Guide
+Please follow the [user guide](docs/modules/ROOT/pages/index.adoc) to get started with this extension.
+
+The source for the example is available in the [examples directory](examples).
+
 ## Current state
 
 ### Injectable Beans

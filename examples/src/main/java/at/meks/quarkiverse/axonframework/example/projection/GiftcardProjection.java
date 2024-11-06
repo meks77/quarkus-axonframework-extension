@@ -11,18 +11,18 @@ import org.axonframework.queryhandling.QueryHandler;
 import at.meks.quarkiverse.axonframework.example.model.Api;
 
 @ApplicationScoped
-public class GiftcardQueryHandler {
+public class GiftcardProjection {
 
-    private final Map<String, GiftcardView> giftcards = new HashMap<>();
+    private final Map<String, GiftcardDto> giftcards = new HashMap<>();
 
     @QueryHandler
-    GiftcardView handle(GiftcardQuery query) {
+    GiftcardDto handle(GiftcardQuery query) {
         return giftcards.get(query.id());
     }
 
     @EventHandler
     void handle(Api.CardIssuedEvent event) {
-        giftcards.put(event.id(), new GiftcardView(event.id(), event.amount()));
+        giftcards.put(event.id(), new GiftcardDto(event.id(), event.amount()));
     }
 
     @EventHandler
