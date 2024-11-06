@@ -78,6 +78,10 @@
                                     <include>attributes.adoc</include>
                                     <filtering>true</filtering>
                                 </resource>
+                                <resource>
+                                    <directory>../examples/src</directory>
+                                    <filtering>false</filtering>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>

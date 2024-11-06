@@ -1,8 +1,8 @@
 = Quarkus Axonframework Extension
 include::./includes/attributes.adoc[]
 
-:examples-java-source: ./../../../../examples/src/main/java/at/meks/quarkiverse/axonframework/example
-:examples-java-test-source: ./../../../../examples/src/test/java/at/meks/quarkiverse/axonframework/example
+:examples-java-source: ./includes/main/java/at/meks/quarkiverse/axonframework/example
+:examples-java-test-source: ./includes/test/java/at/meks/quarkiverse/axonframework/example
 
 This guide explains how to use quarkus together with the axon framework.
 
