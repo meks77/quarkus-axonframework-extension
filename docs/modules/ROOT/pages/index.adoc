@@ -1,14 +1,19 @@
 = Quarkus Axonframework Extension
 
 include::./includes/attributes.adoc[]
+:examples-java-source: ./../../../../examples/src/main/java/at/meks/quarkiverse/axonframework/example
 
-TIP: Describe what the extension does here.
+This guide explains how to use quarkus together with the axon framework.
 
-== Installation
+== What is Quarkus Axonframework
 
-If you want to use this extension, you need to add the `io.quarkiverse.axonframework-extension:quarkus-axonframework-extension` extension first to your build file.
+Axon Framework assists developers in implementing message-driven applications. That means that you can implement applications using Event Sourcing and CQRS.
 
-For instance, with Maven, add the following dependency to your POM file:
+== Creating an Event Sourcing Application
+
+=== Getting started
+
+Add the following import to your build file:
 
 [source,xml,subs=attributes+]
 ----
@@ -17,6 +22,23 @@ For instance, with Maven, add the following dependency to your POM file:
     <artifactId>quarkus-axonframework-extension</artifactId>
     <version>{project-version}</version>
 </dependency>
+----
+
+You can now create the commands, events and the model.
+
+[source,java]
+----
+include::{examples-java-source}/model/Api.java[]
+----
+
+[source,java]
+----
+include::{examples-java-source}/model/Giftcard.java[]
+----
+
+[source,java]
+----
+include::{examples-java-source}/model/DomainServiceExample.java[]
 ----
 
 [[extension-configuration-reference]]
