@@ -41,7 +41,7 @@ You can now create the commands, events and the model.
 
 [source,java]
 ----
-include::{examples-java-source}/model/Api.java[leveloffset=+1,opts=optional]
+include::includes/main/java/at/meks/quarkiverse/axonframework/example/model/Api.java[leveloffset=+1,opts=optional]
 ----
 
 ==== Model
