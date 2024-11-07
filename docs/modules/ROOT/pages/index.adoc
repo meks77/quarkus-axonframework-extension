@@ -1,9 +1,6 @@
 = Quarkus Axonframework Extension
 include::./includes/attributes.adoc[]
 
-:examples-java-source: ./includes/main/java/at/meks/quarkiverse/axonframework/example
-:examples-java-test-source: ./includes/test/java/at/meks/quarkiverse/axonframework/example
-
 This guide explains how to use quarkus together with the axon framework.
 
 == What is Quarkus Axonframework
@@ -44,7 +41,7 @@ You can now create the commands, events and the model.
 
 [source,java]
 ----
-include::./../../../../examples/src/main/java/at/meks/quarkiverse/axonframework/example/model/Api.java[]
+include::{examples-java-source}/model/Api.java[leveloffset=+1,opts=optional]
 ----
 
 ==== Model
@@ -60,7 +57,7 @@ The EventSourcingHandler methods, are necessary, for tracking state of the aggre
 
 [source,java]
 ----
-include::{examples-java-source}/model/Giftcard.java[]
+include::{examples-java-source}/model/Giftcard.java[leveloffset=+1,opts=optional]
 ----
 
 ===== Domain service
@@ -71,7 +68,7 @@ This is useful if more aggregates are modified by one command.
 
 [source,java]
 ----
-include::{examples-java-source}/model/DomainServiceExample.java[]
+include::{examples-java-source}/model/DomainServiceExample.java[leveloffset=+1,opts=optional]
 ----
 
 ==== Projection
@@ -83,7 +80,7 @@ It also handle the query with a method annotated by QueryHandler. It gets the am
 
 [source,java]
 ----
-include::{examples-java-source}/projection/GiftcardProjection.java[]
+include::{examples-java-source}/projection/GiftcardProjection.java[leveloffset=+1,opts=optional]
 ----
 
 
@@ -93,7 +90,7 @@ The rest service gets the QueryGateway injected, and queries a card by id, using
 
 [source,java]
 ----
-include::{examples-java-source}/interfaces/rest/GiftcardResource.java[]
+include::{examples-java-source}/interfaces/rest/GiftcardResource.java[leveloffset=+1,opts=optional]
 ----
 
 ==== Test
@@ -104,7 +101,7 @@ It also verifies that exceptions are thrown if commands are not valid.
 
 [source,java]
 ----
-include::{examples-java-test-source}/ApplicationTest.java[]
+include::{examples-java-test-source}/ApplicationTest.java[leveloffset=+1,opts=optional]
 ----
 
 
