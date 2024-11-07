@@ -1,5 +1,3 @@
 :project-version: 0
 
 :examples-dir: ./../examples/
-:examples-java-source: includes/main/java/at/meks/quarkiverse/axonframework/example
-:examples-java-test-source: includes/test/java/at/meks/quarkiverse/axonframework/example

@@ -58,8 +58,8 @@ public class Giftcard {
     }
 
     public void undoRedemption(int amount) {
-        Optional<Integer> lastestedRedeemedAmount = lastestRedeemedAmount();
-        if (lastestedRedeemedAmount.isEmpty() || lastestedRedeemedAmount.get() != amount) {
+        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
+        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
             throw new IllegalArgumentException("amount must be the lastest redeem amount");
         } else {
             apply(new Api.LatestRedemptionUndoneEvent(id, amount));
