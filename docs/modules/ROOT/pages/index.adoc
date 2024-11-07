@@ -1,8 +1,8 @@
 = Quarkus Axonframework Extension
-include::./pages/includes/attributes.adoc[]
+include::./includes/attributes.adoc[]
 
-:examples-java-source: ./pages/includes/main/java/at/meks/quarkiverse/axonframework/example
-:examples-java-test-source: ./pages/includes/test/java/at/meks/quarkiverse/axonframework/example
+:examples-java-source: ./includes/main/java/at/meks/quarkiverse/axonframework/example
+:examples-java-test-source: ./includes/test/java/at/meks/quarkiverse/axonframework/example
 
 This guide explains how to use quarkus together with the axon framework.
 
@@ -44,7 +44,7 @@ You can now create the commands, events and the model.
 
 [source,java]
 ----
-include::{examples-java-source}/model/Api.java[]
+include::./../../../../examples/src/main/java/at/meks/quarkiverse/axonframework/example/model/Api.java[]
 ----
 
 ==== Model
