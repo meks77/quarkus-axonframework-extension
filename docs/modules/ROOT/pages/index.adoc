@@ -11,8 +11,8 @@ Axon Framework assists developers in implementing message-driven applications. T
 
 === The domain
 
-Giftcards can be issued with an initial amount. +
-Those giftcards can then be used for payments. +
+Gift cards can be issued with an initial amount. +
+Those gift cards can then be used for payments. +
 Under some circumstances, it is necessary to cancel the last payment.
 
 === Example architecture
@@ -58,9 +58,9 @@ The model contains the domain logic. It contains the handlers
 * CommandHandler and
 * EventSourcingHandler
 
-As example for an domain service, the Command UndoLatestRedemptionCommand is handled not by the root aggregate, but by a domain service.
+As an example for a domain service, the Command UndoLatestRedemptionCommand is handled not by the root aggregate, but by a domain service.
 
-The EventSourcingHandler methods, are necessary, for tracking state of the aggregate, which is used for validation.
+The EventSourcingHandler methods are necessary for tracking the state of the aggregate, which is used for validation.
 
 [source,java]
 ----
@@ -138,10 +138,10 @@ public class Giftcard {
 ----
 
 ===== Domain service
-The domain service gets the repository for the giftcard injected. +
-It handles the undo command, by loading the aggregate from the repository, and then invoking a method on the aggregate.
+The domain service gets the repository for the gift card injected. +
+It handles the undo command by loading the aggregate from the repository and then invoking a method on the aggregate.
 
-This is useful if more aggregates are modified by one command.
+This is useful if one command modifies more aggregates.
 
 [source,java]
 ----
@@ -167,11 +167,12 @@ public class DomainServiceExample {
 ----
 
 ==== Projection
-The current amount is build and queried using a projection.
+The current amount is built and queried using a projection.
 
 The project listens to the necessary events using the annotation EventHandler and updates the amount of each gift card in memory in a simple map.
 
-It also handle the query with a method annotated by QueryHandler. It gets the amount from the in memory map and returns the id and the amount of the card.
+It also handles the query with a method annotated by QueryHandler.
+It gets the amount from the in memory map and returns the id and the amount of the card.
 
 [source,java]
 ----
@@ -206,7 +207,7 @@ public class GiftcardProjection {
 
 ==== Rest Service
 
-The rest service gets the QueryGateway injected, and queries a card by id, using the GiftcardQuery.
+The rest service gets the QueryGateway injected and queries a card by id, using the GiftcardQuery.
 
 [source,java]
 ----
