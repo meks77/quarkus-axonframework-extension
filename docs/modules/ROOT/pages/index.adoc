@@ -186,6 +186,11 @@ In production systems, this information should be persisted e.g., in a database.
 It also handles the query with a method annotated by QueryHandler.
 It gets the amount from the in memory map and returns the id and the amount of the card.
 
+[source, java]
+----
+public record GiftcardQuery(String id) { }
+----
+
 [source,java]
 ----
 @ApplicationScoped
@@ -218,9 +223,7 @@ public class GiftcardProjection {
 <1> The handler method for the query request, which return the gift card with the requested id
 <2> The event handler methods, which are necessary to project the current amounts of each gift card
 
-==== Rest Service
-
-The rest service gets the QueryGateway injected and queries a card by id, using the GiftcardQuery.
+A rest service gets the QueryGateway injected and queries a card by id, using the GiftcardQuery.
 
 [source,java]
 ----
