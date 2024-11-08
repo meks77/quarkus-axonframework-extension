@@ -29,7 +29,7 @@ Add the following import to your build file:
 [source,xml,subs=attributes+]
 ----
 <dependency>
-    <groupId>io.quarkiverse.axonframework-extension</groupId>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
     <artifactId>quarkus-axonframework-extension</artifactId>
     <version>{project-version}</version>
 </dependency>

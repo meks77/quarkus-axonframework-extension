@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.quarkiverse.axonframework-extension</groupId>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>quarkus-axonframework-extension-parent</artifactId>
         <version>999-SNAPSHOT</version>
     </parent>
@@ -21,7 +21,7 @@
             <artifactId>testcontainers</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkiverse.axonframework-extension</groupId>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
             <artifactId>quarkus-axonframework-extension</artifactId>
             <version>${project.version}</version>
         </dependency>
