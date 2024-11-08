@@ -15,6 +15,12 @@ The source for the example is available in the [examples directory](examples).
 
 ## Current state
 
+### Quarkus Versions
+On the main branch, the most recent quarkus version is used.
+To also support the latest LTS version of quarkus, a release branch for this LTS version is also maintained.
+
+Currently, the LTS version 3.15 is supported in the branch release/quarkus-3.15
+
 ### Injectable Beans
 
 * EventBus
