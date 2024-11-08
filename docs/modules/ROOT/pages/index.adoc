@@ -1,14 +1,30 @@
 = Quarkus Axonframework Extension
-
 include::./includes/attributes.adoc[]
 
-TIP: Describe what the extension does here.
+This guide explains how to use quarkus together with the axon framework.
 
-== Installation
+== What is Quarkus Axonframework
 
-If you want to use this extension, you need to add the `io.quarkiverse.axonframework-extension:quarkus-axonframework-extension` extension first to your build file.
+Axon Framework assists developers in implementing message-driven applications. That means that you can implement applications using Event Sourcing and CQRS.
 
-For instance, with Maven, add the following dependency to your POM file:
+== Creating an Event Sourcing Application
+
+=== The domain
+
+Gift cards can be issued with an initial amount. +
+Those gift cards can then be used for payments. +
+Under some circumstances, it is necessary to cancel the last payment.
+
+=== Example architecture
+The model handles the commands.
+
+A rest service for requesting the current amount of the card uses a query. The query is handled by an in-memory projection.
+
+The commands are submitted by a test.
+
+=== Getting started
+
+Add the following import to your build file:
 
 [source,xml,subs=attributes+]
 ----
@@ -18,6 +34,318 @@ For instance, with Maven, add the following dependency to your POM file:
     <version>{project-version}</version>
 </dependency>
 ----
+
+You can now create the commands, events and the model.
+
+==== Events and Commands
+
+[source,java]
+----
+public class Api {
+    public record IssueCardCommand(@TargetAggregateIdentifier String id, int initialAmount) { }
+    public record CardIssuedEvent(String id, int amount) { }
+    public record RedeemCardCommand(@TargetAggregateIdentifier String id, int amount) { }
+    public record CardRedeemedEvent(String id, int amount) { }
+    public record UndoLatestRedemptionCommand(@TargetAggregateIdentifier String id, int amount) { }
+    public record LatestRedemptionUndoneEvent(String id, int amount) { }
+}
+----
+
+==== Model
+
+The model contains the domain logic. It contains the handlers
+
+* CommandHandler and
+* EventSourcingHandler
+
+As an example for a domain service, the Command UndoLatestRedemptionCommand is handled not by the root aggregate, but by a domain service.
+
+The EventSourcingHandler methods are necessary for tracking the state of the aggregate, which is used for validation.
+
+[source,java]
+----
+public class Giftcard {
+
+    @AggregateIdentifier
+    private String id;
+    private int currentAmount;
+    private final List<Integer> cardRedemptions = new ArrayList<>();
+
+    Giftcard() { // <1>
+        // necesarry for the axon framework
+    }
+
+    @CommandHandler
+    Giftcard(Api.IssueCardCommand command) { // <2>
+        if (command == null) {
+            throw new IllegalArgumentException("command mustn't be null");
+        }
+        apply(new Api.CardIssuedEvent(command.id(), command.initialAmount())); // <3>
+        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(), command.initialAmount());
+    }
+
+    @EventSourcingHandler
+    void handle(Api.CardIssuedEvent event) { // <4>
+        this.id = event.id();
+        this.currentAmount = event.amount();
+    }
+
+    @CommandHandler
+    void handle(Api.RedeemCardCommand command) { // <2>
+        if (this.currentAmount < command.amount()) {
+            throw new IllegalArgumentException(
+                    "amount(" + command.amount() + ") must be less than current card amount(" + currentAmount + ")");
+        }
+        apply(new Api.CardRedeemedEvent(id, command.amount())); // <3>
+        Log.infof("card was redeemed by %s", command.amount());
+    }
+
+    @EventSourcingHandler
+    void handle(Api.CardRedeemedEvent event) { // <4>
+        this.currentAmount -= event.amount();
+        cardRedemptions.add(event.amount());
+    }
+
+    public void undoRedemption(int amount) { // <5>
+        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
+        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
+            throw new IllegalArgumentException("amount must be the lastest redeem amount");
+        } else {
+            apply(new Api.LatestRedemptionUndoneEvent(id, amount));
+            Log.infof("latest redemption was undone");
+        }
+    }
+
+    private Optional<Integer> lastestRedeemedAmount() {
+        if (!cardRedemptions.isEmpty()) {
+            return Optional.of(cardRedemptions.get(cardRedemptions.size() - 1));
+        }
+        return Optional.empty();
+    }
+
+    @EventSourcingHandler
+    void handle(Api.LatestRedemptionUndoneEvent event) { // <4>
+        cardRedemptions.remove(cardRedemptions.size() - 1);
+        this.currentAmount += event.amount();
+    }
+
+    @ExceptionHandler
+    public void handleAll(Exception exception) {
+        throw new CommandExecutionException("wrapped exception in details", exception);
+    }
+
+}
+----
+<1> An empty constructor is necessary for the axon framework that it is able to load the aggregate from the event store and apply its events
+<2> the command handler methods, which handle the requested commands
+<3> the event is applied if the validation was successful
+<4> the event sourcing handler methods, which are invoked when an aggregate is read from the repository and when a command handling method applies an event
+<5> this methode is executed by the domain service
+
+
+===== Domain service
+The domain service gets the repository for the gift card injected. +
+It handles the undo command by loading the aggregate from the repository and then invoking a method on the aggregate.
+
+This is useful if one command modifies more aggregates.
+
+[source,java]
+----
+@ApplicationScoped
+public class DomainServiceExample {
+
+    @Inject
+    Repository<Giftcard> giftcardRepository; // <1>
+
+    @CommandHandler
+    void handle(Api.UndoLatestRedemptionCommand command) { // <2>
+        Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id()); // <3>
+        giftcardAggregate.execute(giftcard -> giftcard.undoRedemption(command.amount())); // <4>
+    }
+
+    @ExceptionHandler
+    public void handleAll(Exception exception) {
+        throw new CommandExecutionException("wrapped exception in details", exception);
+    }
+
+}
+
+----
+<1> the axon repository is injected
+<2> the handler method for the command
+<3> First the aggregate is read, using the injected repository
+<4> A method of the aggregate is executed
+
+==== Projection
+The current amount is built and queried using a projection.
+
+The project listens to the necessary events using the annotation EventHandler
+and updates the amount of each gift card in memory in a simple map.
+In production systems, this information should be persisted e.g., in a database.
+
+It also handles the query with a method annotated by QueryHandler.
+It gets the amount from the in memory map and returns the id and the amount of the card.
+
+[source, java]
+----
+public record GiftcardQuery(String id) { }
+----
+
+[source,java]
+----
+@ApplicationScoped
+public class GiftcardProjection {
+
+    private final Map<String, GiftcardDto> giftcards = new HashMap<>();
+
+    @QueryHandler
+    GiftcardDto handle(GiftcardQuery query) { // <1>
+        return giftcards.get(query.id());
+    }
+
+    @EventHandler
+    void handle(Api.CardIssuedEvent event) { // <2>
+        giftcards.put(event.id(), new GiftcardDto(event.id(), event.amount()));
+    }
+
+    @EventHandler
+    void handle(Api.CardRedeemedEvent event) { // <2>
+        giftcards.get(event.id()).redeem(event.amount());
+    }
+
+    @EventHandler
+    void handle(Api.LatestRedemptionUndoneEvent event) { // <2>
+        giftcards.get(event.id()).undoLatestRedemption(event.amount());
+    }
+}
+
+----
+<1> The handler method for the query request, which return the gift card with the requested id
+<2> The event handler methods, which are necessary to project the current amounts of each gift card
+
+A rest service gets the QueryGateway injected and queries a card by id, using the GiftcardQuery.
+
+[source,java]
+----
+@Path("giftcard")
+public class GiftcardResource {
+
+    @Inject
+    QueryGateway queryGateway;
+
+    @GET
+    public Uni<GiftcardDto> getGiftcard(@RestQuery String id) {
+        return Uni.createFrom()
+                .future(() -> queryGateway.query(new GiftcardQuery(id), GiftcardDto.class));
+    }
+
+}
+----
+
+==== Test
+
+The test submits the commands using the injected CommandGateway. +
+It uses the rest service to verify the expected current amount of the gift card. +
+It also verifies that exceptions are thrown if commands are not valid.
+
+[source,java]
+----
+@QuarkusTest
+@TestHTTPEndpoint(GiftcardResource.class)
+class ApplicationTest {
+
+    @Inject
+    CommandGateway commandGateway; // <1>
+
+    @Test
+    void wholeUseCaseTest() {
+        var cardId = UUID.randomUUID().toString();
+        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 20)); // <2>
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 2)); // <3>
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 4)); // <3>
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 3)); // <3>
+
+        assertThatException().isThrownBy(() -> commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 12))) // <4>
+                .havingCause()
+                .withMessageContaining("must be less than current card amount");
+
+        RestAssured.given().queryParam("id", cardId)
+                .when().get()
+                .then()
+                .body("id", CoreMatchers.equalTo(cardId), "currentAmount", CoreMatchers.equalTo(11));
+
+        commandGateway.sendAndWait(new Api.UndoLatestRedemptionCommand(cardId, 3)); // <5>
+        assertThatException().isThrownBy(() -> commandGateway.sendAndWait(new Api.UndoLatestRedemptionCommand(cardId, 2))) // <6>
+                .havingCause()
+                .withMessageContaining("amount must be the lastest redeem amount");
+
+        RestAssured.given().queryParam("id", cardId)
+                .when().get()
+                .then()
+                .body("id", CoreMatchers.equalTo(cardId), "currentAmount", CoreMatchers.equalTo(14));
+    }
+
+}
+----
+<1> The CommandGateway of the Axon framework is injected, to be able to send commands. This also works in production classes
+<2> A new gift card is requested
+<3> Some payments are requested. Those payments are valid because the card amount is still greater.
+<4> A payment is requested with an amount, greater than the current amount of the gift card -> an error is expected
+<5> A cancellation of the last valid payment is requested
+<6> A cancallation of the last valid payment with the wrong amount is requested -> an error is expected
+
+
+
+
+==== Axon Server connection
+
+When starting with dev or test profile, the Axon Server is started as dev service. For production use the connection details can be configured using the keys
+
+[source, properties]
+----
+quarkus.axon.server.context=default
+quarkus.axon.server.hostname=localhost
+quarkus.axon.server.grpc-port=8124
+----
+
+All you have to do is to define the correct host name, port and context, if they don't match the default value.
+
+=== Event Processors
+Event Processors are necessary for event handler.
+Those processors need to know which events are already processed.
+This information is stored in a token store.
+
+CAUTION: By default, the subscribing processor with an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
+
+The different processors can be configured using the config keys "quarkus.axon.eventhandling.*".
+
+To define another event processor, change the value of the key "quarkus.axon.eventhandling.default-mode". Possible values are
+
+- persistent stream
+- tracking
+- pooled
+- subscribing
+
+With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
+
+To define a persistent token store, you need to set the value of "quarkus.axon.eventhandling.default-streaming-processor.tokenstore.type" to "jdbc". Furthermore, you need to add the quarkus-agroal and a jdbc driver dependency. The database structure is created automatically on startup.
+
+For details about the different event processors and the token store,
+please read the documentation of the Axon framework.
+
+=== Access to Axon objects
+
+If you need to access the
+
+- EventBus
+- EventGateway
+- CommandBus
+- CommandGateway
+- QueryBus
+- QueryGateway or
+- a aggregate repository
+
+you can simply inject it to your CDI bean. The repository and the command gateway injection is shown in the example above.
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
