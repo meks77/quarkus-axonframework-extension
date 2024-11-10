@@ -1,0 +1,79 @@
+name: Release to Sonatype OSS
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version'
+        required: true
+      development_version:
+        description: 'Next development version'
+        required: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup GPG
+        run: |
+          echo "$GPG_PRIVATE_KEY" | base64 --decode > private.key
+          gpg --batch --import private.key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Set up environment
+        run: |
+          mkdir -p ~/.gnupg
+          echo "use-agent" >> ~/.gnupg/gpg.conf
+          echo "echo RELOADAGENT | gpg-connect-agent" >> ~/.gnupg/gpg.conf
+          echo "default-cache-ttl 3600" > ~/.gnupg/gpg-agent.conf
+          echo "max-cache-ttl 3600" >> ~/.gnupg/gpg-agent.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set Git User
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Setup Credentials
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          server-id: 'ossrh'
+
+      - name: Release with Maven
+        run: |
+          mvn -B release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.release_version }} -DdevelopmentVersion=${{ github.event.inputs.development_version }} -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+        env:
+          OSSRH_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.release_version }}
+          release_name: Release ${{ github.event.inputs.release_version }}
+          body: |
+            **Release Description**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
