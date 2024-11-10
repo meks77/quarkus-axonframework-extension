@@ -3,6 +3,9 @@ name: Release to Sonatype OSS
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Branch to checkout'
+        required: true
       release_version:
         description: 'Release version'
         required: true
@@ -18,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
