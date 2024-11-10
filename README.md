@@ -91,7 +91,7 @@ containers are not supported, you must start an axon server and configure the gr
 default.
 
 After the successfull build you follow [Extension Documentation](docs/modules/ROOT/pages/index.adoc). Be aware of the
-wrong version in this documentation. Currently the Version is 999-SNAPSHOT.
+wrong version in this documentation. Currently the Version is 0.1.0-SNAPSHOT.
 
 ### Provided CDI Beans
 
