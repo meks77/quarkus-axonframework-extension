@@ -32,7 +32,7 @@ jobs:
 
       - name: Setup GPG
         run: |
-          echo "$GPG_PRIVATE_KEY" | base64 --decode > private.key
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode > private.key
           gpg --batch --import private.key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -64,7 +64,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          server-id: 'ossrh'
+          server-id: ossrh
+          server-username: ${{ secrets.SONATYPE_USERNAME }}
+          server-password: ${{ secrets.SONATYPE_PASSWORD }}
 
       - name: Release with Maven
         run: |
