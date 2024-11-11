@@ -75,12 +75,12 @@ jobs:
           OSSRH_USERNAME: "${{ secrets.SONATYPE_USERNAME }}"
           OSSRH_PASSWORD: "${{ secrets.SONATYPE_PASSWORD }}"
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.event.inputs.release_version }}
-          release_name: Release ${{ github.event.inputs.release_version }}
-          body: |
-            **Release Description**
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Create GitHub Release
+#        uses: actions/create-release@v1
+#        with:
+#          tag_name: ${{ github.event.inputs.release_version }}
+#          release_name: Release ${{ github.event.inputs.release_version }}
+#          body: |
+#            **Release Description**
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
