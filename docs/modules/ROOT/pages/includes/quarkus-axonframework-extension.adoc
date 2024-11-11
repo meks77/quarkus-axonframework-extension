@@ -1,4 +1,3 @@
-:summaryTableId: quarkus-axonframework-extension_quarkus-axon
 [.configuration-legend]
 icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
 [.configuration-reference.searchable, cols="80,.^10,.^10"]
@@ -73,7 +72,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_MODE+++`
 endif::add-copy-button-to-env-var[]
 --
-a|Mode
+a|`tracking`, `subscribing`, `pooled`, `persistent-stream`
 |`subscribing`
 
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-streamname]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-persistent-stream-streamname[`quarkus.axon.eventhandling.default-persistent-stream.streamname`]##
@@ -243,7 +242,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_STREAMING_PROCESSOR_INITIAL_POSITION+++`
 endif::add-copy-button-to-env-var[]
 --
-a|InitialPosition
+a|`head`, `tail`
 |`tail`
 
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-type]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-type[`quarkus.axon.eventhandling.default-streaming-processor.tokenstore.type`]##
@@ -260,7 +259,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_STREAMING_PROCESSOR_TOKENSTORE_TYPE+++`
 endif::add-copy-button-to-env-var[]
 --
-a|TokenStoreType
+a|`jdbc`, `in-memory`
 |`in-memory`
 
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-tokenstore-autocreate-table-for-jdbc-token[`quarkus.axon.eventhandling.default-streaming-processor.tokenstore.autocreate-table-for-jdbc-token`]##
@@ -328,7 +327,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_EVENTHANDLING_DEFAULT_STREAMING_PROCESSOR_TRACKING_PROCESSOR_TOKEN_CLAIM_TIME_UNIT+++`
 endif::add-copy-button-to-env-var[]
 --
-a|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html[TimeUnit]
+a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
 |`seconds`
 
 a| [[quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-pooled-processor-max-claimed-segments]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-eventhandling-default-streaming-processor-pooled-processor-max-claimed-segments[`quarkus.axon.eventhandling.default-streaming-processor.pooled-processor.max-claimed-segments`]##
@@ -447,7 +446,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_UNIT+++`
 endif::add-copy-button-to-env-var[]
 --
-a|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html[TimeUnit]
+a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
 |`milliseconds`
 
 a| [[quarkus-axonframework-extension_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axonframework-extension_quarkus-axon-live-reload-shutdown-wait-duration-amount[`quarkus.axon.live-reload.shutdown.wait-duration.amount`]##
@@ -469,5 +468,3 @@ endif::add-copy-button-to-env-var[]
 
 |===
 
-
-:!summaryTableId:
