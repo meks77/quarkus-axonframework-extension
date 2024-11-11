@@ -5,7 +5,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>quarkus-axonframework-extension-parent</artifactId>
-        <version>0.1.0-3.15</version>
+        <version>0.2.0-3.15-SNAPSHOT</version>
     </parent>
     <artifactId>quarkus-axonframework-extension-integration-tests</artifactId>
     <name>Quarkus Axonframework Extension - Integration Tests</name>
