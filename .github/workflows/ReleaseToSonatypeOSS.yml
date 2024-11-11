@@ -70,7 +70,7 @@ jobs:
 
       - name: Release with Maven
         run: |
-          mvn -B release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.release_version }} -DdevelopmentVersion=${{ github.event.inputs.development_version }} -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
+          mvn -P without-live-reload-tests -B release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.release_version }} -DdevelopmentVersion=${{ github.event.inputs.development_version }} -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
         env:
           OSSRH_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
