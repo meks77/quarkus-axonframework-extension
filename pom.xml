@@ -48,7 +48,6 @@
         <developerConnection>scm:git:git@github.com:meks77/quarkus-axonframework-extension.git
         </developerConnection>
         <url>https://github.com/meks77/quarkus-axonframework-extension</url>
-      <tag>HEAD</tag>
   </scm>
 
     <modules>
