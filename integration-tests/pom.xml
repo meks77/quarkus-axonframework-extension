@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axonframework-extension</artifactId>
+            <artifactId>quarkus-axon</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

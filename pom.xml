@@ -52,8 +52,7 @@
   </scm>
 
     <modules>
-        <module>deployment</module>
-        <module>runtime</module>
+        <module>quarkus-axon</module>
         <module>docs</module>
         <module>examples</module>
     </modules>
