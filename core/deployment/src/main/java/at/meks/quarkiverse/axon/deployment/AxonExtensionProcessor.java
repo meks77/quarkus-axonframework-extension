@@ -34,9 +34,9 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.dev.devservices.GlobalDevServicesConfig;
 import io.quarkus.logging.Log;
 
-class AxonframeworkExtensionProcessor {
+class AxonExtensionProcessor {
 
-    private static final String FEATURE = "axonframework-extension";
+    private static final String FEATURE = "axon";
 
     @BuildStep
     FeatureBuildItem feature() {

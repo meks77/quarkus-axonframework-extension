@@ -8,7 +8,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>quarkus-axon-deployment</artifactId>
-    <name>Quarkus Axonframework Extension - Deployment</name>
+    <name>Quarkus Axon - Deployment</name>
 
     <dependencies>
         <dependency>

@@ -11,7 +11,7 @@
 
     <artifactId>quarkus-axon-parent</artifactId>
     <packaging>pom</packaging>
-    <name>The main component of the extension</name>
+    <name>Quarkus Axon - Parent</name>
     <description>The main component of the Quarkus Axon extension. It provides the required configuration parts.</description>
 
     <modules>
