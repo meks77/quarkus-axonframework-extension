@@ -9,6 +9,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
+    <name>Quarkus Axon JDBC Tokenstore</name>
     <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
 
     <dependencies>
@@ -19,7 +20,11 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-agroal</artifactId>
-            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

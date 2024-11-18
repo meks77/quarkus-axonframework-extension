@@ -102,9 +102,9 @@ class AxonExtensionProcessor {
                 .map(this::toClass);
     }
 
-    private Class<?> toClass(ClassInfo classInfo) {
+    private <T> Class<T> toClass(ClassInfo classInfo) {
         try {
-            return Class.forName(classInfo.name().toString(), false,
+            return (Class<T>) Class.forName(classInfo.name().toString(), false,
                     Thread.currentThread().getContextClassLoader());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

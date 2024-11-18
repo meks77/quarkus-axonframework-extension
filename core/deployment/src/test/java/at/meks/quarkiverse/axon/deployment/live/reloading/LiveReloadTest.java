@@ -8,12 +8,15 @@ import java.util.concurrent.TimeUnit;
 import org.awaitility.Awaitility;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.deployment.AbstractConfigurationTest;
-import at.meks.quarkiverse.axon.deployment.model.Api;
+import at.meks.quarkiverse.axon.deployment.streamingprocessors.pooled.PooledProcessorTest;
+import at.meks.quarkiverse.axon.shared.model.Api;
+import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import io.quarkus.test.QuarkusDevModeTest;
 import io.restassured.RestAssured;
 
@@ -21,9 +24,9 @@ public class LiveReloadTest {
 
     @RegisterExtension
     final static QuarkusDevModeTest test = new QuarkusDevModeTest()
-            .setArchiveProducer(() -> AbstractConfigurationTest.javaArchiveBase()
-                    .addClasses(ConfigResource.class)
-                    .addAsResource(AbstractConfigurationTest.propertiesFile("/live/reloading/application.properties"),
+            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
+                    .addClasses(ConfigResource.class, DomainServiceForLiveReloading.class, Api.class, Giftcard.class)
+                    .addAsResource(PooledProcessorTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));
 
     /**
@@ -44,7 +47,7 @@ public class LiveReloadTest {
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
         commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 1));
 
-        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/model/DomainServiceExample.java",
+        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/DomainServiceForLiveReloading.java",
                 source -> source.replace(
                         "giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));",
                         "throw new java.lang.IllegalStateException(\"whatever\");"));

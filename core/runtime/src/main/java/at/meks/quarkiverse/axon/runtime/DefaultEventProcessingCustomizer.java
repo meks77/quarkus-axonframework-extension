@@ -1,19 +1,12 @@
 package at.meks.quarkiverse.axon.runtime;
 
-import static at.meks.quarkiverse.axon.runtime.AxonConfiguration.TokenStoreType.JDBC;
 import static at.meks.validation.args.ArgValidator.validate;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
-import javax.sql.DataSource;
-
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
@@ -24,10 +17,8 @@ import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.axonframework.messaging.StreamableMessageSource;
 import org.axonframework.messaging.SubscribableMessageSource;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 import io.quarkus.arc.DefaultBean;
@@ -41,12 +32,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
 
     @Inject
     ScheduledExecutorService executorService;
-
-    @Inject
-    Instance<DataSource> dataSource;
-
-    @ConfigProperty(name = "quarkus.datasource.db-kind", defaultValue = "none")
-    String dbKind;
 
     @Override
     public void configureEventProcessing(EventProcessingConfigurer eventProcessingConfigurer) {
@@ -94,7 +79,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     private void configureTrackingEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
         AxonConfiguration.StreamingProcessorConf streamingProcessorConf = axonConfiguration.eventhandling()
                 .defaultStreamingProcessor();
-        configureAndSetupTokenstore(eventProcessingConfigurer, streamingProcessorConf);
 
         AxonConfiguration.TrackingProcessorConf trackingProcessorConf = streamingProcessorConf.trackingProcessor();
         int threadCount = trackingProcessorConf.threadCount();
@@ -122,23 +106,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
                 conf -> trackingEventProcessorConfiguration);
     }
 
-    private void configureAndSetupTokenstore(EventProcessingConfigurer eventProcessingConfigurer,
-            AxonConfiguration.StreamingProcessorConf streamingProcessorConf) {
-        if (dataSource.isResolvable() && streamingProcessorConf.tokenstore().type() == JDBC) {
-            eventProcessingConfigurer.registerTokenStore(conf -> {
-                TokenSchema tokenSchema = TokenSchema.builder().build();
-                JdbcTokenStore store = JdbcTokenStore.builder()
-                        .connectionProvider(() -> dataSource.get().getConnection())
-                        .serializer(conf.serializer())
-                        .schema(tokenSchema)
-                        .build();
-                autoCreateJdbcTokenTable(tokenSchema, store);
-                return store;
-            });
-
-        }
-    }
-
     private TrackingToken createToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource,
             InitialPosition startPosition) {
         if (startPosition == InitialPosition.HEAD) {
@@ -153,7 +120,6 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
     private void configurePooledEventProcessor(EventProcessingConfigurer eventProcessingConfigurer) {
         AxonConfiguration.StreamingProcessorConf streamingProcessorConf = axonConfiguration.eventhandling()
                 .defaultStreamingProcessor();
-        configureAndSetupTokenstore(eventProcessingConfigurer, streamingProcessorConf);
 
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
             builder
@@ -180,29 +146,4 @@ class DefaultEventProcessingCustomizer implements EventProcessingCustomizer {
         eventProcessingConfigurer.registerPooledStreamingEventProcessorConfiguration(psepConfig);
     }
 
-    private void autoCreateJdbcTokenTable(TokenSchema tokenSchema, JdbcTokenStore store) {
-        if (!axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().autocreateTableForJdbcToken()) {
-            return;
-        }
-        TokenTableFactory tokenTableFactory;
-        boolean dbIsOracle = false;
-        boolean tableExists = false;
-        if (dbKind.equals("postgresql")) {
-            tokenTableFactory = PostgresTokenTableFactory.INSTANCE;
-        } else if (dbKind.equals("oracle")) {
-            dbIsOracle = true;
-            tokenTableFactory = Oracle11TokenTableFactory.INSTANCE;
-            try (Connection connection = dataSource.get().getConnection();
-                    ResultSet tables = connection.getMetaData().getTables(null, null, tokenSchema.tokenTable(), null)) {
-                tableExists = tables.next();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            tokenTableFactory = GenericTokenTableFactory.INSTANCE;
-        }
-        if (!dbIsOracle || !tableExists) {
-            store.createSchema(tokenTableFactory);
-        }
-    }
 }

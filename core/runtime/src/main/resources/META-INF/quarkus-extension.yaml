@@ -1,3 +1,5 @@
+group-id: at.meks.quarkiverse.axonframework-extension
+artifact-id: quarkus-axon
 name: "Axon Framework - Event Sourcing Solution"
 description: Using this extension the Axon Framework can be used for event-sourcing
 metadata:

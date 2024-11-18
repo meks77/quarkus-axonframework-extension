@@ -6,9 +6,9 @@ import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessage
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.SubscribingEventProcessor;
 
-import at.meks.quarkiverse.axon.deployment.AbstractConfigurationTest;
+import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 
-public abstract class PersistentStreamProcessorTest extends AbstractConfigurationTest {
+public abstract class PersistentStreamProcessorTest extends JavaArchiveTest {
 
     @Override
     protected final void assertConfiguration(EventProcessor eventProcessor) {

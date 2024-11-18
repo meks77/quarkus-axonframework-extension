@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.model;
+package at.meks.quarkiverse.axon.shared.model;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 

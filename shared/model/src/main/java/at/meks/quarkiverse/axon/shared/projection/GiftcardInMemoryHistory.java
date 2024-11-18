@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.projection;
+package at.meks.quarkiverse.axon.shared.projection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.eventhandling.EventHandler;
 
-import at.meks.quarkiverse.axon.deployment.model.Api;
+import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped

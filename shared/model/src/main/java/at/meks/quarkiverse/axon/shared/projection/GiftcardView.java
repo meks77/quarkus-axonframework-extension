@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.projection;
+package at.meks.quarkiverse.axon.shared.projection;
 
 public class GiftcardView {
 

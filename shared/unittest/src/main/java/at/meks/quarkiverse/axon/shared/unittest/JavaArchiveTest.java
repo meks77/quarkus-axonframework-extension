@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment;
+package at.meks.quarkiverse.axon.shared.unittest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -22,16 +22,16 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 
-import at.meks.quarkiverse.axon.deployment.model.Api;
-import at.meks.quarkiverse.axon.deployment.model.DomainServiceExample;
-import at.meks.quarkiverse.axon.deployment.model.Giftcard;
-import at.meks.quarkiverse.axon.deployment.projection.GiftcardInMemoryHistory;
-import at.meks.quarkiverse.axon.deployment.projection.GiftcardQueryHandler;
-import at.meks.quarkiverse.axon.deployment.projection.GiftcardView;
+import at.meks.quarkiverse.axon.shared.model.Api;
+import at.meks.quarkiverse.axon.shared.model.DomainServiceExample;
+import at.meks.quarkiverse.axon.shared.model.Giftcard;
+import at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory;
+import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;
+import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusUnitTest;
 
-public abstract class AbstractConfigurationTest {
+public class JavaArchiveTest {
 
     protected static QuarkusUnitTest application(JavaArchive javaArchive) {
         return new QuarkusUnitTest()
@@ -94,7 +94,7 @@ public abstract class AbstractConfigurationTest {
                 .isEqualTo(new GiftcardView(cardId, 9));
 
         Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
-                "at.meks.quarkiverse.axon.deployment.projection");
+                "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
         assertConfiguration(eventProcessorOptional.get());
     }

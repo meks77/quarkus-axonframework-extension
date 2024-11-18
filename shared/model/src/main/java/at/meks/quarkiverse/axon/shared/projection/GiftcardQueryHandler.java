@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.projection;
+package at.meks.quarkiverse.axon.shared.projection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 
-import at.meks.quarkiverse.axon.deployment.model.Api;
+import at.meks.quarkiverse.axon.shared.model.Api;
 
 @ApplicationScoped
 public class GiftcardQueryHandler {

@@ -11,7 +11,7 @@
 
     <artifactId>quarkus-axon-tokenstore-jdbc-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Quarkus Axon Tokenstore JDBC - Parent</name>
+    <name>Quarkus Axon JDBC Tokenstore - Parent</name>
     <description>Module for supporting axon tokestores managed with plain jdbc</description>
     <modules>
         <module>runtime</module>

@@ -13,14 +13,16 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.deployment.model.Giftcard;
+import at.meks.quarkiverse.axon.deployment.streamingprocessors.pooled.PooledProcessorTest;
+import at.meks.quarkiverse.axon.shared.model.Giftcard;
+import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class ProducedBeansTest extends AbstractConfigurationTest {
+public class ProducedBeansTest extends JavaArchiveTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(AbstractConfigurationTest::javaArchiveBase);
+            .setArchiveProducer(PooledProcessorTest::javaArchiveBase);
 
     @Inject
     EventGateway eventGateway;

@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
 
-import at.meks.quarkiverse.axon.deployment.AbstractConfigurationTest;
+import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 
-public abstract class PooledProcessorTest extends AbstractConfigurationTest {
+public abstract class PooledProcessorTest extends JavaArchiveTest {
 
     @Override
     protected void assertConfiguration(EventProcessor eventProcessor) {

@@ -163,21 +163,10 @@ public interface AxonConfiguration {
     interface TokenStoreConf {
 
         /**
-         * The type of the token store.
-         */
-        @WithDefault("in-memory")
-        TokenStoreType type();
-
-        /**
          * sets if the database table should be created automatically for jdbc the token store.
          */
         @WithDefault("true")
         boolean autocreateTableForJdbcToken();
-    }
-
-    enum TokenStoreType {
-        JDBC,
-        IN_MEMORY
     }
 
     interface TrackingProcessorConf {

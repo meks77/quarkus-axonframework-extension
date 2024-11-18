@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.axonframework.eventhandling.EventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.deployment.AbstractConfigurationTest;
+import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 import io.restassured.RestAssured;
 
-public class WithMetricsTest extends AbstractConfigurationTest {
+public class WithMetricsTest extends JavaArchiveTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(

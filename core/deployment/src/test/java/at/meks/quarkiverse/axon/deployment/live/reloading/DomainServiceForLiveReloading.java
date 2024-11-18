@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.model;
+package at.meks.quarkiverse.axon.deployment.live.reloading;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -9,8 +9,11 @@ import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.axonframework.modelling.command.Aggregate;
 import org.axonframework.modelling.command.Repository;
 
+import at.meks.quarkiverse.axon.shared.model.Api;
+import at.meks.quarkiverse.axon.shared.model.Giftcard;
+
 @ApplicationScoped
-public class DomainServiceExample {
+public class DomainServiceForLiveReloading {
 
     @Inject
     Repository<Giftcard> giftcardRepository;

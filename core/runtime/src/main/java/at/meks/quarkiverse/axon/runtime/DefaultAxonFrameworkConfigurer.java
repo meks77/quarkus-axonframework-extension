@@ -1,27 +1,19 @@
 package at.meks.quarkiverse.axon.runtime;
 
-import static at.meks.quarkiverse.axon.runtime.AxonConfiguration.TokenStoreType.JDBC;
-
 import java.util.Set;
 
-import javax.sql.DataSource;
-
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.transaction.TransactionManager;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
+import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBusSpanFactory;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
-import org.axonframework.eventhandling.tokenstore.jdbc.TokenSchema;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.micrometer.GlobalMetricRegistry;
 import org.axonframework.serialization.json.JacksonSerializer;
@@ -46,16 +38,13 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     ObjectMapper objectMapper;
 
     @Inject
-    Instance<TransactionManager> transactionManager;
-
-    @Inject
-    RequestContextController requestContextController;
-
-    @Inject
-    Instance<DataSource> dataSource;
+    TransactionManager transactionManager;
 
     @Inject
     Instance<MeterRegistry> meterRegistry;
+
+    @Inject
+    TokenStoreConfigurer tokenStoreConfigurer;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -73,29 +62,25 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventStore(this::axonserverEventStore)
                 .configureSerializer(conf -> jacksonSerializer)
                 .configureEventSerializer(confg -> jacksonSerializer);
-        eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
+
         aggregateClasses.forEach(configurer::configureAggregate);
-        eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
+
+        configureEventHandling(configurer);
+
         commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
 
         configureTransactionManagement(configurer);
-        configureTokenstoreIfNecessary(jacksonSerializer, configurer);
         configureMetrics(configurer);
 
         return configurer;
     }
 
-    private void configureTokenstoreIfNecessary(JacksonSerializer jacksonSerializer, Configurer configurer) {
-        if (dataSource.isResolvable()
-                && axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().type() == JDBC) {
-            TokenSchema tokenSchema = TokenSchema.builder().build();
-            JdbcTokenStore store = JdbcTokenStore.builder()
-                    .connectionProvider(() -> dataSource.get().getConnection())
-                    .serializer(jacksonSerializer)
-                    .schema(tokenSchema)
-                    .build();
-            configurer.registerComponent(TokenStore.class, conf -> store);
+    private void configureEventHandling(Configurer configurer) {
+        if (!eventhandlers.isEmpty()) {
+            tokenStoreConfigurer.configureTokenStore(configurer);
+            eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
+            eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         }
     }
 
@@ -115,10 +100,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureTransactionManagement(Configurer configurer) {
-        if (transactionManager.isResolvable()) {
-            configurer.configureTransactionManager(
-                    conf -> () -> AxonTransaction.beginOrJoinTransaction(requestContextController));
-        }
+        configurer.configureTransactionManager(conf -> transactionManager);
     }
 
     @Override

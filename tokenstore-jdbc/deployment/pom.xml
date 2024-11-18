@@ -10,17 +10,36 @@
     </parent>
 
     <artifactId>quarkus-axon-tokenstore-jdbc-deployment</artifactId>
-    <name>Quarkus Axon - Runtime</name>
+    <name>Quarkus Axon JDBC Tokenstore - Deployment</name>
 
     <dependencies>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-arc-deployment</artifactId>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-deployment</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
             <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-agroal-deployment</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>unittest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-junit5-internal</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

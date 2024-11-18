@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>quarkus-axonframework-extension-docs</artifactId>
-    <name>Quarkus Axonframework Extension - Documentation</name>
+    <name>Quarkus Axon Extension - Documentation</name>
 
     <dependencies>
         <!-- Make sure the doc is built after the other artifacts -->

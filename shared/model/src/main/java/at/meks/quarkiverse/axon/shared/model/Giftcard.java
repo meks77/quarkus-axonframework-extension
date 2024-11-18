@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.model;
+package at.meks.quarkiverse.axon.shared.model;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -6,7 +6,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 
-import at.meks.quarkiverse.axon.deployment.model.Api.IssueCardCommand;
+import at.meks.quarkiverse.axon.shared.model.Api.IssueCardCommand;
 import io.quarkus.logging.Log;
 
 public class Giftcard {
