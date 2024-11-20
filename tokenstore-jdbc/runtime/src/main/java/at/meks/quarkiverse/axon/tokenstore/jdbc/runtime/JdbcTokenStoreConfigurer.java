@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.config.Configuration;
@@ -23,7 +24,7 @@ import at.meks.quarkiverse.axon.runtime.TokenStoreConfigurer;
 public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
 
     @Inject
-    DataSource dataSource;
+    Instance<DataSource> dataSource;
 
     @Inject
     AxonConfiguration axonConfiguration;
@@ -33,6 +34,11 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
 
     @Override
     public void configureTokenStore(Configurer configurer) {
+        if (dataSource.isAmbiguous()) {
+            throw new IllegalStateException("Cannot configure token store with ambiguous datasource");
+        } else if (dataSource.isUnsatisfied()) {
+            throw new IllegalStateException("Cannot configure token store with unsatisfied datasource");
+        }
         configureAndSetupTokenstore(configurer.eventProcessing());
         configurer.registerComponent(TokenStore.class, this::createTokenStore);
     }
@@ -41,7 +47,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
         eventProcessingConfigurer.registerTokenStore(conf -> {
             TokenSchema tokenSchema = TokenSchema.builder().build();
             JdbcTokenStore store = JdbcTokenStore.builder()
-                    .connectionProvider(() -> dataSource.getConnection())
+                    .connectionProvider(() -> dataSource.get().getConnection())
                     .serializer(conf.serializer())
                     .schema(tokenSchema)
                     .build();
@@ -62,7 +68,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
         } else if (dbKind.equals("oracle")) {
             dbIsOracle = true;
             tokenTableFactory = Oracle11TokenTableFactory.INSTANCE;
-            try (Connection connection = dataSource.getConnection();
+            try (Connection connection = dataSource.get().getConnection();
                     ResultSet tables = connection.getMetaData().getTables(null, null, tokenSchema.tokenTable(), null)) {
                 tableExists = tables.next();
             } catch (SQLException e) {
@@ -79,7 +85,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
     private TokenStore createTokenStore(Configuration configuration) {
         TokenSchema tokenSchema = TokenSchema.builder().build();
         return JdbcTokenStore.builder()
-                .connectionProvider(() -> dataSource.getConnection())
+                .connectionProvider(() -> dataSource.get().getConnection())
                 .serializer(configuration.serializer())
                 .schema(tokenSchema)
                 .build();
