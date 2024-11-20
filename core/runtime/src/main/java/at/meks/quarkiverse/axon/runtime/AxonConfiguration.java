@@ -28,11 +28,6 @@ public interface AxonConfiguration {
     String axonApplicationName();
 
     /**
-     * configuration of metrics.
-     */
-    MetricsConf metrics();
-
-    /**
      * additional configuration for live reloading for axon.
      */
     LiveReloadConfig liveReload();
@@ -222,21 +217,6 @@ public interface AxonConfiguration {
         @WithDefault("quarkus-pooled-processor")
         String name();
 
-    }
-
-    interface MetricsConf {
-
-        /**
-         * enables or disable the metrics of the axon framework.
-         */
-        @WithDefault("true")
-        boolean enabled();
-
-        /**
-         * enables or disables tags for the metrics.
-         */
-        @WithDefault("true")
-        boolean withTags();
     }
 
     /**

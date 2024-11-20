@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment.metrics;
+package at.meks.quarkiverse.axon.metrics.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,8 +13,7 @@ public class WithMetricsTest extends JavaArchiveTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/metrics/withMetrics.properties"),
-                    "application.properties"));
+            javaArchiveBase());
 
     @Override
     protected void assertConfiguration(EventProcessor eventProcessor) {

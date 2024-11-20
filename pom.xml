@@ -57,6 +57,7 @@
         <module>examples</module>
         <module>tokenstore-jdbc</module>
         <module>shared</module>
+        <module>metrics</module>
     </modules>
 
     <properties>

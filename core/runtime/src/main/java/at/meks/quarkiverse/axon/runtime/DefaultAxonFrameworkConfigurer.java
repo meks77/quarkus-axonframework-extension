@@ -3,7 +3,6 @@ package at.meks.quarkiverse.axon.runtime;
 import java.util.Set;
 
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
@@ -15,12 +14,10 @@ import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.eventhandling.EventBusSpanFactory;
 import org.axonframework.eventsourcing.eventstore.EventStore;
-import org.axonframework.micrometer.GlobalMetricRegistry;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
 
@@ -41,10 +38,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     TransactionManager transactionManager;
 
     @Inject
-    Instance<MeterRegistry> meterRegistry;
+    TokenStoreConfigurer tokenStoreConfigurer;
 
     @Inject
-    TokenStoreConfigurer tokenStoreConfigurer;
+    AxonMetricsConfigurer metricsConfigurer;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -71,7 +68,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
 
         configureTransactionManagement(configurer);
-        configureMetrics(configurer);
+        metricsConfigurer.configure(configurer);
 
         return configurer;
     }
@@ -82,21 +79,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
             eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         }
-    }
-
-    private void configureMetrics(Configurer configurer) {
-        if (axonConfiguration.metrics().enabled() && metricsExtensionIsAvailable()) {
-            GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry.get());
-            if (axonConfiguration.metrics().withTags()) {
-                globalMetricRegistry.registerWithConfigurerWithDefaultTags(configurer);
-            } else {
-                globalMetricRegistry.registerWithConfigurer(configurer);
-            }
-        }
-    }
-
-    private boolean metricsExtensionIsAvailable() {
-        return meterRegistry.isResolvable();
     }
 
     private void configureTransactionManagement(Configurer configurer) {
