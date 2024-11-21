@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.tokenstore.jdbc.runtime;
+package at.meks.quarkiverse.axon.transaction.runtime;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.RequestContextController;

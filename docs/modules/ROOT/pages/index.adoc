@@ -367,6 +367,8 @@ you can simply inject it to your CDI bean. The repository and the command gatewa
 [[extension-configuration-reference]]
 == Extension Configuration Reference
 
+=== Core configuration
 include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
 
+=== Metrics configuration
 include::includes/quarkus-axon-metrics.adoc

@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-        <artifactId>quarkus-axon-tokenstore-jdbc-parent</artifactId>
+        <artifactId>quarkus-axon-transaction-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <name>Quarkus Axon JDBC Tokenstore</name>
-    <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+    <name>Quarkus Axon Transaction</name>
+    <artifactId>quarkus-axon-transaction</artifactId>
 
     <dependencies>
         <dependency>
@@ -19,16 +19,11 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-agroal</artifactId>
+            <artifactId>quarkus-narayana-jta</artifactId>
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
             <artifactId>quarkus-axon</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-transaction</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
