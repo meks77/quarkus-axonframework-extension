@@ -60,6 +60,7 @@
         <module>metrics</module>
         <module>transaction</module>
         <module>eventprocessors</module>
+        <module>eventstores</module>
     </modules>
 
     <properties>

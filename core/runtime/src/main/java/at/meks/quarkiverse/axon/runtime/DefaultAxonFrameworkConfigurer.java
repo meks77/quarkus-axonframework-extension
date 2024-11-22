@@ -6,15 +6,9 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConfiguration;
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
 import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
-import org.axonframework.eventhandling.EventBusSpanFactory;
-import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,9 +21,6 @@ import io.quarkus.logging.Log;
 class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
-    AxonConfiguration axonConfiguration;
-
-    @Inject
     ObjectMapper objectMapper;
 
     @Inject
@@ -40,6 +31,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     AxonMetricsConfigurer metricsConfigurer;
+
+    @Inject
+    EventstoreConfigurer eventstoreConfigurer;
 
     @Inject
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
@@ -55,11 +49,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         Log.debug("creating the axon configuration");
         JacksonSerializer jacksonSerializer = JacksonSerializer.builder().objectMapper(objectMapper).build();
         configurer = DefaultConfigurer.defaultConfiguration()
-                .registerComponent(AxonServerConfiguration.class,
-                        cfg -> axonServerConfiguration())
-                .configureEventStore(this::axonserverEventStore)
                 .configureSerializer(conf -> jacksonSerializer)
                 .configureEventSerializer(confg -> jacksonSerializer);
+        eventstoreConfigurer.configure(configurer);
 
         aggregateClasses.forEach(configurer::configureAggregate);
 
@@ -113,28 +105,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Override
     public void queryhandlers(Set<Object> queryhandlerInstances) {
         this.queryhandlers = queryhandlerInstances;
-    }
-
-    private AxonServerConfiguration axonServerConfiguration() {
-        return AxonServerConfiguration.builder()
-                .servers(axonConfiguration.server().hostname() + ":" + axonConfiguration.server().grpcPort())
-                .componentName(axonConfiguration.axonApplicationName())
-                .build();
-    }
-
-    private EventStore axonserverEventStore(Configuration conf) {
-        Log.info("configure connection to axon server");
-        return AxonServerEventStore.builder()
-                .configuration(axonServerConfiguration())
-                .platformConnectionManager(conf.getComponent(AxonServerConnectionManager.class))
-                .defaultContext(axonConfiguration.server().context())
-                .messageMonitor(conf.messageMonitor(AxonServerEventStore.class, "eventStore"))
-                .snapshotSerializer(conf.serializer())
-                .eventSerializer(conf.eventSerializer())
-                .snapshotFilter(conf.snapshotFilter())
-                .upcasterChain(conf.upcasterChain())
-                .spanFactory(conf.getComponent(EventBusSpanFactory.class))
-                .build();
     }
 
     private void registerEventHandler(Object handler, Configurer configurer) {

@@ -21,7 +21,7 @@ public class WithMetricsTest extends JavaArchiveTest {
                 .then().statusCode(200).extract().body().asString();
         assertThat(response)
                 .contains("eventProcessor_")
-                .contains("localCommandBus_")
+                .contains("commandBus_")
                 .contains("eventStore_");
     }
 }

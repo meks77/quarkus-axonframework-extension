@@ -12,11 +12,6 @@ import io.smallrye.config.WithDefault;
 public interface AxonConfiguration {
 
     /**
-     * Configuration properties for der Axon Server.
-     */
-    ServerConfig server();
-
-    /**
      * The name of the Axon application.
      */
     @WithDefault("quarkus-axon")
@@ -26,27 +21,6 @@ public interface AxonConfiguration {
      * additional configuration for live reloading for axon.
      */
     LiveReloadConfig liveReload();
-
-    interface ServerConfig {
-
-        /**
-         * the host name of the axon server.
-         */
-        @WithDefault("localhost")
-        String hostname();
-
-        /**
-         * the grpc port of the axon server.
-         */
-        @WithDefault("8124")
-        int grpcPort();
-
-        /**
-         * the context of the server to which should be connected
-         */
-        @WithDefault("default")
-        String context();
-    }
 
     /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems

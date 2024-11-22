@@ -40,9 +40,8 @@ public class JavaArchiveTest {
 
     public static JavaArchive javaArchiveBase() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class,
-                        DomainServiceExample.class,
-                        GiftcardQueryHandler.class, GiftcardView.class)
+                .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, DomainServiceExample.class,
+                        GiftcardQueryHandler.class, GiftcardView.class, GiftcardResource.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -80,14 +79,17 @@ public class JavaArchiveTest {
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
         await().atMost(Duration.ofSeconds(10))
                 .pollDelay(Duration.ZERO)
-                .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
+                .untilAsserted(
+                        () -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
 
         commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 1));
         await().atMost(Duration.ofSeconds(20))
                 .pollDelay(Duration.ZERO)
-                .untilAsserted(() -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
+                .untilAsserted(() -> assertTrue(
+                        giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
 
-        CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId), GiftcardView.class);
+        CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId),
+                GiftcardView.class);
         assertThat(queryResult)
                 .succeedsWithin(Duration.ofSeconds(1))
                 .usingRecursiveComparison()

@@ -371,19 +371,21 @@ you can simply inject it to your CDI bean. The repository and the command gatewa
 include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
 
 === Metrics configuration
-include::includes/quarkus-axon-metrics.adoc
+include::includes/quarkus-axon-metrics.adoc[leveloffset=+1,opts=optional]
 
 === Eventprocessor configurations
 
 ==== Persistent Stream
-include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc
+include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc[leveloffset=+1,opts=optional]
 
 ==== Tracking Event Processor configuration
-include::includes/quarkus-axon-tracking-eventprocessor.adoc
+include::includes/quarkus-axon-tracking-eventprocessor.adoc[leveloffset=+1,opts=optional]
 
 ==== Pooled Event Processor configuration
-include::includes/quarkus-axon-pooled-eventprocessor.adoc
+include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=optional]
 
 ==== JDBC Tokenstore configuration
-include::includes/quarkus-axon-tokenstore-jdbc.adoc
+include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional]
 
+=== Axon Server configuration
+include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]
