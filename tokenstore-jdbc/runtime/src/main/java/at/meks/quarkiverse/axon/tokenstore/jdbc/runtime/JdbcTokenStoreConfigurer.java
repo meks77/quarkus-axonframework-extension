@@ -17,7 +17,6 @@ import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import at.meks.quarkiverse.axon.runtime.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.TokenStoreConfigurer;
 
 @ApplicationScoped
@@ -27,7 +26,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
     Instance<DataSource> dataSource;
 
     @Inject
-    AxonConfiguration axonConfiguration;
+    TokenStoreConfiguration configuration;
 
     @ConfigProperty(name = "quarkus.datasource.db-kind", defaultValue = "none")
     String dbKind;
@@ -57,7 +56,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
     }
 
     private void autoCreateJdbcTokenTable(TokenSchema tokenSchema, JdbcTokenStore store) {
-        if (!axonConfiguration.eventhandling().defaultStreamingProcessor().tokenstore().autocreateTableForJdbcToken()) {
+        if (!configuration.autocreateTableForJdbcToken()) {
             return;
         }
         TokenTableFactory tokenTableFactory;

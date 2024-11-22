@@ -372,3 +372,18 @@ include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
 
 === Metrics configuration
 include::includes/quarkus-axon-metrics.adoc
+
+=== Eventprocessor configurations
+
+==== Persistent Stream
+include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc
+
+==== Tracking Event Processor configuration
+include::includes/quarkus-axon-tracking-eventprocessor.adoc
+
+==== Pooled Event Processor configuration
+include::includes/quarkus-axon-pooled-eventprocessor.adoc
+
+==== JDBC Tokenstore configuration
+include::includes/quarkus-axon-tokenstore-jdbc.adoc
+

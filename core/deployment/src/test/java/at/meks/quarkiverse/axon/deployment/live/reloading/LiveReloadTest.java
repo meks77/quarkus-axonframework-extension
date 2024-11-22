@@ -14,9 +14,9 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.deployment.streamingprocessors.pooled.PooledProcessorTest;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
+import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 import io.restassured.RestAssured;
 
@@ -26,7 +26,7 @@ public class LiveReloadTest {
     final static QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClasses(ConfigResource.class, DomainServiceForLiveReloading.class, Api.class, Giftcard.class)
-                    .addAsResource(PooledProcessorTest.propertiesFile("/live/reloading/application.properties"),
+                    .addAsResource(JavaArchiveTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));
 
     /**

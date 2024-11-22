@@ -3,6 +3,7 @@ package at.meks.quarkiverse.axon.runtime;
 import java.util.Set;
 
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
@@ -29,9 +30,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     AxonConfiguration axonConfiguration;
 
     @Inject
-    EventProcessingCustomizer eventProcessingCustomizer;
-
-    @Inject
     ObjectMapper objectMapper;
 
     @Inject
@@ -42,6 +40,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     AxonMetricsConfigurer metricsConfigurer;
+
+    @Inject
+    Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -75,8 +76,17 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureEventHandling(Configurer configurer) {
         if (!eventhandlers.isEmpty()) {
+            if (eventProcessingConfigurers.isUnsatisfied()) {
+                throw new IllegalStateException(
+                        "no eventProcessingConfigurer found. Either add a eventprocessing extension dependency or provide your own implementation of "
+                                + AxonEventProcessingConfigurer.class.getName());
+            } else if (eventProcessingConfigurers.isAmbiguous()) {
+                throw new IllegalStateException(
+                        "multiple eventProcessingConfigurers(" + AxonEventProcessingConfigurer.class.getName() + ") found.");
+            }
             tokenStoreConfigurer.configureTokenStore(configurer);
-            eventProcessingCustomizer.configureEventProcessing(configurer.eventProcessing());
+            eventProcessingConfigurers.get().configure(configurer.eventProcessing());
+
             eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         }
     }

@@ -59,6 +59,7 @@
         <module>shared</module>
         <module>metrics</module>
         <module>transaction</module>
+        <module>eventprocessors</module>
     </modules>
 
     <properties>
@@ -84,6 +85,18 @@
                 <version>4.10.3</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-messaging</artifactId>
+                <!-- maven doesn't use the version of the imported axon-bom. Better than duplicated exclusion? -->
+                <version>4.10.2</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.thoughtworks.xstream</groupId>
+                        <artifactId>xstream</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
