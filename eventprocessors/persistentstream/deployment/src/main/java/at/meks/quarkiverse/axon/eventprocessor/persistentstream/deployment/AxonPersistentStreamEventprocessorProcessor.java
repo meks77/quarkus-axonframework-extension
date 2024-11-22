@@ -7,7 +7,7 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 
 public class AxonPersistentStreamEventprocessorProcessor {
 
-    private static final String FEATURE = "axon-pooled-eventprocessor";
+    private static final String FEATURE = "axon-persistentstream";
 
     @BuildStep
     FeatureBuildItem feature() {

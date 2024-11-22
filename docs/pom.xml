@@ -33,6 +33,22 @@
             <artifactId>quarkus-axon-transaction-deployment</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-tracking-eventprocessor-deployment</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-pooled-eventprocessor-deployment</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-persistent-stream-eventprocessor-deployment</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
