@@ -20,4 +20,10 @@ public class AxonframeworkExtensionDevModeTest {
         // Write your dev mode tests here - see the testing extension guide https://quarkus.io/guides/writing-extensions#testing-hot-reload for more information
         Assertions.assertTrue(true, "Add dev mode assertions to " + getClass().getName());
     }
+
+    //TODO: write Tests for devmode
+    // * modifiy aggrgate/command-/event-/query-handler
+    // * add aggregate/command-/event-/query-handler
+    // * delete aggregate/command-/event-/query-handler
+    // * add aggregate member
 }
