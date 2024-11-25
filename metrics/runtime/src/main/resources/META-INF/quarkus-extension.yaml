@@ -1,0 +1,12 @@
+name: "Axon Framework - Metrics"
+description: Enables the metrics of the axon framework
+metadata:
+  keywords:
+    - "axon"
+    - "event sourcing"
+    - "cqrs"
+    - "metrics"
+#  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+  categories:
+    - "data"
+  status: "experimental"

@@ -1,0 +1,28 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-autocreate-table-for-jdbc-token[`quarkus.axon.tokenstore.autocreate-table-for-jdbc-token`]##
+
+[.description]
+--
+if true, the table for the jdbc token is created on startup.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
+|===
+
