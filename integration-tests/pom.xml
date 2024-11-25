@@ -8,7 +8,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>quarkus-axonframework-extension-integration-tests</artifactId>
-    <name>Quarkus Axonframework Extension - Integration Tests</name>
+    <name>Quarkus Axon Extension - Integration Tests</name>
 
     <properties>
         <skipITs>true</skipITs>
@@ -21,8 +21,22 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axonframework-extension</artifactId>
+            <artifactId>quarkus-axon</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-tracking-eventprocessor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-h2</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

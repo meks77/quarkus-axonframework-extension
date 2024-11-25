@@ -22,7 +22,7 @@ A rest service for requesting the current amount of the card uses a query. The q
 
 The commands are submitted by a test.
 
-=== Getting started
+=== Getting started (after 0.1.0-RC1)
 
 Add the following import to your build file:
 
@@ -30,8 +30,8 @@ Add the following import to your build file:
 ----
 <dependency>
     <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-    <artifactId>quarkus-axonframework-extension</artifactId>
-    <version>{project-version}</version>
+    <artifactId>quarkus-axon</artifactId>
+    <version>VERSION</version>
 </dependency>
 ----
 
@@ -313,8 +313,26 @@ class ApplicationTest {
 
 
 
+=== Event Store
+
+CAUTION: By default, the In-Memory Event Store is used. This normally shouldn't be used in production systems because on shutdown the events are lost.
+
+Currently, you have to options to use another event store. Either use the extension "quarkus-axon-server" or implement your own custom event store by implementing the interface "EventstoreConfigurer".
+
+In future releases at the least the jdbc event store will be added as an extra extension.
 
 ==== Axon Server connection
+
+Add the dependency
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-server</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
 
 When starting with dev or test profile, the Axon Server is started as dev service. For production use the connection details can be configured using the keys
 
@@ -325,30 +343,142 @@ quarkus.axon.server.hostname=localhost
 quarkus.axon.server.grpc-port=8124
 ----
 
-All you have to do is to define the correct host name, port and context, if they don't match the default value.
+All you have to do is to define the correct host name, port and context if they don't match the default value.
+
+==== Custom Event Store
+To provide your custom event store you just have to implement the interface blabla.
+
+Here is an example how it could look like:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyCustomEventstoreConfigurer implements EventstoreConfigurer {
+
+
+    public void configure(Configurer configurer) {
+        configurer.configureEventStore(this::myCustomEventstore);
+    }
+
+    private EventStore myCustomEventstore(Configuration conf) {
+        // here you setup your custom event store
+    }
+}
+----
+For more details of how to setup an event store, please read the axon framework documentation.
 
 === Event Processors
+
 Event Processors are necessary for event handler.
 Those processors need to know which events are already processed.
 This information is stored in a token store.
 
 CAUTION: By default, the subscribing processor with an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
 
-The different processors can be configured using the config keys "quarkus.axon.eventhandling.*".
+The different processors can be used by adding the dependency the one, you would like to use.
 
-To define another event processor, change the value of the key "quarkus.axon.eventhandling.default-mode". Possible values are
+The artifact ids are:
 
-- persistent stream
-- tracking
-- pooled
-- subscribing
+- quarkus-axon-persistent-stream-eventprocessor
+- quarkus-axon-pooled-eventprocessor
+- quarkus-axon-tracking-eventprocessor
 
 With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
 
-To define a persistent token store, you need to set the value of "quarkus.axon.eventhandling.default-streaming-processor.tokenstore.type" to "jdbc". Furthermore, you need to add the quarkus-agroal and a jdbc driver dependency. The database structure is created automatically on startup.
+For more details on how to add a persistent token store, read the section <<Tokenstore>>.
 
 For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
+
+=== Tokenstore
+CAUTION: By default, an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
+
+Currently only the JDBC Tokenstore is supported.
+
+==== JDBC Tokenstore
+If you would like to use the JDBC Tokenstore you simply have to add the dependency to the extension, and setup a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
+
+CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see <<Transaction>>.
+
+[source,properties]
+----
+quarkus.axon.tokenstore.autocreate-table-for-jdbc-token=false
+----
+
+Currently it is not supported to have more than 1 configured datasource.
+
+==== Custom Tokenstore
+To provide your custom tokenstore you just need to implement the interface "TokenStoreConfigurer".
+
+[source,java]
+----
+@ApplicationScoped
+public class MyCustomTokenStoreConfigurer implements TokenStoreConfigurer {
+
+    @Override
+    public void configureTokenStore(Configurer configurer) {
+        configureAndSetupTokenstore(configurer.eventProcessing());
+        configurer.registerComponent(TokenStore.class, this::createTokenStore);
+    }
+
+    private TokenStore createTokenStore(Configuration configuration) {
+        // setup your token store here
+    }
+}
+----
+
+For more information on setting up a token store, please read the axon framework documentation.
+
+=== Transaction
+CAUTION: By default, no transaction management is setup.
+
+If you need transaction management you can simple add the extension:
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-transaction</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+It uses the quarkus transaction management configured into the axon framework.
+
+=== Metrics
+If you want to use metrics you can enable it by adding the extension:
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-metrics</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+Using the configuration, you can disable the metrics:
+[source,properties]
+----
+quarkus.axon.metrics.enabled=false
+----
+
+Futhermore axon provides the possibility to use tag for the metrics. This is enabled by default but can also be disbabled using the configuration:
+[source,properties]
+----
+quarkus.axon.metrics.with-tags=false
+----
 
 === Access to Axon objects
 
@@ -367,4 +497,25 @@ you can simply inject it to your CDI bean. The repository and the command gatewa
 [[extension-configuration-reference]]
 == Extension Configuration Reference
 
-include::includes/quarkus-axonframework-extension.adoc[leveloffset=+1,opts=optional]
+=== Core configuration
+include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
+
+=== Metrics configuration
+include::includes/quarkus-axon-metrics.adoc[leveloffset=+1,opts=optional]
+
+=== Eventprocessor configurations
+
+==== Persistent Stream
+include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+==== Tracking Event Processor configuration
+include::includes/quarkus-axon-tracking-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+==== Pooled Event Processor configuration
+include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+==== JDBC Tokenstore configuration
+include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional]
+
+=== Axon Server configuration
+include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]

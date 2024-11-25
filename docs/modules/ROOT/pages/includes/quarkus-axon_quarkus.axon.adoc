@@ -1,0 +1,62 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
+
+[.description]
+--
+The name of the Axon application.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_AXON_APPLICATION_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_AXON_APPLICATION_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`quarkus-axon`
+
+a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`quarkus.axon.live-reload.shutdown.wait-duration.unit`]##
+
+[.description]
+--
+the time unit used for the shutdown wait duration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_UNIT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_UNIT+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
+|`milliseconds`
+
+a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount[`quarkus.axon.live-reload.shutdown.wait-duration.amount`]##
+
+[.description]
+--
+the amount of time to wait after shutdown.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_AMOUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_AMOUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|`500`
+
+|===
+
