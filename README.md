@@ -46,6 +46,16 @@ Currently, the LTS version 3.15 is supported in the branch release/quarkus-3.15
 * command handlers
 * query handlers
 
+### custom configuration
+You can provide your own setup for
+
+* setting up the framework at all but use the scanned classes
+* custom transaction manager
+* custom event processors
+* custom event store
+* custom metrics
+* custom token store
+
 ### supported event processors
 
 #### Subscribing processors
