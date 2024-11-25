@@ -15,6 +15,8 @@ public class AllPropertiesChangedTest extends PooledProcessorTest {
 
     @Override
     protected void assertPooledConfiguration(PooledStreamingEventProcessor eventProcessor) {
+        // Other changed properties can't be asserted because currently they can't be accessed.
         assertEquals(4, eventProcessor.maxCapacity());
+        assertEquals("myCustomName", eventProcessor.getName());
     }
 }

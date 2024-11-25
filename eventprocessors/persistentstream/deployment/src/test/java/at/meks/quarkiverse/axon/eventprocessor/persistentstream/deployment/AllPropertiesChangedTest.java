@@ -6,10 +6,10 @@ import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
 /**
- * There is nothing what can be asserted, except that commands and events are processed.
- * Therefor all config properties, except the context, are changed to a different value.
+ * There is nothing that can be asserted, except that commands and events are processed.
+ * Therefore, all config properties, except the context, are changed to a different value.
  * <p>
- * The context can't be changed, because the axon without enterprise license doesn't supports just one context.
+ * The context can't be changed because the axon server without enterprise license supports just one context.
  */
 public class AllPropertiesChangedTest extends PersistentStreamProcessorTest {
 

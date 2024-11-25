@@ -15,6 +15,7 @@ public class AllPropertiesChangedTest extends TrackingProcessorTest {
 
     @Override
     protected void assertConfiguration(TrackingEventProcessor trackingEventProcessor) {
+        // Other changed properties can't be asserted because currently they can't be accessed.
         assertEquals(8, trackingEventProcessor.maxCapacity());
     }
 }
