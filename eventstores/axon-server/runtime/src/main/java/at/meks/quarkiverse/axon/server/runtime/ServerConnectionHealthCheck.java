@@ -19,16 +19,24 @@ public class ServerConnectionHealthCheck implements HealthCheck {
 
     @Override
     public HealthCheckResponse call() {
-        AxonServerConnectionManager axonServerConnectionManager = configuration.getComponent(
-                AxonServerConnectionManager.class);
-        boolean connected = axonServerConnectionManager.isConnected(axonServerConfiguration.context());
-        HealthCheckResponseBuilder responseBuilder = HealthCheckResponse.named("Axon server connection")
+        HealthCheckResponseBuilder responseBuilder = createResponseBuilder();
+        if (isConnectedToAxonServer()) {
+            responseBuilder.up();
+        } else {
+            responseBuilder.down();
+        }
+        return responseBuilder.build();
+    }
+
+    private HealthCheckResponseBuilder createResponseBuilder() {
+        return HealthCheckResponse.named("Axon server connection")
                 .withData("host", axonServerConfiguration.hostname())
                 .withData("port", axonServerConfiguration.grpcPort())
                 .withData("context", axonServerConfiguration.context());
-        if (connected) {
-            return responseBuilder.up().build();
-        }
-        return responseBuilder.down().build();
+    }
+
+    private boolean isConnectedToAxonServer() {
+        return configuration.getComponent(AxonServerConnectionManager.class)
+                .isConnected(axonServerConfiguration.context());
     }
 }
