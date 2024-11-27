@@ -7,6 +7,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import at.meks.quarkiverse.axon.server.runtime.AxonServerConfigurer;
+import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerBuildTimeConfiguration;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.IsNormal;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -14,6 +15,7 @@ import io.quarkus.deployment.builditem.DevServicesResultBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.dev.devservices.GlobalDevServicesConfig;
 import io.quarkus.logging.Log;
+import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 
 public class AxonServerProcessor {
 
@@ -52,5 +54,11 @@ public class AxonServerProcessor {
         return new DevServicesResultBuildItem.RunningDevService(FEATURE, container.getContainerId(),
                 container::close, configOverrides)
                 .toBuildItem();
+    }
+
+    @BuildStep
+    HealthBuildItem addHealthCheck(QuarkusAxonServerBuildTimeConfiguration configuration) {
+        return new HealthBuildItem("at.meks.quarkiverse.axon.server.runtime.ServerConnectionHealthCheck",
+                configuration.healthEnabled());
     }
 }
