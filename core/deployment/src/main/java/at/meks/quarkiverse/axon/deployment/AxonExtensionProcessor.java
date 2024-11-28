@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import at.meks.quarkiverse.axon.runtime.AxonExtension;
 import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
+import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
@@ -27,6 +28,7 @@ import io.quarkus.deployment.annotations.ExecutionTime;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.logging.Log;
+import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 
 class AxonExtensionProcessor {
 
@@ -175,6 +177,12 @@ class AxonExtensionProcessor {
         unremovableItems.addAll(eventhandlerClasses(beanArchiveIndex).toList());
         unremovableItems.addAll(commandhandlerClasses(beanArchiveIndex).toList());
         return UnremovableBeanBuildItem.beanTypes(unremovableItems.toArray(Class[]::new));
+    }
+
+    @BuildStep
+    HealthBuildItem addHealthCheck(AxonBuildTimeConfiguration configuration) {
+        return new HealthBuildItem("at.meks.quarkiverse.axon.runtime.health.EventprocessorsHealthCheck",
+                configuration.healthEnabled());
     }
 
 }

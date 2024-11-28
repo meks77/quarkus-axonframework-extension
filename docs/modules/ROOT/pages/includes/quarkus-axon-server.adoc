@@ -8,6 +8,23 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
+a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-health-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-health-enabled[`quarkus.axon.server.health-enabled`]##
+
+[.description]
+--
+enables or disables health checks
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_HEALTH_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_HEALTH_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 a| [[quarkus-axon-server_quarkus-axon-server-hostname]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-hostname[`quarkus.axon.server.hostname`]##
 
 [.description]

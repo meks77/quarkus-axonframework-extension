@@ -8,6 +8,23 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`quarkus.axon.health-enabled`]##
+
+[.description]
+--
+enables or disables health checks
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_HEALTH_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_HEALTH_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
 
 [.description]

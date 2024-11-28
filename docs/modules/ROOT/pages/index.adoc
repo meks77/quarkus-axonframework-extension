@@ -480,6 +480,19 @@ Futhermore axon provides the possibility to use tag for the metrics. This is ena
 quarkus.axon.metrics.with-tags=false
 ----
 
+=== Health Checks
+
+If the quarkus extension for health checks (quarkus-smallrye-health) is added, checks for the Axon Server connection and for the event processors are activated.
+
+Axon Server connection health checks are only active if you have added the extension quarkus-axon-server to your project.
+
+If you would like to deactivate the health checks, you can do that by setting the properties(just one or both)
+
+- quarkus.axon.health-enabled
+- quarkus.axon.server.health-enabled
+
+to false. Be aware that these settings are build-time settings. That means that these settings are considered at build time only. You can't overrule this setting at runtime e.g., using an environment variable.
+
 === Access to Axon objects
 
 If you need to access the

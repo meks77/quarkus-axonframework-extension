@@ -99,9 +99,14 @@ public class JavaArchiveTest {
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
         assertConfiguration(eventProcessorOptional.get());
+        assertOthers();
     }
 
     protected void assertConfiguration(EventProcessor eventProcessor) {
+
+    }
+
+    protected void assertOthers() {
 
     }
 
