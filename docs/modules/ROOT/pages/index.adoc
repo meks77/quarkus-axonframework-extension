@@ -313,7 +313,7 @@ class ApplicationTest {
 
 
 
-=== Event Store
+=== Event Stores
 
 CAUTION: By default, the In-Memory Event Store is used. This normally shouldn't be used in production systems because on shutdown the events are lost.
 
@@ -345,8 +345,33 @@ quarkus.axon.server.grpc-port=8124
 
 All you have to do is to define the correct host name, port and context if they don't match the default value.
 
+==== JPA Event Store
+
+Add the dependency
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-jpa-eventstore</artifactId>
+    <version>${project.version}</version>
+</dependency>
+----
+
+Set up your hibernate/datasource configuration in application.properties.
+Finally, you have to define in application.properties e.g.
+
+[source,properties]
+----
+quarkus.hibernate-orm.database.generation=update
+----
+
+or somehow set up the necessary tables(e.g. using Flyway). For details see the Axoniq documentation.
+
+There are some configurations possible(see <<_jpa_event_store_configuration>>)
+
 ==== Custom Event Store
-To provide your custom event store you just have to implement the interface blabla.
+To provide your custom event store, you just have to implement the interface blabla.
 
 Here is an example how it could look like:
 
@@ -532,3 +557,6 @@ include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional
 
 === Axon Server configuration
 include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]
+
+=== JPA Event Store configuration
+include::includes/quarkus-axon-jpa-eventstore.adoc[leveloffset=+1,opts=optional]

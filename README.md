@@ -68,6 +68,7 @@ You can provide your own setup for
 ### supported event stores
 
 * axon server
+* jpa event store
 
 ### other supported stuff
 
