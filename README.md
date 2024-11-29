@@ -85,6 +85,13 @@ You can provide your own setup for
 * dev service for the axon server
 * live reloading
 
+#### Live reloading
+Live reloading works with a schedule process, which checks if sources changed.
+For some reason, when shutting down the axon configuration, it must be wait, that the new configuration works well.
+
+If the wait time is too less, an error can occur that no command handler for your command is available.
+If that happens, please try to increase the wait time. For details please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
+
 ## Future features
 
 The extension is just at the beginning. In the project tab are some of the features, which are currently planned.
@@ -95,147 +102,5 @@ Help for implementing the features is welcome.
 
 ## Usage
 
-Currently, it is not published to a maven repo, because it is in a too early stage. As long as it doesn't have a minimum
-functionality, it will not be published.
+Please follow [Extension Documentation](docs/modules/ROOT/pages/index.adoc).
 
-Because of that you have to check out the sources and install it to your local maven repository using the following
-command:
-
-```shell
-mvn install
-```
-
-If you have a container engine installed (e.g. docker or podman), the build will start an axon server and run tests. If
-containers are not supported, you must start an axon server and configure the grpc port, if it is not equal to the
-default.
-
-After the successfull build you follow [Extension Documentation](docs/modules/ROOT/pages/index.adoc). Be aware of the
-wrong version in this documentation. Currently the Version is 0.1.0-SNAPSHOT.
-
-### Provided CDI Beans
-
-The following Axon Framework Type can simply be injected:
-
-* EventGateway
-* EventBus
-* CommandGateway and
-* CommandBus
-
-### Aggregates, event handler and command handler
-
-Aggregates, event handler and command handler are detected automatically.
-
-### Event store
-
-As Eventstore the Axon Server is used. The configuration for the connection is described in
-the [Extension Documentation](docs/modules/ROOT/pages/index.adoc)
-
-### Repositories
-
-Currently the Bean RepositorySupplier can be injected, which provides access to the repositories for aggregates.
-
-### Dev service for the Axon Server
-
-If dev services are enabled and you have a container engine running(e.g. docker or podman), an axon server is
-automatically started, when starting the application in dev mode.
-
-### Event Processors
-
-#### Default event processors
-
-##### Subscribing Event Processors
-
-The simple subscribing event processor is enabled by default. There is nothing you need to do, to have the subscribing
-event processor active.
-
-Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
-
-##### Persistent Streams
-
-If you want to use persistent streams by default, configure
-
-```
-quarkus.axon.eventhandling.default-mode=persistent-stream
-```
-
-You can also configure
-
-* the initial position
-* the initial segments
-* the stream name
-* the message source name
-* the used context
-* the filter and
-* the batch for processing the events
-
-For more details for the configuration please read
-the [configurations documentation](docs/modules/ROOT/pages/index.adoc)
-
-Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
-
-##### Tracking event processor
-
-If you want to use the tracking event processor by default, configure
-
-```
-quarkus.axon.eventhandling.default-mode=tracking
-```
-
-You can also configure
-
-* the initial position
-* the initial segments
-* the batch size
-* the thread-count
-* token claim interval
-* token claim time unit
-
-Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
-
-##### Pooled event processor
-
-If you want to use the pooled event processor by default, configure
-
-```
-quarkus.axon.eventhandling.default-mode=pooled
-```
-
-You can also configure
-
-* the initial position
-* the initial segments
-* the batch size
-* the stream name
-* the max claimed segments
-* if the coordinator claim extension should be activated
-
-Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
-
-### Transaction Management
-
-If quarkus transaction management is available, transaction management for the axon framework is activated automatically
-
-### Token stores
-Currently, 2 different token stores are supported.
-
-* in memory
-* jdbc
-
-To configure the token store using the config key `quarkus.axon.eventhandling.default-streaming-processor.tokenstore.type`.
-
-Please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure. 
-
-### Other Features
-
-#### Metrics
-
-Metrics are automatically enabled, as soon as the quarkus metrics extension(micrometer) is activated.
-
-You can disable the metrics and configure tags are used.
-
-#### Live reloading
-Live reloading works with a schedule process, which checks if sources changed.
-For some reason, when shutting down the axon configuration, it must be wait, that the new configuration works well. 
-
-If the wait time is too less, an error can occur that no command handler for your command is available.
-If that happens, please try to increase the wait time. For details please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
