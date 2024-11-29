@@ -370,6 +370,34 @@ or somehow set up the necessary tables(e.g. using Flyway). For details see the A
 
 There are some configurations possible(see <<_jpa_event_store_configuration>>)
 
+==== JDBC Event Store
+
+Add the dependency
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-jpa-eventstore</artifactId>
+    <version>${project.version}</version>
+</dependency>
+----
+
+Set up your hibernate/datasource configuration in application.properties.
+
+By default the database structures are created automatically.
+
+CAUTION: The supported database for "autocreate-tables" are limited to mariadb, mysql, postgresql and oracle
+
+You can disable it by setting
+
+[source,properties]
+----
+quarkus.axon.eventstore.jdbc.autocreate-tables=false
+----
+
+There are some other configurations possible(see <<_jdbc_event_store_configuration>>)
+
 ==== Custom Event Store
 To provide your custom event store, you just have to implement the interface blabla.
 
@@ -561,3 +589,7 @@ include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]
 [#_jpa_event_store_configuration]
 === JPA Event Store configuration
 include::includes/quarkus-axon-jpa-eventstore.adoc[leveloffset=+1,opts=optional]
+
+[#_jdbc_event_store_configuration]
+=== JDBC Event Store configuration
+include::includes/quarkus-axon-jdbc-eventstore.adoc[leveloffset=+1,opts=optional]
