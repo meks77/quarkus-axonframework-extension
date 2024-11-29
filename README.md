@@ -64,16 +64,23 @@ You can provide your own setup for
 * persistent streams
 * tracking event processor
 * pooled event processor
+* custom setup of event processors
 
 ### supported event stores
 
 * axon server
 * jpa event store
+* custom event store
+
+### supported Token Stores
+
+* JDBC Token Store
+* custom setup for Tokenstore
 
 ### other supported stuff
 
 * transaction handling
-* JDBC token store
+* custom setup of transaction handling
 * dev service for the axon server
 * live reloading
 

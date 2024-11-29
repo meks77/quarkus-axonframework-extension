@@ -373,7 +373,7 @@ There are some configurations possible(see <<_jpa_event_store_configuration>>)
 ==== Custom Event Store
 To provide your custom event store, you just have to implement the interface blabla.
 
-Here is an example how it could look like:
+Here is an example of what it could look like:
 
 [source,java]
 ----
@@ -558,5 +558,6 @@ include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional
 === Axon Server configuration
 include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]
 
+[#_jpa_event_store_configuration]
 === JPA Event Store configuration
 include::includes/quarkus-axon-jpa-eventstore.adoc[leveloffset=+1,opts=optional]

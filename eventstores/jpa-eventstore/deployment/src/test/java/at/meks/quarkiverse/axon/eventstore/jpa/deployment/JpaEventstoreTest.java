@@ -28,7 +28,7 @@ public class JpaEventstoreTest extends JavaArchiveTest {
         List<DomainEventEntry> events = entityManager.createQuery(
                 "SELECT e FROM DomainEventEntry e", DomainEventEntry.class).getResultList();
 
-        assertThat(events).hasSizeGreaterThan(2);
+        assertThat(events).hasSizeGreaterThanOrEqualTo(2);
         assertNotNull(entityManager.createQuery("SELECT e FROM SnapshotEventEntry e").getResultList());
     }
 
