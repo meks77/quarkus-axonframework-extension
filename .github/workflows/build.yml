@@ -55,7 +55,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          echo "testcontainers.reuse.enable=true" > ~/.testcontainer.properties
+          echo "testcontainers.reuse.enable=true" > /home/runner/.testcontainers.properties
           mvn -B clean install -Dno-format -P without-live-reload-tests
 #   TODO: activate for native compilation support
 #      - name: Build with Maven (Native)
