@@ -3,18 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-        <artifactId>quarkus-axonframework-extension-parent</artifactId>
+        <artifactId>quarkus-axon-eventstores</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <name>Quarkus Axon - Eventstores</name>
-    <description>This module contains modules which provide connection to eventstores</description>
-    <artifactId>quarkus-axon-eventstores</artifactId>
+    <name>Quarkus Axon - JPA Eventstore - Parent</name>
+    <description>Quarkus Extension for using JPA for storing events</description>
+    <artifactId>quarkus-axon-jpa-eventstore-parent</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>axon-server</module>
-        <module>jpa-eventstore</module>
+        <module>deployment</module>
+        <module>runtime</module>
     </modules>
-
 
 </project>

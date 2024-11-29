@@ -1,0 +1,12 @@
+name: "Axon Framework - JPA Event Store"
+description: Provides the possiblity to use JPA to store events and snapshots
+metadata:
+  keywords:
+    - "axon"
+    - "event sourcing"
+    - "cqrs"
+    - "eventstore"
+#  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+  categories:
+    - "data"
+  status: "experimental"

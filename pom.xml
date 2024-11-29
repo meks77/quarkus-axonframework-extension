@@ -53,7 +53,6 @@
 
     <modules>
         <module>core</module>
-        <module>docs</module>
         <module>examples</module>
         <module>tokenstore-jdbc</module>
         <module>shared</module>
@@ -61,6 +60,9 @@
         <module>transaction</module>
         <module>eventprocessors</module>
         <module>eventstores</module>
+        <!-- The docs module must be at the end of the list because it must be built at the end. Setting the dependencies
+          causes other problems, especially when quarkus-hibernate-orm is in the build classpath. -->
+        <module>docs</module>
     </modules>
 
     <properties>
