@@ -49,7 +49,7 @@ public interface JpaEventstoreConfig {
     long lowestGlobalSequence();
 
     /**
-     * Sets the amount of time until a 'gap' in a TrackingToken may be considered timed out.
+     * Sets the amount of time in milliseconds until a 'gap' in a TrackingToken may be considered timed out.
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework
      *

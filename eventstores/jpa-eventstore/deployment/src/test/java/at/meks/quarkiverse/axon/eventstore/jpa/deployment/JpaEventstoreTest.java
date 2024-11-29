@@ -9,22 +9,16 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import org.axonframework.eventsourcing.eventstore.jpa.DomainEventEntry;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
 
-public class JpaEventstoreTest extends JavaArchiveTest {
-
-    @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/application.properties"), "application.properties"));
+public abstract class JpaEventstoreTest extends JavaArchiveTest {
 
     @Inject
     EntityManager entityManager;
 
     @Override
-    protected void assertOthers() {
+    protected final void assertOthers() {
         List<DomainEventEntry> events = entityManager.createQuery(
                 "SELECT e FROM DomainEventEntry e", DomainEventEntry.class).getResultList();
 
@@ -32,5 +26,4 @@ public class JpaEventstoreTest extends JavaArchiveTest {
         assertNotNull(entityManager.createQuery("SELECT e FROM SnapshotEventEntry e").getResultList());
     }
 
-    // TODO: test with customized configuration
 }
