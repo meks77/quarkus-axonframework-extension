@@ -68,9 +68,10 @@ You can provide your own setup for
 
 ### supported event stores
 
-* axon server
-* jpa event store
-* custom event store
+* Axon Server
+* JPA Event Store
+* JDBC Event Store
+* Custom Event Store
 
 ### supported Token Stores
 
