@@ -1,0 +1,123 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-batch-size]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-batch-size[`quarkus.axon.eventstore.jpa.batch-size`]##
+
+[.description]
+--
+Sets the batchSize specifying the number of events that should be read at each database access.
+
+Set to a value smaller than 0 to use the default of the Axon framework.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_BATCH_SIZE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_BATCH_SIZE+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-explicit-flush]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-explicit-flush[`quarkus.axon.eventstore.jpa.explicit-flush`]##
+
+[.description]
+--
+Sets the explicitFlush field specifying whether to explicitly call EntityManager. flush() after inserting the Events published in this Unit of Work.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_EXPLICIT_FLUSH+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_EXPLICIT_FLUSH+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-cleaning-threshold]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-cleaning-threshold[`quarkus.axon.eventstore.jpa.gap-cleaning-threshold`]##
+
+[.description]
+--
+Sets the threshold of number of gaps in a token before an attempt to clean gaps up is taken.
+
+Set to a value smaller than 0 to use the default of the Axon framework
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_CLEANING_THRESHOLD+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_CLEANING_THRESHOLD+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-lowest-global-sequence]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-lowest-global-sequence[`quarkus.axon.eventstore.jpa.lowest-global-sequence`]##
+
+[.description]
+--
+Sets the lowestGlobalSequence specifying the first expected auto generated sequence number.
+
+Set to a value smaller than 0 to use the default of the Axon framework
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_LOWEST_GLOBAL_SEQUENCE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_LOWEST_GLOBAL_SEQUENCE+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|`-1`
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-timeout]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-timeout[`quarkus.axon.eventstore.jpa.gap-timeout`]##
+
+[.description]
+--
+Sets the amount of time until a 'gap' in a TrackingToken may be considered timed out.
+
+Set to a value smaller than 0 to use the default of the Axon framework
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-max-gap-offset]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-max-gap-offset[`quarkus.axon.eventstore.jpa.max-gap-offset`]##
+
+[.description]
+--
+Sets the amount of time until a 'gap' in a TrackingToken may be considered timed out.
+
+Set to a value smaller than 0 to use the default of the Axon framework
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENTSTORE_JPA_MAX_GAP_OFFSET+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_MAX_GAP_OFFSET+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
+|===
+
