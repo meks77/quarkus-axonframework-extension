@@ -10,6 +10,7 @@ import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;
 
 import io.quarkus.arc.DefaultBean;
+import io.quarkus.logging.Log;
 
 @ApplicationScoped
 @DefaultBean
@@ -41,7 +42,7 @@ public class DefaultAggregateConfigurer implements QuarkusAggregateConfigurer {
 
     private <T> void configureSnapshots(Class<T> aggregate, AggregateConfigurer<T> aggregateConfigurer) {
         AxonConfiguration.SnapshotConfiguration snapshotConfig = snapshotConfig(aggregate);
-
+        Log.infof("Snapshotconfig: trigger type: %s, threshold: %s", snapshotConfig.triggerType(), snapshotConfig.threshold());
         if (snapshotConfig.triggerType() == TriggerType.EventCount) {
             aggregateConfigurer.configureSnapshotTrigger(
                     conf -> new EventCountSnapshotTriggerDefinition(conf.snapshotter(), snapshotConfig.threshold()));
