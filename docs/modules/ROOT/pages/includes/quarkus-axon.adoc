@@ -76,6 +76,48 @@ endif::add-copy-button-to-env-var[]
 |long
 |`500`
 
+a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
+
+`quarkus.axon.snapshots."aggregate-name".trigger-type`
+
+[.description]
+--
+Defines the type of the trigger.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SNAPSHOTS_TRIGGER_TYPE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SNAPSHOTS_TRIGGER_TYPE+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`no-snapshots`, `load-time`, `event-count`
+|`no-snapshots`
+
+a| [[quarkus-axon_quarkus-axon-snapshots-threshold]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-threshold[`quarkus.axon.snapshots.threshold`]##
+
+`quarkus.axon.snapshots."aggregate-name".threshold`
+
+[.description]
+--
+If the type is LoadTime, then it's value is the max load time of an aggregate, before a snapshot creation is triggered.
+
+If the type is EventCount, then it's value is the max number of events, which are read from the repository, before a snapshot creation is triggered.
+
+if the type is NoSnapshot, then the value is ignored.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SNAPSHOTS_THRESHOLD+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SNAPSHOTS_THRESHOLD+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`-1`
+
 |===
 
 
