@@ -3,8 +3,10 @@ package at.meks.quarkiverse.axon.it;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
 
+import java.time.Duration;
 import java.util.UUID;
 
+import org.awaitility.Awaitility;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
@@ -94,10 +96,15 @@ class ApplicationTest {
     }
 
     private void assertAtLeastOneSnaptshotExists() {
-        String snapshotCount = RestAssured.given().basePath("system/snapshots/count")
-                .when().get()
-                .then().extract().body().asString();
-        assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
+        Awaitility.await()
+                .pollInterval(Duration.ofMillis(500))
+                .atMost(Duration.ofSeconds(5))
+                .untilAsserted(() -> {
+            String snapshotCount = RestAssured.given().basePath("system/snapshots/count")
+                    .when().get()
+                    .then().extract().body().asString();
+            assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
+        });
     }
 
 }
