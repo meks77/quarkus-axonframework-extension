@@ -36,6 +36,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     EventstoreConfigurer eventstoreConfigurer;
 
     @Inject
+    QuarkusAggregateConfigurer aggregateConfigurer;
+
+    @Inject
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
     private Set<Class<?>> aggregateClasses;
@@ -53,7 +56,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventSerializer(confg -> jacksonSerializer);
         eventstoreConfigurer.configure(configurer);
 
-        aggregateClasses.forEach(configurer::configureAggregate);
+        aggregateClasses.forEach(aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
 
         configureEventHandling(configurer);
 

@@ -29,4 +29,9 @@ public class GiftcardQueryHandler {
     void handle(Api.CardRedeemedEvent event) {
         giftcards.get(event.id()).redeem(event.amount());
     }
+
+    @EventHandler
+    void handle(Api.LatestRedemptionUndoneEvent event) {
+        giftcards.get(event.id()).undoLastRedemption(event.amount());
+    }
 }

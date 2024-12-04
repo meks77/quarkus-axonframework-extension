@@ -1,7 +1,11 @@
 package at.meks.quarkiverse.axon.shared.projection;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GiftcardView {
 
+    @SuppressWarnings("unused")
     private final String id;
 
     private int currentAmount;
@@ -21,16 +25,11 @@ public class GiftcardView {
         currentAmount -= amount;
     }
 
-    @SuppressWarnings("unused")
-    public String getId() {
-        // needed by jackson
-        return id;
-    }
-
-    @SuppressWarnings("unused")
     public int getCurrentAmount() {
-        // needed by jackson
         return currentAmount;
     }
 
+    public void undoLastRedemption(int amount) {
+        currentAmount += amount;
+    }
 }

@@ -11,8 +11,6 @@ The goal of this extension is to provide a solution which
 ## Documentation & User Guide
 Please follow the [user guide](docs/modules/ROOT/pages/index.adoc) to get started with this extension.
 
-The source for the example is available in the [examples directory](examples).
-
 ## Current state
 
 ### Quarkus Versions
@@ -55,6 +53,7 @@ You can provide your own setup for
 * custom event store
 * custom metrics
 * custom token store
+* custom aggregate configuration
 
 ### supported event processors
 
@@ -84,6 +83,7 @@ You can provide your own setup for
 * custom setup of transaction handling
 * dev service for the axon server
 * live reloading
+* snapshots
 
 #### Live reloading
 Live reloading works with a schedule process, which checks if sources changed.
