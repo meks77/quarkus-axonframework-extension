@@ -100,11 +100,11 @@ class ApplicationTest {
                 .pollInterval(Duration.ofMillis(500))
                 .atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> {
-            String snapshotCount = RestAssured.given().basePath("system/snapshots/count")
-                    .when().get()
-                    .then().extract().body().asString();
-            assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
-        });
+                    String snapshotCount = RestAssured.given().basePath("system/snapshots/count")
+                            .when().get()
+                            .then().extract().body().asString();
+                    assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
+                });
     }
 
 }
