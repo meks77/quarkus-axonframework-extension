@@ -16,6 +16,12 @@ public class DomainServiceExample {
     Repository<Giftcard> giftcardRepository;
 
     @CommandHandler
+    void handle(Api.UndoLatestRedemptionCommand command) {
+        Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id());
+        giftcardAggregate.execute(giftcard -> giftcard.undoRedemption(command.amount()));
+    }
+
+    @CommandHandler
     void handle(Api.RedeemCardCommand command) {
         Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id());
         giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));

@@ -18,4 +18,10 @@ public class Api {
 
     public record GiftcardQuery(String id) {
     }
+
+    public record UndoLatestRedemptionCommand(@TargetAggregateIdentifier String id, int amount) {
+    }
+
+    public record LatestRedemptionUndoneEvent(String id, int amount) {
+    }
 }
