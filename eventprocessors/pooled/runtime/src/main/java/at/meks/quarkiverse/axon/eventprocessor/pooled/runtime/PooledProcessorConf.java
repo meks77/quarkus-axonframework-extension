@@ -35,7 +35,7 @@ public interface PooledProcessorConf extends StreamingProcessorConf {
      * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
      * framework is used.
      */
-    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
     int batchSize();
@@ -43,7 +43,7 @@ public interface PooledProcessorConf extends StreamingProcessorConf {
     /**
      * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
      */
-    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
     int initialSegments();
@@ -51,7 +51,7 @@ public interface PooledProcessorConf extends StreamingProcessorConf {
     /**
      * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
      */
-    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("tail")
     InitialPosition initialPosition();
