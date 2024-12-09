@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
+import at.meks.quarkiverse.axon.eventprocessors.shared.InitialPosition;
 import at.meks.quarkiverse.axon.eventprocessors.shared.StreamingProcessorConf;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -29,4 +30,29 @@ public interface PooledProcessorConf extends StreamingProcessorConf {
      */
     @WithDefault("quarkus-pooled-processor")
     String name();
+
+    /**
+     * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
+     * framework is used.
+     */
+    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("-1")
+    int batchSize();
+
+    /**
+     * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+     */
+    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("-1")
+    int initialSegments();
+
+    /**
+     * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+     */
+    // Sadly, since Quarkus 3.17 inheritance of the Super-Interface doesn't work anymore and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("tail")
+    InitialPosition initialPosition();
 }
