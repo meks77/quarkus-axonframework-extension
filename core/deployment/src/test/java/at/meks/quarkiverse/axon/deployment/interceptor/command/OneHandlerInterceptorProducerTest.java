@@ -6,18 +6,18 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
 import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.axonframework.messaging.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
-import at.meks.quarkiverse.axon.runtime.CommandDispatchInterceptorsProducer;
+import at.meks.quarkiverse.axon.runtime.api.CommandHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class OneDispatchProducersTest extends JavaArchiveTest {
+public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
 
     private static final Logger LOGGER = Mockito.mock(Logger.class);
 
@@ -30,7 +30,7 @@ public class OneDispatchProducersTest extends JavaArchiveTest {
     }
 
     @ApplicationScoped
-    public static class InterceptorsProducer implements CommandDispatchInterceptorsProducer {
+    public static class InterceptorsProducer implements CommandHandlerInterceptorsProducer {
 
         private final Logger logger;
 
@@ -39,14 +39,14 @@ public class OneDispatchProducersTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageDispatchInterceptor<CommandMessage<?>>> createDispatchInterceptor() {
+        public List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageDispatchInterceptor<CommandMessage<?>> interceptor(String interceptorName) {
-            return messages -> (index, command) -> {
+        private @NotNull MessageHandlerInterceptor<CommandMessage<?>> interceptor(String interceptorName) {
+            return (unitOfWork, interceptorChain) -> {
                 logger.debug(interceptorName + " logs command");
-                return command;
+                return interceptorChain.proceed();
             };
         }
 

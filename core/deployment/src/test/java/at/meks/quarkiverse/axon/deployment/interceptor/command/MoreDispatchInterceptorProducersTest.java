@@ -9,11 +9,11 @@ import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.runtime.CommandDispatchInterceptorsProducer;
+import at.meks.quarkiverse.axon.runtime.api.CommandDispatchInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class MoreDispatchProducersTest extends JavaArchiveTest {
+public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
 
     @ApplicationScoped
     public static class InterceptorsProducer1 implements CommandDispatchInterceptorsProducer {

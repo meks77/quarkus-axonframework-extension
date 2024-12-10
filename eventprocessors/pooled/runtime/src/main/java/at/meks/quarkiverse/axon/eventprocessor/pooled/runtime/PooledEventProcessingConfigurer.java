@@ -9,7 +9,7 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
 
 import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
-import at.meks.quarkiverse.axon.runtime.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.api.AxonEventProcessingConfigurer;
 
 @ApplicationScoped
 public class PooledEventProcessingConfigurer implements AxonEventProcessingConfigurer {

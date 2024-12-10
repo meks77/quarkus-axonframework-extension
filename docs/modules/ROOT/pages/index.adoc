@@ -488,7 +488,7 @@ quarkus.axon.snapshots."at.meks.quarkiverse.axon.shared.model.Giftcard".threshol
 
 ==== Implement your own Aggregate-Configurer
 
-If you decide to provode your own Aggregate-Configurer, which creates, Axon's `AggregateConfiguration` you can implement the interface `at.meks.quarkiverse.axon.runtime.QuarkusAggregateConfigurer`.
+If you decide to provode your own Aggregate-Configurer, which creates, Axon's `AggregateConfiguration` you can implement the interface `at.meks.quarkiverse.axon.runtime.api.QuarkusAggregateConfigurer`.
 
 For each Aggregate, the method `createConfigurer`. This method returns Axon's `AggregateConfiguration`
 

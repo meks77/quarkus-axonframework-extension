@@ -10,7 +10,7 @@ import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine;
 
-import at.meks.quarkiverse.axon.runtime.EventstoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.api.EventstoreConfigurer;
 
 @ApplicationScoped
 public class JpaEventstoreConfigurer implements EventstoreConfigurer {

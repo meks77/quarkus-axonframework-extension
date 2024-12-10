@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.runtime;
+package at.meks.quarkiverse.axon.runtime.api;
 
 import java.util.Set;
 
