@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
 import java.util.concurrent.TimeUnit;
 
+import at.meks.quarkiverse.axon.eventprocessors.shared.InitialPosition;
 import at.meks.quarkiverse.axon.eventprocessors.shared.StreamingProcessorConf;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -24,6 +25,31 @@ public interface TrackingProcessorConf extends StreamingProcessorConf {
      * Sets the time to wait after a failed attempt to claim any token, before making another attempt.
      */
     TokenClaimInterval tokenClaim();
+
+    /**
+     * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
+     * framework is used.
+     */
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("-1")
+    int batchSize();
+
+    /**
+     * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+     */
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("-1")
+    int initialSegments();
+
+    /**
+     * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+     */
+    // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
+    @Override
+    @WithDefault("tail")
+    InitialPosition initialPosition();
 
     interface TokenClaimInterval {
 
