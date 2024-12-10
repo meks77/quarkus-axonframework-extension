@@ -6,6 +6,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
@@ -41,6 +42,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
+    @Inject
+    Instance<CommandDispatchInterceptorsProducer> commandDispatchInterceptorProducers;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -56,7 +60,8 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventSerializer(confg -> jacksonSerializer);
         eventstoreConfigurer.configure(configurer);
 
-        aggregateClasses.forEach(aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
+        aggregateClasses.forEach(
+                aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
 
         configureEventHandling(configurer);
 
@@ -65,6 +70,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
+        configureCommandBus(configurer);
 
         return configurer;
     }
@@ -88,6 +94,18 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureTransactionManagement(Configurer configurer) {
         configurer.configureTransactionManager(conf -> transactionManager);
+    }
+
+    private void configureCommandBus(Configurer configurer) {
+        if (commandDispatchInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple commandDispatchInterceptorProducers(%s) found."
+                    .formatted(CommandDispatchInterceptorsProducer.class.getName()));
+        } else if (commandDispatchInterceptorProducers.isResolvable()) {
+            SimpleCommandBus bus = SimpleCommandBus.builder().build();
+            commandDispatchInterceptorProducers.get().createDispatchInterceptor()
+                    .forEach(bus::registerDispatchInterceptor);
+            configurer.configureCommandBus(configuration -> bus);
+        }
     }
 
     @Override
