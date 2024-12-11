@@ -84,7 +84,7 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-bom</artifactId>
-                <version>4.10.3</version>
+                <version>4.10.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
