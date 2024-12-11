@@ -58,6 +58,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     Instance<CommandHandlerInterceptorsProducer> commandHandlerInterceptorProducers;
+
+    @Inject
+    Instance<QueryDispatchInterceptorsProducer> queryDispatchInterceptorProducers;
+
     @Inject
     AxonConfiguration axonConfiguration;
 
@@ -87,7 +91,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
         registerCommandBusInterceptors(configurer);
-        configureQueryExceptionInterceptors(configurer);
+        registerQueryBusInterceptors(configurer);
         return configurer;
     }
 
@@ -168,13 +172,33 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private void configureQueryExceptionInterceptors(Configurer configurer) {
+    private void registerQueryBusInterceptors(Configurer configurer) {
+        configurer.onInitialize(configuration -> {
+            QueryBus queryBus = configuration.queryBus();
+            configureQueryDispatchInterceptors(queryBus);
+            configureQueryHandlerInterceptors(queryBus);
+        });
+    }
+
+    private void configureQueryDispatchInterceptors(QueryBus queryBus) {
+        if (queryDispatchInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    QueryDispatchInterceptorsProducer.class.getName(),
+                    toCsv(queryDispatchInterceptorProducers.stream())));
+        } else if (queryDispatchInterceptorProducers.isResolvable()) {
+            queryDispatchInterceptorProducers.get().createDispatchInterceptor()
+                    .forEach(queryBus::registerDispatchInterceptor);
+        }
+    }
+
+    private void configureQueryHandlerInterceptors(QueryBus queryBus) {
+        configureQueryExceptionInterceptors(queryBus);
+    }
+
+    private void configureQueryExceptionInterceptors(QueryBus queryBus) {
         if (axonConfiguration.exceptionHandling().wrapOnQueryHandler()) {
-            configurer.onInitialize(configuration -> {
-                QueryBus queryBus = configuration.queryBus();
-                //noinspection resource
-                queryBus.registerHandlerInterceptor(this::handleExceptionInQueryHandling);
-            });
+            //noinspection resource
+            queryBus.registerHandlerInterceptor(this::handleExceptionInQueryHandling);
         }
     }
 
