@@ -11,7 +11,7 @@ public interface QuarkusAggregateConfigurer {
     /**
      * Creates an {@link AggregateConfiguration} for a specific aggregate type.
      *
-     * @param <T>       the type of the aggregate
+     * @param <T> the type of the aggregate
      * @param aggregate the class of the aggregate type
      * @return an {@link AggregateConfiguration} instance for the given aggregate type
      */

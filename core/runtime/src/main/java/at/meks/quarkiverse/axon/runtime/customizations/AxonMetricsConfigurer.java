@@ -4,7 +4,7 @@ import org.axonframework.config.Configurer;
 
 /**
  * This interface defines a contract for configuring axon-specific metrics.
- * Implementations of this interface can apply custom configurations 
+ * Implementations of this interface can apply custom configurations
  * to enhance the monitoring capabilities of AxonFramework-based applications.
  */
 public interface AxonMetricsConfigurer {

@@ -17,7 +17,7 @@ public interface CommandHandlerInterceptorsProducer {
      * These interceptors can be used to influence the command handling process,
      * such as pre-processing, validation, or custom logic.
      *
-     * @return a list of {@link MessageHandlerInterceptor} objects 
+     * @return a list of {@link MessageHandlerInterceptor} objects
      *         for handling {@link CommandMessage} instances.
      */
     List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor();
