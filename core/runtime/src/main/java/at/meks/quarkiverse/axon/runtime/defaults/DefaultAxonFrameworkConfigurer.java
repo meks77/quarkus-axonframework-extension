@@ -1,11 +1,14 @@
-package at.meks.quarkiverse.axon.runtime;
+package at.meks.quarkiverse.axon.runtime.defaults;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
@@ -13,6 +16,7 @@ import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
 
@@ -41,6 +45,12 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
+    @Inject
+    Instance<CommandDispatchInterceptorsProducer> commandDispatchInterceptorProducers;
+
+    @Inject
+    Instance<CommandHandlerInterceptorsProducer> commandHandlerInterceptorProducers;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -56,7 +66,8 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureEventSerializer(confg -> jacksonSerializer);
         eventstoreConfigurer.configure(configurer);
 
-        aggregateClasses.forEach(aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
+        aggregateClasses.forEach(
+                aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
 
         configureEventHandling(configurer);
 
@@ -65,6 +76,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
+        registerCommandBusInterceptors(configurer);
 
         return configurer;
     }
@@ -88,6 +100,43 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureTransactionManagement(Configurer configurer) {
         configurer.configureTransactionManager(conf -> transactionManager);
+    }
+
+    private void registerCommandBusInterceptors(Configurer configurer) {
+        configurer.onInitialize(configuration -> {
+            CommandBus commandBus = configuration.getComponent(CommandBus.class);
+            configureCommandDispatchInterceptors(commandBus);
+            configureCommandHandlerInterceptors(commandBus);
+        });
+    }
+
+    private void configureCommandDispatchInterceptors(CommandBus bus) {
+        if (commandDispatchInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    CommandDispatchInterceptorsProducer.class.getName(),
+                    toCsv(commandDispatchInterceptorProducers.stream())));
+        } else if (commandDispatchInterceptorProducers.isResolvable()) {
+            commandDispatchInterceptorProducers.get().createDispatchInterceptor()
+                    .forEach(bus::registerDispatchInterceptor);
+        }
+    }
+
+    private <T> String toCsv(Stream<T> stream) {
+        return stream
+                .map(Object::getClass)
+                .map(Class::getName)
+                .collect(Collectors.joining(", "));
+    }
+
+    private void configureCommandHandlerInterceptors(CommandBus bus) {
+        if (commandHandlerInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    CommandHandlerInterceptorsProducer.class.getName(),
+                    toCsv(commandHandlerInterceptorProducers.stream())));
+        } else if (commandHandlerInterceptorProducers.isResolvable()) {
+            commandHandlerInterceptorProducers.get().createHandlerInterceptor()
+                    .forEach(bus::registerHandlerInterceptor);
+        }
     }
 
     @Override

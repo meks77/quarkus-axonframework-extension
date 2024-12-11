@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.runtime;
+package at.meks.quarkiverse.axon.runtime.defaults;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -9,6 +9,9 @@ import org.axonframework.eventsourcing.AggregateLoadTimeSnapshotTriggerDefinitio
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
+import at.meks.quarkiverse.axon.runtime.conf.TriggerType;
+import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
 

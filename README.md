@@ -84,6 +84,8 @@ You can provide your own setup for
 * dev service for the axon server
 * live reloading
 * snapshots
+* command dispatch interceptors
+* command handler interceptors
 
 #### Live reloading
 Live reloading works with a schedule process, which checks if sources changed.
