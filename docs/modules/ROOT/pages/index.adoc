@@ -565,6 +565,19 @@ public class MyCustomTokenStoreConfigurer implements TokenStoreConfigurer {
 
 For more information on setting up a token store, please read the Axon framework documentation.
 
+=== Exception Handling
+
+==== Handling Exceptions in Command Handler
+
+Automatically all Exceptions, which are thrown in Command-Handler-Methods, are wrapped into `CommandExecutionException`.
+
+To disable this feature set the following configuration variable:
+
+[source,properties]
+----
+quarkus.axon.exception-handling.wrap-on-command-handler=false
+----
+
 === Interceptors
 ==== Command Dispatch Interceptors
 If you'd like to set up command dispatch interceptors, you have to implement `CommandDispatchInterceptorsProducer`. The method of the interface returns a list of interceptors in the order they should be invoked.

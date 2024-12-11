@@ -9,13 +9,18 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.CommandExecutionException;
+import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
+import org.axonframework.messaging.InterceptorChain;
+import org.axonframework.messaging.unitofwork.UnitOfWork;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
@@ -50,6 +55,8 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     Instance<CommandHandlerInterceptorsProducer> commandHandlerInterceptorProducers;
+    @Inject
+    AxonConfiguration axonConfiguration;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -129,6 +136,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureCommandHandlerInterceptors(CommandBus bus) {
+        if (axonConfiguration.exceptionHandling().wrapOnCommandHandler()) {
+            //noinspection resource
+            bus.registerHandlerInterceptor(this::handleExceptionInCommandHandling);
+        }
         if (commandHandlerInterceptorProducers.isAmbiguous()) {
             throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
                     CommandHandlerInterceptorsProducer.class.getName(),
@@ -136,6 +147,21 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         } else if (commandHandlerInterceptorProducers.isResolvable()) {
             commandHandlerInterceptorProducers.get().createHandlerInterceptor()
                     .forEach(bus::registerHandlerInterceptor);
+        }
+    }
+
+    private Object handleExceptionInCommandHandling(UnitOfWork<? extends CommandMessage<?>> unitOfWork,
+            InterceptorChain interceptorChain) {
+        try {
+            return interceptorChain.proceed();
+        } catch (Exception e) {
+            if (!(e instanceof CommandExecutionException)) {
+                throw new CommandExecutionException(
+                        "error while executing command handler for command %s".formatted(
+                                unitOfWork.getMessage().getCommandName()),
+                        e);
+            }
+            throw (CommandExecutionException) e;
         }
     }
 
