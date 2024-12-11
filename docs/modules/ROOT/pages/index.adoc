@@ -435,7 +435,7 @@ public class MyCustomEventstoreConfigurer implements EventstoreConfigurer {
     }
 }
 ----
-For more details of how to setup an event store, please read the axon framework documentation.
+For more details of how to setup an event store, please read the Axon framework documentation.
 
 === Snapshots
 
@@ -563,7 +563,74 @@ public class MyCustomTokenStoreConfigurer implements TokenStoreConfigurer {
 }
 ----
 
-For more information on setting up a token store, please read the axon framework documentation.
+For more information on setting up a token store, please read the Axon framework documentation.
+
+=== Interceptors
+==== Command Dispatch Interceptors
+If you'd like to set up command dispatch interceptors, you have to implement `CommandDispatchInterceptorsProducer`. The method of the interface returns a list of interceptors in the order they should be invoked.
+
+A simple example would be to log each command message, which was dispatched to the command bus.
+
+[source, java]
+----
+@ApplicationScoped
+public static class MyCommandDispatchInterceptorsProducer implements CommandDispatchInterceptorsProducer {
+
+    @Override
+    public List<MessageDispatchInterceptor<CommandMessage<?>>> createDispatchInterceptor() {
+        return List.of(interceptor());
+    }
+
+    private @NotNull MessageDispatchInterceptor<CommandMessage<?>> interceptor() {
+        return messages -> (index, command) -> {
+            Log.debugf("Dispatching the command: %s", command);
+            return command;
+        };
+    }
+
+}
+----
+
+Another use case could be the structural validation of the command using Bean Validation.
+
+Please read the Axon framework documentation for details about the Command disptach interceptor.
+
+==== Command Handler Interceptor
+
+If you'd like to set up command handler interceptors, you have to implement `CommandHandlerInterceptorsProducer`. The method of the interface returns a list of interceptors in the order they should be invoked.
+
+Example:
+
+[source,java]
+----
+@ApplicationScoped
+public static class MyCommandHandlerInterceptorsProducer implements CommandHandlerInterceptorsProducer {
+
+    @Override
+    public List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor() {
+        return List.of(interceptor1(), interceptor2());
+    }
+
+    private @NotNull MessageHandlerInterceptor<CommandMessage<?>> interceptor1() {
+        return (unitOfWork, interceptorChain) -> {
+            // Details <1>
+            return interceptorChain.proceed(); // <2>
+        };
+    }
+
+    private @NotNull MessageHandlerInterceptor<CommandMessage<?>> interceptor2() {
+        return (unitOfWork, interceptorChain) -> {
+            // Details <1>
+            return interceptorChain.proceed(); // <2>
+        };
+    }
+
+}
+----
+<1> The details of your interceptor have to be implemented here
+<2> Continues the chain of interceptors
+
+For more details about command handler interceptors, please read the Axon framework documentation.
 
 === Transaction
 CAUTION: By default, no transaction management is setup.
