@@ -63,6 +63,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     Instance<QueryDispatchInterceptorsProducer> queryDispatchInterceptorProducers;
 
     @Inject
+    Instance<QueryHandlerInterceptorsProducer> queryHandlerInterceptorProducers;
+
+    @Inject
     AxonConfiguration axonConfiguration;
 
     private Set<Class<?>> aggregateClasses;
@@ -193,6 +196,14 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureQueryHandlerInterceptors(QueryBus queryBus) {
         configureQueryExceptionInterceptors(queryBus);
+        if (queryHandlerInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    QueryHandlerInterceptorsProducer.class.getName(),
+                    toCsv(queryHandlerInterceptorProducers.stream())));
+        } else if (queryHandlerInterceptorProducers.isResolvable()) {
+            queryHandlerInterceptorProducers.get().createHandlerInterceptor()
+                    .forEach(queryBus::registerHandlerInterceptor);
+        }
     }
 
     private void configureQueryExceptionInterceptors(QueryBus queryBus) {

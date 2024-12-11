@@ -77,6 +77,16 @@ You can provide your own setup for
 * JDBC Token Store
 * custom setup for Tokenstore
 
+### Interceptors
+
+* command dispatch and handler interceptors
+* query dispatch and handler interceptors
+
+### Exceptions Handling
+
+* wrapping Exceptions into CommandExecutionException
+* wrapping Exceptions into QueryExecutionException
+
 ### other supported stuff
 
 * transaction handling
@@ -84,10 +94,7 @@ You can provide your own setup for
 * dev service for the axon server
 * live reloading
 * snapshots
-* command dispatch interceptors
-* command handler interceptors
-* wrapping Exceptions into CommandExecutionException
-* wrapping Exceptions into QueryExecutionException
+
 
 #### Live reloading
 Live reloading works with a schedule process, which checks if sources changed.
