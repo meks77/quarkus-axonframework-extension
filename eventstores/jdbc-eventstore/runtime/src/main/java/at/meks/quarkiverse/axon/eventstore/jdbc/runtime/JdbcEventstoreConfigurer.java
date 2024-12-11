@@ -16,7 +16,7 @@ import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.eventstore.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import at.meks.quarkiverse.axon.runtime.EventstoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 
 @ApplicationScoped
 public class JdbcEventstoreConfigurer implements EventstoreConfigurer {

@@ -17,7 +17,7 @@ import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import at.meks.quarkiverse.axon.runtime.TokenStoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;
 
 @ApplicationScoped
 public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
