@@ -41,7 +41,7 @@ jobs:
 #    runs-on: self-hosted
     runs-on: ${{ matrix.os }}
     # suppress duplicated builds if changes are pushed to a branch, where a merge request exists
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.base_ref != github.ref_name)
+    if: github.event_name != 'push' || github.event.pull_request == null
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
