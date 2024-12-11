@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.config.Configurer;
 
-import at.meks.quarkiverse.axon.runtime.api.TokenStoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;
 import io.quarkus.arc.DefaultBean;
 
 @ApplicationScoped

@@ -13,7 +13,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
-import at.meks.quarkiverse.axon.runtime.api.CommandHandlerInterceptorsProducer;
+import at.meks.quarkiverse.axon.runtime.customizations.CommandHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 

@@ -9,7 +9,7 @@ import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.runtime.api.CommandDispatchInterceptorsProducer;
+import at.meks.quarkiverse.axon.runtime.customizations.CommandDispatchInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 

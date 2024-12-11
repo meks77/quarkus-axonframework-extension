@@ -16,7 +16,7 @@ import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import at.meks.quarkiverse.axon.runtime.api.*;
+import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
 

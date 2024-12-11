@@ -9,7 +9,7 @@ import org.axonframework.eventsourcing.AggregateLoadTimeSnapshotTriggerDefinitio
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;
 
-import at.meks.quarkiverse.axon.runtime.api.QuarkusAggregateConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.TriggerType;
 import io.quarkus.arc.DefaultBean;

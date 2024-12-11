@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import org.axonframework.config.Configurer;
 import org.axonframework.micrometer.GlobalMetricRegistry;
 
-import at.meks.quarkiverse.axon.runtime.api.AxonMetricsConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.AxonMetricsConfigurer;
 import io.micrometer.core.instrument.MeterRegistry;
 
 @ApplicationScoped

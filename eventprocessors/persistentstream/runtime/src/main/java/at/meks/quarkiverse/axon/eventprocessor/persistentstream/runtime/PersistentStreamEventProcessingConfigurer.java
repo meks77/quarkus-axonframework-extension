@@ -12,7 +12,7 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.messaging.SubscribableMessageSource;
 
-import at.meks.quarkiverse.axon.runtime.api.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 
 @ApplicationScoped

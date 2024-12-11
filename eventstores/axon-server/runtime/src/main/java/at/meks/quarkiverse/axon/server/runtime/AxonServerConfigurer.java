@@ -13,7 +13,7 @@ import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.meks.quarkiverse.axon.runtime.api.EventstoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 
 @ApplicationScoped

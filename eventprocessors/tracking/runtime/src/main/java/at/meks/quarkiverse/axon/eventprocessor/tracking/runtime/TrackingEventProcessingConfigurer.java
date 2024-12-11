@@ -11,7 +11,7 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 
 import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
-import at.meks.quarkiverse.axon.runtime.api.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 
 @ApplicationScoped
 public class TrackingEventProcessingConfigurer implements AxonEventProcessingConfigurer {

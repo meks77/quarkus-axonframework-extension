@@ -23,7 +23,7 @@ import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import at.meks.quarkiverse.axon.runtime.api.AxonFrameworkConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.AxonFrameworkConfigurer;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;

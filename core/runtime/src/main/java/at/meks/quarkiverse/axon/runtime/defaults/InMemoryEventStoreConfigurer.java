@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
 
-import at.meks.quarkiverse.axon.runtime.api.EventstoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 import io.quarkus.arc.DefaultBean;
 
 @ApplicationScoped
