@@ -87,6 +87,7 @@ You can provide your own setup for
 * command dispatch interceptors
 * command handler interceptors
 * wrapping Exceptions into CommandExecutionException
+* wrapping Exceptions into QueryExecutionException
 
 #### Live reloading
 Live reloading works with a schedule process, which checks if sources changed.

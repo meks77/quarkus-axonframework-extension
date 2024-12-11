@@ -16,6 +16,9 @@ import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.unitofwork.UnitOfWork;
+import org.axonframework.queryhandling.QueryBus;
+import org.axonframework.queryhandling.QueryExecutionException;
+import org.axonframework.queryhandling.QueryMessage;
 import org.axonframework.serialization.json.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +87,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
         registerCommandBusInterceptors(configurer);
-
+        configureQueryExceptionInterceptors(configurer);
         return configurer;
     }
 
@@ -162,6 +165,31 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                         e);
             }
             throw (CommandExecutionException) e;
+        }
+    }
+
+    private void configureQueryExceptionInterceptors(Configurer configurer) {
+        if (axonConfiguration.exceptionHandling().wrapOnQueryHandler()) {
+            configurer.onInitialize(configuration -> {
+                QueryBus queryBus = configuration.queryBus();
+                //noinspection resource
+                queryBus.registerHandlerInterceptor(this::handleExceptionInQueryHandling);
+            });
+        }
+    }
+
+    private Object handleExceptionInQueryHandling(UnitOfWork<? extends QueryMessage<?, ?>> unitOfWork,
+            InterceptorChain interceptorChain) {
+        try {
+            return interceptorChain.proceed();
+        } catch (Exception e) {
+            if (!(e instanceof QueryExecutionException)) {
+                throw new QueryExecutionException(
+                        "error while executing query handler for query %s".formatted(
+                                unitOfWork.getMessage().getQueryName()),
+                        e);
+            }
+            throw (QueryExecutionException) e;
         }
     }
 

@@ -111,6 +111,11 @@ public interface AxonConfiguration {
         @WithDefault("true")
         boolean wrapOnCommandHandler();
 
+        /**
+         * if true, the thrown exception will be wrapped into the recommended QueryExecutionException.
+         */
+        @WithDefault("true")
+        boolean wrapOnQueryHandler();
     }
 
 }
