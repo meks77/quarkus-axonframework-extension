@@ -76,6 +76,40 @@ endif::add-copy-button-to-env-var[]
 |long
 |`500`
 
+a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`quarkus.axon.exception-handling.wrap-on-command-handler`]##
+
+[.description]
+--
+if true, the thrown exception will be wrapped into the recommended CommandExecutionException.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_COMMAND_HANDLER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_COMMAND_HANDLER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
+a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler[`quarkus.axon.exception-handling.wrap-on-query-handler`]##
+
+[.description]
+--
+if true, the thrown exception will be wrapped into the recommended QueryExecutionException.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_QUERY_HANDLER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_QUERY_HANDLER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
 
 `quarkus.axon.snapshots."aggregate-name".trigger-type`
