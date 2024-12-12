@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -82,8 +80,4 @@ public class Giftcard {
         this.currentAmount += event.amount();
     }
 
-    @ExceptionHandler
-    public void handleAll(Exception exception) {
-        throw new CommandExecutionException("wrapped exception in details", exception);
-    }
 }

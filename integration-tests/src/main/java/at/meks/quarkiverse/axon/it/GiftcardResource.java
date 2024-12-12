@@ -37,8 +37,15 @@ public class GiftcardResource {
             commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, initialAmount));
             return Response.noContent().build();
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getCause().getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(toResponseEntity(e)).build();
         }
+    }
+
+    private static String toResponseEntity(Exception e) {
+        if (e.getCause() == null) {
+            return e.getMessage();
+        }
+        return e.getMessage() + "; " + e.getCause().getMessage();
     }
 
     @PUT
@@ -48,7 +55,7 @@ public class GiftcardResource {
             commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, amount));
             return Response.noContent().build();
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getCause().getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(toResponseEntity(e)).build();
         }
     }
 
@@ -59,7 +66,7 @@ public class GiftcardResource {
             commandGateway.sendAndWait(new Api.UndoLatestRedemptionCommand(cardId, amount));
             return Response.noContent().build();
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getCause().getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(toResponseEntity(e)).build();
         }
     }
 }

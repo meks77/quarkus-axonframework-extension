@@ -36,6 +36,11 @@ public interface AxonConfiguration {
     LiveReloadConfig liveReload();
 
     /**
+     * Configuration for Exception Handling in the Axon framework.
+     */
+    ExceptionHandlingConfig exceptionHandling();
+
+    /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
      * to be dependent on the hardware. The default configuration works well on a MacBook Pro with M1 Chip.
      * If you get the error that no command handler is available after a reload, increase the wait time until this
@@ -97,4 +102,20 @@ public interface AxonConfiguration {
         int threshold();
 
     }
+
+    interface ExceptionHandlingConfig {
+
+        /**
+         * if true, the thrown exception will be wrapped into the recommended CommandExecutionException.
+         */
+        @WithDefault("true")
+        boolean wrapOnCommandHandler();
+
+        /**
+         * if true, the thrown exception will be wrapped into the recommended QueryExecutionException.
+         */
+        @WithDefault("true")
+        boolean wrapOnQueryHandler();
+    }
+
 }

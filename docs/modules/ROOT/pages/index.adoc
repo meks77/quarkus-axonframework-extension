@@ -565,13 +565,38 @@ public class MyCustomTokenStoreConfigurer implements TokenStoreConfigurer {
 
 For more information on setting up a token store, please read the Axon framework documentation.
 
+=== Exception Handling
+
+==== Handling Exceptions in Command Handler
+
+Automatically all Exceptions, which are thrown in Command-Handler-Methods, are wrapped into `CommandExecutionException`.
+
+To disable this feature, set the following configuration variable:
+
+[source,properties]
+----
+quarkus.axon.exception-handling.wrap-on-command-handler=false
+----
+
+==== Handling Exceptions in Query Handler
+
+Automatically all Exceptions, which are thrown in Query-Handler-Methods, are wrapped into `QueryExecutionException`.
+
+To disable this feature, set the following configuration variable:
+
+[source,properties]
+----
+quarkus.axon.exception-handling.wrap-on-query-handler=false
+----
+
 === Interceptors
+[#_command_dispatch_interceptors_]
 ==== Command Dispatch Interceptors
-If you'd like to set up command dispatch interceptors, you have to implement `CommandDispatchInterceptorsProducer`. The method of the interface returns a list of interceptors in the order they should be invoked.
+If you'd like to set up command dispatch interceptors, you have to implement `CommandDispatchInterceptorsProducer`.The method of the interface returns a list of interceptors in the order they should be invoked.
 
 A simple example would be to log each command message, which was dispatched to the command bus.
 
-[source, java]
+[source,java]
 ----
 @ApplicationScoped
 public static class MyCommandDispatchInterceptorsProducer implements CommandDispatchInterceptorsProducer {
@@ -595,9 +620,10 @@ Another use case could be the structural validation of the command using Bean Va
 
 Please read the Axon framework documentation for details about the Command disptach interceptor.
 
+[#_command_handler_interceptor]
 ==== Command Handler Interceptor
 
-If you'd like to set up command handler interceptors, you have to implement `CommandHandlerInterceptorsProducer`. The method of the interface returns a list of interceptors in the order they should be invoked.
+If you'd like to set up command handler interceptors, you have to implement `CommandHandlerInterceptorsProducer`.The method of the interface returns a list of interceptors in the order they should be invoked.
 
 Example:
 
@@ -632,10 +658,33 @@ public static class MyCommandHandlerInterceptorsProducer implements CommandHandl
 
 For more details about command handler interceptors, please read the Axon framework documentation.
 
+==== Query Dispatch Interceptors
+In the same way as for <<_command_dispatch_interceptors_>> you can implement an interceptor when queries are dispatched.
+
+The interface you have to implement is ´QueryDispatchInterceptorsProducer´.
+
+==== Query Handler Interceptors
+In the same way as for <<_command_handler_interceptor>> you can implement an interceptor when queries are handled.
+
+The interface you have to implement is ´QueryHandlerInterceptorsProducer´.
+
+==== Event Dispatch Interceptors
+In the same way as for <<_command_dispatch_interceptors_>> you can implement an interceptor when events are dispatched.
+
+The interface you have to implement is ´EventDispatchInterceptorsProducer´.
+
+==== Event Handler Interceptors
+In the same way as for <<_command_handler_interceptor>> you can implement an interceptor when events are handled.
+
+The interface you have to implement is ´EventHandlerInterceptorsProducer´.
+
+These interceptors are registered for each event processor.
+
 === Transaction
+
 CAUTION: By default, no transaction management is setup.
 
-If you need transaction management you can simple add the extension:
+If you need transaction management, you can add the extension:
 
 [source,xml]
 ----

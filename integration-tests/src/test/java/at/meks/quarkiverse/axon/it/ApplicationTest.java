@@ -44,12 +44,14 @@ class ApplicationTest {
         redeemCard(3);
 
         assertThatException().isThrownBy(() -> redeemCard(12))
-                .withMessageContaining("must be less than current card amount");
+                .withMessageContaining("must be less than current card amount")
+                .withMessageContaining("RedeemCardCommand");
 
         undoLatestRedemption(3);
 
         assertThatException().isThrownBy(() -> undoLatestRedemption(2))
-                .withMessageContaining("amount must be the lastest redeem amount");
+                .withMessageContaining("amount must be the lastest redeem amount")
+                .withMessageContaining("UndoLatestRedemptionCommand");
 
         assertCurrentAmount(14);
         assertAtLeastOneSnaptshotExists();
