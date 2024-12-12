@@ -14,6 +14,7 @@ import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
+import org.axonframework.eventhandling.EventBus;
 import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.unitofwork.UnitOfWork;
 import org.axonframework.queryhandling.QueryBus;
@@ -66,6 +67,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     Instance<QueryHandlerInterceptorsProducer> queryHandlerInterceptorProducers;
 
     @Inject
+    Instance<EventDispatchInterceptorsProducer> eventDispatchInterceptorProducers;
+
+    @Inject
     AxonConfiguration axonConfiguration;
 
     private Set<Class<?>> aggregateClasses;
@@ -95,6 +99,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         metricsConfigurer.configure(configurer);
         registerCommandBusInterceptors(configurer);
         registerQueryBusInterceptors(configurer);
+        registerEventBusInterceptors(configurer);
         return configurer;
     }
 
@@ -225,6 +230,25 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                         e);
             }
             throw (QueryExecutionException) e;
+        }
+    }
+
+    private void registerEventBusInterceptors(Configurer configurer) {
+        configurer.onInitialize(configuration -> {
+            EventBus eventBus = configuration.eventBus();
+            configureEventDispatchInterceptors(eventBus);
+            //            configureEventHandlerInterceptors(queryBus);
+        });
+    }
+
+    private void configureEventDispatchInterceptors(EventBus eventBus) {
+        if (eventDispatchInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    EventDispatchInterceptorsProducer.class.getName(),
+                    toCsv(eventDispatchInterceptorProducers.stream())));
+        } else if (eventDispatchInterceptorProducers.isResolvable()) {
+            eventDispatchInterceptorProducers.get().createDispatchInterceptor()
+                    .forEach(eventBus::registerDispatchInterceptor);
         }
     }
 

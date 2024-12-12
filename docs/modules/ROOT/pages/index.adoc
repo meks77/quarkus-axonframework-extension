@@ -668,11 +668,16 @@ In the same way as for <<_command_handler_interceptor>> you can implement an int
 
 The interface you have to implement is ´QueryHandlerInterceptorsProducer´.
 
+==== Query Dispatch Interceptors
+In the same way as for <<_command_dispatch_interceptors_>> you can implement an interceptor when events are dispatched.
+
+The interface you have to implement is ´EventDispatchInterceptorsProducer´.
+
 === Transaction
 
 CAUTION: By default, no transaction management is setup.
 
-If you need transaction management you can simple add the extension:
+If you need transaction management, you can add the extension:
 
 [source,xml]
 ----

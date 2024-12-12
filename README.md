@@ -81,6 +81,7 @@ You can provide your own setup for
 
 * command dispatch and handler interceptors
 * query dispatch and handler interceptors
+* event dispatch interceptors
 
 ### Exceptions Handling
 
