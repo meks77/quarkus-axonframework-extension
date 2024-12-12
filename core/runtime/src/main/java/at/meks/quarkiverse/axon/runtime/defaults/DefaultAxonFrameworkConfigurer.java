@@ -14,6 +14,7 @@ import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
+import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.unitofwork.UnitOfWork;
@@ -68,6 +69,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     Instance<EventDispatchInterceptorsProducer> eventDispatchInterceptorProducers;
+
+    @Inject
+    Instance<EventHandlerInterceptorsProducer> eventHandlerInterceptorProducers;
 
     @Inject
     AxonConfiguration axonConfiguration;
@@ -237,8 +241,8 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         configurer.onInitialize(configuration -> {
             EventBus eventBus = configuration.eventBus();
             configureEventDispatchInterceptors(eventBus);
-            //            configureEventHandlerInterceptors(queryBus);
         });
+        configureEventHandlerInterceptors(configurer);
     }
 
     private void configureEventDispatchInterceptors(EventBus eventBus) {
@@ -249,6 +253,19 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         } else if (eventDispatchInterceptorProducers.isResolvable()) {
             eventDispatchInterceptorProducers.get().createDispatchInterceptor()
                     .forEach(eventBus::registerDispatchInterceptor);
+        }
+    }
+
+    private void configureEventHandlerInterceptors(Configurer configurer) {
+        if (eventHandlerInterceptorProducers.isAmbiguous()) {
+            throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
+                    EventHandlerInterceptorsProducer.class.getName(),
+                    toCsv(eventHandlerInterceptorProducers.stream())));
+        } else if (eventHandlerInterceptorProducers.isResolvable()) {
+            EventProcessingConfigurer eventProcessingConfigurer = configurer.eventProcessing();
+            eventHandlerInterceptorProducers.get().createHandlerInterceptor()
+                    .forEach(interceptor -> eventProcessingConfigurer
+                            .registerDefaultHandlerInterceptor((configuration, string) -> interceptor));
         }
     }
 
