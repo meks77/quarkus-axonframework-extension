@@ -1,18 +1,21 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.queryhandling.QueryHandler;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.IndexView;
+import org.jboss.jandex.*;
 import org.jetbrains.annotations.NotNull;
 
 import at.meks.quarkiverse.axon.runtime.AxonExtension;
@@ -76,8 +79,13 @@ class AxonExtensionProcessor {
     }
 
     private <T> Class<T> toClass(ClassInfo classInfo) {
+        DotName dotName = classInfo.name();
+        return toClass(dotName);
+    }
+
+    private <T> @NotNull Class<T> toClass(DotName dotName) {
         try {
-            return (Class<T>) Class.forName(classInfo.name().toString(), false,
+            return (Class<T>) Class.forName(dotName.toString(), false,
                     Thread.currentThread().getContextClassLoader());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -114,17 +122,20 @@ class AxonExtensionProcessor {
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
+            List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem) {
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate");
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler");
         Set<Class<?>> commandhandlerClasses = classes(commandhandlerBeanBuildItems, "commandhandler");
         Set<Class<?>> queryhandlerClasses = classes(queryhandlerBeanBuildItems, "queryhandler");
+        Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean");
 
         recorder.startAxon(beanContainerBuildItem.getValue(),
                 aggregateClasses,
                 commandhandlerClasses,
                 queryhandlerClasses,
-                eventhandlerClasses);
+                eventhandlerClasses,
+                injectableBeanClasses);
     }
 
     private <T extends ClassProvider> Set<Class<?>> classes(List<T> axonClassBuildItems, String objectType) {
@@ -176,6 +187,8 @@ class AxonExtensionProcessor {
         ArrayList<Class<?>> unremovableItems = new ArrayList<>();
         unremovableItems.addAll(eventhandlerClasses(beanArchiveIndex).toList());
         unremovableItems.addAll(commandhandlerClasses(beanArchiveIndex).toList());
+        unremovableItems.addAll(queryhandlerClasses(beanArchiveIndex).toList());
+        unremovableItems.addAll(injectableBeanClasses(beanArchiveIndex).toList());
         return UnremovableBeanBuildItem.beanTypes(unremovableItems.toArray(Class[]::new));
     }
 
@@ -183,6 +196,35 @@ class AxonExtensionProcessor {
     HealthBuildItem addHealthCheck(AxonBuildTimeConfiguration configuration) {
         return new HealthBuildItem("at.meks.quarkiverse.axon.runtime.health.EventprocessorsHealthCheck",
                 configuration.healthEnabled());
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.STATIC_INIT)
+    void scanForInjectableCdiBeans(AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<InjectableBeanBuildItem> beanProducer) {
+        injectableBeanClasses(beanArchiveIndex)
+                .map(InjectableBeanBuildItem::new)
+                .forEach(item -> {
+                    Log.infof("found injectable beans: %s", item.itemClass());
+                    beanProducer.produce(item);
+                });
+    }
+
+    private Stream<Class<?>> injectableBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        IndexView indexView = beanArchiveIndex.getIndex();
+        Collection<AnnotationInstance> commandHandlerAnnotations = new ArrayList<>(
+                indexView.getAnnotations(CommandHandler.class));
+        commandHandlerAnnotations.addAll(indexView.getAnnotations(EventHandler.class));
+        commandHandlerAnnotations.addAll(indexView.getAnnotations(QueryHandler.class));
+        return commandHandlerAnnotations.stream()
+                .flatMap(i -> i.target().asMethod().parameters().stream())
+                .map(MethodParameterInfo::type)
+                .filter(t -> t.kind() == Type.Kind.CLASS)
+                .map(Type::asClassType)
+                .map(Type::name)
+                .map(name -> beanArchiveIndex.getIndex().getClassByName(name))
+                .filter(classInfo -> classInfo.hasDeclaredAnnotation(ApplicationScoped.class))
+                .map(this::toClass);
     }
 
 }
