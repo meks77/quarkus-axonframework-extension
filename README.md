@@ -95,6 +95,10 @@ You can provide your own setup for
 * dev service for the axon server
 * live reloading
 * snapshots
+* inject cdi beans into methods annotated with
+  * CommandHandler
+  * EventHandler
+  * QueryHandler
 
 
 #### Live reloading

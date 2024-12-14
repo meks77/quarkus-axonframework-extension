@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -80,6 +82,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
     private Set<Object> queryhandlers;
+    private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
 
     @Override
     public Configurer configure() {
@@ -101,9 +104,15 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
+
         registerCommandBusInterceptors(configurer);
         registerQueryBusInterceptors(configurer);
         registerEventBusInterceptors(configurer);
+
+        for (Map.Entry<Class<?>, Object> entry : injectableBeans.entrySet()) {
+            //noinspection unchecked
+            configurer.registerComponent((Class<Object>) entry.getKey(), configuration -> entry.getValue());
+        }
         return configurer;
     }
 
@@ -287,6 +296,11 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Override
     public void queryhandlers(Set<Object> queryhandlerInstances) {
         this.queryhandlers = queryhandlerInstances;
+    }
+
+    @Override
+    public void injectableBeans(Map<Class<?>, Object> injectableBeans) {
+        this.injectableBeans.putAll(injectableBeans);
     }
 
     private void registerEventHandler(Object handler, Configurer configurer) {

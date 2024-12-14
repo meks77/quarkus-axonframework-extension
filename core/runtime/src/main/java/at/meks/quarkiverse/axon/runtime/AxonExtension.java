@@ -2,7 +2,9 @@ package at.meks.quarkiverse.axon.runtime;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -45,6 +47,7 @@ public class AxonExtension {
     private final Set<Object> evenhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
+    private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
 
     void init() {
         if (configuration == null) {
@@ -52,6 +55,7 @@ public class AxonExtension {
             axonFrameworkConfigurer.eventhandlers(Set.copyOf(evenhandlers));
             axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
+            axonFrameworkConfigurer.injectableBeans(Map.copyOf(injectableBeans));
             final Configurer configurer = axonFrameworkConfigurer.configure();
             Log.info("starting axon");
             Log.debugf("with axon configuration " + System.identityHashCode(configurer));
@@ -156,4 +160,7 @@ public class AxonExtension {
                 .orElse(null);
     }
 
+    public <T> void addInjectableBean(Class<? extends T> clazz, T bean) {
+        injectableBeans.put(clazz, bean);
+    }
 }
