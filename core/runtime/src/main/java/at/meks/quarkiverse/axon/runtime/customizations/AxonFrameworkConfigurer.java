@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.axonframework.config.Configurer;
@@ -42,4 +43,11 @@ public interface AxonFrameworkConfigurer {
      * @param queryhandlerInstances a set of query handler instances to be registered.
      */
     void queryhandlers(Set<Object> queryhandlerInstances);
+
+    /**
+     * CDI Beans which are added to the Axon framework as componentent, to inject them at aggregates command handlers.
+     *
+     * @param injectableBeans a set of CDI beans that will be injected into aggregates command handler methods
+     */
+    void injectableBeans(Map<Class<?>, Object> injectableBeans);
 }

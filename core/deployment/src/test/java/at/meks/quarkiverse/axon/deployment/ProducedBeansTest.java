@@ -17,7 +17,7 @@ import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class ProducedBeansTest extends JavaArchiveTest {
+public class ProducedBeansTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()

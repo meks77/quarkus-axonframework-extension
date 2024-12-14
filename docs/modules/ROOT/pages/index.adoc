@@ -680,6 +680,27 @@ The interface you have to implement is ´EventHandlerInterceptorsProducer´.
 
 These interceptors are registered for each event processor.
 
+=== Inject CDI Beans into Message Handler Methods
+
+Application scoped beans can be injected in message handler methods. The beans are injected into methods annotated with
+
+* CommandHandler
+* QueryHandler and
+* EventHandler
+
+
+Here is a simple example of an injection into a command handler.
+
+[source,java]
+----
+@CommandHandler
+void handle(MyCommand command, MyBean bean) {
+    // ...
+    bean.doBeanStuff();
+    // ...
+}
+----
+
 === Transaction
 
 CAUTION: By default, no transaction management is setup.
