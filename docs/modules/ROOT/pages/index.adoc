@@ -41,22 +41,14 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 |===
 | Extension Version | Quarkus | Axon framework
 
-| 0.1.0-quarkus-3.15-RC1
-| 3.15.1
-| 4.10.3
-
-| 0.1.0-RC1
-| 3.16.2
-| 4.10.3
-
-| 0.1.0-quarkus-3.15-RC2
+| 0.1.0-quarkus-3.15-RC4
 | 3.15.2
-| 4.10.3
+| 4.10.4
 
 
-| 0.1.0-RC2
-| 3.16.4
-| 4.10.3
+| 0.1.0-RC4
+| 3.17.4
+| 4.10.4
 
 | 0.1.0-quarkus-3.15-RC3
 | 3.15.2
@@ -65,6 +57,22 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 
 | 0.1.0-RC3
 | 3.16.4
+| 4.10.3
+
+| 0.1.0-quarkus-3.15-RC2
+| 3.15.2
+| 4.10.3
+
+| 0.1.0-RC2
+| 3.16.4
+| 4.10.3
+
+| 0.1.0-quarkus-3.15-RC1
+| 3.15.1
+| 4.10.3
+
+| 0.1.0-RC1
+| 3.16.2
 | 4.10.3
 |===
 
