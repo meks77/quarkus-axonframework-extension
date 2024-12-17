@@ -99,6 +99,7 @@ You can provide your own setup for
   * CommandHandler
   * EventHandler
   * QueryHandler
+* Upcasters
 
 
 #### Live reloading
