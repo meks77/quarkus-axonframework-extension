@@ -98,11 +98,16 @@ public class JavaArchiveTest {
         Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
+        assertConfiguration(configuration);
         assertConfiguration(eventProcessorOptional.get());
         assertOthers();
     }
 
     protected void assertConfiguration(EventProcessor eventProcessor) {
+
+    }
+
+    protected void assertConfiguration(Configuration configuration) {
 
     }
 

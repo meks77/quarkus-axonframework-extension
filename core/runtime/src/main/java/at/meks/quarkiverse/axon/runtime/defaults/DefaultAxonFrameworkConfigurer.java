@@ -12,6 +12,7 @@ import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.serialization.json.JacksonSerializer;
+import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,6 +46,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
     @Inject
+    Instance<EventUpcasterChain> eventUpcasterChain;
+
+    @Inject
     InterceptorConfigurer interceptorConfigurer;
 
     private Set<Class<?>> aggregateClasses;
@@ -69,8 +73,21 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         metricsConfigurer.configure(configurer);
         interceptorConfigurer.registerInterceptors(configurer);
         registerInjectableBeans(configurer);
-
+        registerEventUpcasters(configurer);
         return configurer;
+    }
+
+    private void registerEventUpcasters(Configurer configurer) {
+        if (eventUpcasterChain.isResolvable()) {
+            Log.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
+            configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
+        } else if (eventUpcasterChain.isAmbiguous()) {
+            throw new IllegalStateException(
+                    "multiple eventUpcasterChain found: %s"
+                            .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
+        } else {
+            Log.info("no eventUpcasterChain found");
+        }
     }
 
     private void configureAggregates(Configurer configurer) {
