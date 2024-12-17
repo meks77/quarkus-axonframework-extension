@@ -1,5 +1,8 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
@@ -18,9 +21,6 @@ import org.axonframework.queryhandling.QueryMessage;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ApplicationScoped
 class InterceptorConfigurer {
@@ -94,7 +94,7 @@ class InterceptorConfigurer {
     }
 
     private Object handleExceptionInCommandHandling(UnitOfWork<? extends CommandMessage<?>> unitOfWork,
-                                                    InterceptorChain interceptorChain) {
+            InterceptorChain interceptorChain) {
         try {
             return interceptorChain.proceed();
         } catch (Exception e) {
@@ -147,7 +147,7 @@ class InterceptorConfigurer {
     }
 
     private Object handleExceptionInQueryHandling(UnitOfWork<? extends QueryMessage<?, ?>> unitOfWork,
-                                                  InterceptorChain interceptorChain) {
+            InterceptorChain interceptorChain) {
         try {
             return interceptorChain.proceed();
         } catch (Exception e) {
