@@ -529,7 +529,7 @@ CAUTION: By default, an in-memory token store is used. This normally shouldn't b
 Currently only the JDBC Tokenstore is supported.
 
 ==== JDBC Tokenstore
-If you would like to use the JDBC Tokenstore you simply have to add the dependency to the extension, and setup a datasource in quarkus.
+If you would like to use the JDBC Tokenstore you simply have to add the dependency to the project, and setup a datasource in quarkus.
 
 [source, xml]
 ----
@@ -550,6 +550,31 @@ quarkus.axon.tokenstore.autocreate-table-for-jdbc-token=false
 ----
 
 Currently it is not supported to have more than 1 configured datasource.
+
+==== JPA Tokenstore
+If you would like to use the JPA Tokenstore you simply have to add the dependency to the project, and setup a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-tokenstore-jpa</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+Set up your hibernate/datasource configuration in application.properties.
+Finally, you have to define in application.properties e.g.
+
+[source,properties]
+----
+quarkus.hibernate-orm.database.generation=update
+----
+
+or somehow set up the necessary tables(e.g. using Flyway). For details see the Axoniq documentation.
+
+There are some configurations possible(see <<_jpa_tokenstore_configuration>>)
+
 
 ==== Custom Tokenstore
 To provide your custom tokenstore you just need to implement the interface "TokenStoreConfigurer".
@@ -816,6 +841,10 @@ include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=op
 
 ==== JDBC Tokenstore configuration
 include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional]
+
+[#_jpa_tokenstore_configuration]
+==== JPA Tokenstore configuration
+include::includes/quarkus-axon-tokenstore-jpa.adoc[leveloffset=+1,opts=optional]
 
 === Axon Server configuration
 include::includes/quarkus-axon-server.adoc[leveloffset=+1,opts=optional]

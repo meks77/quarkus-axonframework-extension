@@ -75,6 +75,7 @@ You can provide your own setup for
 ### supported Token Stores
 
 * JDBC Token Store
+* JPA Token Store
 * custom setup for Tokenstore
 
 ### Interceptors
