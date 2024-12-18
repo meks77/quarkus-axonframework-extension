@@ -14,6 +14,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-arc-deployment</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-deployment</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-deployment-spi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
             <artifactId>quarkus-axon-deployment</artifactId>
             <version>${project.version}</version>
@@ -28,22 +40,25 @@
             <artifactId>quarkus-axon-tokenstore-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-orm-deployment</artifactId>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>unittest</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-orm-deployment-spi</artifactId>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>quarkus-axon-tracking-eventprocessor</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-mariadb</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>unittest</artifactId>
         </dependency>
     </dependencies>
 

@@ -3,6 +3,7 @@ package at.meks.quarkiverse.axon.tokenstore.jdbc.runtime;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 
 import javax.sql.DataSource;
 
@@ -26,7 +27,7 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
     Instance<DataSource> dataSource;
 
     @Inject
-    TokenStoreConfiguration configuration;
+    TokenStoreConfiguration tokenConfiguration;
 
     @ConfigProperty(name = "quarkus.datasource.db-kind", defaultValue = "none")
     String dbKind;
@@ -44,19 +45,15 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
 
     private void configureAndSetupTokenstore(EventProcessingConfigurer eventProcessingConfigurer) {
         eventProcessingConfigurer.registerTokenStore(conf -> {
-            TokenSchema tokenSchema = TokenSchema.builder().build();
-            JdbcTokenStore store = JdbcTokenStore.builder()
-                    .connectionProvider(() -> dataSource.get().getConnection())
-                    .serializer(conf.serializer())
-                    .schema(tokenSchema)
-                    .build();
+            TokenSchema tokenSchema = tokenSchema();
+            JdbcTokenStore store = createTokenStore(conf);
             autoCreateJdbcTokenTable(tokenSchema, store);
             return store;
         });
     }
 
     private void autoCreateJdbcTokenTable(TokenSchema tokenSchema, JdbcTokenStore store) {
-        if (!configuration.autocreateTableForJdbcToken()) {
+        if (!tokenConfiguration.autocreateTableForJdbcToken()) {
             return;
         }
         TokenTableFactory tokenTableFactory;
@@ -81,12 +78,22 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
         }
     }
 
-    private TokenStore createTokenStore(Configuration configuration) {
-        TokenSchema tokenSchema = TokenSchema.builder().build();
-        return JdbcTokenStore.builder()
+    private JdbcTokenStore createTokenStore(Configuration configuration) {
+        TokenSchema tokenSchema = tokenSchema();
+        JdbcTokenStore.Builder builder = JdbcTokenStore.builder();
+        tokenConfiguration.claimTimeout()
+                .map(timeout -> Duration.of(timeout.amount(), timeout.unit().toChronoUnit()))
+                .ifPresent(builder::claimTimeout);
+        return builder
                 .connectionProvider(() -> dataSource.get().getConnection())
                 .serializer(configuration.serializer())
                 .schema(tokenSchema)
                 .build();
+    }
+
+    private TokenSchema tokenSchema() {
+        TokenSchema.Builder builder = TokenSchema.builder();
+        tokenConfiguration.tokenTableName().ifPresent(builder::setTokenTable);
+        return builder.build();
     }
 }

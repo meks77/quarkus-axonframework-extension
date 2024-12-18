@@ -1,22 +1,17 @@
-package at.meks.quarkiverse.axon.tokenstore.jdbc.runtime;
+package at.meks.quarkiverse.axon.tokenstore.jpa;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import jakarta.persistence.LockModeType;
+
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
-import io.smallrye.config.WithDefault;
 
-@ConfigMapping(prefix = "quarkus.axon.tokenstore.jdbc")
+@ConfigMapping(prefix = "quarkus.axon.tokenstore.jpa")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
-public interface TokenStoreConfiguration {
-
-    /**
-     * if true, the table for the jdbc token is created on startup.
-     */
-    @WithDefault("true")
-    boolean autocreateTableForJdbcToken();
+public interface JpaTokenstoreConfig {
 
     /**
      * The {@code claimTimeout} specifying the amount of time this process will wait after which this process
@@ -25,9 +20,10 @@ public interface TokenStoreConfiguration {
     Optional<ClaimTimeout> claimTimeout();
 
     /**
-     * The table name used for the token store. If not set, the default of the Axon framework is used.
+     * The {@link LockModeType} to use when loading tokens from the underlying database. If not set it defaults to
+     * Axon framework default.
      */
-    Optional<String> tokenTableName();
+    Optional<LockModeType> loadingLockMode();
 
     interface ClaimTimeout {
 
