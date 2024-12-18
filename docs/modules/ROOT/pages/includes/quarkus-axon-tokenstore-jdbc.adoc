@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-autocreate-table-for-jdbc-token[`quarkus.axon.tokenstore.autocreate-table-for-jdbc-token`]##
+a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-autocreate-table-for-jdbc-token[`quarkus.axon.tokenstore.jdbc.autocreate-table-for-jdbc-token`]##
 
 [.description]
 --
@@ -15,14 +15,65 @@ if true, the table for the jdbc token is created on startup.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JDBC_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TOKENSTORE_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++`
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_AUTOCREATE_TABLE_FOR_JDBC_TOKEN+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
 |`true`
+
+a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit[`quarkus.axon.tokenstore.jdbc.claim-timeout.unit`]##
+
+[.description]
+--
+the time unit used for the shutdown wait duration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JDBC_CLAIM_TIMEOUT_UNIT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_CLAIM_TIMEOUT_UNIT+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-amount]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-amount[`quarkus.axon.tokenstore.jdbc.claim-timeout.amount`]##
+
+[.description]
+--
+the amount of time to wait after shutdown.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JDBC_CLAIM_TIMEOUT_AMOUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_CLAIM_TIMEOUT_AMOUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|`0l`
+
+a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name[`quarkus.axon.tokenstore.jdbc.token-table-name`]##
+
+[.description]
+--
+The table name used for the token store. If not set, the default of the Axon framework is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JDBC_TOKEN_TABLE_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_TOKEN_TABLE_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
 
 |===
 

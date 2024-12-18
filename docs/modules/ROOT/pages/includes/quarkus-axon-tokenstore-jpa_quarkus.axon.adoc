@@ -1,0 +1,62 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-unit]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-unit[`quarkus.axon.tokenstore.jpa.claim-timeout.unit`]##
+
+[.description]
+--
+the time unit used for the shutdown wait duration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JPA_CLAIM_TIMEOUT_UNIT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JPA_CLAIM_TIMEOUT_UNIT+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-amount]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-amount[`quarkus.axon.tokenstore.jpa.claim-timeout.amount`]##
+
+[.description]
+--
+the amount of time to wait after shutdown.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JPA_CLAIM_TIMEOUT_AMOUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JPA_CLAIM_TIMEOUT_AMOUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|`0l`
+
+a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode[`quarkus.axon.tokenstore.jpa.loading-lock-mode`]##
+
+[.description]
+--
+The `LockModeType` to use when loading tokens from the underlying database. If not set it defaults to Axon framework default.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TOKENSTORE_JPA_LOADING_LOCK_MODE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JPA_LOADING_LOCK_MODE+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`read`, `write`, `optimistic`, `optimistic-force-increment`, `pessimistic-read`, `pessimistic-write`, `pessimistic-force-increment`, `none`
+|
+
+|===
+
