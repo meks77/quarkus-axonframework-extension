@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,7 +19,7 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
     PooledProcessorConf pooledProcessorConf;
 
     @Override
-    public void configure(EventProcessingConfigurer configurer) {
+    public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
             builder
                     .name(pooledProcessorConf.name())

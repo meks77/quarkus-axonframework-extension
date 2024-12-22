@@ -15,6 +15,8 @@ public class GiftcardQueryHandler {
 
     private final Map<String, GiftcardView> giftcards = new HashMap<>();
 
+    private boolean cardIssuedEventWasHandled = false;
+
     @QueryHandler
     GiftcardView handle(Api.GiftcardQuery query) {
         return giftcards.get(query.id());
@@ -22,6 +24,7 @@ public class GiftcardQueryHandler {
 
     @EventHandler
     void handle(Api.CardIssuedEvent event) {
+        cardIssuedEventWasHandled = true;
         giftcards.put(event.id(), new GiftcardView(event.id(), event.amount()));
     }
 
@@ -33,5 +36,9 @@ public class GiftcardQueryHandler {
     @EventHandler
     void handle(Api.LatestRedemptionUndoneEvent event) {
         giftcards.get(event.id()).undoLastRedemption(event.amount());
+    }
+
+    public boolean cardIssuedEventWasHandled() {
+        return cardIssuedEventWasHandled;
     }
 }

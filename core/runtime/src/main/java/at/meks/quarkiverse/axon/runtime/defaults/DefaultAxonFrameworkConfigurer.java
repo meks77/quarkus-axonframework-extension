@@ -113,7 +113,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                         "multiple eventProcessingConfigurers(" + AxonEventProcessingConfigurer.class.getName() + ") found.");
             }
             tokenStoreConfigurer.configureTokenStore(configurer);
-            eventProcessingConfigurers.get().configure(configurer.eventProcessing());
+            eventProcessingConfigurers.get().configure(configurer.eventProcessing(), eventhandlers);
 
             eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
         }

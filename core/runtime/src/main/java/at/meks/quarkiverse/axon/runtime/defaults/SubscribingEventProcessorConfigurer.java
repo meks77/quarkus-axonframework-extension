@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
+import java.util.Collection;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.config.EventProcessingConfigurer;
@@ -12,7 +14,7 @@ import io.quarkus.arc.DefaultBean;
 public class SubscribingEventProcessorConfigurer implements AxonEventProcessingConfigurer {
 
     @Override
-    public void configure(EventProcessingConfigurer configurer) {
+    public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         configurer.usingSubscribingEventProcessors();
     }
 }

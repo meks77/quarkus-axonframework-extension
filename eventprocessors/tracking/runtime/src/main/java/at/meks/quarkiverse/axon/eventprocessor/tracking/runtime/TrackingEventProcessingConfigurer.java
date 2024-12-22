@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,7 +21,7 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
     TrackingProcessorConf trackingProcessorConf;
 
     @Override
-    public void configure(EventProcessingConfigurer configurer) {
+    public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         int threadCount = trackingProcessorConf.threadCount();
         validate().that(threadCount).isGreater(0);
         var trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
