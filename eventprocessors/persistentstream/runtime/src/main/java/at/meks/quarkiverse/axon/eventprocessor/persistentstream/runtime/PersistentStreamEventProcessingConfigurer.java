@@ -1,7 +1,10 @@
 package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,6 +15,7 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.messaging.SubscribableMessageSource;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 
@@ -23,27 +27,51 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
 
     @Inject
     ScheduledExecutorService executorService;
+    @Inject
+    AxonConfiguration axonConfiguration;
 
     @Override
-    public void configure(EventProcessingConfigurer configurer) {
+    public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         configurer.usingSubscribingEventProcessors();
-        configurer
-                .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
-        // for later: custom processor per handler group
-        //            eventProcessingConfigurer.registerSubscribingEventProcessor(${handler group name},
-        //                    conf -> new PersistentStreamMessageSource("eventstore", conf,
-        //                            streamProperties, executorService, persistentStreamConf.batchSize()));
+        // because of an unexptected behaviour in the axon framework, it's not possible to simply use a default
+        // message source. If so, only the eventhandlers of one package are informed about events.
+        // Maybe with the Axon framework version 4.11 this will be fixed in the framework.
+        //        configurer
+        //                .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
+        packagesOfEventhandlers(eventhandlers)
+                .forEach(pkgName -> configurer.registerSubscribingEventProcessor(pkgName,
+                        conf -> createPersistentStreamMessageSource(
+                                eventprocessorName(pkgName), conf,
+                                persistentStreamProperties(eventprocessorName(pkgName)))));
+    }
+
+    private String eventprocessorName(String pkgName) {
+        return axonConfiguration.axonApplicationName() + "-" + pkgName;
+    }
+
+    private PersistentStreamMessageSource createPersistentStreamMessageSource(String pkgName, Configuration conf,
+            PersistentStreamProperties persistentStreamProperties) {
+        return new PersistentStreamMessageSource(pkgName, conf, persistentStreamProperties, executorService,
+                persistentStreamProcessorConf.batchSize(), persistentStreamProcessorConf.context());
+    }
+
+    private Set<String> packagesOfEventhandlers(Collection<Object> eventhandlers) {
+        return eventhandlers.stream()
+                .map(Object::getClass)
+                .map(Class::getPackageName)
+                .collect(Collectors.toSet());
     }
 
     private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
-        PersistentStreamProperties streamProperties = persistentStreamProperties();
-        return new PersistentStreamMessageSource(persistentStreamProcessorConf.messageSourceName(), conf, streamProperties,
-                executorService, persistentStreamProcessorConf.batchSize(), persistentStreamProcessorConf.context());
+        PersistentStreamProperties streamProperties = persistentStreamProperties(
+                persistentStreamProcessorConf.streamname());
+        return createPersistentStreamMessageSource(persistentStreamProcessorConf.messageSourceName(), conf,
+                streamProperties);
     }
 
-    private PersistentStreamProperties persistentStreamProperties() {
+    private PersistentStreamProperties persistentStreamProperties(String streamname) {
         return new PersistentStreamProperties(
-                persistentStreamProcessorConf.streamname(),
+                streamname,
                 persistentStreamProcessorConf.segments(),
                 SequencingPolicy.PER_AGGREGATE.axonName(),
                 Collections.emptyList(),

@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
+import java.util.Collection;
+
 import org.axonframework.config.EventProcessingConfigurer;
 
 /**
@@ -15,7 +17,8 @@ public interface AxonEventProcessingConfigurer {
      * such as event processors, within the Axon Framework's configuration.
      *
      * @param configurer the {@link EventProcessingConfigurer} to be customized
+     * @param eventhandlers all discovered eventhandler instances of the application
      */
-    void configure(EventProcessingConfigurer configurer);
+    void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers);
 
 }
