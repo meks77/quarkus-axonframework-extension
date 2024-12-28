@@ -14,10 +14,12 @@ import io.quarkus.logging.Log;
 public class GiftcardInMemoryHistory {
 
     private final List<Object> history = new ArrayList<>();
+    private boolean cardIssuedEventWasHandled = false;
 
     @EventHandler
     void handle(Api.CardIssuedEvent event) {
         Log.debugf("handling event %s", event);
+        cardIssuedEventWasHandled = true;
         history.add(event);
     }
 
@@ -31,4 +33,7 @@ public class GiftcardInMemoryHistory {
         return history.contains(event);
     }
 
+    public boolean cardIssuedEventWasHandled() {
+        return cardIssuedEventWasHandled;
+    }
 }

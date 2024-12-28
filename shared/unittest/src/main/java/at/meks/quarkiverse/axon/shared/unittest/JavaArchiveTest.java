@@ -28,6 +28,7 @@ import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
+import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusUnitTest;
 
@@ -61,6 +62,10 @@ public class JavaArchiveTest {
     QueryGateway queryGateway;
     @Inject
     GiftcardInMemoryHistory giftcardInMemoryHistory;
+    @Inject
+    GiftcardQueryHandler giftcardQueryHandler;
+    @Inject
+    AnotherProjection anotherProjection;
 
     @Inject
     Configuration configuration;
@@ -95,12 +100,20 @@ public class JavaArchiveTest {
                 .usingRecursiveComparison()
                 .isEqualTo(new GiftcardView(cardId, 9));
 
+        assertThatAllEventHandlerClassesWereInformed();
+
         Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
         assertConfiguration(configuration);
         assertConfiguration(eventProcessorOptional.get());
         assertOthers();
+    }
+
+    private void assertThatAllEventHandlerClassesWereInformed() {
+        assertTrue(giftcardQueryHandler.cardIssuedEventWasHandled(), "GiftcardQueryHandler was not informed");
+        assertTrue(giftcardInMemoryHistory.cardIssuedEventWasHandled(), "GiftcardInMemoryHistory was not informed");
+        assertTrue(anotherProjection.cardIssuedEventWasHandled(), "AnotherProjection was not informed");
     }
 
     protected void assertConfiguration(EventProcessor eventProcessor) {
