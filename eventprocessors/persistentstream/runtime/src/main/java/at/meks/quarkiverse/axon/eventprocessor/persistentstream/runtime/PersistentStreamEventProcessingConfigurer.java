@@ -41,8 +41,12 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
         packagesOfEventhandlers(eventhandlers)
                 .forEach(pkgName -> configurer.registerSubscribingEventProcessor(pkgName,
                         conf -> createPersistentStreamMessageSource(
-                                pkgName, conf,
-                                persistentStreamProperties(axonConfiguration.axonApplicationName() + "-" + pkgName))));
+                                eventprocessorName(pkgName), conf,
+                                persistentStreamProperties(eventprocessorName(pkgName)))));
+    }
+
+    private String eventprocessorName(String pkgName) {
+        return axonConfiguration.axonApplicationName() + "-" + pkgName;
     }
 
     private PersistentStreamMessageSource createPersistentStreamMessageSource(String pkgName, Configuration conf,

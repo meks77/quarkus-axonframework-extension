@@ -8,6 +8,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class WithDefaultsTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = JavaArchiveTest.application(JavaArchiveTest.javaArchiveBase());
+    static final QuarkusUnitTest config = JavaArchiveTest.application(JavaArchiveTest.javaArchiveBase()
+            .addAsResource(propertiesFile("/withDefaults.properties"), "application.properties"));
 
 }
