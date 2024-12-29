@@ -10,17 +10,16 @@ import io.smallrye.config.WithDefault;
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
 public interface PersistentStreamProcessorConf extends EventProcessorConfiguration {
 
-    /**
-     * The name of the persistent stream
-     */
-    @WithDefault("quarkus-persistent")
-    String streamname();
+    //    /**
+    //     * The name of the persistent stream
+    //     */
+    //    Optional<String> streamname();
 
-    /**
-     * The name of the persistent message source.
-     */
-    @WithDefault("eventstore")
-    String messageSourceName();
+    //    /**
+    //     * The name of the persistent message source.
+    //     */
+    //    @WithDefault("eventstore")
+    //    String messageSourceName();
 
     /**
      * The context of the axon server, this stream is active for.
