@@ -41,39 +41,16 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 |===
 | Extension Version | Quarkus | Axon framework
 
-| 0.1.0-quarkus-3.15-RC4
-| 3.15.2
-| 4.10.4
+| 0.1.0-RC5 | 3.17.5 | 4.10.4
+| 0.1.0-RC4 | 3.17.4 | 4.10.4
+| 0.1.0-RC3 | 3.16.4 | 4.10.3
+| 0.1.0-RC2 | 3.16.4 | 4.10.3
+| 0.1.0-RC1 | 3.16.2 | 4.10.3
 
-
-| 0.1.0-RC4
-| 3.17.4
-| 4.10.4
-
-| 0.1.0-quarkus-3.15-RC3
-| 3.15.2
-| 4.10.3
-
-
-| 0.1.0-RC3
-| 3.16.4
-| 4.10.3
-
-| 0.1.0-quarkus-3.15-RC2
-| 3.15.2
-| 4.10.3
-
-| 0.1.0-RC2
-| 3.16.4
-| 4.10.3
-
-| 0.1.0-quarkus-3.15-RC1
-| 3.15.1
-| 4.10.3
-
-| 0.1.0-RC1
-| 3.16.2
-| 4.10.3
+| 0.1.0-quarkus-3.15-RC4 | 3.15.2 | 4.10.4
+| 0.1.0-quarkus-3.15-RC3 | 3.15.2 | 4.10.3
+| 0.1.0-quarkus-3.15-RC2 | 3.15.2 | 4.10.3
+| 0.1.0-quarkus-3.15-RC1 | 3.15.1 | 4.10.3
 |===
 
 
@@ -523,13 +500,18 @@ For more details on how to add a persistent token store, read the section <<Toke
 For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
 
+=== Persistent Stream Event Processors
+Because of an unexpected behaviour when configuring the event store default source for the event processors, it was necessary to register a persistent stream per package, where event processors are located.
+
+Furthermore, it was necessary to create a name for the persistent stream, which is as unique as possible on the server side. Therefore, the name is created based on the application name and the package name. The configurable stream name and source name of the persistent stream are currently not available. Currently, it is unknown if they come back.
+
 === Tokenstore
 CAUTION: By default, an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
 
-Currently only the JDBC Tokenstore is supported.
+Currently, only the JDBC Tokenstore is supported.
 
 ==== JDBC Tokenstore
-If you would like to use the JDBC Tokenstore you simply have to add the dependency to the project, and setup a datasource in quarkus.
+If you would like to use the JDBC Tokenstore, you simply have to add the dependency to the project and set up a datasource in quarkus.
 
 [source, xml]
 ----

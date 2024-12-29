@@ -12,8 +12,6 @@ import jakarta.inject.Inject;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.EventMessage;
-import org.axonframework.messaging.SubscribableMessageSource;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
@@ -41,11 +39,11 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
         packagesOfEventhandlers(eventhandlers)
                 .forEach(pkgName -> configurer.registerSubscribingEventProcessor(pkgName,
                         conf -> createPersistentStreamMessageSource(
-                                eventprocessorName(pkgName), conf,
-                                persistentStreamProperties(eventprocessorName(pkgName)))));
+                                persistentStreamName(pkgName), conf,
+                                persistentStreamProperties(persistentStreamName(pkgName)))));
     }
 
-    private String eventprocessorName(String pkgName) {
+    private String persistentStreamName(String pkgName) {
         return axonConfiguration.axonApplicationName() + "-" + pkgName;
     }
 
@@ -62,12 +60,12 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
                 .collect(Collectors.toSet());
     }
 
-    private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
-        PersistentStreamProperties streamProperties = persistentStreamProperties(
-                persistentStreamProcessorConf.streamname());
-        return createPersistentStreamMessageSource(persistentStreamProcessorConf.messageSourceName(), conf,
-                streamProperties);
-    }
+    //    private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
+    //        PersistentStreamProperties streamProperties = persistentStreamProperties(
+    //                persistentStreamProcessorConf.streamname().orElseGet(() -> persistentStreamName("quarkus")));
+    //        return createPersistentStreamMessageSource(persistentStreamProcessorConf.messageSourceName(), conf,
+    //                streamProperties);
+    //    }
 
     private PersistentStreamProperties persistentStreamProperties(String streamname) {
         return new PersistentStreamProperties(

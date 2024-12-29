@@ -41,40 +41,6 @@ endif::add-copy-button-to-env-var[]
 |int
 |`-1`
 
-a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-streamname]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-streamname[`quarkus.axon.persistentstreams.streamname`]##
-
-[.description]
---
-The name of the persistent stream
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_STREAMNAME+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_STREAMNAME+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|`quarkus-persistent`
-
-a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-message-source-name]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-message-source-name[`quarkus.axon.persistentstreams.message-source-name`]##
-
-[.description]
---
-The name of the persistent message source.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_MESSAGE_SOURCE_NAME+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_MESSAGE_SOURCE_NAME+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|`eventstore`
-
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-context]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-context[`quarkus.axon.persistentstreams.context`]##
 
 [.description]
