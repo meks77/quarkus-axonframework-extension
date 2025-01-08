@@ -47,7 +47,6 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 | 0.1.0-RC2 | 3.16.4 | 4.10.3
 | 0.1.0-RC1 | 3.16.2 | 4.10.3
 
-| 0.1.0-quarkus-3.15-RC5 | 3.15.2 | 4.10.4
 | 0.1.0-quarkus-3.15-RC4 | 3.15.2 | 4.10.4
 | 0.1.0-quarkus-3.15-RC3 | 3.15.2 | 4.10.3
 | 0.1.0-quarkus-3.15-RC2 | 3.15.2 | 4.10.3
@@ -597,6 +596,64 @@ EventUpcasterChain eventUpcasterChain() {
 }
 ----
 <1> The list of your upcasters
+
+=== Sagas
+
+[CAUTION]
+====
+Sagas require an Eventprocessor, but the default Token Store is only in Memory.
+
+Beware to configure a Token Store for procution usage.
+====
+
+Sagas are automatically registered.
+
+There are different Saga stores supported.
+
+CAUTION: By default the in memory Saga store is active. This is not recommended for production use.
+
+The available Saga stores are:
+
+- InMemory Saga store
+- JDBC Saga store
+- JPA Saga store
+
+A Saga is similar to an Event handler. You have to implmement methods, which listen to events which are annotated with `@SagaEventHandler`.
+
+Furthermore one method must be annotated with `@StartSaga`, and another one must be annotated with `@EndSaga`.
+
+Example:
+
+[source,java]
+----
+public class CardReturnSaga {
+
+    @StartSaga
+    @SagaEventHandler(associationProperty = "id", keyName = "cardId")
+    void handle(Api.CardGotEmptyEvent event) {
+        // ... <1>
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "id", keyName = "cardId")
+    void handle(Api.CardReturnedEvent event) {
+        // ... <2>
+    }
+}
+----
+<1> The code for handling the event is omitted
+<2> The code for handling the event is omitted
+
+For more details about how to implement Sagas please read the Axon framework documentation.
+
+==== InMemory Saga Store
+For development purposes you can use the in memory saga store. It is active by default.
+
+==== JDBC Saga store
+TODO
+
+==== JPA Saga store
+TODO
 
 === Exception Handling
 

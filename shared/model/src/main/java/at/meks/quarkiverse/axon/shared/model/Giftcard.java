@@ -49,6 +49,9 @@ public class Giftcard {
             throw new IllegalArgumentException("amount must be less than current card amount");
         }
         apply(new Api.CardRedeemedEvent(id, amount));
+        if (currentAmount == 0) {
+            apply(new Api.CardGotEmptyEvent(id));
+        }
     }
 
     @EventSourcingHandler
@@ -78,6 +81,11 @@ public class Giftcard {
     void handle(Api.LatestRedemptionUndoneEvent event) {
         cardRedemptions.remove(cardRedemptions.size() - 1);
         this.currentAmount += event.amount();
+    }
+
+    @CommandHandler
+    void handle(Api.ReturnCardCommand command) {
+        apply(new Api.CardReturnedEvent(command.id()));
     }
 
 }

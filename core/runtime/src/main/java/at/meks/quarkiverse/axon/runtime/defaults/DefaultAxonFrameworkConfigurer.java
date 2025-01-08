@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import jakarta.inject.Inject;
 import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
+import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.serialization.json.JacksonSerializer;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 
@@ -51,11 +53,15 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     InterceptorConfigurer interceptorConfigurer;
 
+    @Inject
+    SagaStoreConfigurer sagaStoreConfigurer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
     private Set<Object> queryhandlers;
     private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
+    private final Set<Class<?>> sagaEventhandlerClasses = new HashSet<>();
 
     @Override
     public Configurer configure() {
@@ -74,6 +80,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         interceptorConfigurer.registerInterceptors(configurer);
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
+        configureSagas(configurer);
         return configurer;
     }
 
@@ -103,7 +110,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureEventHandling(Configurer configurer) {
-        if (!eventhandlers.isEmpty()) {
+        if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
             if (eventProcessingConfigurers.isUnsatisfied()) {
                 throw new IllegalStateException(
                         "no eventProcessingConfigurer found. Either add a eventprocessing extension dependency or provide your own implementation of "
@@ -114,9 +121,14 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             }
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.get().configure(configurer.eventProcessing(), eventhandlers);
-
-            eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
+            if (!eventhandlers.isEmpty()) {
+                eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
+            }
         }
+    }
+
+    private void registerEventHandler(Object handler, Configurer configurer) {
+        configurer.eventProcessing().registerEventHandler(conf -> handler);
     }
 
     private void configureTransactionManagement(Configurer configurer) {
@@ -127,6 +139,14 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         for (Map.Entry<Class<?>, Object> entry : injectableBeans.entrySet()) {
             //noinspection unchecked
             configurer.registerComponent((Class<Object>) entry.getKey(), configuration -> entry.getValue());
+        }
+    }
+
+    private void configureSagas(Configurer configurer) {
+        if (!sagaEventhandlerClasses.isEmpty()) {
+            sagaStoreConfigurer.configureSagaStore(configurer);
+            EventProcessingConfigurer eventProcessingConfigurer = configurer.eventProcessing();
+            sagaEventhandlerClasses.forEach(eventProcessingConfigurer::registerSaga);
         }
     }
 
@@ -155,8 +175,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         this.injectableBeans.putAll(injectableBeans);
     }
 
-    private void registerEventHandler(Object handler, Configurer configurer) {
-        configurer.eventProcessing().registerEventHandler(conf -> handler);
+    @Override
+    public void sagaClasses(Set<Class<?>> sagaEventhandlerClasses) {
+        this.sagaEventhandlerClasses.addAll(sagaEventhandlerClasses);
     }
 
 }

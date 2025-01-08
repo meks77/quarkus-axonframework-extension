@@ -14,6 +14,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.jboss.jandex.*;
 import org.jetbrains.annotations.NotNull;
@@ -116,12 +117,32 @@ class AxonExtensionProcessor {
     }
 
     @BuildStep
+    @Record(ExecutionTime.STATIC_INIT)
+    void scanForSagaEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+                              BeanArchiveIndexBuildItem beanArchiveIndex,
+                              BuildProducer<SagaEventhandlerBeanBuildItem> beanProducer) {
+        sagaEventhandlerClasses(beanArchiveIndex)
+                .forEach(clazz -> {
+                    beanProducer.produce(new SagaEventhandlerBeanBuildItem(clazz));
+                    Log.debugf("Configured saga eventhandler class: %s", clazz);
+                });
+    }
+
+
+    private Stream<Class<?>> sagaEventhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        return annotatedClasses(SagaEventHandler.class, "saga eventhandler methods",
+                annotationInstance -> annotationInstance.target().asMethod().declaringClass().asClass(),
+                beanArchiveIndex);
+    }
+
+    @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void startAxon(AxonInitializationRecorder recorder,
             List<AggregateBeanBuildItem> aggregateBeanBuildItems,
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
+            List<SagaEventhandlerBeanBuildItem> sagaEventhandlerBeanBuildItems,
             List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem) {
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate");
@@ -129,12 +150,13 @@ class AxonExtensionProcessor {
         Set<Class<?>> commandhandlerClasses = classes(commandhandlerBeanBuildItems, "commandhandler");
         Set<Class<?>> queryhandlerClasses = classes(queryhandlerBeanBuildItems, "queryhandler");
         Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean");
-
+        Set<Class<?>> sagaEventhandlerClasses = classes(sagaEventhandlerBeanBuildItems, "saga eventhandler");
         recorder.startAxon(beanContainerBuildItem.getValue(),
                 aggregateClasses,
                 commandhandlerClasses,
                 queryhandlerClasses,
                 eventhandlerClasses,
+                sagaEventhandlerClasses,
                 injectableBeanClasses);
     }
 

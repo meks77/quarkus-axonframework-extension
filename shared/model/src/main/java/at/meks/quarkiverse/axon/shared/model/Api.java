@@ -24,4 +24,14 @@ public class Api {
 
     public record LatestRedemptionUndoneEvent(String id, int amount) {
     }
+
+    public record CardGotEmptyEvent(String id) {
+    }
+
+    public record ReturnCardCommand(@TargetAggregateIdentifier String id) {
+    }
+
+    public record CardReturnedEvent(String id) {
+    }
+
 }

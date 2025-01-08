@@ -102,6 +102,14 @@ public class JavaArchiveTest {
 
         assertThatAllEventHandlerClassesWereInformed();
 
+        var cardId2 = UUID.randomUUID().toString();
+        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId2, 10));
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId2, 10));
+
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
+        commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
+
+
         Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
