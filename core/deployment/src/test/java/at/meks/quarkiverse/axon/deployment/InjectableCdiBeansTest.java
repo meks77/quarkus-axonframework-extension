@@ -52,11 +52,17 @@ public class InjectableCdiBeansTest {
     }
 
     @ApplicationScoped
-    static class InjectableCdiBeanForDomainService {
+    static class InjectableCdiBeanForDomainServiceImpl implements InjectableCdiBeanForDomainService {
 
-        void doSomething() {
+        public void doSomething() {
             logger.debug("do something");
         }
+
+    }
+
+    interface InjectableCdiBeanForDomainService {
+
+        void doSomething();
     }
 
     @ApplicationScoped
