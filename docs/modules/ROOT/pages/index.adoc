@@ -608,6 +608,8 @@ Beware to configure a Token Store for procution usage.
 
 Sagas are automatically registered.
 
+Application Scoped Beans are injected.
+
 There are different Saga stores supported.
 
 CAUTION: By default the in memory Saga store is active. This is not recommended for production use.
@@ -628,21 +630,25 @@ Example:
 ----
 public class CardReturnSaga {
 
+    @Inject
+    private CardReturnService cardReturnService; // <1>
+
     @StartSaga
     @SagaEventHandler(associationProperty = "id", keyName = "cardId")
     void handle(Api.CardGotEmptyEvent event) {
-        // ... <1>
+        cardReturnService.cardBecameEmpty(); // <2>
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = "id", keyName = "cardId")
     void handle(Api.CardReturnedEvent event) {
-        // ... <2>
+        cardReturnService.cardWasReturned();// ... <3>
     }
 }
 ----
-<1> The code for handling the event is omitted
-<2> The code for handling the event is omitted
+<1> An application scoped is injected
+<2> the application scoped bean is used to do some necessary task
+<3> the application scoped bean is used to do some necessary task
 
 For more details about how to implement Sagas please read the Axon framework documentation.
 

@@ -10,9 +10,9 @@ import io.quarkus.runtime.annotations.Recorder;
 public class AxonInitializationRecorder {
 
     public void startAxon(BeanContainer beanContainer, Collection<Class<?>> aggregateClasses,
-                          Collection<Class<?>> commandhandlerClasses, Collection<Class<?>> queryhandlerClasses,
-                          Collection<Class<?>> eventhandlerClasses, Set<Class<?>> sagaEventhandlerClasses,
-                          Set<Class<?>> injectableBeanClasses) {
+            Collection<Class<?>> commandhandlerClasses, Collection<Class<?>> queryhandlerClasses,
+            Collection<Class<?>> eventhandlerClasses, Set<Class<?>> sagaEventhandlerClasses,
+            Set<Class<?>> injectableBeanClasses) {
         AxonExtension axonExtension = beanContainer.beanInstance(AxonExtension.class);
         aggregateClasses.forEach(axonExtension::addAggregateForRegistration);
         commandhandlerClasses.stream().map(clz -> beanContainer.beanInstance(clz))

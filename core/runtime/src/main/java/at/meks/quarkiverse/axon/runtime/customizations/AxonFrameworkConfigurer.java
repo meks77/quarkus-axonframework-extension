@@ -53,6 +53,7 @@ public interface AxonFrameworkConfigurer {
 
     /**
      * Sets the classes which will be registered as Sagas.
+     *
      * @param sagaEventhandlerClasses saga classes
      */
     void sagaClasses(Set<Class<?>> sagaEventhandlerClasses);

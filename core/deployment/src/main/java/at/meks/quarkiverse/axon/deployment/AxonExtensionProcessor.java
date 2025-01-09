@@ -1,15 +1,13 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
@@ -119,15 +117,14 @@ class AxonExtensionProcessor {
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
     void scanForSagaEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
-                              BeanArchiveIndexBuildItem beanArchiveIndex,
-                              BuildProducer<SagaEventhandlerBeanBuildItem> beanProducer) {
+            BeanArchiveIndexBuildItem beanArchiveIndex,
+            BuildProducer<SagaEventhandlerBeanBuildItem> beanProducer) {
         sagaEventhandlerClasses(beanArchiveIndex)
                 .forEach(clazz -> {
                     beanProducer.produce(new SagaEventhandlerBeanBuildItem(clazz));
                     Log.debugf("Configured saga eventhandler class: %s", clazz);
                 });
     }
-
 
     private Stream<Class<?>> sagaEventhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         return annotatedClasses(SagaEventHandler.class, "saga eventhandler methods",
@@ -222,7 +219,8 @@ class AxonExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForInjectableCdiBeans(AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
+    void scanForInjectableCdiBeans(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<InjectableBeanBuildItem> beanProducer) {
         injectableBeanClasses(beanArchiveIndex)
                 .map(InjectableBeanBuildItem::new)
@@ -234,19 +232,55 @@ class AxonExtensionProcessor {
 
     private Stream<Class<?>> injectableBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         IndexView indexView = beanArchiveIndex.getIndex();
-        Collection<AnnotationInstance> commandHandlerAnnotations = new ArrayList<>(
-                indexView.getAnnotations(CommandHandler.class));
-        commandHandlerAnnotations.addAll(indexView.getAnnotations(EventHandler.class));
-        commandHandlerAnnotations.addAll(indexView.getAnnotations(QueryHandler.class));
-        return commandHandlerAnnotations.stream()
+        Collection<Class<?>> injectableBeanClasses = new HashSet<>(
+                classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(CommandHandler.class)));
+        injectableBeanClasses
+                .addAll(classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(EventHandler.class)));
+        injectableBeanClasses
+                .addAll(classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(QueryHandler.class)));
+        injectableBeanClasses.addAll(classesOfInjectedFieldsOfSagas(beanArchiveIndex, indexView));
+        return injectableBeanClasses.stream();
+    }
+
+    private @NotNull Collection<Class<Object>> classesOfInjectedMethodParams(BeanArchiveIndexBuildItem beanArchiveIndex,
+            Collection<AnnotationInstance> methodAnnotations) {
+        Stream<Type> typeStream = methodAnnotations.stream()
                 .flatMap(i -> i.target().asMethod().parameters().stream())
-                .map(MethodParameterInfo::type)
-                .filter(t -> t.kind() == Type.Kind.CLASS)
+                .map(MethodParameterInfo::type);
+        return filterRelevantBeanClasses(beanArchiveIndex, typeStream).collect(Collectors.toSet());
+    }
+
+    private Collection<Class<Object>> classesOfInjectedFieldsOfSagas(BeanArchiveIndexBuildItem beanArchiveIndex,
+            IndexView indexView) {
+        Stream<Type> typeStream = indexView.getAnnotations(SagaEventHandler.class).stream()
+                .map(methodAnnotation -> methodAnnotation.target().asMethod().declaringClass())
+                .map(ClassInfo::fields)
+                .flatMap(Collection::stream)
+                .map(fieldInfo -> fieldInfo.annotations(DotName.createSimple(Inject.class)))
+                .flatMap(Collection::stream)
+                .map(AnnotationInstance::target)
+                .map(AnnotationTarget::asField)
+                .map(FieldInfo::type);
+        return filterRelevantBeanClasses(beanArchiveIndex, typeStream).collect(Collectors.toSet());
+    }
+
+    private @NotNull Stream<Class<Object>> filterRelevantBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
+                                                                     Stream<Type> typeStream) {
+        return typeStream
+                .filter(this::isClassType)
                 .map(Type::asClassType)
                 .map(Type::name)
-                .map(name -> beanArchiveIndex.getIndex().getClassByName(name))
-                .filter(classInfo -> classInfo.hasDeclaredAnnotation(ApplicationScoped.class))
+                .map(beanArchiveIndex.getIndex()::getClassByName)
+                .filter(this::isRelevantBeanClass)
                 .map(this::toClass);
+    }
+
+    private boolean isClassType(Type type) {
+        return type.kind() == Type.Kind.CLASS;
+    }
+
+    private boolean isRelevantBeanClass(ClassInfo classInfo) {
+        return classInfo.hasDeclaredAnnotation(ApplicationScoped.class) || classInfo.isInterface();
     }
 
 }

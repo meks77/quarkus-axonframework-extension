@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.shared.unittest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import jakarta.inject.Inject;
 
+import org.awaitility.core.ThrowingRunnable;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
 import org.axonframework.eventhandling.EventProcessor;
@@ -22,6 +24,7 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 
+import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.model.DomainServiceExample;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
@@ -70,6 +73,9 @@ public class JavaArchiveTest {
     @Inject
     Configuration configuration;
 
+    @Inject
+    QuarkusPaymentservice quarkusPaymentservice;
+
     /**
      * Tests the configuration and integration of the framework by performing a sequence of actions and confirming their
      * results.
@@ -109,13 +115,23 @@ public class JavaArchiveTest {
         commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
         commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
 
-
+        dealyedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId), "cardId was not prepared"));
+        dealyedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
+        dealyedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
+        assertFalse(quarkusPaymentservice.isPaid(cardId2));
         Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
         assertConfiguration(configuration);
         assertConfiguration(eventProcessorOptional.get());
         assertOthers();
+    }
+
+    private void dealyedAssert(ThrowingRunnable cardIdWasNotPrepared) {
+        await().atMost(Duration.ofSeconds(10))
+                .pollDelay(Duration.ZERO)
+                .pollInterval(Duration.ofMillis(100))
+                .untilAsserted(cardIdWasNotPrepared);
     }
 
     private void assertThatAllEventHandlerClassesWereInformed() {
