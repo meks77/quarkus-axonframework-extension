@@ -1,10 +1,7 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -200,7 +197,8 @@ class AxonExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForInjectableCdiBeans(AxonInitializationRecorder recorder, BeanArchiveIndexBuildItem beanArchiveIndex,
+    void scanForInjectableCdiBeans(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+            BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<InjectableBeanBuildItem> beanProducer) {
         injectableBeanClasses(beanArchiveIndex)
                 .map(InjectableBeanBuildItem::new)
@@ -212,19 +210,40 @@ class AxonExtensionProcessor {
 
     private Stream<Class<?>> injectableBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         IndexView indexView = beanArchiveIndex.getIndex();
-        Collection<AnnotationInstance> commandHandlerAnnotations = new ArrayList<>(
-                indexView.getAnnotations(CommandHandler.class));
-        commandHandlerAnnotations.addAll(indexView.getAnnotations(EventHandler.class));
-        commandHandlerAnnotations.addAll(indexView.getAnnotations(QueryHandler.class));
-        return commandHandlerAnnotations.stream()
+        Collection<Class<?>> injectableBeanClasses = new HashSet<>(
+                classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(CommandHandler.class)));
+        injectableBeanClasses
+                .addAll(classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(EventHandler.class)));
+        injectableBeanClasses
+                .addAll(classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(QueryHandler.class)));
+        return injectableBeanClasses.stream();
+    }
+
+    private @NotNull Collection<Class<Object>> classesOfInjectedMethodParams(BeanArchiveIndexBuildItem beanArchiveIndex,
+            Collection<AnnotationInstance> methodAnnotations) {
+        Stream<Type> typeStream = methodAnnotations.stream()
                 .flatMap(i -> i.target().asMethod().parameters().stream())
-                .map(MethodParameterInfo::type)
-                .filter(t -> t.kind() == Type.Kind.CLASS)
+                .map(MethodParameterInfo::type);
+        return filterRelevantBeanClasses(beanArchiveIndex, typeStream).collect(Collectors.toSet());
+    }
+
+    private @NotNull Stream<Class<Object>> filterRelevantBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
+            Stream<Type> typeStream) {
+        return typeStream
+                .filter(this::isClassType)
                 .map(Type::asClassType)
                 .map(Type::name)
-                .map(name -> beanArchiveIndex.getIndex().getClassByName(name))
-                .filter(classInfo -> classInfo.hasDeclaredAnnotation(ApplicationScoped.class))
+                .map(beanArchiveIndex.getIndex()::getClassByName)
+                .filter(this::isRelevantBeanClass)
                 .map(this::toClass);
+    }
+
+    private boolean isClassType(Type type) {
+        return type.kind() == Type.Kind.CLASS;
+    }
+
+    private boolean isRelevantBeanClass(ClassInfo classInfo) {
+        return classInfo.hasDeclaredAnnotation(ApplicationScoped.class) || classInfo.isInterface();
     }
 
 }
