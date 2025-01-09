@@ -265,7 +265,7 @@ class AxonExtensionProcessor {
     }
 
     private @NotNull Stream<Class<Object>> filterRelevantBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
-                                                                     Stream<Type> typeStream) {
+            Stream<Type> typeStream) {
         return typeStream
                 .filter(this::isClassType)
                 .map(Type::asClassType)
