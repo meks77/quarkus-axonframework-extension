@@ -48,7 +48,12 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>test-jdbc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+            <artifactId>test-model</artifactId>
         </dependency>
     </dependencies>
 

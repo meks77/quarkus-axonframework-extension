@@ -59,6 +59,7 @@
         <module>transaction</module>
         <module>eventprocessors</module>
         <module>eventstores</module>
+        <module>sagastores</module>
         <!-- The docs module must be at the end of the list because it must be built at the end. Setting the dependencies
           causes other problems, especially when quarkus-hibernate-orm is in the build classpath. -->
         <module>docs</module>
@@ -108,7 +109,7 @@
             </dependency>
             <dependency>
                 <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>model</artifactId>
+                <artifactId>test-model</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>

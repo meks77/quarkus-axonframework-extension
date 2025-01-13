@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>test-model</artifactId>
         </dependency></dependencies>
 
     <build>

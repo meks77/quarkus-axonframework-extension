@@ -628,27 +628,29 @@ Example:
 
 [source,java]
 ----
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY) // <1>
 public class CardReturnSaga {
 
     @Inject
-    private CardReturnService cardReturnService; // <1>
+    private transient CardReturnService cardReturnService; // <2>
 
     @StartSaga
     @SagaEventHandler(associationProperty = "id", keyName = "cardId")
     void handle(Api.CardGotEmptyEvent event) {
-        cardReturnService.cardBecameEmpty(); // <2>
+        cardReturnService.cardBecameEmpty(); // <3>
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = "id", keyName = "cardId")
     void handle(Api.CardReturnedEvent event) {
-        cardReturnService.cardWasReturned();// ... <3>
+        cardReturnService.cardWasReturned();// ... <4>
     }
 }
 ----
-<1> An application scoped is injected
-<2> the application scoped bean is used to do some necessary task
+<1> Necessary annotation, that this Saga is registered with field for serialization
+<2> An application scoped bean is injected. It must be transient because of serialization
 <3> the application scoped bean is used to do some necessary task
+<4> the application scoped bean is used to do some necessary task
 
 For more details about how to implement Sagas please read the Axon framework documentation.
 
@@ -656,7 +658,20 @@ For more details about how to implement Sagas please read the Axon framework doc
 For development purposes you can use the in memory saga store. It is active by default.
 
 ==== JDBC Saga store
-TODO
+If you would like to use the JDBC Sagastore, you simply have to add the dependency to the project and set up a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-sagastore-jdbc</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
+
+CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see <<Transaction>>.
 
 ==== JPA Saga store
 TODO
