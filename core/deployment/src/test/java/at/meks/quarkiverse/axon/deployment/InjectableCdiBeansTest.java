@@ -10,6 +10,8 @@ import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import org.axonframework.modelling.saga.SagaEventHandler;
+import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.queryhandling.QueryHandler;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -25,6 +27,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class InjectableCdiBeansTest {
 
     private static Logger logger;
+    private static Logger sagaLogger;
 
     @Inject
     CommandGateway commandGateway;
@@ -87,6 +90,16 @@ public class InjectableCdiBeansTest {
         void doSomething() {
             logger.debug("do something");
         }
+
+    }
+
+    @ApplicationScoped
+    static class InjectableCdiBeanForSagaEventHandler {
+
+        void doSomething() {
+            sagaLogger.debug("do something");
+        }
+
     }
 
     @SuppressWarnings("unused")
@@ -140,11 +153,28 @@ public class InjectableCdiBeansTest {
             bean.doSomething();
             return true;
         }
+
+    }
+
+    @SuppressWarnings("unused")
+    public static class SagaEventHandlerUsingCdiBean {
+
+        @SuppressWarnings("QsPrivateBeanMembersInspection")
+        @Inject
+        private transient InjectableCdiBeanForSagaEventHandler bean;
+
+        @StartSaga
+        @SagaEventHandler(associationProperty = "id")
+        void on(MyEvent event) {
+            bean.doSomething();
+        }
+
     }
 
     @BeforeEach
     void setup() {
         logger = Mockito.mock(Logger.class);
+        sagaLogger = Mockito.mock(Logger.class);
     }
 
     @Test
@@ -169,6 +199,12 @@ public class InjectableCdiBeansTest {
     void cdiBeanIsInjectedInQueryHandler() {
         queryGateway.query(new MyQuery("1"), Boolean.class).join();
         Mockito.verify(logger).debug("do something");
+    }
+
+    @Test
+    void cdiBeanIsInjectedInSagaEventHandler() {
+        eventGateway.publish(new MyEvent("1"));
+        Mockito.verify(sagaLogger).debug("do something");
     }
 
 }

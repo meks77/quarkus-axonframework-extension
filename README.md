@@ -89,6 +89,17 @@ You can provide your own setup for
 * wrapping Exceptions into CommandExecutionException
 * wrapping Exceptions into QueryExecutionException
 
+### Sagas and Saga Stores
+
+Sagas are automatically registered.
+
+There are different saga stores you can use
+
+* InMemory
+* Jdbc
+
+[//]: # (* JPA)
+
 ### other supported stuff
 
 * transaction handling

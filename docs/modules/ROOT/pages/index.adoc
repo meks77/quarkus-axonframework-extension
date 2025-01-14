@@ -47,7 +47,6 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 | 0.1.0-RC2 | 3.16.4 | 4.10.3
 | 0.1.0-RC1 | 3.16.2 | 4.10.3
 
-| 0.1.0-quarkus-3.15-RC5 | 3.15.2 | 4.10.4
 | 0.1.0-quarkus-3.15-RC4 | 3.15.2 | 4.10.4
 | 0.1.0-quarkus-3.15-RC3 | 3.15.2 | 4.10.3
 | 0.1.0-quarkus-3.15-RC2 | 3.15.2 | 4.10.3
@@ -597,6 +596,85 @@ EventUpcasterChain eventUpcasterChain() {
 }
 ----
 <1> The list of your upcasters
+
+=== Sagas
+
+[CAUTION]
+====
+Sagas require an Eventprocessor, but the default Token Store is only in Memory.
+
+Beware to configure a Token Store for procution usage.
+====
+
+Sagas are automatically registered.
+
+Application Scoped Beans are injected.
+
+There are different Saga stores supported.
+
+CAUTION: By default the in memory Saga store is active. This is not recommended for production use.
+
+The available Saga stores are:
+
+- InMemory Saga store
+- JDBC Saga store
+// - JPA Saga store
+
+A Saga is similar to an Event handler. You have to implmement methods, which listen to events which are annotated with `@SagaEventHandler`.
+
+Furthermore one method must be annotated with `@StartSaga`, and another one must be annotated with `@EndSaga`.
+
+Example:
+
+[source,java]
+----
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY) // <1>
+public class CardReturnSaga {
+
+    @Inject
+    private transient CardReturnService cardReturnService; // <2>
+
+    @StartSaga
+    @SagaEventHandler(associationProperty = "id", keyName = "cardId")
+    void handle(Api.CardGotEmptyEvent event) {
+        cardReturnService.cardBecameEmpty(); // <3>
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "id", keyName = "cardId")
+    void handle(Api.CardReturnedEvent event) {
+        cardReturnService.cardWasReturned();// ... <4>
+    }
+}
+----
+<1> Necessary annotation, that this Saga is registered with field for serialization
+<2> An application scoped bean is injected. It must be transient because of serialization
+<3> the application scoped bean is used to do some necessary task
+<4> the application scoped bean is used to do some necessary task
+
+For more details about how to implement Sagas please read the Axon framework documentation.
+
+==== InMemory Saga Store
+For development purposes you can use the in memory saga store. It is active by default.
+
+==== JDBC Saga store
+If you would like to use the JDBC Sagastore, you simply have to add the dependency to the project and set up a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-sagastore-jdbc</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
+
+CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see <<Transaction>>.
+
+// ==== JPA Saga store
+// TODO
 
 === Exception Handling
 

@@ -10,8 +10,7 @@
     <artifactId>shared</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>unittest</module>
-        <module>model</module>
+        <module>test</module>
     </modules>
 
     <build>

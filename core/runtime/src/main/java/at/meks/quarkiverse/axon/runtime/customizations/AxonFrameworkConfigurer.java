@@ -50,4 +50,11 @@ public interface AxonFrameworkConfigurer {
      * @param injectableBeans a set of CDI beans that will be injected into aggregates command handler methods
      */
     void injectableBeans(Map<Class<?>, Object> injectableBeans);
+
+    /**
+     * Sets the classes which will be registered as Sagas.
+     *
+     * @param sagaEventhandlerClasses saga classes
+     */
+    void sagaClasses(Set<Class<?>> sagaEventhandlerClasses);
 }
