@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import jakarta.inject.Inject;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
+import at.meks.quarkiverse.shared.test.jdbc.SqlExecutor;
 
 public abstract class JdbcEventstoreTest extends JavaArchiveTest {
 
     @Inject
-    at.meks.quarkiverse.shared.test.jdbc.SqlExecutor sqlExecutor;
+    SqlExecutor sqlExecutor;
 
     @Override
     protected final void assertOthers() {

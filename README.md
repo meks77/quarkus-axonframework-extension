@@ -97,7 +97,8 @@ There are different saga stores you can use
 
 * InMemory
 * Jdbc
-* JPA
+
+[//]: # (* JPA)
 
 ### other supported stuff
 

@@ -80,9 +80,7 @@ public class JdbcSagaStoreConfigurer implements SagaStoreConfigurer {
     }
 
     private JdbcSagaStore createSagaStore(Configuration configuration) {
-        var builder = JdbcSagaStore.builder();
-
-        return builder
+        return JdbcSagaStore.builder()
                 .connectionProvider(() -> dataSource.get().getConnection())
                 .serializer(configuration.serializer())
                 .sqlSchema(sagaSqlSchema())

@@ -618,7 +618,7 @@ The available Saga stores are:
 
 - InMemory Saga store
 - JDBC Saga store
-- JPA Saga store
+// - JPA Saga store
 
 A Saga is similar to an Event handler. You have to implmement methods, which listen to events which are annotated with `@SagaEventHandler`.
 
@@ -673,8 +673,8 @@ By default the database table is created on startup. If you don't want to create
 
 CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see <<Transaction>>.
 
-==== JPA Saga store
-TODO
+// ==== JPA Saga store
+// TODO
 
 === Exception Handling
 
