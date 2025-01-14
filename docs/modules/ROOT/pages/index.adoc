@@ -41,6 +41,7 @@ The latest LTS and the current version quarkus are supported. Axon framework is 
 |===
 | Extension Version | Quarkus | Axon framework
 
+| 0.1.0-RC6 | 3.17.6 | 4.10.4
 | 0.1.0-RC5 | 3.17.5 | 4.10.4
 | 0.1.0-RC4 | 3.17.4 | 4.10.4
 | 0.1.0-RC3 | 3.16.4 | 4.10.3
@@ -658,6 +659,7 @@ For more details about how to implement Sagas please read the Axon framework doc
 For development purposes you can use the in memory saga store. It is active by default.
 
 ==== JDBC Saga store
+
 If you would like to use the JDBC Sagastore, you simply have to add the dependency to the project and set up a datasource in quarkus.
 
 [source, xml]
@@ -669,12 +671,33 @@ If you would like to use the JDBC Sagastore, you simply have to add the dependen
 </dependency>
 ----
 
+NOTE: The dependency quarkus-axon-transaction for transaction management is automatically added. For detailed information see <<Transaction>>.
+
 By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
 
-CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see <<Transaction>>.
+There are some configurations possible(see <<_jdbc_sagastore_configuration>>)
 
-// ==== JPA Saga store
-// TODO
+==== JPA Saga store
+If you would like to use the JPA Sagastore, you simply have to add the dependency to the project and set up a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-sagastore-jpa</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+Set up your hibernate/datasource configuration in application.properties.
+Finally, you have to define in application.properties e.g.
+
+[source,properties]
+----
+quarkus.hibernate-orm.database.generation=update
+----
+
+or somehow set up the necessary tables(e.g. using Flyway). For details see the Axoniq documentation.
 
 === Exception Handling
 
@@ -917,3 +940,7 @@ include::includes/quarkus-axon-jpa-eventstore.adoc[leveloffset=+1,opts=optional]
 [#_jdbc_event_store_configuration]
 === JDBC Event Store configuration
 include::includes/quarkus-axon-jdbc-eventstore.adoc[leveloffset=+1,opts=optional]
+
+[#_jdbc_sagastore_configuration]
+=== JDBC Sagastore configuration
+include::includes/quarkus-axon-sagastore-jdbc.adoc[leveloffset=+1,opts=optional]

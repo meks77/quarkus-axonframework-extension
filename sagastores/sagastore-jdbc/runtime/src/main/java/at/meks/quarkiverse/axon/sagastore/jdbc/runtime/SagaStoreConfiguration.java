@@ -18,8 +18,13 @@ public interface SagaStoreConfiguration {
     boolean autocreateTable();
 
     /**
-     * The table name used for the token store. If not set, the default of the Axon framework is used.
+     * The table name used for the entity `SagaEntry`. If not set, the default of the Axon framework is used.
      */
     Optional<String> sagaTableName();
+
+    /**
+     * The table name used for the entity `AssociationValueEntry`. If not set, the default of the Axon framework is used.
+     */
+    Optional<String> associationValueTableName();
 
 }

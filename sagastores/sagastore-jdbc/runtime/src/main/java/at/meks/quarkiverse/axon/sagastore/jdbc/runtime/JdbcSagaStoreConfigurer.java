@@ -90,6 +90,7 @@ public class JdbcSagaStoreConfigurer implements SagaStoreConfigurer {
     private SagaSchema sagaSchema() {
         SagaSchema.Builder builder = SagaSchema.builder();
         sagaStoreConfiguration.sagaTableName().ifPresent(builder::sagaEntryTable);
+        sagaStoreConfiguration.associationValueTableName().ifPresent(builder::associationValueEntryTable);
         return builder.build();
     }
 }
