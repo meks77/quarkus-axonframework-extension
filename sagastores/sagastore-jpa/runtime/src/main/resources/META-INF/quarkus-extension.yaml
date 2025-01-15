@@ -1,0 +1,14 @@
+name: "Axon Framework - JPA Saga Store"
+description: Provides the possiblity to use JPA to store sagas
+metadata:
+  keywords:
+    - "axon"
+    - "event sourcing"
+    - "cqrs"
+    - "jpa"
+    - "sagastore"
+    - "saga"
+#  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+  categories:
+    - "data"
+  status: "experimental"

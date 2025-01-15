@@ -9,6 +9,7 @@ import java.util.Set;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
@@ -50,6 +51,9 @@ public class AxonExtension {
     private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
     private Set<Class<?>> sagaEventhandlerClasses;
 
+    // the request context is necessary in the case if the jpa saga store is active.
+    // otherwise an exception ContextNotActiveException is thrown
+    @ActivateRequestContext
     void init() {
         if (configuration == null) {
             axonFrameworkConfigurer.aggregateClasses(Set.copyOf(aggregateClasses));
