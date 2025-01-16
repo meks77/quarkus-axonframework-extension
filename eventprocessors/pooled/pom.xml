@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>quarkus-axon-eventprocessors</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0-RC6</version>
     </parent>
 
     <name>Quarkus Axon Pooled Eventprocessor - Parent</name>
