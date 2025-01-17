@@ -34,10 +34,11 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     }
 
     private org.axonframework.axonserver.connector.AxonServerConfiguration axonServerConfiguration() {
-        return AxonServerConfiguration.builder()
+        AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
                 .servers(serverConfiguration.hostname() + ":" + serverConfiguration.grpcPort())
-                .componentName(axonConfiguration.axonApplicationName())
-                .build();
+                .componentName(axonConfiguration.axonApplicationName());
+        serverConfiguration.token().ifPresent(builder::token);
+        return builder.build();
     }
 
     private EventStore axonserverEventStore(Configuration conf) {

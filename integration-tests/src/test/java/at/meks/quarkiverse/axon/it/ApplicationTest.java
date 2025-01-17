@@ -52,8 +52,11 @@ class ApplicationTest {
         assertThatException().isThrownBy(() -> undoLatestRedemption(2))
                 .withMessageContaining("amount must be the lastest redeem amount")
                 .withMessageContaining("UndoLatestRedemptionCommand");
-
-        assertCurrentAmount(14);
+        Awaitility.await()
+                .pollDelay(Duration.ofMillis(30))
+                .pollInterval(Duration.ofMillis(100))
+                .atMost(Duration.ofSeconds(5))
+                .untilAsserted(() -> assertCurrentAmount(14));
         assertAtLeastOneSnaptshotExists();
     }
 
