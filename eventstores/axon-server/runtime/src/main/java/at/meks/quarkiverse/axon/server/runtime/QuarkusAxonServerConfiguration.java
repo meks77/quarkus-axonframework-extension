@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
+import java.util.Optional;
+
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -27,4 +29,8 @@ public interface QuarkusAxonServerConfiguration {
     @WithDefault("default")
     String context();
 
+    /**
+     * The token used by the Axon Framework to connect to the Axon Server.
+     */
+    Optional<String> token();
 }
