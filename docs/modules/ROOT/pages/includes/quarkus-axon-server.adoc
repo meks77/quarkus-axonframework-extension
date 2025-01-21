@@ -92,5 +92,22 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
+a| [[quarkus-axon-server_quarkus-axon-server-token-required]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token-required[`quarkus.axon.server.token-required`]##
+
+[.description]
+--
+Indicates whether a token is required for connecting to the Axon Server. If it is required and not set, the startup will fail.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_TOKEN_REQUIRED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_TOKEN_REQUIRED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
 |===
 

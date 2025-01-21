@@ -33,4 +33,11 @@ public interface QuarkusAxonServerConfiguration {
      * The token used by the Axon Framework to connect to the Axon Server.
      */
     Optional<String> token();
+
+    /**
+     * Indicates whether a token is required for connecting to the Axon Server.
+     * If it is required and not set, the startup will fail.
+     */
+    @WithDefault("false")
+    boolean tokenRequired();
 }
