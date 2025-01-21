@@ -348,6 +348,10 @@ quarkus.axon.server.grpc-port=8124
 
 All you have to do is to define the correct host name, port and context if they don't match the default value.
 
+===== Security
+
+If you want to force, that the API Token is set, you can set the property `quarkus.axon.server.token-required` to true. If the token is required, but not set, a startup failure happens.
+
 ==== JPA Event Store
 
 Add the dependency

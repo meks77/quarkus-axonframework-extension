@@ -37,6 +37,9 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
                 .servers(serverConfiguration.hostname() + ":" + serverConfiguration.grpcPort())
                 .componentName(axonConfiguration.axonApplicationName());
+        if (serverConfiguration.tokenRequired() && serverConfiguration.token().isEmpty()) {
+            throw new IllegalStateException("Axon server token is required but not configured");
+        }
         serverConfiguration.token().ifPresent(builder::token);
         return builder.build();
     }
