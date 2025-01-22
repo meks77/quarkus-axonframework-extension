@@ -1,10 +1,11 @@
 package at.meks.quarkiverse.axon.deployment.devui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 
-import java.util.ArrayList;
-import java.util.List;
 public class BrowserUtils {
 
     public static final int FIRST_TABLE_CONTENT_ROW = 3;

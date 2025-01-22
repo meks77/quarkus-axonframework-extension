@@ -2,9 +2,6 @@ package at.meks.quarkiverse.axon.deployment.devui;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import at.meks.quarkiverse.axon.deployment.AggregateBeanBuildItem;
 import io.quarkus.deployment.IsDevelopment;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -13,11 +10,8 @@ import io.quarkus.devui.spi.page.Page;
 
 public class DevUiProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(DevUiProcessor.class);
-
     @BuildStep(onlyIf = IsDevelopment.class)
     CardPageBuildItem create(List<AggregateBeanBuildItem> aggregateBeanBuildItem) {
-        logger.info("create CardPageBuildItem for Aggregates for {} aggregates", aggregateBeanBuildItem.size());
         var buildInfo = buildInfo(aggregateBeanBuildItem);
         CardPageBuildItem card = new CardPageBuildItem();
 

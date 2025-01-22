@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.deployment.devui;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -16,8 +18,6 @@ import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 
-import java.util.List;
-
 public class DevUiTest {
 
     @RegisterExtension
@@ -26,7 +26,6 @@ public class DevUiTest {
                     .addClasses(Api.class, Giftcard.class)
                     .addAsResource(JavaArchiveTest.propertiesFile("/devUiTest.properties"), "application.properties"));
 
-
     private Playwright playwright;
     private Browser browser;
     private Page devUiPage;
@@ -34,7 +33,7 @@ public class DevUiTest {
     @BeforeEach
     void setupBrowser() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        browser = playwright.firefox().launch();
         devUiPage = browser.newPage();
         devUiPage.navigate("http://localhost:8081/q/dev-ui/extensions");
     }
