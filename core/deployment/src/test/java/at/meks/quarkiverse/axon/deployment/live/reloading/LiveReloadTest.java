@@ -62,6 +62,7 @@ public class LiveReloadTest {
         return RestAssured.given().accept("text/plain")
                 .pathParam("cardId", cardId)
                 .pathParam("initialAmount", 10)
+                .port(8081)
                 .when().post("/giftcard/{cardId}/{initialAmount}");
     }
 
@@ -69,6 +70,7 @@ public class LiveReloadTest {
         return RestAssured.given().accept("text/plain")
                 .pathParam("cardId", cardId)
                 .pathParam("amount", amount)
+                .port(8081)
                 .when().put("/giftcard/{cardId}/{amount}");
     }
 

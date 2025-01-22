@@ -72,9 +72,11 @@ class AxonExtensionProcessor {
         IndexView indexView = beanArchiveIndex.getIndex();
         Collection<AnnotationInstance> aggregateIdAnnotations = indexView.getAnnotations(annotationType);
         Log.debugf("found %s %s", aggregateIdAnnotations.size(), description);
-        return aggregateIdAnnotations.stream()
+        Set<Class<?>> uniqueAnnotatedClasses = aggregateIdAnnotations.stream()
                 .map(annotationToClassInfoTranslator)
-                .map(this::toClass);
+                .map(this::toClass)
+                .collect(Collectors.toSet());
+        return uniqueAnnotatedClasses.stream();
     }
 
     private <T> Class<T> toClass(ClassInfo classInfo) {
