@@ -7,7 +7,10 @@ public class BuildInfoApi {
     record Aggregate(String className) {
     }
 
-    record BuildInfo(List<Aggregate> aggregates) {
+    record SagaEventHandler(String className) {
+    }
+
+    record BuildInfo(List<Aggregate> aggregates, List<SagaEventHandler> sagaEventHandler) {
     }
 
 }
