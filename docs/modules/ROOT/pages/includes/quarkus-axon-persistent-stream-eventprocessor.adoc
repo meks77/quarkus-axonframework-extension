@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-batch-size]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-batch-size[`quarkus.axon.persistentstreams.batch-size`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-initial-segments]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-initial-segments[`quarkus.axon.persistentstreams.initial-segments`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.initial-segments+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-context]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-context[`quarkus.axon.persistentstreams.context`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.context+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -59,6 +71,10 @@ endif::add-copy-button-to-env-var[]
 |`default`
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-segments]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-segments[`quarkus.axon.persistentstreams.segments`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.segments+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -76,6 +92,10 @@ endif::add-copy-button-to-env-var[]
 |`4`
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-initial-position]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-initial-position[`quarkus.axon.persistentstreams.initial-position`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.initial-position+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -93,6 +113,10 @@ endif::add-copy-button-to-env-var[]
 |`0`
 
 a| [[quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-filter]] [.property-path]##link:#quarkus-axon-persistent-stream-eventprocessor_quarkus-axon-persistentstreams-filter[`quarkus.axon.persistentstreams.filter`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.filter+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --

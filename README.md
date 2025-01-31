@@ -111,6 +111,8 @@ There are different saga stores you can use
   * EventHandler
   * QueryHandler
 * Upcasters
+* custom Jackson Serialization
+* Information provided to Dev-UI
 
 
 #### Live reloading

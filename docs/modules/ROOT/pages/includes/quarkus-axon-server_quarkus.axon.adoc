@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-health-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-health-enabled[`quarkus.axon.server.health-enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.health-enabled+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon-server_quarkus-axon-server-hostname]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-hostname[`quarkus.axon.server.hostname`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.hostname+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ endif::add-copy-button-to-env-var[]
 |`localhost`
 
 a| [[quarkus-axon-server_quarkus-axon-server-grpc-port]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-grpc-port[`quarkus.axon.server.grpc-port`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.grpc-port+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -59,6 +71,10 @@ endif::add-copy-button-to-env-var[]
 |`8124`
 
 a| [[quarkus-axon-server_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-context[`quarkus.axon.server.context`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.context+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -76,6 +92,10 @@ endif::add-copy-button-to-env-var[]
 |`default`
 
 a| [[quarkus-axon-server_quarkus-axon-server-token]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token[`quarkus.axon.server.token`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.token+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -93,6 +113,10 @@ endif::add-copy-button-to-env-var[]
 |
 
 a| [[quarkus-axon-server_quarkus-axon-server-token-required]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token-required[`quarkus.axon.server.token-required`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.token-required+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --

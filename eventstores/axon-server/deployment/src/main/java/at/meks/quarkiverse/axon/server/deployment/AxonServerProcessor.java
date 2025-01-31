@@ -13,7 +13,7 @@ import io.quarkus.deployment.IsNormal;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.DevServicesResultBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
-import io.quarkus.deployment.dev.devservices.GlobalDevServicesConfig;
+import io.quarkus.deployment.dev.devservices.DevServicesConfig;
 import io.quarkus.logging.Log;
 import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 
@@ -33,7 +33,7 @@ public class AxonServerProcessor {
                 .build();
     }
 
-    @BuildStep(onlyIfNot = IsNormal.class, onlyIf = GlobalDevServicesConfig.Enabled.class)
+    @BuildStep(onlyIfNot = IsNormal.class, onlyIf = DevServicesConfig.Enabled.class)
     public DevServicesResultBuildItem createContainer() {
         DockerImageName dockerImageName = DockerImageName.parse("axoniq/axonserver");
         GenericContainer<?> container = new GenericContainer<>(dockerImageName)

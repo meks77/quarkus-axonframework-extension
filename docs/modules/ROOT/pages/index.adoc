@@ -907,6 +907,14 @@ If you need to access the
 
 you can simply inject it to your CDI bean. The repository and the command gateway injection is shown in the example above.
 
+=== Serialization
+
+By default the Jackson Serializer of quarkus is used. It is the same, which is used for REST services.
+
+If you need to adapt the serializer, keep in mind, that also the serialization for the REST services is changed.
+
+If you want to configure only the serialization of Axon releated data, you can implement `JacksonSerializerProducer`.
+
 [[extension-configuration-reference]]
 == Extension Configuration Reference
 

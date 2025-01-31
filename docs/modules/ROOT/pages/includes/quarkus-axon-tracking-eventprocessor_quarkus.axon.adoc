@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-batch-size]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-batch-size[`quarkus.axon.trackingprocessor.batch-size`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-segments]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-segments[`quarkus.axon.trackingprocessor.initial-segments`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-segments+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-position]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-position[`quarkus.axon.trackingprocessor.initial-position`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -59,6 +71,10 @@ a|`head`, `tail`
 |`tail`
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-thread-count]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-thread-count[`quarkus.axon.trackingprocessor.thread-count`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.thread-count+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -76,6 +92,10 @@ endif::add-copy-button-to-env-var[]
 |`1`
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-interval]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-interval[`quarkus.axon.trackingprocessor.token-claim.interval`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.interval+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -93,6 +113,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-time-unit]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-time-unit[`quarkus.axon.trackingprocessor.token-claim.time-unit`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.time-unit+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
