@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-metrics_quarkus-axon-metrics-enabled]] [.property-path]##link:#quarkus-axon-metrics_quarkus-axon-metrics-enabled[`quarkus.axon.metrics.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.metrics.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon-metrics_quarkus-axon-metrics-with-tags]] [.property-path]##link:#quarkus-axon-metrics_quarkus-axon-metrics-with-tags[`quarkus.axon.metrics.with-tags`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.metrics.with-tags+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --

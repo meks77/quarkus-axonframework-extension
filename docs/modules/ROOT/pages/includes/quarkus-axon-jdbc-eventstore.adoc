@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-batch-size]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-batch-size[`quarkus.axon.eventstore.jdbc.batch-size`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -27,6 +31,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-cleaning-threshold]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-cleaning-threshold[`quarkus.axon.eventstore.jdbc.gap-cleaning-threshold`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.gap-cleaning-threshold+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -46,6 +54,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-lowest-global-sequence]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-lowest-global-sequence[`quarkus.axon.eventstore.jdbc.lowest-global-sequence`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.lowest-global-sequence+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -65,6 +77,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-timeout]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-timeout[`quarkus.axon.eventstore.jdbc.gap-timeout`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.gap-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -84,6 +100,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-max-gap-offset]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-max-gap-offset[`quarkus.axon.eventstore.jdbc.max-gap-offset`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.max-gap-offset+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -103,6 +123,10 @@ endif::add-copy-button-to-env-var[]
 |`-1`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-extended-gap-check-enabled]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-extended-gap-check-enabled[`quarkus.axon.eventstore.jdbc.extended-gap-check-enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.extended-gap-check-enabled+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -120,6 +144,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-autocreate-tables]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-autocreate-tables[`quarkus.axon.eventstore.jdbc.autocreate-tables`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.autocreate-tables+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -137,6 +165,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-event-table-name]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-event-table-name[`quarkus.axon.eventstore.jdbc.event-table-name`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.event-table-name+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -154,6 +186,10 @@ endif::add-copy-button-to-env-var[]
 |`DomainEventEntry`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-snapshot-table-name]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-snapshot-table-name[`quarkus.axon.eventstore.jdbc.snapshot-table-name`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.eventstore.jdbc.snapshot-table-name+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --

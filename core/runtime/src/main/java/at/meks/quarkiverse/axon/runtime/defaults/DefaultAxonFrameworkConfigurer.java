@@ -16,8 +16,6 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.serialization.json.JacksonSerializer;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.logging.Log;
@@ -25,9 +23,6 @@ import io.quarkus.logging.Log;
 @Dependent
 @DefaultBean
 class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
-
-    @Inject
-    ObjectMapper objectMapper;
 
     @Inject
     TransactionManager transactionManager;
@@ -56,6 +51,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     SagaStoreConfigurer sagaStoreConfigurer;
 
+    @Inject
+    JacksonSerializerProducer jacksonSerializerProducer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -67,10 +65,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     public Configurer configure() {
         final Configurer configurer;
         Log.debug("creating the axon configuration");
-        JacksonSerializer jacksonSerializer = JacksonSerializer.builder().objectMapper(objectMapper).build();
+        JacksonSerializer jacksonSerializer = jacksonSerializerProducer.createSerializer();
         configurer = DefaultConfigurer.defaultConfiguration()
                 .configureSerializer(conf -> jacksonSerializer)
-                .configureEventSerializer(confg -> jacksonSerializer);
+                .configureEventSerializer(config -> jacksonSerializer);
 
         eventstoreConfigurer.configure(configurer);
         configureAggregates(configurer);

@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-autocreate-table-for-jdbc-token]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-autocreate-table-for-jdbc-token[`quarkus.axon.tokenstore.jdbc.autocreate-table-for-jdbc-token`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jdbc.autocreate-table-for-jdbc-token+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit[`quarkus.axon.tokenstore.jdbc.claim-timeout.unit`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jdbc.claim-timeout.unit+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, 
 |required icon:exclamation-circle[title=Configuration property is required]
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-amount]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-amount[`quarkus.axon.tokenstore.jdbc.claim-timeout.amount`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jdbc.claim-timeout.amount+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -59,6 +71,10 @@ endif::add-copy-button-to-env-var[]
 |`0l`
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name[`quarkus.axon.tokenstore.jdbc.token-table-name`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jdbc.token-table-name+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --

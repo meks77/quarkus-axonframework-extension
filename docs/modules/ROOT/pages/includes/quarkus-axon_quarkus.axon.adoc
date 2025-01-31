@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`quarkus.axon.health-enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.health-enabled+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.axon-application-name+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ endif::add-copy-button-to-env-var[]
 |`quarkus-axon`
 
 a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`quarkus.axon.live-reload.shutdown.wait-duration.unit`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.live-reload.shutdown.wait-duration.unit+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -59,6 +71,10 @@ a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, 
 |`milliseconds`
 
 a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount[`quarkus.axon.live-reload.shutdown.wait-duration.amount`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.live-reload.shutdown.wait-duration.amount+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -76,6 +92,10 @@ endif::add-copy-button-to-env-var[]
 |`500`
 
 a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`quarkus.axon.exception-handling.wrap-on-command-handler`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.exception-handling.wrap-on-command-handler+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -93,6 +113,10 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler[`quarkus.axon.exception-handling.wrap-on-query-handler`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.exception-handling.wrap-on-query-handler+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -110,8 +134,15 @@ endif::add-copy-button-to-env-var[]
 |`true`
 
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.snapshots.trigger-type+++[]
+endif::add-copy-button-to-config-props[]
+
 
 `quarkus.axon.snapshots."aggregate-name".trigger-type`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.snapshots."aggregate-name".trigger-type+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --
@@ -129,8 +160,15 @@ a|`no-snapshots`, `load-time`, `event-count`
 |`no-snapshots`
 
 a| [[quarkus-axon_quarkus-axon-snapshots-threshold]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-threshold[`quarkus.axon.snapshots.threshold`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.snapshots.threshold+++[]
+endif::add-copy-button-to-config-props[]
+
 
 `quarkus.axon.snapshots."aggregate-name".threshold`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.snapshots."aggregate-name".threshold+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --

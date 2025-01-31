@@ -8,6 +8,10 @@ h|Type
 h|Default
 
 a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-unit]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-unit[`quarkus.axon.tokenstore.jpa.claim-timeout.unit`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jpa.claim-timeout.unit+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -25,6 +29,10 @@ a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, 
 |required icon:exclamation-circle[title=Configuration property is required]
 
 a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-amount]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-claim-timeout-amount[`quarkus.axon.tokenstore.jpa.claim-timeout.amount`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jpa.claim-timeout.amount+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
@@ -42,6 +50,10 @@ endif::add-copy-button-to-env-var[]
 |`0l`
 
 a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode[`quarkus.axon.tokenstore.jpa.loading-lock-mode`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.tokenstore.jpa.loading-lock-mode+++[]
+endif::add-copy-button-to-config-props[]
+
 
 [.description]
 --
