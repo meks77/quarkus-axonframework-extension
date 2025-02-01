@@ -13,7 +13,6 @@ import org.axonframework.common.transaction.TransactionManager;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.serialization.json.JacksonSerializer;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 
 import at.meks.quarkiverse.axon.runtime.customizations.*;
@@ -52,7 +51,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     SagaStoreConfigurer sagaStoreConfigurer;
 
     @Inject
-    JacksonSerializerProducer jacksonSerializerProducer;
+    AxonSerializerProducer axonSerializerProducer;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -65,11 +64,10 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     public Configurer configure() {
         final Configurer configurer;
         Log.debug("creating the axon configuration");
-        JacksonSerializer jacksonSerializer = jacksonSerializerProducer.createSerializer();
         configurer = DefaultConfigurer.defaultConfiguration()
-                .configureSerializer(conf -> jacksonSerializer)
-                .configureEventSerializer(config -> jacksonSerializer);
-
+                .configureSerializer(conf -> axonSerializerProducer.createSerializer())
+                .configureEventSerializer(config -> axonSerializerProducer.createEventSerializer())
+                .configureMessageSerializer(conf -> axonSerializerProducer.createMessageSerializer());
         eventstoreConfigurer.configure(configurer);
         configureAggregates(configurer);
         configrueMessageHandler(configurer);

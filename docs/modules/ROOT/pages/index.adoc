@@ -444,7 +444,7 @@ a possibility is to add the annotation `@JsonAutoDetect(fieldVisibility = JsonAu
 
 This strategy was chosen because it doesn't have an impact on the serialization of other classes(e.g. the return values of Web Services).
 
-Maybe this behavior can be improved in the future releases of the extension.
+Another possibility is to provide your own serializers, see <<_serialization>>.
 
 ==== Trigger Types
 Currently, three types are available:
@@ -652,7 +652,7 @@ public class CardReturnSaga {
     }
 }
 ----
-<1> Necessary annotation, that this Saga is registered with field for serialization
+<1> Necessary annotation, that this Saga is registered with field for serialization, if the serializer cannot access fields(see <<_serialization>>)
 <2> An application scoped bean is injected. It must be transient because of serialization
 <3> the application scoped bean is used to do some necessary task
 <4> the application scoped bean is used to do some necessary task
@@ -905,15 +905,27 @@ If you need to access the
 - QueryGateway or
 - a aggregate repository
 
-you can simply inject it to your CDI bean. The repository and the command gateway injection is shown in the example above.
+you can simply inject it to your CDI bean.The repository and the command gateway injection is shown in the example above.
 
+[#_serialization]
 === Serialization
 
-By default the Jackson Serializer of quarkus is used. It is the same, which is used for REST services.
+By default the Jackson Serializer of quarkus is used.It is the same, which is used for REST services.
 
 If you need to adapt the serializer, keep in mind, that also the serialization for the REST services is changed.
 
-If you want to configure only the serialization of Axon releated data, you can implement `JacksonSerializerProducer`.
+If you want to configure only the serialization of Axon releated data, you can implement `AxonSerializerProducer`.
+
+==== Use-cases for custom serializers
+
+===== Events or value objects are not records and do not follow the Bean Standard
+If your events or one of its classes in the object hierarchy doesn't follow the Bean Standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the event serializer((AxonSerializerProducer.createEventSerializer).
+
+===== Aggregates and Entities do hide its fields
+In the case snapshotting is activated and the Aggregates and Entities hide their fields, which is a common pattern, the field visibility ANY must be configured in the object mapper for the serializer(AxonSerializerProducer.createSerializer).
+
+===== Commands or Queries are not records, and its object hierarchies do not follow the Bean Standard
+If your commands or queries or one of its classes in the object hierarchy doesn't follow the Bean standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the message serializer(AxonSerializerProducer.createMessageSerializer).
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
