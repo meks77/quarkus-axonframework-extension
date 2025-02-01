@@ -913,7 +913,7 @@ By default the Jackson Serializer of quarkus is used. It is the same, which is u
 
 If you need to adapt the serializer, keep in mind, that also the serialization for the REST services is changed.
 
-If you want to configure only the serialization of Axon releated data, you can implement `JacksonSerializerProducer`.
+If you want to configure only the serialization of Axon releated data, you can implement `AxonSerializerProducer`.
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
