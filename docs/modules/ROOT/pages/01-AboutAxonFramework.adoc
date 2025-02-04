@@ -1,0 +1,8 @@
+= What is Axonframework
+
+Axon Framework assists developers in implementing message-driven applications. That means that you can implement applications using Event Sourcing and CQRS.
+
+'''
+link:index.adoc[← Previous: Index]
+
+link:02-CompatibilityMatrix.adoc[Next: Compatibility Marix →]

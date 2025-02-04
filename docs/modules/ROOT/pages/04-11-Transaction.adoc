@@ -1,0 +1,24 @@
+= Transaction
+
+CAUTION: By default, no transaction management is setup.
+
+If you need transaction management, you can add the extension:
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-transaction</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+It uses the quarkus transaction management configured into the axon framework.
+
+'''
+
+link:index.adoc[Index]
+
+link:04-10-InjectCdiBeans.adoc[← Previous: Inject CDI Beans into Message Handler Methods]
+
+link:04-12-Metrics.adoc[Next: Metrics →]

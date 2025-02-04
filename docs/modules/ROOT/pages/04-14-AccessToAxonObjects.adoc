@@ -1,0 +1,21 @@
+= Access to Axon Objects
+
+If you need to access the
+
+- EventBus
+- EventGateway
+- CommandBus
+- CommandGateway
+- QueryBus
+- QueryGateway or
+- a aggregate repository
+
+you can simply inject it to your CDI bean.The repository and the command gateway injection is shown in the example above.
+
+'''
+
+link:index.adoc[Index]
+
+link:04-13-HealthChecks.adoc[← Previous: Health Checks]
+
+link:04-15-Serialization.adoc[Next: Serialization →]

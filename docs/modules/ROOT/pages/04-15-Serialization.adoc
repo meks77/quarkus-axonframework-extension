@@ -1,0 +1,24 @@
+= Serialization
+
+By default the Jackson Serializer of quarkus is used.It is the same, which is used for REST services.
+
+If you need to adapt the serializer, keep in mind, that also the serialization for the REST services is changed.
+
+If you want to configure only the serialization of Axon releated data, you can implement `AxonSerializerProducer`.
+
+== Use-cases for custom serializers
+
+=== Events or value objects are not records and do not follow the Bean Standard
+If your events or one of its classes in the object hierarchy doesn't follow the Bean Standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the event serializer((AxonSerializerProducer.createEventSerializer).
+
+=== Aggregates and Entities do hide its fields
+In the case snapshotting is activated and the Aggregates and Entities hide their fields, which is a common pattern, the field visibility ANY must be configured in the object mapper for the serializer(AxonSerializerProducer.createSerializer).
+
+=== Commands or Queries are not records, and its object hierarchies do not follow the Bean Standard
+If your commands or queries or one of its classes in the object hierarchy doesn't follow the Bean standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the message serializer(AxonSerializerProducer.createMessageSerializer).
+
+'''
+
+link:index.adoc[Index]
+
+link:04-14-AccessToAxonObjects.adoc[← Previous: Access To Axon Objects]

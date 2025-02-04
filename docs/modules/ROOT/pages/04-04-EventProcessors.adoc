@@ -1,0 +1,45 @@
+= Event Processors
+
+Event Processors are necessary for event handler.
+Those processors need to know which events are already processed.
+This information is stored in a token store.
+
+CAUTION: By default, the subscribing processor with an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
+
+The different processors can be used by adding the dependency the one, you would like to use.
+
+The artifact ids are:
+
+- quarkus-axon-persistent-stream-eventprocessor
+- quarkus-axon-pooled-eventprocessor
+- quarkus-axon-tracking-eventprocessor
+
+With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
+
+For more details on how to add a persistent token store, read link:04-05-TokenStores.adoc[Token Stores].
+
+For details about the different event processors and the token store,
+please read the documentation of the Axon framework.
+
+== Persistent Stream Event Processors
+Because of an unexpected behaviour when configuring the event store default source for the event processors, it was necessary to register a persistent stream per package, where event processors are located.
+
+Furthermore, it was necessary to create a name for the persistent stream, which is as unique as possible on the server side. Therefore, the name is created based on the application name and the package name. The configurable stream name and source name of the persistent stream are currently not available. Currently, it is unknown if they come back.
+
+== Persistent Stream Configuration Reference
+include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+== Tracking Event Processor Configuration Reference
+include::includes/quarkus-axon-tracking-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+== Pooled Event Processor Configuration Reference
+include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=optional]
+
+
+'''
+
+link:index.adoc[Index]
+
+link:04-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+
+link:04-05-TokenStores.adoc[Next: Token Stores →]

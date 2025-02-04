@@ -1,0 +1,24 @@
+= Upcasting
+To provide upcasters in the defined order, you have to provide a instance of EventUpcasterChain.
+
+[source,java]
+----
+@Produces
+EventUpcasterChain eventUpcasterChain() {
+    producedChain = new EventUpcasterChain(
+            new ComplaintEvent0_to_1Upcaster(), // <1>
+            new ComplaintEvent1_to_2Upcaster()
+    );
+
+    return producedChain;
+}
+----
+<1> The list of your upcasters
+
+'''
+
+link:index.adoc[Index]
+
+link:04-05-TokenStores.adoc[← Previous: Token Stores]
+
+link:04-07-Sagas.adoc[Next: Sagas →]

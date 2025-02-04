@@ -1,0 +1,28 @@
+= Inject CDI Beans into Message Handler Methods
+
+Application scoped beans can be injected in message handler methods. The beans are injected into methods annotated with
+
+* CommandHandler
+* QueryHandler and
+* EventHandler
+
+
+Here is a simple example of an injection into a command handler.
+
+[source,java]
+----
+@CommandHandler
+void handle(MyCommand command, MyBean bean) {
+    // ...
+    bean.doBeanStuff();
+    // ...
+}
+----
+
+'''
+
+link:index.adoc[Index]
+
+link:04-09-Interceptors.adoc[← Previous: Interceptors]
+
+link:04-11-Transaction.adoc[Next: Transaction →]
