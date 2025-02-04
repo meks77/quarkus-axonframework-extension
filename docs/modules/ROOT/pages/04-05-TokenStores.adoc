@@ -1,0 +1,103 @@
+= Tokenstores
+:toc:
+:toclevels: 1
+
+'''
+
+link:index.adoc[Index]
+
+link:04-04-EventProcessors.adoc[← Previous: Event Processors]
+
+link:04-06-EventUpcasting.adoc[Next: Event Upcasting →]
+
+'''
+
+CAUTION: By default, an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
+
+Currently, only the JDBC Tokenstore is supported.
+
+== JDBC Tokenstore
+If you would like to use the JDBC Tokenstore, you simply have to add the dependency to the project and set up a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
+
+CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see
+link:04-11-Transaction.adoc[Transaction].
+
+[source,properties]
+----
+quarkus.axon.tokenstore.autocreate-table-for-jdbc-token=false
+----
+
+Currently it is not supported to have more than 1 configured datasource.
+
+== JPA Tokenstore
+If you would like to use the JPA Tokenstore you simply have to add the dependency to the project, and setup a datasource in quarkus.
+
+[source, xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-tokenstore-jpa</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+Set up your hibernate/datasource configuration in application.properties.
+Finally, you have to define in application.properties e.g.
+
+[source,properties]
+----
+quarkus.hibernate-orm.database.generation=update
+----
+
+or somehow set up the necessary tables(e.g. using Flyway). For details see the Axoniq documentation.
+
+There are some configurations possible(see <<_jpa_tokenstore_configuration>>)
+
+
+== Custom Tokenstore
+To provide your custom tokenstore you just need to implement the interface "TokenStoreConfigurer".
+
+[source,java]
+----
+@ApplicationScoped
+public class MyCustomTokenStoreConfigurer implements TokenStoreConfigurer {
+
+    @Override
+    public void configureTokenStore(Configurer configurer) {
+        configureAndSetupTokenstore(configurer.eventProcessing());
+        configurer.registerComponent(TokenStore.class, this::createTokenStore);
+    }
+
+    private TokenStore createTokenStore(Configuration configuration) {
+        // setup your token store here
+    }
+}
+----
+
+For more information on setting up a token store, please read the Axon framework documentation.
+
+== JDBC Tokenstore Configuration Reference
+include::includes/quarkus-axon-tokenstore-jdbc.adoc[leveloffset=+1,opts=optional]
+
+[#_jpa_tokenstore_configuration]
+== JPA Tokenstore Configuration Reference
+include::includes/quarkus-axon-tokenstore-jpa.adoc[leveloffset=+1,opts=optional]
+
+'''
+
+link:index.adoc[Index]
+
+link:04-04-EventProcessors.adoc[← Previous: Event Processors]
+
+link:04-06-EventUpcasting.adoc[Next: Event Upcasting →]

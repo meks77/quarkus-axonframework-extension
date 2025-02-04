@@ -1,0 +1,35 @@
+= Metrics
+If you want to use metrics you can enable it by adding the extension:
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-metrics</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+Using the configuration, you can disable the metrics:
+[source,properties]
+----
+quarkus.axon.metrics.enabled=false
+----
+
+Futhermore axon provides the possibility to use tag for the metrics. This is enabled by default but can also be disbabled using the configuration:
+[source,properties]
+----
+quarkus.axon.metrics.with-tags=false
+----
+
+== Metrics Configuration Referebce
+include::includes/quarkus-axon-metrics.adoc[leveloffset=+1,opts=optional]
+
+
+'''
+
+link:index.adoc[Index]
+
+link:04-11-Transaction.adoc[← Previous: Transaction]
+
+link:04-13-HealthChecks.adoc[Next: Health Checks →]

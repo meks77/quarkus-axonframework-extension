@@ -1,0 +1,57 @@
+= Snapshots
+
+To enable snapshots, you have to configure
+
+- the trigger type and
+- set a JSON annotation at the Root Aggregate and its Entities
+
+Both values can be configured per aggregate and also as default.
+
+CAUTION: When a snapshot is created, the aggregate is serialized using JSON.
+
+You have to take care that all properties of the aggregate are serialized.
+If fields of a Class(Root Aggregate, Value Objects, Entities) do not have accessors,
+a possibility is to add the annotation `@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)` to the Class.
+
+This strategy was chosen because it doesn't have an impact on the serialization of other classes(e.g. the return values of Web Services).
+
+Another possibility is to provide your own serializers, see link:04-15-Serialization.adoc[Serialization].
+
+
+== Trigger Types
+Currently, three types are available:
+
+— no-snapshots
+- event-count
+- load-time
+
+no-snapshots: is the default value and disables snapshots.
+
+event-count: If the aggregate exceeds the maximum threshold, a snapshot is taken.
+
+load-time: If the time for loading the events of an aggregate exceeds the maximum threshold, a snapshot is taken.
+
+== Configuration
+
+To change the default behavior to event-count with a threshold of 500, add the following lines to the application.properties:
+[source,properties]
+----
+quarkus.axon.snapshots.trigger-type=event-count
+quarkus.axon.snapshots.threshold=500
+----
+
+To change the behavior for the Aggregate `at.meks.quarkiverse.axon.shared.model.Giftcard` to load-time and the threshold 750 millis, add the following lines to the application.properties.
+
+[source,properties]
+----
+quarkus.axon.snapshots."at.meks.quarkiverse.axon.shared.model.Giftcard".trigger-type=load-time
+quarkus.axon.snapshots."at.meks.quarkiverse.axon.shared.model.Giftcard".threshold=750
+----
+
+'''
+
+link:index.adoc[Index]
+
+link:04-01-EventStores.adoc[← Previous: Event Stores]
+
+link:04-03-CustomAggregateConfigurer.adoc[Next: Custom Aggregate Configurer →]

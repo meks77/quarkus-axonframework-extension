@@ -1,0 +1,13 @@
+= Custom Aggregate Configurer
+
+If you decide to provode your own Aggregate-Configurer, which creates, Axon's `AggregateConfiguration` you can implement the interface `at.meks.quarkiverse.axon.runtime.api.QuarkusAggregateConfigurer`.
+
+For each Aggregate, the method `createConfigurer` is invoked. This method has to return Axon's `AggregateConfiguration`
+
+'''
+
+link:index.adoc[Index]
+
+link:04-02-Snapshots.adoc[← Previous: Snapshots]
+
+link:04-04-EventProcessors.adoc[Next: Event Processors →]
