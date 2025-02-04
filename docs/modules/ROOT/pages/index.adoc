@@ -1,5 +1,4 @@
 = Quarkus Axonframework Extension
-
 include::./includes/attributes.adoc[]
 
 == Index
