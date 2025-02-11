@@ -7,7 +7,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.eventhandling.TrackedEventMessage;
+import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
+import org.axonframework.messaging.StreamableMessageSource;
 
 import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
@@ -21,10 +24,7 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
     @Override
     public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
-            builder
-                    .name(pooledProcessorConf.name())
-                    .initialToken(messageSource -> TokenBuilder.with(messageSource).atPosition(
-                            pooledProcessorConf.initialPosition()).build());
+            builder.initialToken(this::initialToken);
             builder.tokenStore(config.getComponent(TokenStore.class));
             Optional.of(pooledProcessorConf.batchSize())
                     .filter(size -> size > 0)
@@ -43,6 +43,12 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
 
         configurer.usingPooledStreamingEventProcessors();
         configurer.registerPooledStreamingEventProcessorConfiguration(psepConfig);
+    }
+
+    private TrackingToken initialToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource) {
+        return TokenBuilder.with(messageSource)
+                .atPosition(pooledProcessorConf.initialPosition())
+                .build();
     }
 
 }
