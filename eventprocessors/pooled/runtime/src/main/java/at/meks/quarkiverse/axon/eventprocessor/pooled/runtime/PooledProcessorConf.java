@@ -26,12 +26,6 @@ public interface PooledProcessorConf extends StreamingProcessorConf {
     boolean enabledCoordinatorClaimExtension();
 
     /**
-     * Sets the name of the event processor.
-     */
-    @WithDefault("quarkus-pooled-processor")
-    String name();
-
-    /**
      * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
      * framework is used.
      */

@@ -112,26 +112,5 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`false`
 
-a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-name]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-name[`quarkus.axon.pooledprocessor.name`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor.name+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-Sets the name of the event processor.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_NAME+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_NAME+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|`quarkus-pooled-processor`
-
 |===
 
