@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
+import org.axonframework.commandhandling.gateway.RetryScheduler;
 import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.config.EventProcessingConfigurer;
@@ -53,6 +58,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonSerializerProducer axonSerializerProducer;
 
+    @Inject
+    Instance<RetryScheduler> retrySchedulerProducer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -77,7 +85,29 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         configureSagas(configurer);
+        configureCommandGateway(configurer);
         return configurer;
+    }
+
+    private void configureCommandGateway(Configurer configurer) {
+        if (retrySchedulerProducer.isResolvable()) {
+            Log.infof("using CommandGateway with retryScheduler %s", retrySchedulerProducer.get().getClass().getName());
+            configurer.registerComponent(CommandGateway.class, this::createCommandGateway);
+        } else if (retrySchedulerProducer.isAmbiguous()) {
+            throw new IllegalStateException(
+                    "multiple retrySchedulerProducer found: %s"
+                            .formatted(retrySchedulerProducer.stream()
+                                    .map(Object::getClass)
+                                    .map(Class::getName)
+                                    .collect(Collectors.joining(", "))));
+        }
+    }
+
+    private DefaultCommandGateway createCommandGateway(Configuration conf) {
+        return DefaultCommandGateway.builder()
+                .commandBus(conf.commandBus())
+                .retryScheduler(retrySchedulerProducer.get())
+                .build();
     }
 
     private void registerEventUpcasters(Configurer configurer) {

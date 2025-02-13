@@ -96,4 +96,4 @@ link:index.adoc[Index]
 
 link:04-08-ExceptionHandling.adoc[← Previous: Exception Handling]
 
-link:04-10-InjectCdiBeans.adoc[Next: Inject CDI Beans into Message Handler Methods →]
+link:04-11-InjectCdiBeans.adoc[Next: Inject CDI Beans into Message Handler Methods →]

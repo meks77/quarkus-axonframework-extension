@@ -1,5 +1,15 @@
 = Event Processors
 
+'''
+
+link:index.adoc[Index]
+
+link:04-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+
+link:04-05-TokenStores.adoc[Next: Token Stores →]
+
+'''
+
 Event Processors are necessary for event handler.
 Those processors need to know which events are already processed.
 This information is stored in a token store.

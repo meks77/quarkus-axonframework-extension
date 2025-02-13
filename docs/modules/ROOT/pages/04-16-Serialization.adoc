@@ -21,4 +21,4 @@ If your commands or queries or one of its classes in the object hierarchy doesn'
 
 link:index.adoc[Index]
 
-link:04-14-AccessToAxonObjects.adoc[← Previous: Access To Axon Objects]
+link:04-15-AccessToAxonObjects.adoc[← Previous: Access To Axon Objects]

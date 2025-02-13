@@ -16,6 +16,6 @@ to false. Be aware that these settings are build-time settings. That means that 
 
 link:index.adoc[Index]
 
-link:04-12-Metrics.adoc[← Previous: Metrics]
+link:04-13-Metrics.adoc[← Previous: Metrics]
 
-link:04-14-AccessToAxonObjects.adoc[Next: Access To Axon Objects →]
+link:04-15-AccessToAxonObjects.adoc[Next: Access To Axon Objects →]

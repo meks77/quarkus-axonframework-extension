@@ -1,0 +1,25 @@
+= Command Gateway
+
+== Retry Scheduler
+
+If you would like to provide another Retry Scheduler for the CommandGateway, all you have to do is to produce a scheduler implemention.
+
+[source,java]
+----
+@Produces
+@ApplicationScoped
+public RetryScheduler retryScheduler() {
+    return new IntervalRetryScheduler.Builder() // <1>
+            .retryInterval(1000)
+            .maxRetryCount(100).build();
+}
+----
+<1> This is a RetryScheduler of the Axon Framework
+
+'''
+
+link:index.adoc[Index]
+
+link:04-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+
+link:04-10-Interceptors.adoc[Next: Interceptors →]
