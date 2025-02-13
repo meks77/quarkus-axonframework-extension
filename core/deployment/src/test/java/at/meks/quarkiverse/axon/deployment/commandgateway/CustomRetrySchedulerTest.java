@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.deployment;
+package at.meks.quarkiverse.axon.deployment.commandgateway;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class CommandGatewayRetrySchedulerTest extends JavaArchiveTest {
+public class CustomRetrySchedulerTest extends JavaArchiveTest {
 
     @Inject
     RetryScheduler retryScheduler;

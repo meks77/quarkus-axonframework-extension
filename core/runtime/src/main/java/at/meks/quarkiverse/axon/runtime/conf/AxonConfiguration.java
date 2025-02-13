@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import io.quarkus.runtime.annotations.ConfigDocMapKey;
@@ -39,6 +40,12 @@ public interface AxonConfiguration {
      * Configuration for Exception Handling in the Axon framework.
      */
     ExceptionHandlingConfig exceptionHandling();
+
+    /**
+     * Configure the retry scheduling for dispatching Command on the CommandGateway.
+     */
+    @WithName("command-gateway.retry.scheduling")
+    CommandRetryScheduling commandGatewayRetryScheduling();
 
     /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
@@ -116,6 +123,31 @@ public interface AxonConfiguration {
          */
         @WithDefault("true")
         boolean wrapOnQueryHandler();
+    }
+
+    interface CommandRetryScheduling {
+
+        /**
+         * The fixed retry interval for retry scheduling(IntervalRetryScheduler), if configured. The fixed retry
+         * interval specifies a consistent delay duration between retries. If a fixed retry
+         * interval is configured, a maximum retry count must also be specified to ensure
+         * proper retry behavior.
+         */
+        Optional<Integer> fixedRetryInterval();
+
+        /**
+         * if you have configured either the {@link #fixedRetryInterval()} or the {@link #backoffFactor()} you must
+         * configure the maximum retries as well.
+         */
+        Optional<Integer> maxRetryCount();
+
+        /**
+         * backoff factor for retry scheduling(ExponentialBackOffIntervalRetryScheduler). This value is used in
+         * conjunction with an exponential backoff retry mechanism, where the interval
+         * between retries increases over time based on this factor. If configured, the
+         * maximum retries must also be set.
+         */
+        Optional<Integer> backoffFactor();
     }
 
 }

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
@@ -58,8 +57,12 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonSerializerProducer axonSerializerProducer;
 
+    @SuppressWarnings("unused")
     @Inject
     Instance<RetryScheduler> retrySchedulerProducer;
+
+    @Inject
+    RetrySchedulerConfigurer retrySchedulerConfigurer;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -90,23 +93,16 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureCommandGateway(Configurer configurer) {
-        if (retrySchedulerProducer.isResolvable()) {
-            Log.infof("using CommandGateway with retryScheduler %s", retrySchedulerProducer.get().getClass().getName());
-            configurer.registerComponent(CommandGateway.class, this::createCommandGateway);
-        } else if (retrySchedulerProducer.isAmbiguous()) {
-            throw new IllegalStateException(
-                    "multiple retrySchedulerProducer found: %s"
-                            .formatted(retrySchedulerProducer.stream()
-                                    .map(Object::getClass)
-                                    .map(Class::getName)
-                                    .collect(Collectors.joining(", "))));
-        }
+        retrySchedulerConfigurer.retryScheduler()
+                .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
+                        conf -> createCommandGateway(conf, retryScheduler)));
     }
 
-    private DefaultCommandGateway createCommandGateway(Configuration conf) {
+    private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
+        Log.infof("using CommandGateway with retryScheduler %s", retryScheduler.getClass().getName());
         return DefaultCommandGateway.builder()
                 .commandBus(conf.commandBus())
-                .retryScheduler(retrySchedulerProducer.get())
+                .retryScheduler(retryScheduler)
                 .build();
     }
 
