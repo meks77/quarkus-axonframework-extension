@@ -9,7 +9,11 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
+import org.axonframework.commandhandling.gateway.RetryScheduler;
 import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.config.EventProcessingConfigurer;
@@ -53,6 +57,13 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonSerializerProducer axonSerializerProducer;
 
+    @SuppressWarnings("unused")
+    @Inject
+    Instance<RetryScheduler> retrySchedulerProducer;
+
+    @Inject
+    RetrySchedulerConfigurer retrySchedulerConfigurer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -77,7 +88,22 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         configureSagas(configurer);
+        configureCommandGateway(configurer);
         return configurer;
+    }
+
+    private void configureCommandGateway(Configurer configurer) {
+        retrySchedulerConfigurer.retryScheduler()
+                .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
+                        conf -> createCommandGateway(conf, retryScheduler)));
+    }
+
+    private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
+        Log.infof("using CommandGateway with retryScheduler %s", retryScheduler.getClass().getName());
+        return DefaultCommandGateway.builder()
+                .commandBus(conf.commandBus())
+                .retryScheduler(retryScheduler)
+                .build();
     }
 
     private void registerEventUpcasters(Configurer configurer) {

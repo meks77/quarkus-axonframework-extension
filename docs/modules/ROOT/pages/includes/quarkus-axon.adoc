@@ -133,6 +133,69 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`true`
 
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval[`quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The fixed retry interval for retry scheduling(IntervalRetryScheduler), if configured. The fixed retry interval specifies a consistent delay duration between retries. If a fixed retry interval is configured, a maximum retry count must also be specified to ensure proper retry behavior.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count[`quarkus.axon.command-gateway.retry.scheduling.max-retry-count`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.max-retry-count+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if you have configured either the `fixed-retry-interval()` or the `backoff-factor()` you must configure the maximum retries as well.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_MAX_RETRY_COUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_MAX_RETRY_COUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor[`quarkus.axon.command-gateway.retry.scheduling.backoff-factor`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.backoff-factor+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+backoff factor for retry scheduling(ExponentialBackOffIntervalRetryScheduler). This value is used in conjunction with an exponential backoff retry mechanism, where the interval between retries increases over time based on this factor. If configured, the maximum retries must also be set.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_BACKOFF_FACTOR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_BACKOFF_FACTOR+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots.trigger-type+++[]

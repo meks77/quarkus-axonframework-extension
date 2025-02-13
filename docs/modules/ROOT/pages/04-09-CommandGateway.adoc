@@ -1,0 +1,60 @@
+= Command Gateway
+
+== Retry Scheduler
+
+== IntervalRetryScheduler
+
+If you want to use Axon's IntervalRetryScheduler you have to configure those properties:
+
+[source,properties]
+----
+quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval=100 # <1>
+quarkus.axon.command-gateway.retry.scheduling.max-retry-count=10
+----
+<1> ist the intervall in milliseconds
+
+The IntervalRetryScheduler will retry a given command at set intervals until it succeeds, or a maximum number of retries has taken place.
+
+For details please read the Axon Framework documentation.
+
+== ExponentialBackOffIntervalRetryScheduler
+
+If you want to use Axon's ExponentialBackOffIntervalRetryScheduler you have to configure those properties:
+
+[source,properties]
+----
+quarkus.axon.command-gateway.retry.scheduling.backoff-factor=100 # <1>
+quarkus.axon.command-gateway.retry.scheduling.max-retry-count=10
+----
+<1> ist the backoff factor in milliseconds
+
+The ExponentialBackOffIntervalRetryScheduler retries failed commands with an exponential back-off interval until it succeeds, or a maximum number of retries has taken place.
+
+For details please read the Axon Framework documentation.
+
+
+== BackoffRetryScheduler
+
+=== Custom Retry Scheduler
+
+If you would like to provide another Retry Scheduler for the CommandGateway, all you have to do is to produce a scheduler implemention.
+
+[source,java]
+----
+@Produces
+@ApplicationScoped
+public RetryScheduler retryScheduler() {
+    return new IntervalRetryScheduler.Builder() // <1>
+            .retryInterval(1000)
+            .maxRetryCount(100).build();
+}
+----
+<1> This is a RetryScheduler of the Axon Framework
+
+'''
+
+link:index.adoc[Index]
+
+link:04-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+
+link:04-10-Interceptors.adoc[Next: Interceptors →]

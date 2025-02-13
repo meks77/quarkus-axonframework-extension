@@ -1,6 +1,10 @@
 = Quarkus Axonframework Extension
 include::./includes/attributes.adoc[]
 
+link:01-AboutAxonFramework.adoc[Next: What is Axon Framework? →]
+
+'''
+
 == Index
 This guide explains how to use quarkus together with the axon framework.
 
@@ -13,3 +17,6 @@ This guide explains how to use quarkus together with the axon framework.
 == Core Configuration Reference
 include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
 
+'''
+
+link:01-AboutAxonFramework.adoc[Next: What is Axon Framework? →]

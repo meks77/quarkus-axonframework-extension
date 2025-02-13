@@ -18,13 +18,14 @@ Content
 * link:04-06-EventUpcasting.adoc[Event Upcasting]
 * link:04-07-Sagas.adoc[Sagas]
 * link:04-08-ExceptionHandling.adoc[Exception Handling]
-* link:04-09-Interceptors.adoc[Interceptors]
-* link:04-10-InjectCdiBeans.adoc[Inject CDI Beans into Message Handler Methods]
-* link:04-11-Transaction.adoc[Transaction]
-* link:04-12-Metrics.adoc[Metrics]
-* link:04-13-HealthChecks.adoc[HealthChecks]
-* link:04-14-AccessToAxonObjects.adoc[Access To Axon Objects]
-* link:04-15-Serialization.adoc[Serialization]
+* link:04-09-CommandGateway.adoc[CommandGateway]
+* link:04-10-Interceptors.adoc[Interceptors]
+* link:04-11-InjectCdiBeans.adoc[Inject CDI Beans into Message Handler Methods]
+* link:04-12-Transaction.adoc[Transaction]
+* link:04-13-Metrics.adoc[Metrics]
+* link:04-14-HealthChecks.adoc[HealthChecks]
+* link:04-15-AccessToAxonObjects.adoc[Access To Axon Objects]
+* link:04-16-Serialization.adoc[Serialization]
 
 
 '''
