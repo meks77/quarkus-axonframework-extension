@@ -23,6 +23,6 @@ void handle(MyCommand command, MyBean bean) {
 
 link:index.adoc[Index]
 
-link:04-10-Interceptors.adoc[← Previous: Interceptors]
+link:05-10-Interceptors.adoc[← Previous: Interceptors]
 
-link:04-12-Transaction.adoc[Next: Transaction →]
+link:05-12-Transaction.adoc[Next: Transaction →]

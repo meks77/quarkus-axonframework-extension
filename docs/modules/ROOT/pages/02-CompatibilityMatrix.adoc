@@ -25,4 +25,4 @@ link:index.adoc[Index]
 
 link:01-AboutAxonFramework.adoc[← Previous: What is Axon Framework?]
 
-link:03-CreateApplication.adoc[Next: Create an Eventsourcing Application →]
+link:03-Installation.adoc[Next: Installation →]

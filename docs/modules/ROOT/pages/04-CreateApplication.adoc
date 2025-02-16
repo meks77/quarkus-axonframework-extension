@@ -7,7 +7,7 @@ link:index.adoc[Index]
 
 link:02-CompatibilityMatrix.adoc[← Previous: Compatibility Marix]
 
-link:04-00-SetupAndUsage.adoc[Next: Setup & Usage →]
+link:05-00-SetupAndUsage.adoc[Next: Setup & Usage →]
 
 '''
 
@@ -299,6 +299,6 @@ class ApplicationTest {
 '''
 link:index.adoc[Index]
 
-link:02-CompatibilityMatrix.adoc[← Previous: Compatibility Marix]
+link:03-Installation.adoc[← Previous: Installation]
 
-link:04-00-SetupAndUsage.adoc[Next: Setup & Usage →]
+link:05-00-SetupAndUsage.adoc[Next: Setup & Usage →]

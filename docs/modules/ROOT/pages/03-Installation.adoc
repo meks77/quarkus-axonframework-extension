@@ -1,0 +1,103 @@
+= Installation
+
+All you need is to define the necessary dependencies for the features you'd like to have.
+Minimum is the dependency to quarkus-axon.
+
+There exists a BOM which you can use.
+
+== Maven
+
+In the dependency management section you can add the BOM.
+
+[source,xml]
+----
+<dependencyManagement>
+        <dependencies>
+            ...
+            <dependency>
+                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+                <artifactId>quarkus-axon-bom</artifactId>
+                <version>${quarkus.axon.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            ...
+        </dependencies>
+    </dependencyManagement>
+----
+You should either declare a property for the version or replace it with the version you'd like to use
+
+Afterward you can add the dependencies in the dependencies sections like you can see in this example:
+
+[source,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon-pooled-eventprocessor</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon-server</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon-transaction</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+        <artifactId>quarkus-axon-metrics</artifactId>
+    </dependency>
+</dependencies>
+
+----
+
+== Gradle
+
+Using gradle it is similar to maven.
+
+In the gradle.properties you have to define the version of the extension.
+
+[source,properties]
+----
+quarkusAxonExtensionVersion=0.1.0-SNAPSHOT
+----
+
+If you use the kotlin gradle configuration the file build.gradle.kts looks like this:
+
+[source,kotlin]
+----
+val quarkusPlatformGroupId: String by project
+val quarkusPlatformArtifactId: String by project
+val quarkusPlatformVersion: String by project
+val quarkusAxonExtensionVersion: String by project
+
+dependencies {
+    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
+    implementation(enforcedPlatform("at.meks.quarkiverse.axonframework-extension:quarkus-axon-bom:${quarkusAxonExtensionVersion}")) // <1>
+    implementation("io.quarkus:quarkus-arc")
+    implementation("io.quarkus:quarkus-rest")
+    implementation("at.meks.quarkiverse.axonframework-extension:quarkus-axon") // <2>
+    implementation("at.meks.quarkiverse.axonframework-extension:quarkus-axon-pooled-eventprocessor") // <2>
+    implementation("at.meks.quarkiverse.axonframework-extension:quarkus-axon-server") // <2>
+    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.rest-assured:rest-assured")
+}
+----
+<1> this line imports to bom of the extension
+<2> Dependencies to the modules of the quarkus axon extension
+
+'''
+link:index.adoc[Index]
+
+link:01-AboutAxonFramework.adoc[← Previous: What is Axon Framework?]
+
+link:04-CreateApplication.adoc[Next: Create an Eventsourcing Application →]
