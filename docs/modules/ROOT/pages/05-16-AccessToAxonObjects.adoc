@@ -16,6 +16,6 @@ you can simply inject it to your CDI bean. You can see example injections in lin
 
 link:index.adoc[Index]
 
-link:05-14-HealthChecks.adoc[← Previous: Health Checks]
+link:05-15-HealthChecks.adoc[← Previous: Health Checks]
 
-link:05-16-Serialization.adoc[Next: Serialization →]
+link:05-17-Serialization.adoc[Next: Serialization →]

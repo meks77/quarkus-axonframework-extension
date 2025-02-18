@@ -15,7 +15,7 @@ a possibility is to add the annotation `@JsonAutoDetect(fieldVisibility = JsonAu
 
 This strategy was chosen because it doesn't have an impact on the serialization of other classes(e.g. the return values of Web Services).
 
-Another possibility is to provide your own serializers, see link:05-16-Serialization.adoc[Serialization].
+Another possibility is to provide your own serializers, see link:05-17-Serialization.adoc[Serialization].
 
 
 == Trigger Types

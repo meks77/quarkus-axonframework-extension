@@ -31,7 +31,7 @@ If you would like to use the JDBC Tokenstore, you simply have to add the depende
 By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
 
 CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see
-link:05-12-Transaction.adoc[Transaction].
+link:05-13-Transaction.adoc[Transaction].
 
 [source,properties]
 ----
