@@ -64,6 +64,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     RetrySchedulerConfigurer retrySchedulerConfigurer;
 
+    @Inject
+    Instance<CommandBusConfigurer> commandBusConfigurer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -88,35 +91,9 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         configureSagas(configurer);
+        configureCommandBus(configurer);
         configureCommandGateway(configurer);
         return configurer;
-    }
-
-    private void configureCommandGateway(Configurer configurer) {
-        retrySchedulerConfigurer.retryScheduler()
-                .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
-                        conf -> createCommandGateway(conf, retryScheduler)));
-    }
-
-    private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
-        Log.infof("using CommandGateway with retryScheduler %s", retryScheduler.getClass().getName());
-        return DefaultCommandGateway.builder()
-                .commandBus(conf.commandBus())
-                .retryScheduler(retryScheduler)
-                .build();
-    }
-
-    private void registerEventUpcasters(Configurer configurer) {
-        if (eventUpcasterChain.isResolvable()) {
-            Log.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
-            configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
-        } else if (eventUpcasterChain.isAmbiguous()) {
-            throw new IllegalStateException(
-                    "multiple eventUpcasterChain found: %s"
-                            .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
-        } else {
-            Log.info("no eventUpcasterChain found");
-        }
     }
 
     private void configureAggregates(Configurer configurer) {
@@ -164,11 +141,48 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
+    private void registerEventUpcasters(Configurer configurer) {
+        if (eventUpcasterChain.isResolvable()) {
+            Log.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
+            configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
+        } else if (eventUpcasterChain.isAmbiguous()) {
+            throw new IllegalStateException(
+                    "multiple eventUpcasterChain found: %s"
+                            .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
+        } else {
+            Log.info("no eventUpcasterChain found");
+        }
+    }
+
     private void configureSagas(Configurer configurer) {
         if (!sagaEventhandlerClasses.isEmpty()) {
             sagaStoreConfigurer.configureSagaStore(configurer);
             EventProcessingConfigurer eventProcessingConfigurer = configurer.eventProcessing();
             sagaEventhandlerClasses.forEach(eventProcessingConfigurer::registerSaga);
+        }
+    }
+
+    private void configureCommandGateway(Configurer configurer) {
+        retrySchedulerConfigurer.retryScheduler()
+                .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
+                        conf -> createCommandGateway(conf, retryScheduler)));
+    }
+
+    private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
+        Log.infof("using CommandGateway with retryScheduler %s", retryScheduler.getClass().getName());
+        return DefaultCommandGateway.builder()
+                .commandBus(conf.commandBus())
+                .retryScheduler(retryScheduler)
+                .build();
+    }
+
+    private void configureCommandBus(Configurer configurer) {
+        if (commandBusConfigurer.isResolvable()) {
+            configurer.configureCommandBus(configuration -> commandBusConfigurer.get().createCommandBus(configuration));
+        } else if (commandBusConfigurer.isAmbiguous()) {
+            throw new IllegalStateException(
+                    "multiple commandBusConfigurers found: %s"
+                            .formatted(commandBusConfigurer.stream().map(Object::getClass).map(Class::getName).toList()));
         }
     }
 

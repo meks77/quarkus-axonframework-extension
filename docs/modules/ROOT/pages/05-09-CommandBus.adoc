@@ -1,0 +1,38 @@
+= Command Bus
+
+== Default Behaviour
+
+The Command Bus is initialized with the default of the Axon Framework.
+
+This also includes the special CommandBus, if the Axon Server is used as EventStore.
+
+== Custom Command Bus
+
+If you would like to provide your own command bus you simply have to provide the CDI Bean CommandBusConfigurer.
+
+This bean is used to configure the CommandBus in the Axon Framework.
+
+An example to provide your own Async CommandBus with virtual threads could look like this:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyCommandBusConfigurer implements CommandBusConfigurer {
+
+    @Override
+    public CommandBus createCommandBus(Configuration configuration) {
+        return AsynchronousCommandBus.builder()
+                 .executor(Executors.newVirtualThreadPerTaskExecutor())
+                 .build();
+    }
+
+}
+----
+
+'''
+
+link:index.adoc[Index]
+
+link:05-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+
+link:05-10-CommandGateway.adoc[Next: Command Gateway →]
