@@ -196,6 +196,27 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
+a| [[quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver[`quarkus.axon.command-bus.duplicate-command-handler-resolver`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.command-bus.duplicate-command-handler-resolver+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Configure how duplicate commands are handled. If not set, the defaults of the Axonframework are used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_BUS_DUPLICATE_COMMAND_HANDLER_RESOLVER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_COMMAND_BUS_DUPLICATE_COMMAND_HANDLER_RESOLVER+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`log-and-override`, `silent-override`, `reject-duplicates`
+|`reject-duplicates`
+
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots.trigger-type+++[]

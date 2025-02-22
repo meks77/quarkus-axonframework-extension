@@ -6,14 +6,14 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.Configuration;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.runtime.customizations.CommandBusConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
 
     @ApplicationScoped
-    public static class CommandHandlerConfigurer1 implements CommandBusConfigurer {
+    public static class CommandHandlerProducer1 implements CommandBusProducer {
 
         @Override
         public CommandBus createCommandBus(Configuration configuration) {
@@ -23,7 +23,7 @@ public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
     }
 
     @ApplicationScoped
-    public static class CommandHandlerConfigurer2 implements CommandBusConfigurer {
+    public static class CommandHandlerProducer2 implements CommandBusProducer {
 
         @Override
         public CommandBus createCommandBus(Configuration configuration) {
@@ -36,6 +36,6 @@ public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setExpectedException(IllegalStateException.class, true)
             .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(CommandHandlerConfigurer1.class, CommandHandlerConfigurer2.class));
+                    .addClasses(CommandHandlerProducer1.class, CommandHandlerProducer2.class));
 
 }
