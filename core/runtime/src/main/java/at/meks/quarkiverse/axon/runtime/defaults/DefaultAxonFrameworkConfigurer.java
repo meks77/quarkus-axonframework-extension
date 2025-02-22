@@ -65,7 +65,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     RetrySchedulerConfigurer retrySchedulerConfigurer;
 
     @Inject
-    Instance<CommandBusConfigurer> commandBusConfigurer;
+    CommandBusConfigurer commandBusConfigurer;
 
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
@@ -91,7 +91,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         configureSagas(configurer);
-        configureCommandBus(configurer);
+        commandBusConfigurer.configureCommandBus(configurer);
         configureCommandGateway(configurer);
         return configurer;
     }
@@ -174,16 +174,6 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .commandBus(conf.commandBus())
                 .retryScheduler(retryScheduler)
                 .build();
-    }
-
-    private void configureCommandBus(Configurer configurer) {
-        if (commandBusConfigurer.isResolvable()) {
-            configurer.configureCommandBus(configuration -> commandBusConfigurer.get().createCommandBus(configuration));
-        } else if (commandBusConfigurer.isAmbiguous()) {
-            throw new IllegalStateException(
-                    "multiple commandBusConfigurers found: %s"
-                            .formatted(commandBusConfigurer.stream().map(Object::getClass).map(Class::getName).toList()));
-        }
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.Configuration;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.runtime.customizations.CommandBusConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
 
@@ -18,10 +18,10 @@ public class CustomCommandBusTest extends JavaArchiveTest {
     @RegisterExtension
     static final QuarkusUnitTest config = new QuarkusUnitTest()
             .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(MyCommandBusConfigurer.class));
+                    .addClasses(MyCommandBusProducer.class));
 
     @ApplicationScoped
-    public static class MyCommandBusConfigurer implements CommandBusConfigurer {
+    public static class MyCommandBusProducer implements CommandBusProducer {
 
         @Override
         public CommandBus createCommandBus(Configuration configuration) {
