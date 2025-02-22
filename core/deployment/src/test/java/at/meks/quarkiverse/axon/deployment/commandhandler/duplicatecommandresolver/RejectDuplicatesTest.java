@@ -17,7 +17,7 @@ public class RejectDuplicatesTest extends JavaArchiveTest {
             .setExpectedException(LifecycleHandlerInvocationException.class)
             .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
                     .addClass(MyCommandHandler.class)
-                    .addAsResource(propertiesFile("/commandhandler/duplicateResolver/rejectDuplicates.properties"),
+                    .addAsResource(propertiesFile("/commandhandler/duplicateresolver/rejectDuplicates.properties"),
                             "application.properties"));
 
     @ApplicationScoped
