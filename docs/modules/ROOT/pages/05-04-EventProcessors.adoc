@@ -4,9 +4,9 @@
 
 link:index.adoc[Index]
 
-link:04-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
 
-link:04-05-TokenStores.adoc[Next: Token Stores →]
+link:05-05-TokenStores.adoc[Next: Token Stores →]
 
 '''
 
@@ -26,7 +26,7 @@ The artifact ids are:
 
 With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
 
-For more details on how to add a persistent token store, read link:04-05-TokenStores.adoc[Token Stores].
+For more details on how to add a persistent token store, read link:05-05-TokenStores.adoc[Token Stores].
 
 For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
@@ -50,6 +50,6 @@ include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=op
 
 link:index.adoc[Index]
 
-link:04-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-03-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
 
-link:04-05-TokenStores.adoc[Next: Token Stores →]
+link:05-05-TokenStores.adoc[Next: Token Stores →]

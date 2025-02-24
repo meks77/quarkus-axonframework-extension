@@ -48,6 +48,11 @@ public interface AxonConfiguration {
     CommandRetryScheduling commandGatewayRetryScheduling();
 
     /**
+     * configuration for the local command bus.
+     */
+    CommandBusConfiguration commandBus();
+
+    /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
      * to be dependent on the hardware. The default configuration works well on a MacBook Pro with M1 Chip.
      * If you get the error that no command handler is available after a reload, increase the wait time until this
@@ -150,4 +155,14 @@ public interface AxonConfiguration {
         Optional<Integer> backoffFactor();
     }
 
+    interface CommandBusConfiguration {
+
+        /**
+         * Configure how duplicate commands are handled. If not set, the defaults of the Axonframework are used.
+         */
+        @WithName("duplicate-command-handler-resolver")
+        @WithDefault("rejectDuplicates")
+        DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType();
+
+    }
 }

@@ -94,6 +94,6 @@ These interceptors are registered for each event processor.
 
 link:index.adoc[Index]
 
-link:04-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+link:05-08-ExceptionHandling.adoc[← Previous: Exception Handling]
 
-link:04-11-InjectCdiBeans.adoc[Next: Inject CDI Beans into Message Handler Methods →]
+link:05-12-InjectCdiBeans.adoc[Next: Inject CDI Beans into Message Handler Methods →]

@@ -19,6 +19,6 @@ It uses the quarkus transaction management configured into the axon framework.
 
 link:index.adoc[Index]
 
-link:04-11-InjectCdiBeans.adoc[← Previous: Inject CDI Beans into Message Handler Methods]
+link:05-12-InjectCdiBeans.adoc[← Previous: Inject CDI Beans into Message Handler Methods]
 
-link:04-13-Metrics.adoc[Next: Metrics →]
+link:05-14-Metrics.adoc[Next: Metrics →]

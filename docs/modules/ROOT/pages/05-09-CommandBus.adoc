@@ -1,0 +1,55 @@
+= Command Bus
+
+== DuplicateCommandHandlerResolver
+
+Axon provides three different behaviors, how the framework handles duplicate commands.
+You can configure your preferred behavior in the application.properties file.
+
+[source,properties]
+----
+quarkus.axon.command-bus.duplicate-command-handler-resolver=rejectDuplicates
+----
+
+The possible values are
+
+* rejectDuplicates
+* logAndOverride
+* silentOverride
+
+When the application starts and a duplicate command handler is detected by the axon framework, the configured resolver
+will be executed. In the case of `rejectDuplicates` an exception occurs during startup.
+
+This behavior is also considered if you are using the Axon Server.
+
+The default is `rejectDuplicates`, to avoid unexpected behavior.
+
+== Custom Command Bus
+
+If you would like to provide your own command bus you simply have to provide the CDI Bean CommandBusConfigurer.
+
+This bean is used to configure the CommandBus in the Axon Framework.
+
+An example to provide your own Async CommandBus with virtual threads could look like this:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyCommandBusConfigurer implements CommandBusConfigurer {
+
+    @Override
+    public CommandBus createCommandBus(Configuration configuration) {
+        return AsynchronousCommandBus.builder()
+                 .executor(Executors.newVirtualThreadPerTaskExecutor())
+                 .build();
+    }
+
+}
+----
+
+'''
+
+link:index.adoc[Index]
+
+link:05-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+
+link:05-10-CommandGateway.adoc[Next: Command Gateway →]

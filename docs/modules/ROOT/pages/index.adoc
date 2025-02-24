@@ -10,8 +10,9 @@ This guide explains how to use quarkus together with the axon framework.
 
 * link:01-AboutAxonFramework.adoc[What is Axon Framework?]
 * link:02-CompatibilityMatrix.adoc[Compatibility Matrix]
-* link:03-CreateApplication.adoc[Example Application]
-* link:04-00-SetupAndUsage.adoc[Setup & Usage]
+* link:03-Installation.adoc[Installation]
+* link:04-CreateApplication.adoc[Example Application]
+* link:05-00-SetupAndUsage.adoc[Setup & Usage]
 
 
 == Core Configuration Reference
