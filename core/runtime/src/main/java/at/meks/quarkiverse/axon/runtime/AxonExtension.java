@@ -25,15 +25,18 @@ import org.axonframework.modelling.command.Repository;
 import org.axonframework.queryhandling.QueryBus;
 import org.axonframework.queryhandling.QueryGateway;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonFrameworkConfigurer;
-import io.quarkus.logging.Log;
 import io.quarkus.runtime.Shutdown;
 import io.smallrye.mutiny.Uni;
 
 @Singleton
 public class AxonExtension {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AxonExtension.class);
 
     @Inject
     AxonFrameworkConfigurer axonFrameworkConfigurer;
@@ -63,8 +66,8 @@ public class AxonExtension {
             axonFrameworkConfigurer.injectableBeans(Map.copyOf(injectableBeans));
             axonFrameworkConfigurer.sagaClasses(sagaEventhandlerClasses);
             final Configurer configurer = axonFrameworkConfigurer.configure();
-            Log.info("starting axon");
-            Log.debugf("with axon configuration " + System.identityHashCode(configurer));
+            LOG.info("starting axon");
+            LOG.debug("with axon configuration " + System.identityHashCode(configurer));
             configuration = configurer.start();
 
         }
@@ -85,13 +88,13 @@ public class AxonExtension {
     @Shutdown
     void onShutdown() {
         if (configuration != null) {
-            Log.info("shutdown axon");
-            Log.debugf("with axon configuration " + System.identityHashCode(configuration));
+            LOG.info("shutdown axon");
+            LOG.debug("with axon configuration " + System.identityHashCode(configuration));
             configuration.shutdown();
             if (profile.equals("dev") && !shutdownWaitDuration().isNegative() && !shutdownWaitDuration().isZero()) {
-                Log.debugf("wait started");
+                LOG.debug("wait started");
                 Uni.createFrom().nullItem().onItem().delayIt().by(shutdownWaitDuration()).await().indefinitely();
-                Log.debugf("wait ended");
+                LOG.debug("wait ended");
             }
 
             configuration = null;

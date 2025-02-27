@@ -18,14 +18,17 @@ import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
-import io.quarkus.logging.Log;
 
 @Dependent
 @DefaultBean
-class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
+public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
+
+    private static Logger LOG = LoggerFactory.getLogger(DefaultAxonFrameworkConfigurer.class);
 
     @Inject
     TransactionManager transactionManager;
@@ -77,7 +80,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Override
     public Configurer configure() {
         final Configurer configurer;
-        Log.debug("creating the axon configuration");
+        LOG.debug("creating the axon configuration");
         configurer = DefaultConfigurer.defaultConfiguration()
                 .configureSerializer(conf -> axonSerializerProducer.createSerializer())
                 .configureEventSerializer(config -> axonSerializerProducer.createEventSerializer())
@@ -143,14 +146,14 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void registerEventUpcasters(Configurer configurer) {
         if (eventUpcasterChain.isResolvable()) {
-            Log.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
+            LOG.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
             configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
         } else if (eventUpcasterChain.isAmbiguous()) {
             throw new IllegalStateException(
                     "multiple eventUpcasterChain found: %s"
                             .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
         } else {
-            Log.info("no eventUpcasterChain found");
+            LOG.info("no eventUpcasterChain found");
         }
     }
 
@@ -169,7 +172,7 @@ class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
-        Log.infof("using CommandGateway with retryScheduler %s", retryScheduler.getClass().getName());
+        LOG.info("using CommandGateway with retryScheduler {}", retryScheduler.getClass().getName());
         return DefaultCommandGateway.builder()
                 .commandBus(conf.commandBus())
                 .retryScheduler(retryScheduler)
