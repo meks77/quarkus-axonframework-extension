@@ -15,7 +15,7 @@ import org.axonframework.commandhandling.gateway.RetryScheduler;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 
 @ApplicationScoped
-class RetrySchedulerConfigurer {
+public class RetrySchedulerConfigurer {
 
     @Inject
     AxonConfiguration axonConfiguration;

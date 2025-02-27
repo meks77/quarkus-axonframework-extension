@@ -18,7 +18,7 @@ import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 
 @Dependent
-class CommandBusConfigurer {
+public class CommandBusConfigurer {
 
     @Inject
     Instance<CommandBusProducer> commandBusProducer;

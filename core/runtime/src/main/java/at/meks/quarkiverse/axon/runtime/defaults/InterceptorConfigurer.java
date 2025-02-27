@@ -23,7 +23,7 @@ import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 
 @ApplicationScoped
-class InterceptorConfigurer {
+public class InterceptorConfigurer {
 
     @Inject
     Instance<CommandDispatchInterceptorsProducer> commandDispatchInterceptorProducers;
