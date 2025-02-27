@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>shared</artifactId>
-        <version>0.1.0-RC11</version>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>test</artifactId>
