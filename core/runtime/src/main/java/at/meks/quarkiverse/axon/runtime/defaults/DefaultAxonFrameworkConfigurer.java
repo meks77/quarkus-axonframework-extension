@@ -28,7 +28,7 @@ import io.quarkus.arc.DefaultBean;
 @DefaultBean
 public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
-    private static Logger LOG = LoggerFactory.getLogger(DefaultAxonFrameworkConfigurer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultAxonFrameworkConfigurer.class);
 
     @Inject
     TransactionManager transactionManager;
