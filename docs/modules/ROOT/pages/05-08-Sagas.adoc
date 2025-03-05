@@ -58,7 +58,7 @@ public class CardReturnSaga {
     }
 }
 ----
-<1> Necessary annotation, that this Saga is registered with field for serialization, if the serializer cannot access fields(see link:05-18-Serialization.adoc[Serialization])
+<1> Necessary annotation, that this Saga is registered with field for serialization, if the serializer cannot access fields(see link:05-19-Serialization.adoc[Serialization])
 <2> An application scoped bean is injected. It must be transient because of serialization
 <3> the application scoped bean is used to do some necessary task
 <4> the application scoped bean is used to do some necessary task

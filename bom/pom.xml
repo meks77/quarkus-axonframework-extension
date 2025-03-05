@@ -144,6 +144,16 @@
                 <artifactId>quarkus-axon-transaction-deployment</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+                <artifactId>quarkus-axon-tracing</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+                <artifactId>quarkus-axon-tracing-deployment</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

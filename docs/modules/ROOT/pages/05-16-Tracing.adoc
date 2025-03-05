@@ -1,0 +1,21 @@
+= Tracing
+If you want to use tracing you can enable it by adding the extension:
+
+[source,xml]
+----
+<dependency>
+    <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+    <artifactId>quarkus-axon-tracing</artifactId>
+    <version>VERSION</version>
+</dependency>
+----
+
+If you'd like to view the traces localy in dev mode, use Jaeger or Grafana OTel LGTM option. For more details have a look at the https://quarkus.io/guides/opentelemetry-tracing#run-the-application[Quarkus guide for OpenTelemetry]
+
+'''
+
+link:index.adoc[Index]
+
+link:05-15-Metrics.adoc[← Previous: Metrics]
+
+link:05-17-HealthChecks.adoc[Next: Health Checks →]

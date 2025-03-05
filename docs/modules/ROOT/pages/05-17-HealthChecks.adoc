@@ -21,6 +21,6 @@ Be aware that these settings are build-time settings. That means that these sett
 
 link:index.adoc[Index]
 
-link:05-15-Metrics.adoc[← Previous: Metrics]
+link:05-16-Tracing.adoc[← Previous: Tracing]
 
-link:05-17-AccessToAxonObjects.adoc[Next: Access To Axon Objects →]
+link:05-18-AccessToAxonObjects.adoc[Next: Access To Axon Objects →]

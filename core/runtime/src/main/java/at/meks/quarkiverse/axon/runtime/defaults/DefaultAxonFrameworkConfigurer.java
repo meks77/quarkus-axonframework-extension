@@ -70,6 +70,9 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     CommandBusConfigurer commandBusConfigurer;
 
+    @Inject
+    Instance<AxonTracingConfigurer> axonTracingConfigurer;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -85,6 +88,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureSerializer(conf -> axonSerializerProducer.createSerializer())
                 .configureEventSerializer(config -> axonSerializerProducer.createEventSerializer())
                 .configureMessageSerializer(conf -> axonSerializerProducer.createMessageSerializer());
+        configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
         configureAggregates(configurer);
         configrueMessageHandler(configurer);
@@ -177,6 +181,14 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .commandBus(conf.commandBus())
                 .retryScheduler(retryScheduler)
                 .build();
+    }
+
+    private void configureTracing(Configurer configurer) {
+        if (axonTracingConfigurer.isResolvable()) {
+            axonTracingConfigurer.get().configureTracing(configurer);
+        } else {
+            LOG.info("Tracing configuration is not available");
+        }
     }
 
     @Override
