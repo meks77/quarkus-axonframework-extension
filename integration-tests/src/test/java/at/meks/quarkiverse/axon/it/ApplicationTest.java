@@ -57,7 +57,7 @@ class ApplicationTest {
                 .pollInterval(Duration.ofMillis(100))
                 .atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> assertCurrentAmount(14));
-        assertAtLeastOneSnaptshotExists();
+        assertAtLeastOneSnapshotExists();
     }
 
     private void issueNewCard(@SuppressWarnings("SameParameterValue") int initialAmount) {
@@ -100,7 +100,7 @@ class ApplicationTest {
                 .body("id", CoreMatchers.equalTo(this.cardId), "currentAmount", CoreMatchers.equalTo(expectedAmount));
     }
 
-    private void assertAtLeastOneSnaptshotExists() {
+    private void assertAtLeastOneSnapshotExists() {
         Awaitility.await()
                 .pollInterval(Duration.ofMillis(500))
                 .atMost(Duration.ofSeconds(5))

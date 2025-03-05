@@ -15,7 +15,7 @@ a possibility is to add the annotation `@JsonAutoDetect(fieldVisibility = JsonAu
 
 This strategy was chosen because it doesn't have an impact on the serialization of other classes(e.g. the return values of Web Services).
 
-Another possibility is to provide your own serializers, see link:05-17-Serialization.adoc[Serialization].
+Another possibility is to provide your own serializers, see link:05-18-Serialization.adoc[Serialization].
 
 
 == Trigger Types
@@ -52,6 +52,6 @@ quarkus.axon.snapshots."at.meks.quarkiverse.axon.shared.model.Giftcard".threshol
 
 link:index.adoc[Index]
 
-link:05-01-EventStores.adoc[← Previous: Event Stores]
+link:05-02-EventStores.adoc[← Previous: Event Stores]
 
-link:05-03-CustomAggregateConfigurer.adoc[Next: Custom Aggregate Configurer →]
+link:05-04-CustomAggregateConfigurer.adoc[Next: Custom Aggregate Configurer →]

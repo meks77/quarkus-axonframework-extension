@@ -34,4 +34,9 @@ public class Api {
     public record CardReturnedEvent(String id) {
     }
 
+    public record AddPersonalInformationCommand(@TargetAggregateIdentifier String id, String personName) {
+    }
+
+    public record PersonalInformationAddedEvent(String id, String personName) {
+    }
 }

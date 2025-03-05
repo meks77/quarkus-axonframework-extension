@@ -9,6 +9,7 @@ public class GiftcardView {
     private final String id;
 
     private int currentAmount;
+    private String personName;
 
     @SuppressWarnings("unused")
     GiftcardView() {
@@ -19,6 +20,12 @@ public class GiftcardView {
     public GiftcardView(String id, int currentAmount) {
         this.id = id;
         this.currentAmount = currentAmount;
+    }
+
+    public GiftcardView(String id, int currentAmount, String personName) {
+        this.id = id;
+        this.currentAmount = currentAmount;
+        this.personName = personName;
     }
 
     void redeem(int amount) {
@@ -32,4 +39,9 @@ public class GiftcardView {
     public void undoLastRedemption(int amount) {
         currentAmount += amount;
     }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
+
 }
