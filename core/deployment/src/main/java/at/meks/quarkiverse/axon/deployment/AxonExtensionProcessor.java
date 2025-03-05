@@ -189,6 +189,7 @@ class AxonExtensionProcessor {
     private @NotNull Stream<Class<?>> commandhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex) {
         return annotatedClasses(CommandHandler.class, "commandhandlers",
                 annotationInstance -> annotationInstance.target().asMethod().declaringClass(), beanArchiveIndex)
+                .filter(clz -> clz.isAnnotationPresent(ApplicationScoped.class))
                 .filter(commandhandlerClass -> aggregateClasses(beanArchiveIndex)
                         .noneMatch(commandhandlerClass::equals));
     }

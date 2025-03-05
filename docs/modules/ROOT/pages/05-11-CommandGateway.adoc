@@ -55,6 +55,6 @@ public RetryScheduler retryScheduler() {
 
 link:index.adoc[Index]
 
-link:05-09-CommandBus.adoc[← Previous: Command Bus]
+link:05-10-CommandBus.adoc[← Previous: Command Bus]
 
-link:05-11-Interceptors.adoc[Next: Interceptors →]
+link:05-12-Interceptors.adoc[Next: Interceptors →]

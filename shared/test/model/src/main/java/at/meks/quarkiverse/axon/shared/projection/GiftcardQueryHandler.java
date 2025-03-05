@@ -29,6 +29,11 @@ public class GiftcardQueryHandler {
     }
 
     @EventHandler
+    void handle(Api.PersonalInformationAddedEvent event) {
+        giftcards.get(event.id()).setPersonName(event.personName());
+    }
+
+    @EventHandler
     void handle(Api.CardRedeemedEvent event) {
         giftcards.get(event.id()).redeem(event.amount());
     }

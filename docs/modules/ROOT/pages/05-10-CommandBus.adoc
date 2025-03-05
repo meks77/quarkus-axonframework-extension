@@ -50,6 +50,6 @@ public class MyCommandBusConfigurer implements CommandBusConfigurer {
 
 link:index.adoc[Index]
 
-link:05-08-ExceptionHandling.adoc[← Previous: Exception Handling]
+link:05-09-ExceptionHandling.adoc[← Previous: Exception Handling]
 
-link:05-10-CommandGateway.adoc[Next: Command Gateway →]
+link:05-11-CommandGateway.adoc[Next: Command Gateway →]

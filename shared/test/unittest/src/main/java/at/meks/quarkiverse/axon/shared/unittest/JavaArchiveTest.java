@@ -89,6 +89,7 @@ public class JavaArchiveTest {
         prepareForTest();
         var cardId = UUID.randomUUID().toString();
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
+        commandGateway.sendAndWait(new Api.AddPersonalInformationCommand(cardId, "Bruce Wayne"));
         await().atMost(Duration.ofSeconds(10))
                 .pollDelay(Duration.ZERO)
                 .untilAsserted(
@@ -105,7 +106,7 @@ public class JavaArchiveTest {
         assertThat(queryResult)
                 .succeedsWithin(Duration.ofSeconds(1))
                 .usingRecursiveComparison()
-                .isEqualTo(new GiftcardView(cardId, 9));
+                .isEqualTo(new GiftcardView(cardId, 9, "Bruce Wayne"));
 
         assertThatAllEventHandlerClassesWereInformed();
 

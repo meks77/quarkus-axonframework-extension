@@ -1,0 +1,18 @@
+= CommandHandler
+:toc:
+:toclevels: 3
+
+The annotation `@CommandHandler` can be set on methods of
+
+* Root Aggregates
+* Entities which are annotated with `@AggregateMember` at the field declaration of a Root Aggregate or another Entity
+* ApplicationScoped CDI Bean
+
+If the annotation `@CommandHandler` is used in a class which doesn't match to one of the three conditions above, it will not be registered in the Axon Framwork. This means that the Command Handler will not be found for the Command of this annotated method at runtime.
+
+'''
+link:index.adoc[Index]
+
+link:05-00-SetupAndUsage.adoc[← Previous: Setup & Usage]
+
+link:05-02-EventStores.adoc[Next: EventStores →]

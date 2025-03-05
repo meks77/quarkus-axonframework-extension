@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateMember;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
@@ -22,6 +23,9 @@ public class Giftcard {
     private String id;
     private int currentAmount;
     private final List<Integer> cardRedemptions = new ArrayList<>();
+
+    @AggregateMember
+    private final PersonalInformation personalInformation = new PersonalInformation();
 
     @SuppressWarnings("unused")
     Giftcard() {
