@@ -73,7 +73,7 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-bom</artifactId>
-                <version>4.10.4</version>
+                <version>4.11.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -81,13 +81,20 @@
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-messaging</artifactId>
                 <!-- maven doesn't use the version of the imported axon-bom. Better than duplicated exclusion? -->
-                <version>4.10.3</version>
+                <version>4.11.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.thoughtworks.xstream</groupId>
                         <artifactId>xstream</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <!-- The dependency is necessary, because the axon framework and the axon server connector use different
+                 major versions. Axoniq said that the major version 4 is backward compatible to the version 3. -->
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>4.29.3</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
