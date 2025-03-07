@@ -4,12 +4,17 @@ If the quarkus extension for health checks (quarkus-smallrye-health) is added, c
 
 Axon Server connection health checks are only active if you have added the extension quarkus-axon-server to your project.
 
-If you would like to deactivate the health checks, you can do that by setting the properties(just one or both)
+If you would like to deactivate the health checks, you can do that by setting the properties(just one or both) to false.
 
-- quarkus.axon.health-enabled
-- quarkus.axon.server.health-enabled
+[source,properties]
+----
+quarkus.axon.health-enabled=false #<1>
+quarkus.axon.server.health-enabled=false #<2>
+----
+<1> disables the health checks for the event processors
+<2> disables the health check for the connection to the axon server
 
-to false. Be aware that these settings are build-time settings. That means that these settings are considered at build time only. You can't overrule this setting at runtime e.g., using an environment variable.
+Be aware that these settings are build-time settings. That means that these settings are considered at build time only. You can't overrule this setting at runtime e.g., using an environment variable.
 
 
 '''
