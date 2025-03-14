@@ -94,7 +94,7 @@
                  major versions. Axoniq said that the major version 4 is backward compatible to the version 3. -->
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
-                <version>4.29.3</version>
+                <version>4.30.1</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
