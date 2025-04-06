@@ -7,9 +7,11 @@ import java.time.Duration;
 import java.util.UUID;
 
 import org.awaitility.Awaitility;
+import org.axonframework.eventsourcing.eventstore.jdbc.JdbcEventStorageEngine;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
+import io.quarkus.logging.Log;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
@@ -110,6 +112,20 @@ class ApplicationTest {
                             .then().extract().body().asString();
                     assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
                 });
+    }
+
+    @Test
+    void explicitlyCheckClassPresenceExplicitly() throws ClassNotFoundException {
+        Class<?> clazz = Thread.currentThread().getContextClassLoader()
+                .loadClass("org.axonframework.eventsourcing.eventstore.jdbc.JdbcEventStorageEngine");
+
+        Log.info("✅ Explicitly Found explicitly: " + clazz.getName());
+    }
+
+    @Test
+    void ideClassLoadCheck() {
+        JdbcEventStorageEngine engine;
+        System.out.println("✅ Class found by IDE: " + JdbcEventStorageEngine.class.getName());
     }
 
 }
