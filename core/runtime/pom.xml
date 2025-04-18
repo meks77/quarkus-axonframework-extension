@@ -47,6 +47,18 @@
             <artifactId>reactor-core</artifactId>
         </dependency>
         <dependency>
+            <!-- This dependency is necessary for native compilation, used by xstream  -->
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+        <dependency>
+            <!-- This dependency is necessary for native compilation, used by xstream  -->
+            <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
+            <version>1.3.9</version>
+        </dependency>
+        <dependency>
             <groupId>at.meks.easyvalidation</groupId>
             <artifactId>args</artifactId>
             <version>2.0.1</version>
