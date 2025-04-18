@@ -28,7 +28,8 @@ public class LocalCommandBusBuilder implements CommandBusBuilder {
     public CommandBus build(Configuration config) {
         SimpleCommandBus.Builder builder = SimpleCommandBus.builder()
                 .transactionManager(config.getComponent(TransactionManager.class))
-                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(config.spanFactory()).build())
+                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(config.spanFactory())
+                        .distributedInSameTrace(true).build())
                 .messageMonitor(config.messageMonitor(SimpleCommandBus.class, "commandBus"));
         Optional.ofNullable(resolver).ifPresent(builder::duplicateCommandHandlerResolver);
         return builder.build();

@@ -9,6 +9,7 @@ import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.command.AxonServerCommandBus;
 import org.axonframework.axonserver.connector.command.CommandPriorityCalculator;
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.DefaultCommandBusSpanFactory;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
 import org.axonframework.commandhandling.distributed.AnnotationRoutingStrategy;
 import org.axonframework.config.Configuration;
@@ -47,6 +48,8 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
                 .serializer(configuration.serializer())
                 .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
                 .priorityCalculator(CommandPriorityCalculator.defaultCommandPriorityCalculator())
+                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(
+                        configuration.spanFactory()).distributedInSameTrace(true).build())
                 .build();
     }
 

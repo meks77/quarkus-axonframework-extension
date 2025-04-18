@@ -16,13 +16,13 @@ Using the configuration, you can disable the metrics:
 quarkus.axon.metrics.enabled=false
 ----
 
-Futhermore axon provides the possibility to use tag for the metrics. This is enabled by default but can also be disbabled using the configuration:
+Furthermore, axon provides the possibility to use tag for the metrics. This is enabled by default but can also be disbabled using the configuration:
 [source,properties]
 ----
 quarkus.axon.metrics.with-tags=false
 ----
 
-== Metrics Configuration Referebce
+== Metrics Configuration Reference
 include::includes/quarkus-axon-metrics.adoc[leveloffset=+1,opts=optional]
 
 
@@ -32,4 +32,4 @@ link:index.adoc[Index]
 
 link:05-14-Transaction.adoc[← Previous: Transaction]
 
-link:05-16-HealthChecks.adoc[Next: Health Checks →]
+link:05-16-Tracing.adoc[Next: Tracing →]

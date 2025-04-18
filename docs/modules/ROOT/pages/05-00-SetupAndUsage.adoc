@@ -25,9 +25,9 @@ Content
 * link:05-13-InjectCdiBeans.adoc[Inject CDI Beans into Message Handler Methods]
 * link:05-14-Transaction.adoc[Transaction]
 * link:05-15-Metrics.adoc[Metrics]
-* link:05-16-HealthChecks.adoc[HealthChecks]
-* link:05-17-AccessToAxonObjects.adoc[Access To Axon Objects]
-* link:05-18-Serialization.adoc[Serialization]
+* link:05-17-HealthChecks.adoc[HealthChecks]
+* link:05-18-AccessToAxonObjects.adoc[Access To Axon Objects]
+* link:05-19-Serialization.adoc[Serialization]
 
 
 '''

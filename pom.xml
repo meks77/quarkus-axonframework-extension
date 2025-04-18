@@ -51,6 +51,7 @@
           causes other problems, especially when quarkus-hibernate-orm is in the build classpath. -->
         <module>docs</module>
         <module>bom</module>
+        <module>tracing</module>
     </modules>
 
     <properties>
