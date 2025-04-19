@@ -25,6 +25,7 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
 
     @Inject
     ScheduledExecutorService executorService;
+
     @Inject
     AxonConfiguration axonConfiguration;
 
@@ -59,13 +60,6 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
                 .map(Class::getPackageName)
                 .collect(Collectors.toSet());
     }
-
-    //    private SubscribableMessageSource<EventMessage<?>> defaultPersistentStreamMessageSource(Configuration conf) {
-    //        PersistentStreamProperties streamProperties = persistentStreamProperties(
-    //                persistentStreamProcessorConf.streamname().orElseGet(() -> persistentStreamName("quarkus")));
-    //        return createPersistentStreamMessageSource(persistentStreamProcessorConf.messageSourceName(), conf,
-    //                streamProperties);
-    //    }
 
     private PersistentStreamProperties persistentStreamProperties(String streamname) {
         return new PersistentStreamProperties(
