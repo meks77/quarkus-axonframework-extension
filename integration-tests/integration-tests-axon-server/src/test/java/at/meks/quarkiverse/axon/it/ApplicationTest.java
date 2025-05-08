@@ -57,7 +57,8 @@ class ApplicationTest {
                 .pollInterval(Duration.ofMillis(100))
                 .atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> assertCurrentAmount(14));
-        assertAtLeastOneSnapshotExists();
+
+        assertAtLeastOneSnapshotExists(cardId);
     }
 
     private void issueNewCard(@SuppressWarnings("SameParameterValue") int initialAmount) {
@@ -100,15 +101,15 @@ class ApplicationTest {
                 .body("id", CoreMatchers.equalTo(this.cardId), "currentAmount", CoreMatchers.equalTo(expectedAmount));
     }
 
-    private void assertAtLeastOneSnapshotExists() {
+    private void assertAtLeastOneSnapshotExists(String aggregateId) {
         Awaitility.await()
-                .pollInterval(Duration.ofMillis(500))
-                .atMost(Duration.ofSeconds(5))
+                .pollInterval(Duration.ofMillis(500)).atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> {
-                    String snapshotCount = RestAssured.given().basePath("system/snapshots/count")
+                    String snapshotCount = RestAssured.given().basePath("system/snapshots/{aggregateId}/count")
+                            .pathParam("aggregateId", aggregateId)
                             .when().get()
                             .then().extract().body().asString();
-                    assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
+                    assertThat(snapshotCount).asLong().isGreaterThanOrEqualTo(1L);
                 });
     }
 
