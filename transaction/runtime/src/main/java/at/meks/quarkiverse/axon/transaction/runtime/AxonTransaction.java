@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.transaction.runtime;
 
 import jakarta.enterprise.context.control.RequestContextController;
+import jakarta.transaction.Status;
 
 import org.axonframework.common.transaction.Transaction;
 import org.jboss.logging.Logger;
@@ -20,7 +21,7 @@ public class AxonTransaction implements Transaction {
     private final boolean joined;
 
     static AxonTransaction beginOrJoinTransaction(RequestContextController requestContextController) {
-        if (!QuarkusTransaction.isActive()) {
+        if (!isTransactionStarted()) {
             LOG.trace("Begin transaction");
             requestContextController.activate();
             QuarkusTransaction.begin();
@@ -30,6 +31,10 @@ public class AxonTransaction implements Transaction {
             QuarkusTransaction.joiningExisting();
             return AxonTransaction.joinedTransaction();
         }
+    }
+
+    private static boolean isTransactionStarted() {
+        return QuarkusTransaction.getStatus() != Status.STATUS_NO_TRANSACTION;
     }
 
     static AxonTransaction newTransaction() {
@@ -46,21 +51,21 @@ public class AxonTransaction implements Transaction {
 
     @Override
     public void commit() {
-        if (QuarkusTransaction.isActive() && !joined) {
+        if (isTransactionStarted() && !joined) {
             LOG.trace("commit transaction");
             QuarkusTransaction.commit();
         } else {
-            LOG.tracef("avoid commit. transaction active: %s; transaction joined: %s", QuarkusTransaction.isActive(), joined);
+            LOG.tracef("avoid commit. transaction was started: %s; transaction joined: %s", isTransactionStarted(), joined);
         }
     }
 
     @Override
     public void rollback() {
-        if (QuarkusTransaction.isActive()) {
+        if (isTransactionStarted()) {
             LOG.trace("rollback transaction");
             QuarkusTransaction.rollback();
         } else {
-            LOG.tracef("avoid rollback. transaction active: %s", QuarkusTransaction.isActive());
+            LOG.tracef("avoid rollback. transaction started: %s", isTransactionStarted());
         }
     }
 }
