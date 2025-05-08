@@ -7,8 +7,9 @@ If you need to access the
 - CommandBus
 - CommandGateway
 - QueryBus
-- QueryGateway or
+- QueryGateway
 - a aggregate repository
+- AxonServerConnectionManager
 
 you can simply inject it to your CDI bean. You can see example injections in link:04-CreateApplication.adoc[Creating an Event Sourcing Application].
 

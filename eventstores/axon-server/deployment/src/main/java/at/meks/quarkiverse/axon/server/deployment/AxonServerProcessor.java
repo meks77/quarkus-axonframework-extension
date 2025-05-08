@@ -7,6 +7,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import at.meks.quarkiverse.axon.server.runtime.AxonServerCommandBusBuilder;
+import at.meks.quarkiverse.axon.server.runtime.AxonServerComponentProducer;
 import at.meks.quarkiverse.axon.server.runtime.AxonServerConfigurer;
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerBuildTimeConfiguration;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
@@ -30,7 +31,7 @@ public class AxonServerProcessor {
     @BuildStep
     AdditionalBeanBuildItem tokenStoreConfigurer() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClass(AxonServerConfigurer.class)
+                .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class)
                 .build();
     }
 
