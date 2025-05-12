@@ -36,10 +36,10 @@ export MAVEN_GPG_PASSPHRASE=$GPG_PASSPHRASE
 [source,bash]
 ----
 git checkout main
-mvn -P ossrh -B release:prepare release:perform -DreleaseVersion=0.4.1 -DdevelopmentVersion=0.5.0-SNAPSHOT
+mvn -P publish -B release:prepare release:perform -DreleaseVersion=0.4.1 -DdevelopmentVersion=0.5.0-SNAPSHOT
 ----
 
-=== Release for the latest quarkus LTS version
+=== Release for the latest quarkus LTS version (deprecated)
 [source,bash]
 ----
 git checkout quarkus-3.15
