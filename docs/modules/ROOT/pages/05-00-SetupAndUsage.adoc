@@ -5,7 +5,7 @@ In this section details about the usage are explained.
 E.g., how to
 
 * setup an Event Store
-* setup an Event Procesor
+* setup an Event Processor
 * ...
 
 Content

@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
@@ -27,6 +28,12 @@ public class GiftcardInMemoryHistory {
     void handle(Api.CardRedeemedEvent event) {
         Log.debugf("handling event %s", event);
         history.add(event);
+    }
+
+    @ResetHandler
+    void reset() {
+        history.clear();
+        cardIssuedEventWasHandled = false;
     }
 
     public boolean wasEventHandled(Object event) {
