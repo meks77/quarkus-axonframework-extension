@@ -6,10 +6,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
-import at.meks.quarkiverse.axon.server.runtime.AxonServerCommandBusBuilder;
-import at.meks.quarkiverse.axon.server.runtime.AxonServerComponentProducer;
-import at.meks.quarkiverse.axon.server.runtime.AxonServerConfigurer;
-import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerBuildTimeConfiguration;
+import at.meks.quarkiverse.axon.server.runtime.*;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.IsNormal;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -31,7 +28,7 @@ public class AxonServerProcessor {
     @BuildStep
     AdditionalBeanBuildItem tokenStoreConfigurer() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class)
+                .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class, AxonServers.class)
                 .build();
     }
 
@@ -60,7 +57,7 @@ public class AxonServerProcessor {
         Log.infof("Axon Server API listens to port %s", apiPort);
 
         Map<String, String> configOverrides = Map.of(
-                "quarkus.axon.server.grpc-port", apiPort.toString());
+                "quarkus.axon.server.default-grpc-port", apiPort.toString());
         return new DevServicesResultBuildItem.RunningDevService(FEATURE, container.getContainerId(),
                 container::close, configOverrides)
                 .toBuildItem();

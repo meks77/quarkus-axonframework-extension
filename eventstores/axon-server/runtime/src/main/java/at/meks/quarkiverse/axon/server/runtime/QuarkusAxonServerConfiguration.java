@@ -12,16 +12,30 @@ import io.smallrye.config.WithDefault;
 public interface QuarkusAxonServerConfiguration {
 
     /**
-     * the host name of the axon server.
+     * A comma separated list of Axon Server servers. Each element is hostname or hostname:grpcPort.
+     * When no grpcPort is specified, the port of {@link QuarkusAxonServerConfiguration#defaultGrpcPort()} is used.
+     * The following examples are valid configurations:
+     * <li>
+     * <ul>
+     * axon-server-name
+     * </ul>
+     * <ul>
+     * axon-server-name:8424
+     * </ul>
+     * <ul>
+     * axon-server-node-1:8424;axon-server-node-2;axon-server-node-3:8444
+     * </ul>
+     * </li>
+     *
      */
     @WithDefault("localhost")
-    String hostname();
+    String servers();
 
     /**
-     * the grpc port of the axon server.
+     * the grpc port used as default, if the at servers is not definded.
      */
     @WithDefault("8124")
-    int grpcPort();
+    int defaultGrpcPort();
 
     /**
      * the context of the server to which should be connected

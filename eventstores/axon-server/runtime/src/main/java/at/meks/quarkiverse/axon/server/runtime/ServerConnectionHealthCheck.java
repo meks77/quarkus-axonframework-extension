@@ -3,6 +3,7 @@ package at.meks.quarkiverse.axon.server.runtime;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.config.Configuration;
 import org.eclipse.microprofile.health.*;
@@ -29,9 +30,9 @@ public class ServerConnectionHealthCheck implements HealthCheck {
     }
 
     private HealthCheckResponseBuilder createResponseBuilder() {
+        String axonServers = configuration.getComponent(AxonServerConfiguration.class).getServers();
         return HealthCheckResponse.named("Axon server connection")
-                .withData("host", axonServerConfiguration.hostname())
-                .withData("port", axonServerConfiguration.grpcPort())
+                .withData("servers", axonServers)
                 .withData("context", axonServerConfiguration.context());
     }
 
