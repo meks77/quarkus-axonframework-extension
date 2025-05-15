@@ -25,8 +25,7 @@ public class AxonServerTest extends JavaArchiveTest {
                 .statusCode(200)
                 .body("status", CoreMatchers.equalTo("UP"))
                 .body("checks.name", CoreMatchers.hasItem("Axon server connection"))
-                .body("checks.data.host", CoreMatchers.hasItem("localhost"))
-                .body("checks.data.port", CoreMatchers.hasItem(configuration.grpcPort()))
+                .body("checks.data.servers", CoreMatchers.hasItem("localhost:" + configuration.defaultGrpcPort()))
                 .body("checks.data.context", CoreMatchers.hasItem("default"));
     }
 }

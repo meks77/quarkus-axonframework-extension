@@ -27,6 +27,9 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     @Inject
     AxonConfiguration axonConfiguration;
 
+    @Inject
+    AxonServers axonSevers;
+
     public void configure(Configurer configurer) {
         configurer.registerComponent(AxonServerConfiguration.class,
                 cfg -> axonServerConfiguration())
@@ -35,7 +38,7 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
 
     private org.axonframework.axonserver.connector.AxonServerConfiguration axonServerConfiguration() {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
-                .servers(serverConfiguration.hostname() + ":" + serverConfiguration.grpcPort())
+                .servers(axonSevers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
         if (serverConfiguration.tokenRequired() && serverConfiguration.token().isEmpty()) {
             throw new IllegalStateException("Axon server token is required but not configured");

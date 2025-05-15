@@ -31,11 +31,32 @@ When starting with dev or test profile, the Axon Server is started as dev servic
 [source, properties]
 ----
 quarkus.axon.server.context=default
-quarkus.axon.server.hostname=localhost
-quarkus.axon.server.grpc-port=8124
+quarkus.axon.server.servers=localhost
+quarkus.axon.server.default-grpc-port=8124
 ----
 
-All you have to do is to define the correct host name, port and context if they don't match the default value.
+All you have to do is to define the correct servers, the default port for the axon servers if not defined, and context if they don't match the default value.
+
+If you want to connect to a axon server cluster with three nodes, where the nodes are named node1, node2 and node3, and all are listening to port 8124 you can configure it as follows:
+
+[source, properties]
+----
+quarkus.axon.server.servers=node1;node2;node3
+----
+
+If the node2 listens to port 9999 the the configuration would look like this:
+
+[source, properties]
+----
+quarkus.axon.server.servers=node1;node2:9999;node3
+----
+
+If all nodes, except node 2, listen to the port 1024 the the configuration could look like this:
+[source, properties]
+----
+quarkus.axon.server.servers=node1;node2:9999;node3
+quarkus.axon.server.default-grpc-port=1024
+----
 
 === Security
 For authentication you can set a token in the application.properties or as environment variable.
