@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
 import io.quarkus.runtime.annotations.ConfigPhase;
@@ -54,4 +55,13 @@ public interface QuarkusAxonServerConfiguration {
      */
     @WithDefault("false")
     boolean tokenRequired();
+
+    /**
+     * (PEM) keystore containing trusted certificates, in case that the certificate that’s used by Axon Server is not
+     * issued by a trusted certificate authority.
+     * <p>
+     * This documentation was copied from Axoniqs doc for the property axon.axonserver.cert-file of the client configuration.
+     */
+    Optional<Path> sslTrustStore();
+
 }
