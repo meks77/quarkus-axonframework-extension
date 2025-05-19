@@ -59,11 +59,23 @@ quarkus.axon.server.default-grpc-port=1024
 ----
 
 === Security
+
+==== Authentication
 For authentication you can set a token in the application.properties or as environment variable.
 
 For Details see <<_axon_server_configuration_reference>>
 
 If you want to force, that the API Token is set, you can set the property `quarkus.axon.server.token-required` to true. If the token is required, but not set, a startup failure happens.
+
+==== SSL
+If you have configured the Axon Server for SSL connections, but the certificate is not issued by a
+trusted certificate authority, you can configure a trust store. Based on Axoniqs documentation, this must be a
+pem keystore.
+
+[source, properties]
+----
+quarkus.axon.server.sslTrustStore=/path/to/keystore.pem
+----
 
 == JPA Event Store
 

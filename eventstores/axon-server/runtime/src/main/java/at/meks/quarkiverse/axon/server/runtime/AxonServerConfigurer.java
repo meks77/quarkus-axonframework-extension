@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 
+import java.nio.file.Files;
+
 @ApplicationScoped
 public class AxonServerConfigurer implements EventstoreConfigurer {
 
@@ -40,6 +42,12 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
                 .servers(axonSevers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
+        if (serverConfiguration.sslTrustStore().isPresent()) {
+            if (!Files.exists(serverConfiguration.sslTrustStore().get().toAbsolutePath())) {
+                throw new IllegalStateException("Cannot find ssl trust store at " + serverConfiguration.sslTrustStore().get());
+            }
+            builder.ssl(serverConfiguration.sslTrustStore().toString());
+        }
         if (serverConfiguration.tokenRequired() && serverConfiguration.token().isEmpty()) {
             throw new IllegalStateException("Axon server token is required but not configured");
         }
