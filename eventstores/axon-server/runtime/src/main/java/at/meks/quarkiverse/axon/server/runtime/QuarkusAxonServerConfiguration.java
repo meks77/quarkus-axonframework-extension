@@ -64,5 +64,4 @@ public interface QuarkusAxonServerConfiguration {
      */
     Optional<Path> sslTrustStore();
 
-
 }

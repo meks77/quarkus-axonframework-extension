@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
+import java.nio.file.Files;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -15,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
-
-import java.nio.file.Files;
 
 @ApplicationScoped
 public class AxonServerConfigurer implements EventstoreConfigurer {
