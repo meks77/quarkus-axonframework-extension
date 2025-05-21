@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,10 +44,11 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
                 .servers(axonSevers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
         if (serverConfiguration.sslTrustStore().isPresent()) {
-            if (!Files.exists(serverConfiguration.sslTrustStore().get().toAbsolutePath())) {
-                throw new IllegalStateException("Cannot find ssl trust store at " + serverConfiguration.sslTrustStore().get());
+            Path sslTrustStorePath = serverConfiguration.sslTrustStore().get();
+            if (!Files.exists(sslTrustStorePath.toAbsolutePath())) {
+                throw new IllegalStateException("Cannot find ssl trust store at " + sslTrustStorePath);
             }
-            builder.ssl(serverConfiguration.sslTrustStore().toString());
+            builder.ssl(sslTrustStorePath.toString());
         }
         if (serverConfiguration.tokenRequired() && serverConfiguration.token().isEmpty()) {
             throw new IllegalStateException("Axon server token is required but not configured");
