@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>quarkus-axon-jpa-eventstore-parent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0-RC17</version>
     </parent>
 
     <name>Quarkus Axon - JPA Eventstore - Deployment</name>
