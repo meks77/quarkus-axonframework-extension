@@ -77,6 +77,16 @@ pem keystore.
 quarkus.axon.server.sslTrustStore=/path/to/keystore.pem
 ----
 
+=== DevService
+By default, as mentioned above, an Axon-Server is started with dev and test profile.
+If you want to disable the DevService only for the Axon-Server you have the possibility to do that
+in the application.properties.
+
+[source,properties]
+----
+quarkus.axon.server.dev-services.enabled=false
+----
+
 == JPA Event Store
 
 Add the dependency

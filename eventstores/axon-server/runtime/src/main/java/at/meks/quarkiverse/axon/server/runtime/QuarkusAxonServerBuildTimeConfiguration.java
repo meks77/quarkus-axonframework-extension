@@ -14,4 +14,20 @@ public interface QuarkusAxonServerBuildTimeConfiguration {
      */
     @WithDefault("true")
     boolean healthEnabled();
+
+    /**
+     * configuration options for the dev services for Axon Server.
+     */
+    DevServices devServices();
+
+    interface DevServices {
+
+        /**
+         * enables or disables the dev services for Axon Server.
+         */
+        @WithDefault("true")
+        boolean enabled();
+
+    }
+
 }
