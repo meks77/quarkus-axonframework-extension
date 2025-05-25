@@ -1,7 +1,11 @@
 package at.meks.quarkiverse.axon.server.deployment;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import jakarta.inject.Inject;
 
+import org.axonframework.axonserver.connector.AxonServerConfiguration;
+import org.axonframework.config.Configuration;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -13,10 +17,14 @@ import io.restassured.RestAssured;
 public class AxonServerTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase());
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addAsResource(propertiesFile("/axonservertest.properties"), "application.properties"));
 
     @Inject
     QuarkusAxonServerConfiguration configuration;
+
+    @Inject
+    Configuration axonConfiguration;
 
     @Override
     protected void assertOthers() {
@@ -27,5 +35,8 @@ public class AxonServerTest extends JavaArchiveTest {
                 .body("checks.name", CoreMatchers.hasItem("Axon server connection"))
                 .body("checks.data.servers", CoreMatchers.hasItem("localhost:" + configuration.defaultGrpcPort()))
                 .body("checks.data.context", CoreMatchers.hasItem("default"));
+        AxonServerConfiguration serverConfiguration = axonConfiguration.getComponent(AxonServerConfiguration.class);
+        assertThat(serverConfiguration.getMaxMessageSize())
+                .isEqualTo(16384);
     }
 }

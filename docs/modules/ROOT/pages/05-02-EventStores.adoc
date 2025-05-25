@@ -58,6 +58,14 @@ quarkus.axon.server.servers=node1;node2:9999;node3
 quarkus.axon.server.default-grpc-port=1024
 ----
 
+In some cases it is necessary to increase the grpc message size. Eg if you want to increase the max grpc message size to 1 MB you can it like this:
+
+[source, properties]
+----
+quarkus.axon.server.grpc.maxMessageSize.value=1
+quarkus.axon.server.grpc.maxMessageSize.unit=MB
+----
+
 === Security
 
 ==== Authentication
