@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.server.runtime;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -53,8 +54,14 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         if (serverConfiguration.tokenRequired() && serverConfiguration.token().isEmpty()) {
             throw new IllegalStateException("Axon server token is required but not configured");
         }
+        maxGrpcMessageSize().ifPresent(builder::maxMessageSize);
         serverConfiguration.token().ifPresent(builder::token);
         return builder.build();
+    }
+
+    Optional<Integer> maxGrpcMessageSize() {
+        var grpcMessageSize = serverConfiguration.maxMessageSize();
+        return grpcMessageSize.value().map(size -> size * grpcMessageSize.unit().factor());
     }
 
     private EventStore axonserverEventStore(Configuration conf) {

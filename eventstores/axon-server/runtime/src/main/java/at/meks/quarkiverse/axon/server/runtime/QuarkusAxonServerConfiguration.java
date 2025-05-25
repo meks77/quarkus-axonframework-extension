@@ -7,6 +7,7 @@ import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
 
 @ConfigMapping(prefix = "quarkus.axon.server")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
@@ -63,5 +64,40 @@ public interface QuarkusAxonServerConfiguration {
      * This documentation was copied from Axoniqs doc for the property axon.axonserver.cert-file of the client configuration.
      */
     Optional<Path> sslTrustStore();
+
+    /**
+     * the maximum grpc message size. You can set this if your events are to big.
+     */
+    @WithName("grpc.maxMessageSize")
+    GrpcMessageSize maxMessageSize();
+
+    interface GrpcMessageSize {
+        enum Unit {
+            Bytes(1),
+            KB(1024),
+            MB(1024 * 1024);
+
+            private final int factor;
+
+            Unit(int factor) {
+                this.factor = factor;
+            }
+
+            public int factor() {
+                return factor;
+            }
+        }
+
+        /**
+         * the value of the max message size.
+         */
+        Optional<Integer> value();
+
+        /**
+         * the unit used for the max message size.
+         */
+        @WithDefault("Bytes")
+        Unit unit();
+    }
 
 }
