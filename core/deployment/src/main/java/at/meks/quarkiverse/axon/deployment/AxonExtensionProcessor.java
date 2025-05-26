@@ -234,6 +234,7 @@ class AxonExtensionProcessor {
             BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<InjectableBeanBuildItem> beanProducer) {
         injectableBeanClasses(beanArchiveIndex)
+                .filter(clz -> beanArchiveIndex.getImmutableIndex().getClassByName(clz.getName()) != null)
                 .map(InjectableBeanBuildItem::new)
                 .forEach(item -> {
                     Log.infof("found injectable beans: %s", item.itemClass());
