@@ -5,8 +5,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.ResetHandler;
+import org.axonframework.eventhandling.*;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
@@ -18,7 +17,15 @@ public class GiftcardInMemoryHistory {
     private boolean cardIssuedEventWasHandled = false;
 
     @EventHandler
-    void handle(Api.CardIssuedEvent event) {
+    void handle(Api.CardIssuedEvent event, @SequenceNumber long sequenceNumber) {
+        Log.debugf("handling event %s", event);
+        cardIssuedEventWasHandled = true;
+        history.add(event);
+    }
+
+    @EventHandler
+    void handle(Api.CardIssuedEvent event, TrackingToken trackingToken, @SequenceNumber Long sequenceNumber,
+            ReplayStatus replayStatus) {
         Log.debugf("handling event %s", event);
         cardIssuedEventWasHandled = true;
         history.add(event);
