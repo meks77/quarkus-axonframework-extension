@@ -41,7 +41,10 @@ public class AxonServerProcessor {
     }
 
     @BuildStep(onlyIfNot = IsNormal.class, onlyIf = DevServicesConfig.Enabled.class)
-    public DevServicesResultBuildItem createContainer() {
+    public DevServicesResultBuildItem createContainer(QuarkusAxonServerBuildTimeConfiguration buildTimeConfig) {
+        if (!buildTimeConfig.devServices().enabled()) {
+            return null;
+        }
         DockerImageName dockerImageName = DockerImageName.parse("axoniq/axonserver");
         GenericContainer<?> container = new GenericContainer<>(dockerImageName)
                 .withExposedPorts(8024, 8124, 8224)

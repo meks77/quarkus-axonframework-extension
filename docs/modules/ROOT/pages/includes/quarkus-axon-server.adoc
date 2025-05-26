@@ -28,6 +28,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`true`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-dev-services-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-dev-services-enabled[`quarkus.axon.server.dev-services.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.dev-services.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+enables or disables the dev services for Axon Server.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_DEV_SERVICES_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_DEV_SERVICES_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
 a| [[quarkus-axon-server_quarkus-axon-server-servers]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-servers[`quarkus.axon.server.servers`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.servers+++[]
