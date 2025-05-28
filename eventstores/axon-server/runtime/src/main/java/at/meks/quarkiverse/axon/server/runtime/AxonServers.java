@@ -19,11 +19,11 @@ public class AxonServers {
     String axonServersAsConnectionString() {
         return axonServers().stream()
                 .map(server -> String.join(":", server.hostname(), String.valueOf(server.port())))
-                .collect(Collectors.joining(";"));
+                .collect(Collectors.joining(","));
     }
 
     Collection<AxonServer> axonServers() {
-        return Stream.of(configuration.servers().split(";"))
+        return Stream.of(configuration.servers().split(","))
                 .map(this::toAxonServer)
                 .toList();
     }

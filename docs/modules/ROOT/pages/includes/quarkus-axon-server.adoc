@@ -65,7 +65,7 @@ axon-server-name
 axon-server-name:8424
 
 
-axon-server-node-1:8424;axon-server-node-2;axon-server-node-3:8444
+axon-server-node-1:8424,axon-server-node-2,axon-server-node-3:8444
 
 
 ifdef::add-copy-button-to-env-var[]
