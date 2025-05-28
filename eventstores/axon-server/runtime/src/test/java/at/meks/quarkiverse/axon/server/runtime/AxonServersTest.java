@@ -45,7 +45,7 @@ class AxonServersTest {
     void onlyOneServerNameWithDefaultPortIsProvided() {
         given(axonServerConfiguration.defaultGrpcPort()).willReturn(8024);
         given(axonServerConfiguration.servers())
-                .willReturn("axon-server-node1:8943;axon-server-node2;axon-server-node3:8474;axon-server-node4:9876");
+                .willReturn("axon-server-node1:8943,axon-server-node2,axon-server-node3:8474,axon-server-node4:9876");
 
         assertThat(axonServers.axonServers())
                 .containsExactlyInAnyOrder(
@@ -54,7 +54,7 @@ class AxonServersTest {
                         new AxonServer("axon-server-node3", 8474),
                         new AxonServer("axon-server-node4", 9876));
         assertThat(axonServers.axonServersAsConnectionString())
-                .isEqualTo("axon-server-node1:8943;axon-server-node2:8024;axon-server-node3:8474;axon-server-node4:9876");
+                .isEqualTo("axon-server-node1:8943,axon-server-node2:8024,axon-server-node3:8474,axon-server-node4:9876");
     }
 
     @Test

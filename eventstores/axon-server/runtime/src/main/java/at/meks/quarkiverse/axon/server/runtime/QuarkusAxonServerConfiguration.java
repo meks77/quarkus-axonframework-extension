@@ -25,7 +25,7 @@ public interface QuarkusAxonServerConfiguration {
      * axon-server-name:8424
      * </ul>
      * <ul>
-     * axon-server-node-1:8424;axon-server-node-2;axon-server-node-3:8444
+     * axon-server-node-1:8424,axon-server-node-2,axon-server-node-3:8444
      * </ul>
      * </li>
      *
