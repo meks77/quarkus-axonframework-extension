@@ -4,14 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import java.time.Duration;
-import java.util.Map;
-import java.util.OptionalLong;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import jakarta.inject.Inject;
 
+import org.awaitility.Awaitility;
+import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
 import org.axonframework.eventhandling.EventProcessor;
@@ -20,6 +22,8 @@ import org.axonframework.eventhandling.StreamingEventProcessor;
 import org.junit.jupiter.api.Test;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
+import io.axoniq.axonserver.connector.admin.AdminChannel;
+import io.axoniq.axonserver.grpc.admin.Result;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -32,7 +36,7 @@ public class ResetEventprocessorsTest {
     CommandGateway commandGateway;
 
     @Test
-    void resetEventprocessors() {
+    void resetEventprocessors() throws ExecutionException, InterruptedException {
         UUID cardId = UUID.randomUUID();
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId.toString(), 100));
         commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId.toString(), 10));
@@ -46,17 +50,55 @@ public class ResetEventprocessorsTest {
                 .isNotEmpty()
                 .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L));
 
-        streamingEventProcessors(eventProcessors).forEach(EventProcessor::shutDown);
-        streamingEventProcessors(eventProcessors).forEach(StreamingEventProcessor::resetTokens);
 
+        pauseEventprocessors(eventProcessors);
+        resetTokens(eventProcessors);
         assertThat(positionsOfStreamingEventProcessors(eventProcessors)).isEmpty();
-
-        streamingEventProcessors(eventProcessors).forEach(StreamingEventProcessor::start);
+        startEventProcessors(eventProcessors);
 
         await().atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> assertThat(positionsOfStreamingEventProcessors(eventProcessors))
                         .isNotEmpty()
                         .doesNotContain(OptionalLong.empty(), OptionalLong.of(0L), OptionalLong.of(-1L)));
+    }
+
+    private void pauseEventprocessors(Set<Map.Entry<String, EventProcessor>> eventProcessors)
+            throws InterruptedException, ExecutionException {
+        invokeOnAdminChannel((adminChannel, processor) ->
+                adminChannel.pauseEventProcessor(processor.getName(), processor.getTokenStoreIdentifier(), "default"),
+                streamingEventProcessors(eventProcessors).toList());
+    }
+
+    private void invokeOnAdminChannel(
+            BiFunction<AdminChannel, StreamingEventProcessor, CompletableFuture<Result>> runnable, List<StreamingEventProcessor> streamingEventProcessor)
+            throws InterruptedException, ExecutionException {
+        AdminChannel adminChannel = adminChannel();
+
+        List<CompletableFuture<Result>> pauseFutures = streamingEventProcessor.stream()
+                .map(proc -> runnable.apply(adminChannel, proc))
+                .toList();
+
+        CompletableFuture.allOf(pauseFutures.toArray(new CompletableFuture[0])).join();
+        assertThat(pauseFutures.get(0).get()).isEqualTo(Result.SUCCESS);
+
+        Awaitility.await().atMost(Duration.ofSeconds(5))
+                .until(() -> streamingEventProcessor.stream()
+                        .noneMatch(EventProcessor::isRunning));
+    }
+
+    private AdminChannel adminChannel() {
+        AxonServerConnectionManager connectionManager = configuration.getComponent(AxonServerConnectionManager.class);
+        return connectionManager.getConnection().adminChannel();
+    }
+
+    private void resetTokens(Set<Map.Entry<String, EventProcessor>> eventProcessors) {
+        streamingEventProcessors(eventProcessors).forEach(StreamingEventProcessor::resetTokens);
+    }
+
+    private void startEventProcessors(Set<Map.Entry<String, EventProcessor>> eventProcessors) throws ExecutionException, InterruptedException {
+        invokeOnAdminChannel((adminChannel, proc) ->
+                adminChannel.startEventProcessor(proc.getName(), proc.getTokenStoreIdentifier(), "default"),
+                streamingEventProcessors(eventProcessors).toList());
     }
 
     private static Stream<OptionalLong> positionsOfStreamingEventProcessors(
