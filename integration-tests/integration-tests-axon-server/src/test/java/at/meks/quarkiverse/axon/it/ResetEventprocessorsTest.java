@@ -37,12 +37,6 @@ public class ResetEventprocessorsTest {
     @Inject
     CommandGateway commandGateway;
 
-    private static CompletableFuture<Result> pauseEventProcessor(AdminChannel adminChannel, StreamingEventProcessor processor) {
-        Log.infof("Pausing eventprocessor [%s]", processor.getName());
-        return adminChannel.pauseEventProcessor(processor.getName(),
-                processor.getTokenStoreIdentifier(), "default");
-    }
-
     @Test
     void resetEventprocessors() throws ExecutionException, InterruptedException {
         UUID cardId = UUID.randomUUID();
@@ -92,6 +86,12 @@ public class ResetEventprocessorsTest {
         Awaitility.await().atMost(Duration.ofSeconds(5))
                 .until(() -> streamingEventProcessor.stream()
                         .noneMatch(EventProcessor::isRunning));
+    }
+
+    private static CompletableFuture<Result> pauseEventProcessor(AdminChannel adminChannel, StreamingEventProcessor processor) {
+        Log.infof("Pausing eventprocessor [%s]", processor.getName());
+        return adminChannel.pauseEventProcessor(processor.getName(),
+                processor.getTokenStoreIdentifier(), "default");
     }
 
     private AdminChannel adminChannel() {
