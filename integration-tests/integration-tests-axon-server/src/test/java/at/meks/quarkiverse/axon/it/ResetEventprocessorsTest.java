@@ -3,6 +3,8 @@ package at.meks.quarkiverse.axon.it;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
+import io.quarkus.logging.Log;
+
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -35,6 +37,12 @@ public class ResetEventprocessorsTest {
     @Inject
     CommandGateway commandGateway;
 
+    private static CompletableFuture<Result> pauseEventProcessor(AdminChannel adminChannel, StreamingEventProcessor processor) {
+        Log.infof("Pausing eventprocessor [%s]", processor.getName());
+        return adminChannel.pauseEventProcessor(processor.getName(),
+                processor.getTokenStoreIdentifier(), "default");
+    }
+
     @Test
     void resetEventprocessors() throws ExecutionException, InterruptedException {
         UUID cardId = UUID.randomUUID();
@@ -50,7 +58,6 @@ public class ResetEventprocessorsTest {
                 .isNotEmpty()
                 .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L));
 
-
         pauseEventprocessors(eventProcessors);
         resetTokens(eventProcessors);
         assertThat(positionsOfStreamingEventProcessors(eventProcessors)).isEmpty();
@@ -64,13 +71,14 @@ public class ResetEventprocessorsTest {
 
     private void pauseEventprocessors(Set<Map.Entry<String, EventProcessor>> eventProcessors)
             throws InterruptedException, ExecutionException {
-        invokeOnAdminChannel((adminChannel, processor) ->
-                adminChannel.pauseEventProcessor(processor.getName(), processor.getTokenStoreIdentifier(), "default"),
+        invokeOnAdminChannel(
+                ResetEventprocessorsTest::pauseEventProcessor,
                 streamingEventProcessors(eventProcessors).toList());
     }
 
     private void invokeOnAdminChannel(
-            BiFunction<AdminChannel, StreamingEventProcessor, CompletableFuture<Result>> runnable, List<StreamingEventProcessor> streamingEventProcessor)
+            BiFunction<AdminChannel, StreamingEventProcessor, CompletableFuture<Result>> runnable,
+            List<StreamingEventProcessor> streamingEventProcessor)
             throws InterruptedException, ExecutionException {
         AdminChannel adminChannel = adminChannel();
 
@@ -95,9 +103,11 @@ public class ResetEventprocessorsTest {
         streamingEventProcessors(eventProcessors).forEach(StreamingEventProcessor::resetTokens);
     }
 
-    private void startEventProcessors(Set<Map.Entry<String, EventProcessor>> eventProcessors) throws ExecutionException, InterruptedException {
-        invokeOnAdminChannel((adminChannel, proc) ->
-                adminChannel.startEventProcessor(proc.getName(), proc.getTokenStoreIdentifier(), "default"),
+    private void startEventProcessors(Set<Map.Entry<String, EventProcessor>> eventProcessors)
+            throws ExecutionException, InterruptedException {
+        invokeOnAdminChannel(
+                (adminChannel, proc) -> adminChannel.startEventProcessor(proc.getName(), proc.getTokenStoreIdentifier(),
+                        "default"),
                 streamingEventProcessors(eventProcessors).toList());
     }
 
