@@ -3,8 +3,6 @@ package at.meks.quarkiverse.axon.it;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import io.quarkus.logging.Log;
-
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -26,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import io.axoniq.axonserver.connector.admin.AdminChannel;
 import io.axoniq.axonserver.grpc.admin.Result;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -52,7 +51,10 @@ public class ResetEventprocessorsTest {
                 .isNotEmpty()
                 .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L));
 
+        waitForAxonServerToBeInitialized(eventProcessors);
+
         pauseEventprocessors(eventProcessors);
+
         resetTokens(eventProcessors);
         assertThat(positionsOfStreamingEventProcessors(eventProcessors)).isEmpty();
         startEventProcessors(eventProcessors);
@@ -61,6 +63,13 @@ public class ResetEventprocessorsTest {
                 .untilAsserted(() -> assertThat(positionsOfStreamingEventProcessors(eventProcessors))
                         .isNotEmpty()
                         .doesNotContain(OptionalLong.empty(), OptionalLong.of(0L), OptionalLong.of(-1L)));
+    }
+
+    private static void waitForAxonServerToBeInitialized(Set<Map.Entry<String, EventProcessor>> eventProcessors) {
+        Awaitility.await().atMost(Duration.ofSeconds(5))
+                .until(() -> eventProcessors.stream()
+                        .map(Map.Entry::getValue)
+                        .allMatch(EventProcessor::isRunning));
     }
 
     private void pauseEventprocessors(Set<Map.Entry<String, EventProcessor>> eventProcessors)
@@ -76,16 +85,12 @@ public class ResetEventprocessorsTest {
             throws InterruptedException, ExecutionException {
         AdminChannel adminChannel = adminChannel();
 
-        List<CompletableFuture<Result>> pauseFutures = streamingEventProcessor.stream()
+        List<CompletableFuture<Result>> futures = streamingEventProcessor.stream()
                 .map(proc -> runnable.apply(adminChannel, proc))
                 .toList();
 
-        CompletableFuture.allOf(pauseFutures.toArray(new CompletableFuture[0])).join();
-        assertThat(pauseFutures.get(0).get()).isEqualTo(Result.SUCCESS);
-
-        Awaitility.await().atMost(Duration.ofSeconds(5))
-                .until(() -> streamingEventProcessor.stream()
-                        .noneMatch(EventProcessor::isRunning));
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        assertThat(futures.get(0).get()).isEqualTo(Result.SUCCESS);
     }
 
     private static CompletableFuture<Result> pauseEventProcessor(AdminChannel adminChannel, StreamingEventProcessor processor) {

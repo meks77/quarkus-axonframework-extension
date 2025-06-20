@@ -35,8 +35,11 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     AxonServers axonSevers;
 
     public void configure(Configurer configurer) {
-        configurer.registerComponent(AxonServerConfiguration.class,
-                cfg -> axonServerConfiguration())
+        AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
+        configurer.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
+                .registerComponent(AxonServerConnectionManager.class, cfg -> AxonServerConnectionManager.builder()
+                        .axonServerConfiguration(axonServerConfiguration)
+                        .build())
                 .configureEventStore(this::axonserverEventStore);
     }
 
