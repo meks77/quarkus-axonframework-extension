@@ -37,12 +37,11 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
     @Override
     public CommandBus build(Configuration configuration) {
         AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
-        AxonServerConnectionManager axonServerConnectionManager = configuration.getComponent(AxonServerConnectionManager.class);
         return AxonServerCommandBus.builder()
                 .localSegment(
                         localCommandBusBuilder.duplicateCommandHandlerResolver(duplicateResolver).build(configuration))
                 .configuration(axonServerConfiguration)
-                .axonServerConnectionManager(axonServerConnectionManager)
+                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
                 .defaultContext(axonServerConfiguration.getContext())
                 .serializer(configuration.serializer())
                 .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
