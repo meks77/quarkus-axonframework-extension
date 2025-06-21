@@ -35,12 +35,14 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     AxonServers axonSevers;
 
     public void configure(Configurer configurer) {
-        configurer.registerComponent(AxonServerConfiguration.class,
-                cfg -> axonServerConfiguration())
+        AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
+        configurer.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
+                .registerComponent(AxonServerConnectionManager.class,
+                        cfg -> axonServerConnectionManager(axonServerConfiguration))
                 .configureEventStore(this::axonserverEventStore);
     }
 
-    private org.axonframework.axonserver.connector.AxonServerConfiguration axonServerConfiguration() {
+    private AxonServerConfiguration axonServerConfiguration() {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
                 .servers(axonSevers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
@@ -62,6 +64,12 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     Optional<Integer> maxGrpcMessageSize() {
         var grpcMessageSize = serverConfiguration.maxMessageSize();
         return grpcMessageSize.value().map(size -> size * grpcMessageSize.unit().factor());
+    }
+
+    private static AxonServerConnectionManager axonServerConnectionManager(AxonServerConfiguration axonServerConfiguration) {
+        return AxonServerConnectionManager.builder()
+                .axonServerConfiguration(axonServerConfiguration)
+                .build();
     }
 
     private EventStore axonserverEventStore(Configuration conf) {

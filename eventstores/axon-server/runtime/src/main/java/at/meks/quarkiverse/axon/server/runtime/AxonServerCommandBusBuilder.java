@@ -41,9 +41,7 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
                 .localSegment(
                         localCommandBusBuilder.duplicateCommandHandlerResolver(duplicateResolver).build(configuration))
                 .configuration(axonServerConfiguration)
-                .axonServerConnectionManager(AxonServerConnectionManager.builder()
-                        .axonServerConfiguration(axonServerConfiguration)
-                        .build())
+                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
                 .defaultContext(axonServerConfiguration.getContext())
                 .serializer(configuration.serializer())
                 .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
