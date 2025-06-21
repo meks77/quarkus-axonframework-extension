@@ -59,7 +59,7 @@
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <quarkus.version>3.23.0</quarkus.version>
+        <quarkus.version>3.23.2</quarkus.version>
     </properties>
 
     <dependencyManagement>
@@ -95,7 +95,7 @@
                  major versions. Axoniq said that the major version 4 is backward compatible to the version 3. -->
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
-                <version>4.31.0</version>
+                <version>4.31.1</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
