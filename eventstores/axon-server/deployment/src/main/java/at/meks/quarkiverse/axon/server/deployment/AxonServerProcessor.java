@@ -45,7 +45,7 @@ public class AxonServerProcessor {
         if (!buildTimeConfig.devServices().enabled()) {
             return null;
         }
-        DockerImageName dockerImageName = DockerImageName.parse("axoniq/axonserver").withTag("2025.0.2");
+        DockerImageName dockerImageName = DockerImageName.parse("axoniq/axonserver");
         GenericContainer<?> container = new GenericContainer<>(dockerImageName)
                 .withExposedPorts(8024, 8124, 8224)
                 .waitingFor(Wait.forLogMessage(".*default: context default created.*", 1))
