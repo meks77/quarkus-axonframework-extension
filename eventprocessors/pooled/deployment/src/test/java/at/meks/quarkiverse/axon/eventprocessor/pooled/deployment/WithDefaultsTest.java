@@ -1,6 +1,8 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.deployment;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Map;
 
 import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -13,7 +15,10 @@ public class WithDefaultsTest extends PooledProcessorTest {
     static final QuarkusUnitTest config = application(javaArchiveBase());
 
     @Override
-    protected void assertPooledConfiguration(PooledStreamingEventProcessor eventProcessor) {
-        assertEquals(Short.MAX_VALUE, eventProcessor.maxCapacity());
+    protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> processors) {
+        // Other changed properties can't be asserted because currently they can't be accessed.
+        processors.forEach((name, eventProcessor) -> assertThat(eventProcessor.maxCapacity())
+                .describedAs("max capacity of " + eventProcessor.getName())
+                .isEqualTo(Short.MAX_VALUE));
     }
 }

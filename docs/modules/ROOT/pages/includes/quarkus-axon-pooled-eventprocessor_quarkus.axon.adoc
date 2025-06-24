@@ -13,6 +13,11 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
+`quarkus.axon.pooledprocessor."processing-group".batch-size`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
 [.description]
 --
 Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
@@ -26,13 +31,18 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_BATCH_SIZE+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-initial-segments]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-initial-segments[`quarkus.axon.pooledprocessor.initial-segments`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.pooledprocessor."processing-group".initial-segments`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".initial-segments+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --
@@ -47,13 +57,18 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_SEGMENTS+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-initial-position]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-initial-position[`quarkus.axon.pooledprocessor.initial-position`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.pooledprocessor."processing-group".initial-position`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".initial-position+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --
@@ -76,6 +91,11 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.max-claimed-segments
 endif::add-copy-button-to-config-props[]
 
 
+`quarkus.axon.pooledprocessor."processing-group".max-claimed-segments`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".max-claimed-segments+++[]
+endif::add-copy-button-to-config-props[]
+
 [.description]
 --
 Sets the maximum number of claimed segments for asynchronous processing. For more information please read axon documentation.
@@ -89,13 +109,18 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_MAX_CLAIMED_SEGMENTS+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension[`quarkus.axon.pooledprocessor.enabled-coordinator-claim-extension`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.enabled-coordinator-claim-extension+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.pooledprocessor."processing-group".enabled-coordinator-claim-extension`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".enabled-coordinator-claim-extension+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --

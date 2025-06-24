@@ -1,9 +1,11 @@
 package at.meks.quarkiverse.axon.eventprocessors.shared;
 
+import java.util.Optional;
+
 public interface EventProcessorConfiguration {
 
-    int batchSize();
+    Optional<Integer> batchSize();
 
-    int initialSegments();
+    Optional<Integer> initialSegments();
 
 }

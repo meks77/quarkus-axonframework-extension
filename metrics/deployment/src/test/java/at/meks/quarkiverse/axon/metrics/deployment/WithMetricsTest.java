@@ -2,6 +2,8 @@ package at.meks.quarkiverse.axon.metrics.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
+
 import org.axonframework.eventhandling.EventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -16,7 +18,7 @@ public class WithMetricsTest extends JavaArchiveTest {
             javaArchiveBase());
 
     @Override
-    protected void assertConfiguration(EventProcessor eventProcessor) {
+    protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
         String response = RestAssured.when().get("/q/metrics")
                 .then().statusCode(200).extract().body().asString();
         assertThat(response)

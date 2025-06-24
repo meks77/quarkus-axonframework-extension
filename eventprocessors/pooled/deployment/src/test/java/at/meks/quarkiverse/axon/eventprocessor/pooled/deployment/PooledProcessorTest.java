@@ -2,6 +2,9 @@ package at.meks.quarkiverse.axon.eventprocessor.pooled.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
 
@@ -10,12 +13,27 @@ import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 public abstract class PooledProcessorTest extends JavaArchiveTest {
 
     @Override
-    protected void assertConfiguration(EventProcessor eventProcessor) {
-        // I don't like this kind of assertion, but I found no better way, how to validate that it is a persistent stream
-        assertThat(eventProcessor).isInstanceOf(PooledStreamingEventProcessor.class);
-        assertPooledConfiguration((PooledStreamingEventProcessor) eventProcessor);
+    protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
+        assertThat(eventProcessors)
+                .containsKeys(
+                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
+                        "at.meks.quarkiverse.axon.shared.projection2");
+
+        Map<String, PooledStreamingEventProcessor> pooledStreamingEventProcessors = eventProcessors.entrySet().stream()
+                .filter(e -> e.getValue() instanceof PooledStreamingEventProcessor)
+                .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
+                .map(entry -> Map.entry(entry.getKey(), (PooledStreamingEventProcessor) entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        assertThat(pooledStreamingEventProcessors)
+                .containsOnlyKeys(
+                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
+                        "at.meks.quarkiverse.axon.shared.projection2");
+
+        assertPooledConfigurations(pooledStreamingEventProcessors);
     }
 
-    protected void assertPooledConfiguration(PooledStreamingEventProcessor eventProcessor) {
+    protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> list) {
     }
+
 }

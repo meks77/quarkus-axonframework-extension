@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
 
+import java.util.Optional;
+
 import at.meks.quarkiverse.axon.eventprocessors.shared.EventProcessorConfiguration;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -52,7 +54,7 @@ public interface PersistentStreamProcessorConf extends EventProcessorConfigurati
     // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
-    int batchSize();
+    Optional<Integer> batchSize();
 
     /**
      * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
@@ -60,5 +62,5 @@ public interface PersistentStreamProcessorConf extends EventProcessorConfigurati
     // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
-    int initialSegments();
+    Optional<Integer> initialSegments();
 }
