@@ -7,6 +7,8 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
+    <name>Quarkus Axon - Test Jdbc</name>
+    <description>Module with shared sources for jdbc tests</description>
     <artifactId>test-jdbc</artifactId>
 
     <dependencies>
