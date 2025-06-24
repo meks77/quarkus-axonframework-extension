@@ -51,7 +51,7 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
     private PersistentStreamMessageSource createPersistentStreamMessageSource(String pkgName, Configuration conf,
             PersistentStreamProperties persistentStreamProperties) {
         return new PersistentStreamMessageSource(pkgName, conf, persistentStreamProperties, executorService,
-                persistentStreamProcessorConf.batchSize(), persistentStreamProcessorConf.context());
+                persistentStreamProcessorConf.batchSize().orElse(-1), persistentStreamProcessorConf.context());
     }
 
     private Set<String> packagesOfEventhandlers(Collection<Object> eventhandlers) {

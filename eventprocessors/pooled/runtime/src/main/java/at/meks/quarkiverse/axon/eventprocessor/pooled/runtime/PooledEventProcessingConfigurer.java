@@ -1,7 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,31 +22,45 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
 
     @Override
     public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
-        EventProcessingConfigurer.PooledStreamingProcessorConfiguration psepConfig = (config, builder) -> {
-            builder.initialToken(this::initialToken);
+        configurer.usingPooledStreamingEventProcessors();
+
+        configurer.registerPooledStreamingEventProcessorConfiguration(createProcessorConfig(
+                pooledProcessorConf.eventprocessorConfigs().get("default"), null));
+
+        pooledProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .filter(e -> !e.getKey().equals("default"))
+                .forEach(e -> configurer.registerPooledStreamingEventProcessorConfiguration(e.getKey(),
+                        createProcessorConfig(e.getValue(), e.getKey())));
+    }
+
+    private EventProcessingConfigurer.PooledStreamingProcessorConfiguration createProcessorConfig(
+            PooledProcessorConf.ConfigOfOneProcessor configOfOneProcessor, String name) {
+        return (config, builder) -> {
+            builder.initialToken(messageSource -> initialToken(messageSource, configOfOneProcessor));
             builder.tokenStore(config.getComponent(TokenStore.class));
-            Optional.of(pooledProcessorConf.batchSize())
+            configOfOneProcessor.batchSize()
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
-            Optional.of(pooledProcessorConf.initialSegments())
+            configOfOneProcessor.initialSegments()
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::initialSegmentCount);
-            Optional.of(pooledProcessorConf.maxClaimedSegments())
+            configOfOneProcessor.maxClaimedSegments()
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::maxClaimedSegments);
-            if (pooledProcessorConf.enabledCoordinatorClaimExtension()) {
+            if (configOfOneProcessor.enabledCoordinatorClaimExtension()) {
                 builder.enableCoordinatorClaimExtension();
+            }
+            if (name != null) {
+                builder.name(name);
             }
             return builder;
         };
-
-        configurer.usingPooledStreamingEventProcessors();
-        configurer.registerPooledStreamingEventProcessorConfiguration(psepConfig);
     }
 
-    private TrackingToken initialToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource) {
+    private TrackingToken initialToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource,
+            PooledProcessorConf.ConfigOfOneProcessor processorConfig) {
         return TokenBuilder.with(messageSource)
-                .atPosition(pooledProcessorConf.initialPosition())
+                .atPosition(processorConfig.initialPosition())
                 .build();
     }
 

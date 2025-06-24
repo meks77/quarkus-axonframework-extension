@@ -33,11 +33,11 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
                                 .atPosition(trackingProcessorConf.initialPosition())
                                 .build());
 
-        Optional.of(trackingProcessorConf.batchSize())
+        trackingProcessorConf.batchSize()
                 .filter(size -> size > 1)
                 .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
 
-        Optional.of(trackingProcessorConf.initialSegments())
+        trackingProcessorConf.initialSegments()
                 .filter(segments -> segments >= 1)
                 .ifPresent(trackingEventProcessorConfiguration::andInitialSegmentsCount);
 

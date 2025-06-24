@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import at.meks.quarkiverse.axon.eventprocessors.shared.InitialPosition;
@@ -33,7 +34,7 @@ public interface TrackingProcessorConf extends StreamingProcessorConf {
     // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
-    int batchSize();
+    Optional<Integer> batchSize();
 
     /**
      * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
@@ -41,7 +42,7 @@ public interface TrackingProcessorConf extends StreamingProcessorConf {
     // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
     @Override
     @WithDefault("-1")
-    int initialSegments();
+    Optional<Integer> initialSegments();
 
     /**
      * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.

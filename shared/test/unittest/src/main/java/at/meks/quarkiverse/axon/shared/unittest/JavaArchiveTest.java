@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -125,7 +126,7 @@ public class JavaArchiveTest {
                 "at.meks.quarkiverse.axon.shared.projection");
         assertThat(eventProcessorOptional).isPresent();
         assertConfiguration(configuration);
-        assertConfiguration(eventProcessorOptional.get());
+        assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
         assertOthers();
     }
 
@@ -149,7 +150,7 @@ public class JavaArchiveTest {
         assertTrue(anotherProjection.cardIssuedEventWasHandled(), "AnotherProjection was not informed");
     }
 
-    protected void assertConfiguration(EventProcessor eventProcessor) {
+    protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
 
     }
 
