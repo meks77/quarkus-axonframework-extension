@@ -88,46 +88,51 @@ public class JavaArchiveTest {
     @Test
     void frameworkConfigurationWorks() {
         prepareForTest();
-        var cardId = UUID.randomUUID().toString();
-        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
-        commandGateway.sendAndWait(new Api.AddPersonalInformationCommand(cardId, "Bruce Wayne"));
-        await().atMost(Duration.ofSeconds(10))
-                .pollDelay(Duration.ZERO)
-                .untilAsserted(
-                        () -> assertTrue(giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
+        try {
+            var cardId = UUID.randomUUID().toString();
+            commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
+            commandGateway.sendAndWait(new Api.AddPersonalInformationCommand(cardId, "Bruce Wayne"));
+            await().atMost(Duration.ofSeconds(10))
+                    .pollDelay(Duration.ZERO)
+                    .untilAsserted(
+                            () -> assertTrue(
+                                    giftcardInMemoryHistory.wasEventHandled(new Api.CardIssuedEvent(cardId, 10))));
 
-        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 1));
-        await().atMost(Duration.ofSeconds(20))
-                .pollDelay(Duration.ZERO)
-                .untilAsserted(() -> assertTrue(
-                        giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
+            commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 1));
+            await().atMost(Duration.ofSeconds(20))
+                    .pollDelay(Duration.ZERO)
+                    .untilAsserted(() -> assertTrue(
+                            giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
 
-        CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId),
-                GiftcardView.class);
-        assertThat(queryResult)
-                .succeedsWithin(Duration.ofSeconds(1))
-                .usingRecursiveComparison()
-                .isEqualTo(new GiftcardView(cardId, 9, "Bruce Wayne"));
+            CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId),
+                    GiftcardView.class);
+            assertThat(queryResult)
+                    .succeedsWithin(Duration.ofSeconds(1))
+                    .usingRecursiveComparison()
+                    .isEqualTo(new GiftcardView(cardId, 9, "Bruce Wayne"));
 
-        assertThatAllEventHandlerClassesWereInformed();
+            assertThatAllEventHandlerClassesWereInformed();
 
-        var cardId2 = UUID.randomUUID().toString();
-        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId2, 10));
-        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId2, 10));
+            var cardId2 = UUID.randomUUID().toString();
+            commandGateway.sendAndWait(new Api.IssueCardCommand(cardId2, 10));
+            commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId2, 10));
 
-        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
-        commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
+            commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
+            commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
 
-        delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId), "cardId was not prepared"));
-        delayedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
-        delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
-        assertFalse(quarkusPaymentservice.isPaid(cardId2));
-        Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
-                "at.meks.quarkiverse.axon.shared.projection");
-        assertThat(eventProcessorOptional).isPresent();
-        assertConfiguration(configuration);
-        assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
-        assertOthers();
+            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId), "cardId was not prepared"));
+            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
+            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
+            assertFalse(quarkusPaymentservice.isPaid(cardId2));
+            Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
+                    "at.meks.quarkiverse.axon.shared.projection");
+            assertThat(eventProcessorOptional).isPresent();
+            assertConfiguration(configuration);
+            assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
+            assertOthers();
+        } finally {
+            teardown();
+        }
     }
 
     /**
@@ -159,6 +164,13 @@ public class JavaArchiveTest {
     }
 
     protected void assertOthers() {
+
+    }
+
+    /**
+     * if necessary, you can implement this method to clean thigs after the test e.g., delete persistent streams.
+     */
+    protected void teardown() {
 
     }
 
