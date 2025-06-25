@@ -13,6 +13,11 @@ config_property_copy_button:+++quarkus.axon.trackingprocessor.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
+`quarkus.axon.trackingprocessor."processing-group".batch-size`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
 [.description]
 --
 Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
@@ -33,6 +38,11 @@ ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.trackingprocessor."processing-group".initial-segments`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".initial-segments+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --
@@ -55,6 +65,11 @@ config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position++
 endif::add-copy-button-to-config-props[]
 
 
+`quarkus.axon.trackingprocessor."processing-group".initial-position`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".initial-position+++[]
+endif::add-copy-button-to-config-props[]
+
 [.description]
 --
 First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
@@ -75,6 +90,11 @@ ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.thread-count+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.trackingprocessor."processing-group".thread-count`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".thread-count+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --
@@ -97,6 +117,11 @@ config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.interv
 endif::add-copy-button-to-config-props[]
 
 
+`quarkus.axon.trackingprocessor."processing-group".token-claim.interval`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".token-claim.interval+++[]
+endif::add-copy-button-to-config-props[]
+
 [.description]
 --
 The time to wait in between attempts to claim a token. If -1 the axon framework's default claim interval is used.
@@ -117,6 +142,11 @@ ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.time-unit+++[]
 endif::add-copy-button-to-config-props[]
 
+
+`quarkus.axon.trackingprocessor."processing-group".token-claim.time-unit`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processing-group".token-claim.time-unit+++[]
+endif::add-copy-button-to-config-props[]
 
 [.description]
 --

@@ -3,6 +3,7 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 import static at.meks.validation.args.ArgValidator.validate;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,7 +23,15 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
 
     @Override
     public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
-        int threadCount = trackingProcessorConf.threadCount();
+        configurer.usingTrackingEventProcessors();
+        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), createTrackingProcessorConfiguration(entry.getValue())))
+                .forEach(entry -> addProcessorConfig(configurer, entry.getKey(), entry.getValue()));
+    }
+
+    private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(
+            TrackingProcessorConf.ConfigOfOneProcessor configOfOneProcessor) {
+        int threadCount = configOfOneProcessor.threadCount();
         validate().that(threadCount).isGreater(0);
         var trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
                 .forParallelProcessing(threadCount);
@@ -30,25 +39,33 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
         trackingEventProcessorConfiguration
                 .andInitialTrackingToken(
                         messageSource -> TokenBuilder.with(messageSource)
-                                .atPosition(trackingProcessorConf.initialPosition())
+                                .atPosition(configOfOneProcessor.initialPosition())
                                 .build());
 
-        trackingProcessorConf.batchSize()
+        configOfOneProcessor.batchSize()
                 .filter(size -> size > 1)
                 .ifPresent(trackingEventProcessorConfiguration::andBatchSize);
 
-        trackingProcessorConf.initialSegments()
+        configOfOneProcessor.initialSegments()
                 .filter(segments -> segments >= 1)
                 .ifPresent(trackingEventProcessorConfiguration::andInitialSegmentsCount);
 
-        Optional.of(trackingProcessorConf.tokenClaim().interval())
+        Optional.of(configOfOneProcessor.tokenClaim().interval())
                 .filter(interval -> interval > 0)
                 .ifPresent(interval -> trackingEventProcessorConfiguration.andTokenClaimInterval(interval,
-                        trackingProcessorConf.tokenClaim().timeUnit()));
+                        configOfOneProcessor.tokenClaim().timeUnit()));
+        return trackingEventProcessorConfiguration;
+    }
 
-        configurer.usingTrackingEventProcessors();
-        configurer.registerTrackingEventProcessorConfiguration(
-                conf -> trackingEventProcessorConfiguration);
+    private void addProcessorConfig(EventProcessingConfigurer configurer, String groupName,
+            TrackingEventProcessorConfiguration trackingEventProcessorConfiguration) {
+        if (groupName.equals("default")) {
+            configurer.registerTrackingEventProcessorConfiguration(
+                    conf -> trackingEventProcessorConfiguration);
+        } else {
+            configurer.registerTrackingEventProcessorConfiguration(groupName,
+                    configuration -> trackingEventProcessorConfiguration);
+        }
     }
 
 }

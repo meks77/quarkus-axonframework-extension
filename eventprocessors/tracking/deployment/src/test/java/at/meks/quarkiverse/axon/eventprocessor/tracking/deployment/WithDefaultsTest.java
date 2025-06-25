@@ -2,6 +2,8 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.deployment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Map;
+
 import org.axonframework.eventhandling.TrackingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -13,7 +15,10 @@ public class WithDefaultsTest extends TrackingProcessorTest {
     static final QuarkusUnitTest config = application(javaArchiveBase());
 
     @Override
-    protected void assertConfiguration(TrackingEventProcessor trackingEventProcessor) {
-        assertEquals(1, trackingEventProcessor.activeProcessorThreads());
+    protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {
+        trackingEventProcessors.forEach((eventProcessorName, trackingEventProcessor) -> {
+            assertEquals(1, trackingEventProcessor.activeProcessorThreads());
+            assertEquals(1, trackingEventProcessor.maxCapacity());
+        });
     }
 }
