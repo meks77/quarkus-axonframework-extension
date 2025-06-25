@@ -12,7 +12,9 @@ import jakarta.inject.Inject;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.config.ProcessingGroup;
 
+import at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime.PersistentStreamProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
@@ -32,16 +34,12 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
     @Override
     public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
         configurer.usingSubscribingEventProcessors();
-        // because of an unexptected behaviour in the axon framework, it's not possible to simply use a default
-        // message source. If so, only the eventhandlers of one package are informed about events.
-        // Maybe with the Axon framework version 4.11 this will be fixed in the framework.
-        //        configurer
-        //                .configureDefaultSubscribableMessageSource(this::defaultPersistentStreamMessageSource);
-        packagesOfEventhandlers(eventhandlers)
-                .forEach(pkgName -> configurer.registerSubscribingEventProcessor(pkgName,
+
+        processorGroupnamesOfEventhandlers(eventhandlers)
+                .forEach(groupName -> configurer.registerSubscribingEventProcessor(groupName,
                         conf -> createPersistentStreamMessageSource(
-                                persistentStreamName(pkgName), conf,
-                                persistentStreamProperties(persistentStreamName(pkgName)))));
+                                persistentStreamName(groupName), conf,
+                                persistentStreamProperties(groupName))));
     }
 
     private String persistentStreamName(String pkgName) {
@@ -50,28 +48,39 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
 
     private PersistentStreamMessageSource createPersistentStreamMessageSource(String pkgName, Configuration conf,
             PersistentStreamProperties persistentStreamProperties) {
+        ConfigOfOneProcessor processorConfig = getProcessorGroupConfigOrDefault(pkgName);
         return new PersistentStreamMessageSource(pkgName, conf, persistentStreamProperties, executorService,
-                persistentStreamProcessorConf.batchSize().orElse(-1), persistentStreamProcessorConf.context());
+                processorConfig.batchSize().orElse(-1), processorConfig.context());
     }
 
-    private Set<String> packagesOfEventhandlers(Collection<Object> eventhandlers) {
+    private ConfigOfOneProcessor getProcessorGroupConfigOrDefault(String pkgName) {
+        return persistentStreamProcessorConf.eventprocessorConfigs().getOrDefault(
+                pkgName, persistentStreamProcessorConf.eventprocessorConfigs().get("default"));
+    }
+
+    private Set<String> processorGroupnamesOfEventhandlers(Collection<Object> eventhandlers) {
         return eventhandlers.stream()
                 .map(Object::getClass)
-                .map(Class::getPackageName)
+                .map(PersistentStreamEventProcessingConfigurer::getProcessorGroupName)
                 .collect(Collectors.toSet());
     }
 
-    private PersistentStreamProperties persistentStreamProperties(String streamname) {
-        return new PersistentStreamProperties(
-                streamname,
-                persistentStreamProcessorConf.segments(),
-                SequencingPolicy.PER_AGGREGATE.axonName(),
-                Collections.emptyList(),
-                persistentStreamProcessorConf.initialPosition(),
-                nullIfNone(persistentStreamProcessorConf.filter()));
+    private static String getProcessorGroupName(Class<?> aClass) {
+        if (aClass.isAnnotationPresent(ProcessingGroup.class)) {
+            return aClass.getAnnotation(ProcessingGroup.class).value();
+        }
+        return aClass.getPackageName();
     }
 
-    private String nullIfNone(String filter) {
-        return "none".equals(filter) ? null : filter;
+    private PersistentStreamProperties persistentStreamProperties(String groupname) {
+        ConfigOfOneProcessor processorConfig = getProcessorGroupConfigOrDefault(groupname);
+        return new PersistentStreamProperties(
+                persistentStreamName(groupname),
+                processorConfig.segments(),
+                SequencingPolicy.PER_AGGREGATE.axonName(),
+                Collections.emptyList(),
+                processorConfig.initialPosition(),
+                processorConfig.filter().orElse(null));
     }
+
 }
