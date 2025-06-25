@@ -48,6 +48,11 @@ public interface PooledProcessorConf {
         Optional<Integer> batchSize();
 
         /**
+         * The size of the threadpool for the worker threads. If not set, the framework default is used.
+         */
+        Optional<Integer> workerThreadPoolSize();
+
+        /**
          * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
          */
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc

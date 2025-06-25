@@ -1,10 +1,12 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
 import java.util.Collection;
+import java.util.concurrent.Executors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingToken;
@@ -47,6 +49,11 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
             configOfOneProcessor.maxClaimedSegments()
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::maxClaimedSegments);
+            configOfOneProcessor.workerThreadPoolSize()
+                    .filter(size -> size > 0)
+                    .ifPresent(size -> builder
+                            .workerExecutor(Executors.newScheduledThreadPool(size, new AxonThreadFactory("Worker - " + name))));
+            builder.coordinatorExecutor(Executors.newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name)));
             if (configOfOneProcessor.enabledCoordinatorClaimExtension()) {
                 builder.enableCoordinatorClaimExtension();
             }

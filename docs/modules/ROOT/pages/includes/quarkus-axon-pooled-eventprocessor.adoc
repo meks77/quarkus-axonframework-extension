@@ -137,5 +137,31 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`false`
 
+a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size[`quarkus.axon.pooledprocessor.worker-thread-pool-size`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.worker-thread-pool-size+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processing-group".worker-thread-pool-size`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".worker-thread-pool-size+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The size of the threadpool for the worker threads. If not set, the framework default is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_WORKER_THREAD_POOL_SIZE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_WORKER_THREAD_POOL_SIZE+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
 |===
 
