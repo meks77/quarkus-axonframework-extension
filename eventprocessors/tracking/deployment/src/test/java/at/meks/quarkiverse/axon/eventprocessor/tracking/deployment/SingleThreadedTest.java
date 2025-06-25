@@ -18,8 +18,8 @@ public class SingleThreadedTest extends TrackingProcessorTest {
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {
         trackingEventProcessors.forEach((eventProcessorName, trackingEventProcessor) -> {
-            assertEquals(1,trackingEventProcessor.activeProcessorThreads());
-            assertEquals(1,trackingEventProcessor.maxCapacity());
+            assertEquals(1, trackingEventProcessor.activeProcessorThreads());
+            assertEquals(1, trackingEventProcessor.maxCapacity());
         });
     }
 
