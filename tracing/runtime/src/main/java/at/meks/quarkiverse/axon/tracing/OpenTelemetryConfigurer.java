@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.tracing;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.config.Configurer;
@@ -17,14 +18,18 @@ public class OpenTelemetryConfigurer implements AxonTracingConfigurer {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryConfigurer.class);
 
     @Inject
-    Tracer tracer;
+    Instance<Tracer> tracer;
 
     @Override
     public void configureTracing(Configurer configurer) {
-        LOG.info("configure OpenTelemetry tracing");
-        configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
-                .tracer(tracer)
-                .build());
+        if (tracer.isResolvable()) {
+            LOG.info("configure OpenTelemetry tracing");
+            configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
+                    .tracer(tracer.get())
+                    .build());
+        } else {
+            LOG.info("OpenTelemetry tracing is deactivated");
+        }
     }
 
 }
