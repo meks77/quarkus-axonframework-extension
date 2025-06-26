@@ -1,9 +1,9 @@
 package at.meks.quarkiverse.axon.tracing.deployment;
 
+import org.junit.jupiter.api.extension.*;
+
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusUnitTest;
-
-import org.junit.jupiter.api.extension.*;
 
 public class DeactivatedTracing3Test extends JavaArchiveTest {
 
