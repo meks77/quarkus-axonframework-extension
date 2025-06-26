@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>quarkus-axon-eventstores</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0-RC21</version>
     </parent>
     <packaging>pom</packaging>
 
