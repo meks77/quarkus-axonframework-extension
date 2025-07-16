@@ -17,6 +17,11 @@ public class DevUiProcessor {
             List<SagaEventhandlerBeanBuildItem> sagaEventhandlerBeanBuildItem) {
         var buildInfo = buildInfo(aggregateBeanBuildItem, sagaEventhandlerBeanBuildItem);
         CardPageBuildItem card = new CardPageBuildItem();
+        card.setLogo("AxonFramework-DarkIcon.svg", "AxonFramework-DarkIcon.svg");
+        card.addLibraryVersion("org.axonframework", "axon-configuration", "Axon Configuration",
+                "https://www.axoniq.io/products/axon-framework");
+        card.addLibraryVersion("org.axonframework", "axon-messaging", "Axon Messaging",
+                "https://www.axoniq.io/products/axon-framework");
 
         card.addBuildTimeData("aggregates", buildInfo.aggregates());
         card.addPage(aggregatesPage(aggregateBeanBuildItem));
