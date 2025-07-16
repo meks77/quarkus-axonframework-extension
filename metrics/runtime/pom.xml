@@ -25,6 +25,10 @@
             <artifactId>quarkus-axon</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-micrometer</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

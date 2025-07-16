@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.deployment;
 
-interface ClassProvider {
+public interface ClassProvider {
 
     Class<?> itemClass();
 }
