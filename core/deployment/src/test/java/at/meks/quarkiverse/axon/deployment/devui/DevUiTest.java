@@ -41,6 +41,7 @@ public class DevUiTest {
         assertAggregates();
         assertSagaEventHandler();
         assertEventHandler();
+        assertQueryHandler();
     }
 
     private void assertAggregates() {
@@ -64,6 +65,13 @@ public class DevUiTest {
                 "at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory",
                 "at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler",
                 "at.meks.quarkiverse.axon.shared.projection2.AnotherProjection");
+    }
+
+    private void assertQueryHandler() {
+        uiAsserter.assertLineInCard("Query Handlers", "1");
+        uiAsserter.itemListEqualsTo(
+                "Query Handlers",
+                "at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler");
     }
 
 }

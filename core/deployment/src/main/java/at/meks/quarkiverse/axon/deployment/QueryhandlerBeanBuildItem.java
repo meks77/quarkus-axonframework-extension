@@ -2,7 +2,7 @@ package at.meks.quarkiverse.axon.deployment;
 
 import io.quarkus.builder.item.MultiBuildItem;
 
-final class QueryhandlerBeanBuildItem extends MultiBuildItem implements ClassProvider {
+public final class QueryhandlerBeanBuildItem extends MultiBuildItem implements ClassProvider {
 
     private final Class<?> queryhandlerClass;
 

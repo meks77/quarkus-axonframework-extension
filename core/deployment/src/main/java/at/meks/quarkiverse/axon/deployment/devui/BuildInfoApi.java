@@ -13,7 +13,11 @@ public class BuildInfoApi {
     record EventHandler(String className) {
     }
 
-    record BuildInfo(List<Aggregate> aggregates, List<SagaEventHandler> sagaEventHandler, List<EventHandler> eventHandler) {
+    public record QueryHandler(String className) {
     }
 
+    record BuildInfo(List<Aggregate> aggregates, List<SagaEventHandler> sagaEventHandler, List<EventHandler> eventHandler,
+            List<QueryHandler> queryHandler) {
+
+    }
 }
