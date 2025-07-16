@@ -42,6 +42,7 @@ public class DevUiTest {
         assertSagaEventHandler();
         assertEventHandler();
         assertQueryHandler();
+        assertCommandHandler();
     }
 
     private void assertAggregates() {
@@ -72,6 +73,13 @@ public class DevUiTest {
         uiAsserter.itemListEqualsTo(
                 "Query Handlers",
                 "at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler");
+    }
+
+    private void assertCommandHandler() {
+        uiAsserter.assertLineInCard("Command Handlers", "1");
+        uiAsserter.itemListEqualsTo(
+                "Command Handlers",
+                "at.meks.quarkiverse.axon.shared.model.DomainServiceExample");
     }
 
 }
