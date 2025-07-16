@@ -40,6 +40,7 @@ public class DevUiTest {
     void testAllFeaturesInDevUi() {
         assertAggregates();
         assertSagaEventHandler();
+        assertEventHandler();
     }
 
     private void assertAggregates() {
@@ -54,6 +55,15 @@ public class DevUiTest {
         uiAsserter.itemListEqualsTo(
                 "Saga Event Handlers",
                 "at.meks.quarkiverse.axon.shared.model.CardReturnSaga");
+    }
+
+    private void assertEventHandler() {
+        uiAsserter.assertLineInCard("Event Handlers", "3");
+        uiAsserter.itemListEqualsTo(
+                "Event Handlers",
+                "at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory",
+                "at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler",
+                "at.meks.quarkiverse.axon.shared.projection2.AnotherProjection");
     }
 
 }
