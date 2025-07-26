@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.customizations.AxonTracingConfigurer;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 
 @ApplicationScoped
@@ -20,9 +21,12 @@ public class OpenTelemetryConfigurer implements AxonTracingConfigurer {
     @Inject
     Instance<Tracer> tracer;
 
+    @Inject
+    Instance<OpenTelemetry> openTelemetry;
+
     @Override
     public void configureTracing(Configurer configurer) {
-        if (tracer.isResolvable()) {
+        if (openTelemetry.isResolvable() && tracer.isResolvable() && openTelemetry.get() != null) {
             LOG.info("configure OpenTelemetry tracing");
             configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
                     .tracer(tracer.get())
