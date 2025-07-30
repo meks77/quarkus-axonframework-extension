@@ -82,7 +82,7 @@
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-messaging</artifactId>
                 <!-- maven doesn't use the version of the imported axon-bom. Better than duplicated exclusion? -->
-                <version>4.11.3</version>
+                <version>4.12.0</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.thoughtworks.xstream</groupId>
