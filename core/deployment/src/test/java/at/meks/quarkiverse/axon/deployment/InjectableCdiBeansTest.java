@@ -22,6 +22,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
+import at.meks.quarkiverse.axon.shared.TestModelConfig;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class InjectableCdiBeansTest {
@@ -71,8 +73,16 @@ public class InjectableCdiBeansTest {
     @ApplicationScoped
     static class InjectableCdiBeanForAggregate {
 
+        @Inject
+        AxonConfiguration axonConfiguration;
+
+        @Inject
+        TestModelConfig testModelConfig;
+
         void doSomething() {
             logger.debug("do something");
+            System.out.printf("postConstruct; AxonApplicationName: %s%n", axonConfiguration.axonApplicationName());
+            System.out.printf("postConstruct; TestModelConfigValue: %s%n", testModelConfig.value());
         }
     }
 
