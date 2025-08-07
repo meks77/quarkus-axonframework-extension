@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>shared</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0-RC22</version>
     </parent>
 
     <name>Quarkus Axon - Test</name>
