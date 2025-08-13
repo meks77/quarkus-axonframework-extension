@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
+import at.meks.quarkiverse.axon.shared.TestModelConfig;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class InjectableCdiBeansTest {
@@ -107,7 +108,8 @@ public class InjectableCdiBeansTest {
     static class DomainServiceCommandHandlerUsingCdiBean {
 
         @CommandHandler
-        void handle(CommandHandledByDomainService command, InjectableCdiBeanForDomainService bean) {
+        void handle(CommandHandledByDomainService command, InjectableCdiBeanForDomainService bean,
+                TestModelConfig testModelConfig) {
             bean.doSomething();
         }
     }
@@ -124,7 +126,8 @@ public class InjectableCdiBeansTest {
         }
 
         @CommandHandler
-        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean) {
+        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
+                TestModelConfig testModelConfig) {
             bean.doSomething();
         }
 
@@ -139,7 +142,7 @@ public class InjectableCdiBeansTest {
     static class EventHandlerUsingCdiBean {
 
         @EventHandler
-        void on(MyEvent event, InjectableCdiBeanForEventHandler bean) {
+        void on(MyEvent event, InjectableCdiBeanForEventHandler bean, TestModelConfig testModelConfig) {
             bean.doSomething();
         }
     }
@@ -149,7 +152,7 @@ public class InjectableCdiBeansTest {
     static class QueryHandlerUsingCdiBean {
 
         @QueryHandler
-        boolean on(MyQuery query, InjectableCdiBeanForQueryHandler bean) {
+        boolean on(MyQuery query, InjectableCdiBeanForQueryHandler bean, TestModelConfig testModelConfig) {
             bean.doSomething();
             return true;
         }
