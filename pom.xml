@@ -35,7 +35,7 @@
         <developerConnection>scm:git:git@github.com:meks77/quarkus-axonframework-extension.git
         </developerConnection>
         <url>https://github.com/meks77/quarkus-axonframework-extension</url>
-      <tag>0.1.0-RC18</tag>
+      <tag>0.1.0-RC22</tag>
   </scm>
 
     <modules>
@@ -59,7 +59,7 @@
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <quarkus.version>3.25.0</quarkus.version>
+        <quarkus.version>3.25.1</quarkus.version>
     </properties>
 
     <dependencyManagement>
@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-bom</artifactId>
-                <version>4.12.0</version>
+                <version>4.12.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -82,7 +82,7 @@
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-messaging</artifactId>
                 <!-- maven doesn't use the version of the imported axon-bom. Better than duplicated exclusion? -->
-                <version>4.12.0</version>
+                <version>4.12.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.thoughtworks.xstream</groupId>
@@ -100,7 +100,7 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.27.3</version>
+                <version>3.27.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
