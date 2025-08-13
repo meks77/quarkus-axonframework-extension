@@ -21,10 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.shared.TestModelConfig;
-import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class InjectableCdiBeansTest {
@@ -128,7 +126,8 @@ public class InjectableCdiBeansTest {
         }
 
         @CommandHandler
-        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean, TestModelConfig testModelConfig) {
+        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
+                TestModelConfig testModelConfig) {
             bean.doSomething();
         }
 
