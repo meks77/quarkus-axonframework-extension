@@ -7,7 +7,7 @@ import com.microsoft.playwright.*;
 
 public class DevUiBrowser implements AutoCloseable {
 
-    public static final int FIRST_TABLE_CONTENT_ROW = 3;
+    public static final int FIRST_TABLE_CONTENT_ROW = 12;
 
     private final Playwright playwright;
     private final Browser browser;
