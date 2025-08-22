@@ -28,7 +28,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_BATCH_SIZE+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-explicit-flush]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-explicit-flush[`quarkus.axon.eventstore.jpa.explicit-flush`]##
 ifdef::add-copy-button-to-config-props[]
@@ -49,7 +49,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_EXPLICIT_FLUSH+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-cleaning-threshold]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-cleaning-threshold[`quarkus.axon.eventstore.jpa.gap-cleaning-threshold`]##
 ifdef::add-copy-button-to-config-props[]
@@ -72,7 +72,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_CLEANING_THRESHOLD+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-lowest-global-sequence]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-lowest-global-sequence[`quarkus.axon.eventstore.jpa.lowest-global-sequence`]##
 ifdef::add-copy-button-to-config-props[]
@@ -95,7 +95,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_LOWEST_GLOBAL_SEQUENCE+++`
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-timeout]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-gap-timeout[`quarkus.axon.eventstore.jpa.gap-timeout`]##
 ifdef::add-copy-button-to-config-props[]
@@ -118,7 +118,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_GAP_TIMEOUT+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-max-gap-offset]] [.property-path]##link:#quarkus-axon-jpa-eventstore_quarkus-axon-eventstore-jpa-max-gap-offset[`quarkus.axon.eventstore.jpa.max-gap-offset`]##
 ifdef::add-copy-button-to-config-props[]
@@ -141,7 +141,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JPA_MAX_GAP_OFFSET+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 |===
 

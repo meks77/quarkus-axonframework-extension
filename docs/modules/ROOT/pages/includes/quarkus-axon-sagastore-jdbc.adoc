@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_AXON_SAGASTORE_JDBC_AUTOCREATE_TABLE+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name[`quarkus.axon.sagastore.jdbc.saga-table-name`]##
 ifdef::add-copy-button-to-config-props[]

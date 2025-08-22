@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_AXON_HEALTH_ENABLED+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
 ifdef::add-copy-button-to-config-props[]
@@ -47,7 +47,7 @@ Environment variable: `+++QUARKUS_AXON_AXON_APPLICATION_NAME+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`quarkus-axon`
+|`+++quarkus-axon+++`
 
 a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`quarkus.axon.live-reload.shutdown.wait-duration.unit`]##
 ifdef::add-copy-button-to-config-props[]
@@ -68,7 +68,7 @@ Environment variable: `+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_UNIT++
 endif::add-copy-button-to-env-var[]
 --
 a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
-|`milliseconds`
+|`+++milliseconds+++`
 
 a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount[`quarkus.axon.live-reload.shutdown.wait-duration.amount`]##
 ifdef::add-copy-button-to-config-props[]
@@ -89,7 +89,7 @@ Environment variable: `+++QUARKUS_AXON_LIVE_RELOAD_SHUTDOWN_WAIT_DURATION_AMOUNT
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`500`
+|`+++500+++`
 
 a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`quarkus.axon.exception-handling.wrap-on-command-handler`]##
 ifdef::add-copy-button-to-config-props[]
@@ -110,7 +110,7 @@ Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_COMMAND_HANDLE
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler[`quarkus.axon.exception-handling.wrap-on-query-handler`]##
 ifdef::add-copy-button-to-config-props[]
@@ -131,7 +131,7 @@ Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_WRAP_ON_QUERY_HANDLER+
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval[`quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval`]##
 ifdef::add-copy-button-to-config-props[]
@@ -215,7 +215,7 @@ Environment variable: `+++QUARKUS_AXON_COMMAND_BUS_DUPLICATE_COMMAND_HANDLER_RES
 endif::add-copy-button-to-env-var[]
 --
 a|`log-and-override`, `silent-override`, `reject-duplicates`
-|`reject-duplicates`
+|`+++reject-duplicates+++`
 
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
 ifdef::add-copy-button-to-config-props[]
@@ -241,7 +241,7 @@ Environment variable: `+++QUARKUS_AXON_SNAPSHOTS_TRIGGER_TYPE+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`no-snapshots`, `load-time`, `event-count`
-|`no-snapshots`
+|`+++no-snapshots+++`
 
 a| [[quarkus-axon_quarkus-axon-snapshots-threshold]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-threshold[`quarkus.axon.snapshots.threshold`]##
 ifdef::add-copy-button-to-config-props[]
@@ -271,7 +271,7 @@ Environment variable: `+++QUARKUS_AXON_SNAPSHOTS_THRESHOLD+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 |===
 

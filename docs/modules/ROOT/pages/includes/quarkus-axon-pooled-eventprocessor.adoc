@@ -83,7 +83,7 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
-|`tail`
+|`+++tail+++`
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-max-claimed-segments[`quarkus.axon.pooledprocessor.max-claimed-segments`]##
 ifdef::add-copy-button-to-config-props[]
@@ -135,7 +135,7 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_ENABLED_COORDINATOR_CLAIM
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size[`quarkus.axon.pooledprocessor.worker-thread-pool-size`]##
 ifdef::add-copy-button-to-config-props[]

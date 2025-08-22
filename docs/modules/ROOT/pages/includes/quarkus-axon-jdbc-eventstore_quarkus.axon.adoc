@@ -28,7 +28,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_BATCH_SIZE+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-cleaning-threshold]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-cleaning-threshold[`quarkus.axon.eventstore.jdbc.gap-cleaning-threshold`]##
 ifdef::add-copy-button-to-config-props[]
@@ -51,7 +51,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_GAP_CLEANING_THRESHOLD+++
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-lowest-global-sequence]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-lowest-global-sequence[`quarkus.axon.eventstore.jdbc.lowest-global-sequence`]##
 ifdef::add-copy-button-to-config-props[]
@@ -74,7 +74,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_LOWEST_GLOBAL_SEQUENCE+++
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-timeout]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-gap-timeout[`quarkus.axon.eventstore.jdbc.gap-timeout`]##
 ifdef::add-copy-button-to-config-props[]
@@ -97,7 +97,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_GAP_TIMEOUT+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-max-gap-offset]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-max-gap-offset[`quarkus.axon.eventstore.jdbc.max-gap-offset`]##
 ifdef::add-copy-button-to-config-props[]
@@ -120,7 +120,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_MAX_GAP_OFFSET+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`-1`
+|`+++-1+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-extended-gap-check-enabled]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-extended-gap-check-enabled[`quarkus.axon.eventstore.jdbc.extended-gap-check-enabled`]##
 ifdef::add-copy-button-to-config-props[]
@@ -141,7 +141,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_EXTENDED_GAP_CHECK_ENABLE
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-autocreate-tables]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-autocreate-tables[`quarkus.axon.eventstore.jdbc.autocreate-tables`]##
 ifdef::add-copy-button-to-config-props[]
@@ -162,7 +162,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_AUTOCREATE_TABLES+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-event-table-name]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-event-table-name[`quarkus.axon.eventstore.jdbc.event-table-name`]##
 ifdef::add-copy-button-to-config-props[]
@@ -183,7 +183,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_EVENT_TABLE_NAME+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`DomainEventEntry`
+|`+++DomainEventEntry+++`
 
 a| [[quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-snapshot-table-name]] [.property-path]##link:#quarkus-axon-jdbc-eventstore_quarkus-axon-eventstore-jdbc-snapshot-table-name[`quarkus.axon.eventstore.jdbc.snapshot-table-name`]##
 ifdef::add-copy-button-to-config-props[]
@@ -204,7 +204,7 @@ Environment variable: `+++QUARKUS_AXON_EVENTSTORE_JDBC_SNAPSHOT_TABLE_NAME+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`SnapshotEventEntry`
+|`+++SnapshotEventEntry+++`
 
 |===
 
