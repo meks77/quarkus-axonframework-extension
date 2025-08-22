@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_HEALTH_ENABLED+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-dev-services-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-dev-services-enabled[`quarkus.axon.server.dev-services.enabled`]##
 ifdef::add-copy-button-to-config-props[]
@@ -47,7 +47,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_DEV_SERVICES_ENABLED+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-server_quarkus-axon-server-servers]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-servers[`quarkus.axon.server.servers`]##
 ifdef::add-copy-button-to-config-props[]
@@ -76,7 +76,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_SERVERS+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`localhost`
+|`+++localhost+++`
 
 a| [[quarkus-axon-server_quarkus-axon-server-default-grpc-port]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-default-grpc-port[`quarkus.axon.server.default-grpc-port`]##
 ifdef::add-copy-button-to-config-props[]
@@ -97,7 +97,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_DEFAULT_GRPC_PORT+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`8124`
+|`+++8124+++`
 
 a| [[quarkus-axon-server_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-context[`quarkus.axon.server.context`]##
 ifdef::add-copy-button-to-config-props[]
@@ -118,7 +118,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_CONTEXT+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`default`
+|`+++default+++`
 
 a| [[quarkus-axon-server_quarkus-axon-server-token]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token[`quarkus.axon.server.token`]##
 ifdef::add-copy-button-to-config-props[]
@@ -160,7 +160,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_TOKEN_REQUIRED+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a| [[quarkus-axon-server_quarkus-axon-server-ssl-trust-store]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-ssl-trust-store[`quarkus.axon.server.ssl-trust-store`]##
 ifdef::add-copy-button-to-config-props[]
@@ -225,7 +225,7 @@ Environment variable: `+++QUARKUS_AXON_SERVER_GRPC_MAXMESSAGESIZE_UNIT+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`bytes`, `kb`, `mb`
-|`bytes`
+|`+++bytes+++`
 
 |===
 

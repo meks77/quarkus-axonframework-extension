@@ -47,7 +47,7 @@ Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JPA_CLAIM_TIMEOUT_AMOUNT+++`
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`0l`
+|`+++0l+++`
 
 a| [[quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode]] [.property-path]##link:#quarkus-axon-tokenstore-jpa_quarkus-axon-tokenstore-jpa-loading-lock-mode[`quarkus.axon.tokenstore.jpa.loading-lock-mode`]##
 ifdef::add-copy-button-to-config-props[]

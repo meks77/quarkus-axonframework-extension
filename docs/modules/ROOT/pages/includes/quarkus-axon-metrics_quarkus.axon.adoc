@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_AXON_METRICS_ENABLED+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-metrics_quarkus-axon-metrics-with-tags]] [.property-path]##link:#quarkus-axon-metrics_quarkus-axon-metrics-with-tags[`quarkus.axon.metrics.with-tags`]##
 ifdef::add-copy-button-to-config-props[]
@@ -47,7 +47,7 @@ Environment variable: `+++QUARKUS_AXON_METRICS_WITH_TAGS+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 |===
 

@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_AUTOCREATE_TABLE_FOR_JDBC
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-claim-timeout-unit[`quarkus.axon.tokenstore.jdbc.claim-timeout.unit`]##
 ifdef::add-copy-button-to-config-props[]
@@ -68,7 +68,7 @@ Environment variable: `+++QUARKUS_AXON_TOKENSTORE_JDBC_CLAIM_TIMEOUT_AMOUNT+++`
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`0l`
+|`+++0l+++`
 
 a| [[quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name]] [.property-path]##link:#quarkus-axon-tokenstore-jdbc_quarkus-axon-tokenstore-jdbc-token-table-name[`quarkus.axon.tokenstore.jdbc.token-table-name`]##
 ifdef::add-copy-button-to-config-props[]
