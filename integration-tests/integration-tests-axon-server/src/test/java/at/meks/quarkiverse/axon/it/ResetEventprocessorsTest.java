@@ -14,11 +14,11 @@ import jakarta.inject.Inject;
 
 import org.awaitility.Awaitility;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
+import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.eventhandling.EventTrackerStatus;
-import org.axonframework.eventhandling.StreamingEventProcessor;
+import org.axonframework.eventhandling.*;
+import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
 import org.junit.jupiter.api.Test;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
@@ -46,7 +46,16 @@ public class ResetEventprocessorsTest {
         Set<Map.Entry<String, EventProcessor>> eventProcessors = configuration.eventProcessingConfiguration().eventProcessors()
                 .entrySet();
 
-        eventProcessors.forEach(entry -> assertThat(entry.getValue()).isInstanceOf(StreamingEventProcessor.class));
+        assertThat(eventProcessor("pooled"))
+                .isInstanceOf(PooledStreamingEventProcessor.class);
+        assertThat(eventProcessor("tracking"))
+                .isInstanceOf(TrackingEventProcessor.class);
+        EventProcessor streamsEventProcessor = eventProcessor("streams");
+        assertThat(streamsEventProcessor)
+                .isInstanceOf(SubscribingEventProcessor.class);
+        assertThat(((SubscribingEventProcessor) streamsEventProcessor).getMessageSource())
+                .isInstanceOf(PersistentStreamMessageSource.class);
+
         assertThat(positionsOfStreamingEventProcessors(eventProcessors))
                 .isNotEmpty()
                 .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L));
@@ -63,6 +72,10 @@ public class ResetEventprocessorsTest {
                 .untilAsserted(() -> assertThat(positionsOfStreamingEventProcessors(eventProcessors))
                         .isNotEmpty()
                         .doesNotContain(OptionalLong.empty(), OptionalLong.of(0L), OptionalLong.of(-1L)));
+    }
+
+    private EventProcessor eventProcessor(String processorName) {
+        return configuration.eventProcessingConfiguration().eventProcessors().get(processorName);
     }
 
     private static void waitForAxonServerToBeInitialized(Set<Map.Entry<String, EventProcessor>> eventProcessors) {
@@ -127,6 +140,7 @@ public class ResetEventprocessorsTest {
             Set<Map.Entry<String, EventProcessor>> eventProcessors) {
         return eventProcessors.stream()
                 .filter(entry -> !entry.getKey().equals("CardReturnSagaProcessor"))
+                .filter(entry -> entry.getValue() instanceof StreamingEventProcessor)
                 .map(entry -> (StreamingEventProcessor) entry.getValue());
     }
 }

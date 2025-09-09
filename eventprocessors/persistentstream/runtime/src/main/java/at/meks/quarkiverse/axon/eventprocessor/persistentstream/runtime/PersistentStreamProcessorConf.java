@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,12 +16,10 @@ import io.smallrye.config.*;
 public interface PersistentStreamProcessorConf {
 
     /**
-     * The properties for the processing groups.
+     * The properties for the persistent stream processors.
      */
-    @ConfigDocMapKey("processing-group")
+    @ConfigDocMapKey("processor-name")
     @WithParentName
-    @WithDefaults
-    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
@@ -62,5 +61,12 @@ public interface PersistentStreamProcessorConf {
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @Override
         Optional<Integer> initialSegments();
+
+        /**
+         * The names of the processing groups for which the processor is responsible.
+         */
+        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
+        @WithName("processing-groups")
+        Optional<List<String>> processingGroupNames();
     }
 }

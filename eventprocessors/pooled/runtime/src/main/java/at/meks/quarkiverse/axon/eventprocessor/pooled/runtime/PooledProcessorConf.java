@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,12 +17,10 @@ import io.smallrye.config.*;
 public interface PooledProcessorConf {
 
     /**
-     * The properties for the processing groups.
+     * The properties for the pooled processors.
      */
-    @ConfigDocMapKey("processing-group")
+    @ConfigDocMapKey("processor-name")
     @WithParentName
-    @WithDefaults
-    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
@@ -66,6 +65,13 @@ public interface PooledProcessorConf {
         @Override
         @WithDefault("tail")
         InitialPosition initialPosition();
+
+        /**
+         * The names of the processing groups for which the processor is responsible.
+         */
+        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
+        @WithName("processing-groups")
+        Optional<List<String>> processingGroupNames();
     }
 
 }

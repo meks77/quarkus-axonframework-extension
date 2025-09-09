@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.tracking.deployment;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
@@ -18,7 +18,16 @@ public class AllPropertiesChangedTest extends TrackingProcessorTest {
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {
         // Other changed properties can't be asserted because currently they can't be accessed.
-        trackingEventProcessors
-                .forEach((eventProcessorName, trackingEventProcessor) -> assertEquals(8, trackingEventProcessor.maxCapacity()));
+        assertThat(trackingEventProcessors.get("processor1").maxCapacity()).isEqualTo(8);
+        assertThat(trackingEventProcessors.get("at.meks.quarkiverse.axon.shared.projection").maxCapacity())
+                .isEqualTo(7);
+        assertThat(trackingEventProcessors.get("at.meks.quarkiverse.axon.shared.projection2").maxCapacity())
+                .isEqualTo(1);
+    }
+
+    @Override
+    protected String[] expectedEventProcessorNames() {
+        return new String[] { "processor1", "at.meks.quarkiverse.axon.shared.projection",
+                "at.meks.quarkiverse.axon.shared.projection2" };
     }
 }

@@ -18,8 +18,14 @@ public class AllPropertiesChangedTest extends PooledProcessorTest {
     @Override
     protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> processors) {
         // Other changed properties can't be asserted because currently they can't be accessed.
-        processors.forEach((name, eventProcessor) -> assertThat(eventProcessor.maxCapacity())
-                .describedAs("max capacity of " + eventProcessor.getName())
-                .isEqualTo(4));
+        assertThat(processors.get("processor1").maxCapacity()).isEqualTo(4);
+        assertThat(processors.get("at.meks.quarkiverse.axon.shared.projection").maxCapacity()).isEqualTo(6);
+        assertThat(processors.get("at.meks.quarkiverse.axon.shared.projection2").maxCapacity()).isEqualTo(8);
+    }
+
+    @Override
+    protected String[] expectedEventProcessorNames() {
+        return new String[] { "processor1", "at.meks.quarkiverse.axon.shared.projection",
+                "at.meks.quarkiverse.axon.shared.projection2" };
     }
 }

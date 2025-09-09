@@ -49,8 +49,7 @@ class AxonExtensionProcessor {
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
                         InMemorySagaStoreConfigurer.class, InMemoryTokenStoreConfigurer.class,
                         InterceptorConfigurer.class, LocalCommandBusBuilder.class, NoMetricsConfigurer.class,
-                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class,
-                        SubscribingEventProcessorConfigurer.class)
+                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class)
 
                 .build();
     }

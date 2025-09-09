@@ -2,13 +2,13 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 
@@ -22,11 +22,24 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
     TrackingProcessorConf trackingProcessorConf;
 
     @Override
-    public void configure(EventProcessingConfigurer configurer, Collection<Object> eventhandlers) {
-        configurer.usingTrackingEventProcessors();
+    public void configure(EventProcessingConfigurer configurer) {
+        registerConfiguredTrackingEventProcessors(configurer);
+        assignProcessingGroupsToEventProcessors(configurer);
+    }
+
+    private void registerConfiguredTrackingEventProcessors(EventProcessingConfigurer configurer) {
         trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .filter(entry -> !entry.getKey().equals("default"))
                 .map(entry -> Map.entry(entry.getKey(), createTrackingProcessorConfiguration(entry.getValue())))
                 .forEach(entry -> addProcessorConfig(configurer, entry.getKey(), entry.getValue()));
+    }
+
+    private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer) {
+        trackingProcessorConf.eventprocessorConfigs()
+                .forEach((key, value) -> value.processingGroupNames().ifPresent(
+                        processingGroupNames -> processingGroupNames
+                                .stream().map(String::trim)
+                                .forEach(groupName -> configurer.assignProcessingGroup(groupName, key))));
     }
 
     private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(
@@ -57,15 +70,11 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
         return trackingEventProcessorConfiguration;
     }
 
-    private void addProcessorConfig(EventProcessingConfigurer configurer, String groupName,
+    private void addProcessorConfig(EventProcessingConfigurer configurer, String processorName,
             TrackingEventProcessorConfiguration trackingEventProcessorConfiguration) {
-        if (groupName.equals("default")) {
-            configurer.registerTrackingEventProcessorConfiguration(
-                    conf -> trackingEventProcessorConfiguration);
-        } else {
-            configurer.registerTrackingEventProcessorConfiguration(groupName,
-                    configuration -> trackingEventProcessorConfiguration);
-        }
+        configurer.registerTrackingEventProcessor(processorName, Configuration::eventStore,
+                conf -> trackingEventProcessorConfiguration);
+
     }
 
 }

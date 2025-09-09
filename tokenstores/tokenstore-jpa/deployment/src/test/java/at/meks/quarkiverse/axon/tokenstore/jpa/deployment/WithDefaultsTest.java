@@ -7,6 +7,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class WithDefaultsTest extends JpaTokenstoreTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase());
+    static final QuarkusUnitTest config = application(javaArchiveBase().addAsResource(
+            propertiesFile("/defaults.properties"), "application.properties"));
 
 }

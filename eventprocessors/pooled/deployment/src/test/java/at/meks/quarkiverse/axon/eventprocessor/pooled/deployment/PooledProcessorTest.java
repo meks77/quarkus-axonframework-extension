@@ -15,9 +15,7 @@ public abstract class PooledProcessorTest extends JavaArchiveTest {
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
         assertThat(eventProcessors)
-                .containsKeys(
-                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
-                        "at.meks.quarkiverse.axon.shared.projection2");
+                .containsKeys(expectedEventProcessorNames());
 
         Map<String, PooledStreamingEventProcessor> pooledStreamingEventProcessors = eventProcessors.entrySet().stream()
                 .filter(e -> e.getValue() instanceof PooledStreamingEventProcessor)
@@ -26,14 +24,17 @@ public abstract class PooledProcessorTest extends JavaArchiveTest {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(pooledStreamingEventProcessors)
-                .containsOnlyKeys(
-                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
-                        "at.meks.quarkiverse.axon.shared.projection2");
+                .containsOnlyKeys(expectedEventProcessorNames());
 
         assertPooledConfigurations(pooledStreamingEventProcessors);
     }
 
     protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> list) {
+    }
+
+    protected String[] expectedEventProcessorNames() {
+        return new String[] { "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
+                "at.meks.quarkiverse.axon.shared.projection2" };
     }
 
 }

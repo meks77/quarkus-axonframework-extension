@@ -15,9 +15,7 @@ public abstract class TrackingProcessorTest extends JavaArchiveTest {
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
         assertThat(eventProcessors)
-                .containsKeys(
-                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
-                        "at.meks.quarkiverse.axon.shared.projection2");
+                .containsKeys(expectedEventProcessorNames());
 
         Map<String, TrackingEventProcessor> trackingProcessors = eventProcessors.entrySet().stream()
                 .filter(entry -> entry.getValue() instanceof TrackingEventProcessor)
@@ -26,11 +24,14 @@ public abstract class TrackingProcessorTest extends JavaArchiveTest {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(trackingProcessors)
-                .containsOnlyKeys(
-                        "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
-                        "at.meks.quarkiverse.axon.shared.projection2");
+                .containsOnlyKeys(expectedEventProcessorNames());
 
         assertTrackingConfiguration(trackingProcessors);
+    }
+
+    protected String[] expectedEventProcessorNames() {
+        return new String[] { "GiftCardInMemory", "at.meks.quarkiverse.axon.shared.projection",
+                "at.meks.quarkiverse.axon.shared.projection2" };
     }
 
     protected abstract void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors);

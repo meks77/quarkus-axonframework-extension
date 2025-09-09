@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +17,11 @@ import io.smallrye.config.*;
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
 public interface TrackingProcessorConf {
 
-    @ConfigDocMapKey("processing-group")
+    /**
+     * The properties for the tracking processors.
+     */
+    @ConfigDocMapKey("processor-name")
     @WithParentName
-    @WithDefaults
-    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
@@ -61,6 +63,12 @@ public interface TrackingProcessorConf {
         @Override
         @WithDefault("tail")
         InitialPosition initialPosition();
+
+        /**
+         * The names of the processing groups for which the processor is responsible.
+         */
+        @WithName("processing-groups")
+        Optional<List<String>> processingGroupNames();
 
         interface TokenClaimInterval {
 

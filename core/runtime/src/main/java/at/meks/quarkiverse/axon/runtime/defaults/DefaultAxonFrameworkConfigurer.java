@@ -21,6 +21,7 @@ import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 
@@ -73,6 +74,9 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     Instance<AxonTracingConfigurer> axonTracingConfigurer;
 
+    @Inject
+    AxonConfiguration axonConfiguration;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -91,7 +95,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
         configureAggregates(configurer);
-        configrueMessageHandler(configurer);
+        configureMessageHandler(configurer);
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
         interceptorConfigurer.registerInterceptors(configurer);
@@ -108,7 +112,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
     }
 
-    private void configrueMessageHandler(Configurer configurer) {
+    private void configureMessageHandler(Configurer configurer) {
         configureEventHandling(configurer);
 
         commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
@@ -116,20 +120,23 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureEventHandling(Configurer configurer) {
+        setDefaultEventProcessorType(configurer);
+
         if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
-            if (eventProcessingConfigurers.isUnsatisfied()) {
-                throw new IllegalStateException(
-                        "no eventProcessingConfigurer found. Either add a eventprocessing extension dependency or provide your own implementation of "
-                                + AxonEventProcessingConfigurer.class.getName());
-            } else if (eventProcessingConfigurers.isAmbiguous()) {
-                throw new IllegalStateException(
-                        "multiple eventProcessingConfigurers(" + AxonEventProcessingConfigurer.class.getName() + ") found.");
-            }
+            eventProcessingConfigurers.handles().forEach(
+                    handle -> handle.get().configure(configurer.eventProcessing()));
             tokenStoreConfigurer.configureTokenStore(configurer);
-            eventProcessingConfigurers.get().configure(configurer.eventProcessing(), eventhandlers);
             if (!eventhandlers.isEmpty()) {
                 eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
             }
+        }
+    }
+
+    private void setDefaultEventProcessorType(Configurer configurer) {
+        switch (axonConfiguration.eventProcessing().defaultEventProcessingType()) {
+            case SUBSCRIBING -> configurer.eventProcessing().usingSubscribingEventProcessors();
+            case TRACKING -> configurer.eventProcessing().usingTrackingEventProcessors();
+            case POOLED -> configurer.eventProcessing().usingPooledStreamingEventProcessors();
         }
     }
 

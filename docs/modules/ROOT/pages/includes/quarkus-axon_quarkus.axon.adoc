@@ -217,6 +217,27 @@ endif::add-copy-button-to-env-var[]
 a|`log-and-override`, `silent-override`, `reject-duplicates`
 |`+++reject-duplicates+++`
 
+a| [[quarkus-axon_quarkus-axon-event-processing-default-event-processing-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-event-processing-default-event-processing-type[`quarkus.axon.event-processing.default-event-processing-type`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.event-processing.default-event-processing-type+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The event processor type for processing groups, which are not assigned to a processor.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EVENT_PROCESSING_DEFAULT_EVENT_PROCESSING_TYPE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EVENT_PROCESSING_DEFAULT_EVENT_PROCESSING_TYPE+++`
+endif::add-copy-button-to-env-var[]
+--
+a|`subscribing`, `tracking`, `pooled`
+|`+++subscribing+++`
+
 a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots.trigger-type+++[]
