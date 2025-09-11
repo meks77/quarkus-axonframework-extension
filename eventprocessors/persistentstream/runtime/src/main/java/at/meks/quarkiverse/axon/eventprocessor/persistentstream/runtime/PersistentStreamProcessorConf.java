@@ -20,6 +20,7 @@ public interface PersistentStreamProcessorConf {
      */
     @ConfigDocMapKey("processor-name")
     @WithParentName
+    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup

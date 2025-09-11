@@ -22,6 +22,8 @@ public interface TrackingProcessorConf {
      */
     @ConfigDocMapKey("processor-name")
     @WithParentName
+    @WithDefaults
+    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
@@ -31,8 +33,7 @@ public interface TrackingProcessorConf {
          * segments that will be created when the
          * processor is first started.
          */
-        @WithDefault("1")
-        int threadCount();
+        Optional<Integer> threadCount();
 
         /**
          * Sets the time to wait after a failed attempt to claim any token, before making another attempt.
@@ -40,12 +41,11 @@ public interface TrackingProcessorConf {
         TokenClaimInterval tokenClaim();
 
         /**
-         * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
+         * Set the maximum number of events that may be processed in a single transaction. If not set, the default of the Axon
          * framework is used.
          */
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @Override
-        @WithDefault("-1")
         Optional<Integer> batchSize();
 
         /**
@@ -53,7 +53,6 @@ public interface TrackingProcessorConf {
          */
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @Override
-        @WithDefault("-1")
         Optional<Integer> initialSegments();
 
         /**
@@ -61,8 +60,7 @@ public interface TrackingProcessorConf {
          */
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @Override
-        @WithDefault("tail")
-        InitialPosition initialPosition();
+        Optional<InitialPosition> initialPosition();
 
         /**
          * The names of the processing groups for which the processor is responsible.
@@ -73,16 +71,15 @@ public interface TrackingProcessorConf {
         interface TokenClaimInterval {
 
             /**
-             * The time to wait in between attempts to claim a token. If -1 the axon framework's default claim interval is used.
+             * The time to wait in between attempts to claim a token. If not set, the axon framework's default claim interval is
+             * used.
              */
-            @WithDefault("-1")
-            long interval();
+            Optional<Long> interval();
 
             /**
-             * Specifies the time unit for the interval between token claim attempts.
+             * Specifies the time unit for the interval between token claim attempts. Defaults to seconds.
              */
-            @WithDefault("seconds")
-            TimeUnit timeUnit();
+            Optional<TimeUnit> timeUnit();
         }
     }
 

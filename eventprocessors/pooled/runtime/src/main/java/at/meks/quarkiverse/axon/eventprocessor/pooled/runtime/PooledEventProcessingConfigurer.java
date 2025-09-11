@@ -5,6 +5,8 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,13 +14,11 @@ import jakarta.inject.Inject;
 import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.TrackedEventMessage;
-import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.messaging.StreamableMessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.eventprocessor.pooled.runtime.PooledProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 
@@ -32,12 +32,23 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
 
     @Override
     public void configure(EventProcessingConfigurer configurer) {
+        ConfigOfOneProcessor defaultConfig = registerDefaultConfiguration(configurer);
+        registerConfiguredNamedConfigurations(configurer, defaultConfig);
+    }
 
-        for (Map.Entry<String, PooledProcessorConf.ConfigOfOneProcessor> e : pooledProcessorConf.eventprocessorConfigs()
-                .entrySet()) {
+    private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
+        ConfigOfOneProcessor defaultConfig = pooledProcessorConf.eventprocessorConfigs().get("default");
+        configurer
+                .registerPooledStreamingEventProcessorConfiguration(createProcessorConfig(defaultConfig, null, defaultConfig));
+        return defaultConfig;
+    }
+
+    private void registerConfiguredNamedConfigurations(EventProcessingConfigurer configurer,
+            ConfigOfOneProcessor defaultConfig) {
+        for (Map.Entry<String, ConfigOfOneProcessor> e : nonDefaultProcessorConfigurations()) {
             LOG.info("registering pooled event processor with name {}", e.getKey());
             configurer.registerPooledStreamingEventProcessor(e.getKey(), Configuration::eventStore,
-                    createProcessorConfig(e.getValue(), e.getKey()));
+                    createProcessorConfig(e.getValue(), e.getKey(), defaultConfig));
             Optional<List<String>> groupNames = e.getValue().processingGroupNames();
             if (groupNames.isPresent()) {
                 for (String groupName : groupNames.get()) {
@@ -48,38 +59,46 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
         }
     }
 
+    private Set<Map.Entry<String, ConfigOfOneProcessor>> nonDefaultProcessorConfigurations() {
+        return pooledProcessorConf.eventprocessorConfigs()
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getKey().equals("default"))
+                .collect(Collectors.toSet());
+    }
+
     private EventProcessingConfigurer.PooledStreamingProcessorConfiguration createProcessorConfig(
-            PooledProcessorConf.ConfigOfOneProcessor configOfOneProcessor, String name) {
+            ConfigOfOneProcessor configOfOneProcessor, String name, ConfigOfOneProcessor defaultConfig) {
         return (config, builder) -> {
-            builder.initialToken(messageSource -> initialToken(messageSource, configOfOneProcessor));
+            configOfOneProcessor.initialPosition()
+                    .or(defaultConfig::initialPosition)
+                    .ifPresent(initialPosition -> builder.initialToken(messageSource -> TokenBuilder.with(messageSource)
+                            .atPosition(initialPosition)
+                            .build()));
             builder.tokenStore(config.getComponent(TokenStore.class));
-            configOfOneProcessor.batchSize()
+            configOfOneProcessor.batchSize().or(defaultConfig::batchSize)
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
-            configOfOneProcessor.initialSegments()
+            configOfOneProcessor.initialSegments().or(defaultConfig::initialSegments)
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::initialSegmentCount);
-            configOfOneProcessor.maxClaimedSegments()
+            configOfOneProcessor.maxClaimedSegments().or(defaultConfig::maxClaimedSegments)
                     .filter(segments -> segments > 0)
                     .ifPresent(builder::maxClaimedSegments);
-            configOfOneProcessor.workerThreadPoolSize()
+            configOfOneProcessor.workerThreadPoolSize().or(defaultConfig::workerThreadPoolSize)
                     .filter(size -> size > 0)
                     .ifPresent(size -> builder
                             .workerExecutor(newScheduledThreadPool(size, new AxonThreadFactory("Worker - " + name))));
             builder.coordinatorExecutor(newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name)));
-            if (configOfOneProcessor.enabledCoordinatorClaimExtension()) {
+            if (configOfOneProcessor.enabledCoordinatorClaimExtension().or(defaultConfig::enabledCoordinatorClaimExtension)
+                    .orElse(false)) {
                 builder.enableCoordinatorClaimExtension();
             }
-            builder.name(name);
+            if (name != null) {
+                builder.name(name);
+            }
             return builder;
         };
-    }
-
-    private TrackingToken initialToken(StreamableMessageSource<TrackedEventMessage<?>> messageSource,
-            PooledProcessorConf.ConfigOfOneProcessor processorConfig) {
-        return TokenBuilder.with(messageSource)
-                .atPosition(processorConfig.initialPosition())
-                .build();
     }
 
 }

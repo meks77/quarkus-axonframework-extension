@@ -7,32 +7,42 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-batch-size]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-batch-size[`quarkus.axon.trackingprocessor."processor-name".batch-size`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-batch-size]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-batch-size[`quarkus.axon.trackingprocessor.batch-size`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.batch-size+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".batch-size`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
-
 [.description]
 --
-Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
+Set the maximum number of events that may be processed in a single transaction. If not set, the default of the Axon framework is used.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__BATCH_SIZE+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_BATCH_SIZE+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__BATCH_SIZE+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_BATCH_SIZE+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`+++-1+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-initial-segments]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-initial-segments[`quarkus.axon.trackingprocessor."processor-name".initial-segments`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-segments]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-segments[`quarkus.axon.trackingprocessor.initial-segments`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-segments+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".initial-segments`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-segments+++[]
 endif::add-copy-button-to-config-props[]
-
 
 [.description]
 --
@@ -40,20 +50,25 @@ Sets the initial number of segments for asynchronous processing. For more inform
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__INITIAL_SEGMENTS+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_SEGMENTS+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__INITIAL_SEGMENTS+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_SEGMENTS+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`+++-1+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-initial-position]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-initial-position[`quarkus.axon.trackingprocessor."processor-name".initial-position`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-position]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-initial-position[`quarkus.axon.trackingprocessor.initial-position`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".initial-position`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position+++[]
 endif::add-copy-button-to-config-props[]
-
 
 [.description]
 --
@@ -61,20 +76,25 @@ First token to read. This can be number of the token where should be started, or
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__INITIAL_POSITION+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__INITIAL_POSITION+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
-|`+++tail+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-thread-count]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-thread-count[`quarkus.axon.trackingprocessor."processor-name".thread-count`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-thread-count]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-thread-count[`quarkus.axon.trackingprocessor.thread-count`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.thread-count+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".thread-count`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".thread-count+++[]
 endif::add-copy-button-to-config-props[]
-
 
 [.description]
 --
@@ -82,62 +102,77 @@ This is both the number of threads that a processor will start for processing, a
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__THREAD_COUNT+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_THREAD_COUNT+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__THREAD_COUNT+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_THREAD_COUNT+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
-|`+++1+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-token-claim-interval]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-token-claim-interval[`quarkus.axon.trackingprocessor."processor-name".token-claim.interval`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-interval]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-interval[`quarkus.axon.trackingprocessor.token-claim.interval`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.interval+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".token-claim.interval`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".token-claim.interval+++[]
 endif::add-copy-button-to-config-props[]
 
-
 [.description]
 --
-The time to wait in between attempts to claim a token. If -1 the axon framework's default claim interval is used.
+The time to wait in between attempts to claim a token. If not set, the axon framework's default claim interval is used.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__TOKEN_CLAIM_INTERVAL+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_TOKEN_CLAIM_INTERVAL+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__TOKEN_CLAIM_INTERVAL+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_TOKEN_CLAIM_INTERVAL+++`
 endif::add-copy-button-to-env-var[]
 --
 |long
-|`+++-1+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-token-claim-time-unit]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-token-claim-time-unit[`quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-time-unit]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-token-claim-time-unit[`quarkus.axon.trackingprocessor.token-claim.time-unit`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.time-unit+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit+++[]
 endif::add-copy-button-to-config-props[]
 
-
 [.description]
 --
-Specifies the time unit for the interval between token claim attempts.
+Specifies the time unit for the interval between token claim attempts. Defaults to seconds.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__TOKEN_CLAIM_TIME_UNIT+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_TOKEN_CLAIM_TIME_UNIT+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__TOKEN_CLAIM_TIME_UNIT+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_TOKEN_CLAIM_TIME_UNIT+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
-|`+++seconds+++`
+|
 
-a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-processing-groups]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processor-name-processing-groups[`quarkus.axon.trackingprocessor."processor-name".processing-groups`]##
+a| [[quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon-tracking-eventprocessor_quarkus-axon-trackingprocessor-processing-groups[`quarkus.axon.trackingprocessor.processing-groups`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".processing-groups`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".processing-groups+++[]
 endif::add-copy-button-to-config-props[]
-
 
 [.description]
 --
@@ -145,10 +180,10 @@ The names of the processing groups for which the processor is responsible.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__PROCESSING_GROUPS+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR__PROCESSOR_NAME__PROCESSING_GROUPS+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++`
 endif::add-copy-button-to-env-var[]
 --
 |list of string

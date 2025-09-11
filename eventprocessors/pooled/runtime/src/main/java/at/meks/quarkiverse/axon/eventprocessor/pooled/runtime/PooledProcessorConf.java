@@ -21,6 +21,8 @@ public interface PooledProcessorConf {
      */
     @ConfigDocMapKey("processor-name")
     @WithParentName
+    @WithDefaults
+    @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
@@ -35,8 +37,7 @@ public interface PooledProcessorConf {
          * Enables or disables the automatic the claim management. For more information please read the axon
          * documentation(PooledStreamingEventProcessor.Builder#enableCoordinatorClaimExtension}
          */
-        @WithDefault("false")
-        boolean enabledCoordinatorClaimExtension();
+        Optional<Boolean> enabledCoordinatorClaimExtension();
 
         /**
          * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
@@ -63,8 +64,7 @@ public interface PooledProcessorConf {
          */
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @Override
-        @WithDefault("tail")
-        InitialPosition initialPosition();
+        Optional<InitialPosition> initialPosition();
 
         /**
          * The names of the processing groups for which the processor is responsible.

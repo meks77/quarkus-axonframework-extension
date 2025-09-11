@@ -18,16 +18,16 @@ public class AllPropertiesChangedTest extends TrackingProcessorTest {
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {
         // Other changed properties can't be asserted because currently they can't be accessed.
-        assertThat(trackingEventProcessors.get("processor1").maxCapacity()).isEqualTo(8);
+        assertThat(trackingEventProcessors.get("default").maxCapacity()).isEqualTo(8);
         assertThat(trackingEventProcessors.get("at.meks.quarkiverse.axon.shared.projection").maxCapacity())
                 .isEqualTo(7);
         assertThat(trackingEventProcessors.get("at.meks.quarkiverse.axon.shared.projection2").maxCapacity())
-                .isEqualTo(1);
+                .isEqualTo(8);
     }
 
     @Override
     protected String[] expectedEventProcessorNames() {
-        return new String[] { "processor1", "at.meks.quarkiverse.axon.shared.projection",
+        return new String[] { "default", "at.meks.quarkiverse.axon.shared.projection",
                 "at.meks.quarkiverse.axon.shared.projection2" };
     }
 }
