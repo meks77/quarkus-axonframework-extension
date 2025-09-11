@@ -20,28 +20,26 @@ public interface PersistentStreamProcessorConf {
      */
     @ConfigDocMapKey("processor-name")
     @WithParentName
+    @WithDefaults
     @WithUnnamedKey("default")
     Map<String, ConfigOfOneProcessor> eventprocessorConfigs();
 
     @ConfigGroup
     interface ConfigOfOneProcessor extends EventProcessorConfiguration {
         /**
-         * The context of the axon server, this stream is active for.
+         * The context of the axon server, this stream is active for. Defaults to 'default'.
          */
-        @WithDefault("default")
-        String context();
+        Optional<String> context();
 
         /**
-         * The initial number of segments
+         * The initial number of segments. Defaults to 4.
          */
-        @WithDefault("4")
-        int segments();
+        Optional<Integer> segments();
 
         /**
-         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL. Defaults to TAIL.
          */
-        @WithDefault("0")
-        String initialPosition();
+        Optional<String> initialPosition();
 
         /**
          * The filter to use for the stream. The syntax for this filter is from the axon server.

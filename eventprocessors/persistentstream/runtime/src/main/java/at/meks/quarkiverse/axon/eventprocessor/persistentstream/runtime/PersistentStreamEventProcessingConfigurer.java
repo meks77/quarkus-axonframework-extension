@@ -36,16 +36,20 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
 
     @Override
     public void configure(EventProcessingConfigurer configurer) {
-        registerConfiguredStreamingEventProcessors(configurer);
+        ConfigOfOneProcessor defaultConfig = persistentStreamProcessorConf.eventprocessorConfigs().get("default");
+        registerConfiguredStreamingEventProcessors(configurer, defaultConfig);
         assignConfiguredProcessingGroupsToStreamingEventProcessors(configurer);
     }
 
-    private void registerConfiguredStreamingEventProcessors(EventProcessingConfigurer configurer) {
+    private void registerConfiguredStreamingEventProcessors(EventProcessingConfigurer configurer,
+            ConfigOfOneProcessor defaultConfig) {
         processorNames()
+                .stream()
+                .filter(processorName -> !processorName.equals("default"))
                 .forEach(processorName -> configurer.registerSubscribingEventProcessor(processorName,
                         conf -> createPersistentStreamMessageSource(processorName,
                                 persistentStreamName(processorName), conf,
-                                persistentStreamProperties(processorName))));
+                                persistentStreamProperties(processorName, defaultConfig), defaultConfig)));
     }
 
     private void assignConfiguredProcessingGroupsToStreamingEventProcessors(EventProcessingConfigurer configurer) {
@@ -66,10 +70,12 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
 
     private PersistentStreamMessageSource createPersistentStreamMessageSource(String configuredProcessorName,
             String processorName, Configuration conf,
-            PersistentStreamProperties persistentStreamProperties) {
+            PersistentStreamProperties persistentStreamProperties,
+            ConfigOfOneProcessor defaultConfig) {
         ConfigOfOneProcessor processorConfig = getProcessorConfig(configuredProcessorName);
         return new PersistentStreamMessageSource(processorName, conf, persistentStreamProperties, executorService,
-                processorConfig.batchSize().orElse(-1), processorConfig.context());
+                processorConfig.batchSize().or(defaultConfig::batchSize).orElse(-1),
+                processorConfig.context().or(defaultConfig::context).orElse("default"));
     }
 
     private ConfigOfOneProcessor getProcessorConfig(String processorName) {
@@ -80,15 +86,15 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
         return persistentStreamProcessorConf.eventprocessorConfigs().keySet();
     }
 
-    private PersistentStreamProperties persistentStreamProperties(String groupname) {
+    private PersistentStreamProperties persistentStreamProperties(String groupname, ConfigOfOneProcessor defaultConfig) {
         ConfigOfOneProcessor processorConfig = getProcessorConfig(groupname);
         return new PersistentStreamProperties(
                 persistentStreamName(groupname),
-                processorConfig.segments(),
+                processorConfig.segments().or(defaultConfig::segments).orElse(4),
                 SequencingPolicy.PER_AGGREGATE.axonName(),
                 Collections.emptyList(),
-                processorConfig.initialPosition(),
-                processorConfig.filter().orElse(null));
+                processorConfig.initialPosition().or(defaultConfig::initialPosition).orElse("TAIL"),
+                processorConfig.filter().or(defaultConfig::filter).orElse(null));
     }
 
 }
