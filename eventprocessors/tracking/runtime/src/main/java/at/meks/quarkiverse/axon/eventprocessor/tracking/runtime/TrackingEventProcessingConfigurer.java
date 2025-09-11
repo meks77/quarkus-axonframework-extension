@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +12,8 @@ import jakarta.inject.Inject;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.eventprocessor.tracking.runtime.TrackingProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
@@ -18,6 +21,8 @@ import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfig
 
 @ApplicationScoped
 public class TrackingEventProcessingConfigurer implements AxonEventProcessingConfigurer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TrackingEventProcessingConfigurer.class);
 
     @Inject
     TrackingProcessorConf trackingProcessorConf;
@@ -31,6 +36,11 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
 
     private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfiguration = trackingProcessorConf.eventprocessorConfigs().get("default");
+        if (defaultConfiguration.processingGroupNames().isPresent()) {
+            LOG.warn(
+                    "processing groups names are not supported for default event processor! The configured groups '{}' are not considered",
+                    defaultConfiguration.processingGroupNames().get());
+        }
         TrackingEventProcessorConfiguration tepConfig = createTrackingProcessorConfiguration(
                 defaultConfiguration, defaultConfiguration);
         configurer.registerTrackingEventProcessorConfiguration(conf -> tepConfig);
@@ -47,11 +57,16 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
     }
 
     private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer) {
-        trackingProcessorConf.eventprocessorConfigs()
-                .forEach((key, value) -> value.processingGroupNames().ifPresent(
-                        processingGroupNames -> processingGroupNames
-                                .stream().map(String::trim)
-                                .forEach(groupName -> configurer.assignProcessingGroup(groupName, key))));
+        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .filter(entry -> !entry.getKey().equals("default"))
+                .forEach(entry -> {
+                    List<String> groupNames = entry.getValue().processingGroupNames()
+                            .orElseThrow(() -> new IllegalStateException(
+                                    "processing group names must be configured for the processor " + entry.getKey()));
+                    groupNames.stream()
+                            .map(String::trim)
+                            .forEach(groupName -> configurer.assignProcessingGroup(groupName, entry.getKey()));
+                });
     }
 
     private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(

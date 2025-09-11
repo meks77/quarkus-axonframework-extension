@@ -2,7 +2,6 @@ package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -37,6 +36,11 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
     @Override
     public void configure(EventProcessingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfig = persistentStreamProcessorConf.eventprocessorConfigs().get("default");
+        if (defaultConfig.processingGroupNames().isPresent()) {
+            LOG.warn(
+                    "processing groups names are not supported for default event processor! The configured groups '{}' are not considered",
+                    defaultConfig.processingGroupNames().get());
+        }
         registerConfiguredStreamingEventProcessors(configurer, defaultConfig);
         assignConfiguredProcessingGroupsToStreamingEventProcessors(configurer);
     }
@@ -53,15 +57,17 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
     }
 
     private void assignConfiguredProcessingGroupsToStreamingEventProcessors(EventProcessingConfigurer configurer) {
-        for (String processorName : processorNames()) {
-            Optional<List<String>> groupNames = getProcessorConfig(processorName).processingGroupNames();
-            if (groupNames.isPresent()) {
-                for (String groupName : groupNames.get()) {
-                    LOG.info("assigning processing group {} to event processor {}", groupName, processorName);
-                    configurer.assignProcessingGroup(groupName.trim(), processorName);
-                }
-            }
-        }
+        processorNames().stream()
+                .filter(processorName -> !processorName.equals("default"))
+                .forEach(processorName -> {
+                    List<String> groupNames = getProcessorConfig(processorName).processingGroupNames()
+                            .orElseThrow(() -> new IllegalStateException(
+                                    "processing group names must be configured for the processor " + processorName));
+                    for (String groupName : groupNames) {
+                        LOG.info("assigning processing group {} to event processor {}", groupName, processorName);
+                        configurer.assignProcessingGroup(groupName.trim(), processorName);
+                    }
+                });
     }
 
     private String persistentStreamName(String pkgName) {

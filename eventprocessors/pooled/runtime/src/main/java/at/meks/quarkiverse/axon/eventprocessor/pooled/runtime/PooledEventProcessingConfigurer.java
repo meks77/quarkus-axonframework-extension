@@ -4,7 +4,6 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,8 +37,14 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
 
     private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfig = pooledProcessorConf.eventprocessorConfigs().get("default");
+        if (defaultConfig.processingGroupNames().isPresent()) {
+            LOG.warn(
+                    "processing groups names are not supported for default event processor! The configured groups '{}' are not considered",
+                    defaultConfig.processingGroupNames().get());
+        }
         configurer
-                .registerPooledStreamingEventProcessorConfiguration(createProcessorConfig(defaultConfig, null, defaultConfig));
+                .registerPooledStreamingEventProcessorConfiguration(
+                        createProcessorConfig(defaultConfig, null, defaultConfig));
         return defaultConfig;
     }
 
@@ -49,12 +54,12 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
             LOG.info("registering pooled event processor with name {}", e.getKey());
             configurer.registerPooledStreamingEventProcessor(e.getKey(), Configuration::eventStore,
                     createProcessorConfig(e.getValue(), e.getKey(), defaultConfig));
-            Optional<List<String>> groupNames = e.getValue().processingGroupNames();
-            if (groupNames.isPresent()) {
-                for (String groupName : groupNames.get()) {
-                    LOG.info("assigning processing group {} to event processor {}", groupName, e.getKey());
-                    configurer.assignProcessingGroup(groupName.trim(), e.getKey());
-                }
+            List<String> groupNames = e.getValue().processingGroupNames()
+                    .orElseThrow(() -> new IllegalStateException(
+                            "processing group names must be configured for the processor " + e.getKey()));
+            for (String groupName : groupNames) {
+                LOG.info("assigning processing group {} to event processor {}", groupName, e.getKey());
+                configurer.assignProcessingGroup(groupName.trim(), e.getKey());
             }
         }
     }
@@ -90,7 +95,8 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
                     .ifPresent(size -> builder
                             .workerExecutor(newScheduledThreadPool(size, new AxonThreadFactory("Worker - " + name))));
             builder.coordinatorExecutor(newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name)));
-            if (configOfOneProcessor.enabledCoordinatorClaimExtension().or(defaultConfig::enabledCoordinatorClaimExtension)
+            if (configOfOneProcessor.enabledCoordinatorClaimExtension().or(
+                    defaultConfig::enabledCoordinatorClaimExtension)
                     .orElse(false)) {
                 builder.enableCoordinatorClaimExtension();
             }
