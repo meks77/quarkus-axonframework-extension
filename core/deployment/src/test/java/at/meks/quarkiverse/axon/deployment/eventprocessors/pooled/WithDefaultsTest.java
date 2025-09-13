@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.pooled.deployment;
+package at.meks.quarkiverse.axon.deployment.eventprocessors.pooled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +13,8 @@ public class WithDefaultsTest extends PooledProcessorTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/defaults.properties"), "application.properties"));
+            javaArchiveBase().addAsResource(propertiesFile("/eventprocessors/pooled/defaults.properties"),
+                    "application.properties"));
 
     @Override
     protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> processors) {

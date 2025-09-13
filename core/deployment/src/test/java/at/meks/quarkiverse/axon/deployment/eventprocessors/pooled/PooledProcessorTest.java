@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.pooled.deployment;
+package at.meks.quarkiverse.axon.deployment.eventprocessors.pooled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

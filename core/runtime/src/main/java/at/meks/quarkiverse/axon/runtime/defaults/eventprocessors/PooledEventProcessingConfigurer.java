@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
+package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
@@ -16,9 +16,9 @@ import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.meks.quarkiverse.axon.eventprocessor.pooled.runtime.PooledProcessorConf.ConfigOfOneProcessor;
+import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf;
+import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
-import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TokenBuilder;
 
 @ApplicationScoped
 public class PooledEventProcessingConfigurer implements AxonEventProcessingConfigurer {
