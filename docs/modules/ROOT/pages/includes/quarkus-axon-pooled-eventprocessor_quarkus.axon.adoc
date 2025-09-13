@@ -13,9 +13,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".batch-size`
+`quarkus.axon.pooledprocessor."processor-name".batch-size`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".batch-size+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -39,9 +39,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-segments+++[
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".initial-segments`
+`quarkus.axon.pooledprocessor."processor-name".initial-segments`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".initial-segments+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -65,9 +65,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position+++[
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".initial-position`
+`quarkus.axon.pooledprocessor."processor-name".initial-position`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".initial-position+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -83,7 +83,7 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
-|`+++tail+++`
+|
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-max-claimed-segments[`quarkus.axon.pooledprocessor.max-claimed-segments`]##
 ifdef::add-copy-button-to-config-props[]
@@ -91,9 +91,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.max-claimed-segments
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".max-claimed-segments`
+`quarkus.axon.pooledprocessor."processor-name".max-claimed-segments`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".max-claimed-segments+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".max-claimed-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -117,9 +117,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.enabled-coordinator-
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".enabled-coordinator-claim-extension`
+`quarkus.axon.pooledprocessor."processor-name".enabled-coordinator-claim-extension`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".enabled-coordinator-claim-extension+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".enabled-coordinator-claim-extension+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -135,7 +135,7 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_ENABLED_COORDINATOR_CLAIM
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`+++false+++`
+|
 
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-worker-thread-pool-size[`quarkus.axon.pooledprocessor.worker-thread-pool-size`]##
 ifdef::add-copy-button-to-config-props[]
@@ -143,9 +143,9 @@ config_property_copy_button:+++quarkus.axon.pooledprocessor.worker-thread-pool-s
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processing-group".worker-thread-pool-size`
+`quarkus.axon.pooledprocessor."processor-name".worker-thread-pool-size`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processing-group".worker-thread-pool-size+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".worker-thread-pool-size+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -161,6 +161,32 @@ Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_WORKER_THREAD_POOL_SIZE++
 endif::add-copy-button-to-env-var[]
 --
 |int
+|
+
+a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-processing-groups[`quarkus.axon.pooledprocessor.processing-groups`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".processing-groups`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The names of the processing groups for which the processor is responsible.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
 |
 
 |===

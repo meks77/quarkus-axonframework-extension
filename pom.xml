@@ -44,7 +44,6 @@
         <module>shared</module>
         <module>metrics</module>
         <module>transaction</module>
-        <module>eventprocessors</module>
         <module>eventstores</module>
         <module>sagastores</module>
         <!-- The docs module must be at the end of the list because it must be built at the end. Setting the dependencies

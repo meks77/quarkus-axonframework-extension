@@ -53,6 +53,17 @@ public interface AxonConfiguration {
     CommandBusConfiguration commandBus();
 
     /**
+     * general configuration for event processing.
+     */
+    EventProcessingConfig eventProcessing();
+
+    /**
+     * configuration for the subscribing processor.
+     */
+    @WithName("subscribingprocessor")
+    SubscribingProcessorConf subscribingProcessorConf();
+
+    /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
      * to be dependent on the hardware. The default configuration works well on a MacBook Pro with M1 Chip.
      * If you get the error that no command handler is available after a reload, increase the wait time until this
@@ -164,5 +175,21 @@ public interface AxonConfiguration {
         @WithDefault("rejectDuplicates")
         DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType();
 
+    }
+
+    interface EventProcessingConfig {
+
+        /**
+         * The event processor type for processing groups, which are not assigned to a processor.
+         * If not set, default of the Axon Framework is used.
+         */
+        Optional<EventProcessorType> defaultEventProcessingType();
+
+    }
+
+    enum EventProcessorType {
+        SUBSCRIBING,
+        TRACKING,
+        POOLED
     }
 }
