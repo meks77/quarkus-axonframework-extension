@@ -4,14 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
 
 import org.awaitility.Awaitility;
+import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfiguration;
 import org.axonframework.eventhandling.EventProcessor;
+import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
@@ -75,23 +80,38 @@ class ApplicationTest {
     private void assertProcessingGroupToProcessorAssignment() {
         EventProcessingConfiguration eventProcessingConfiguration = configuration.eventProcessingConfiguration();
         assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("GiftCardInMemory"))
-                .map(EventProcessor::getName)
-                .hasValue("pooled");
-        assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("EventProcessorGroup4"))
-                .map(EventProcessor::getName)
-                .hasValue("pooled");
+                .get()
+                .isInstanceOf(PooledStreamingEventProcessor.class)
+                .extracting(EventProcessor::getName)
+                .isEqualTo("pooled");
+        assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("EventProcessorGroup4")).get()
+                .isInstanceOf(PooledStreamingEventProcessor.class)
+                .extracting(EventProcessor::getName)
+                .isEqualTo("pooled");
         assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("at.meks.quarkiverse.axon.shared.projection"))
-                .map(EventProcessor::getName)
-                .hasValue("tracking");
-        assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("EventProcessorGroup5"))
-                .map(EventProcessor::getName)
-                .hasValue("tracking");
+                .get()
+                .isInstanceOf(TrackingEventProcessor.class)
+                .extracting(EventProcessor::getName)
+                .isEqualTo("tracking");
+        assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("EventProcessorGroup5")).get()
+                .isInstanceOf(TrackingEventProcessor.class)
+                .extracting(EventProcessor::getName)
+                .isEqualTo("tracking");
         assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("at.meks.quarkiverse.axon.shared.projection2"))
                 .map(EventProcessor::getName)
                 .hasValue("streams");
-        assertThat(eventProcessingConfiguration.eventProcessorByProcessingGroup("EventProcessorGroup6"))
-                .map(EventProcessor::getName)
-                .hasValue("streams");
+        Optional<EventProcessor> persistentStreamProcessor = eventProcessingConfiguration.eventProcessorByProcessingGroup(
+                "EventProcessorGroup6");
+        assertThat(persistentStreamProcessor).get()
+                .isInstanceOf(SubscribingEventProcessor.class);
+        assertThat(((SubscribingEventProcessor) persistentStreamProcessor.orElseThrow()).getMessageSource())
+                .isInstanceOf(PersistentStreamMessageSource.class);
+        Optional<EventProcessor> subscribingEventProcessor = eventProcessingConfiguration.eventProcessorByProcessingGroup(
+                "EventProcessorGroup7");
+        assertThat(subscribingEventProcessor).get()
+                .isInstanceOf(SubscribingEventProcessor.class);
+        assertThat(((SubscribingEventProcessor) subscribingEventProcessor.orElseThrow()).getMessageSource())
+                .isNotInstanceOf(PersistentStreamMessageSource.class);
     }
 
     private void issueNewCard(@SuppressWarnings("SameParameterValue") int initialAmount) {

@@ -71,6 +71,21 @@ quarkus.axon.persistentstreams.processor1.initial-position=head
 quarkus.axon.persistentstreams.processor2.batch-size=10
 ----
 
+== Subscribing Event Processor
+
+If you want to use a Subscribing Event Processor, you can set a name and you have to assign the processing groups, the processor is responsible for.
+
+If you don't define a name, the name `Subscribing` is used. +
+If you don't assign processing groups, no Subscribing Event Processor gets active.
+
+This is an example of a configuration of the Subscribing Event Processor.
+
+[source,properties]
+----
+quarkus.axon.subscribingprocessor.name=My-Subscribing-Processor
+quarkus.axon.subscribingprocessor.processing-groups=GiftCardInMemory
+----
+
 == Persistent Stream Configuration Reference
 include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc[leveloffset=+1,opts=optional]
 

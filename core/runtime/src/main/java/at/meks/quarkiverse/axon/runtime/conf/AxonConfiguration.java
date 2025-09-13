@@ -58,6 +58,12 @@ public interface AxonConfiguration {
     EventProcessingConfig eventProcessing();
 
     /**
+     * configuration for the subscribing processor.
+     */
+    @WithName("subscribingprocessor")
+    SubscribingProcessorConf subscribingProcessorConf();
+
+    /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
      * to be dependent on the hardware. The default configuration works well on a MacBook Pro with M1 Chip.
      * If you get the error that no command handler is available after a reload, increase the wait time until this

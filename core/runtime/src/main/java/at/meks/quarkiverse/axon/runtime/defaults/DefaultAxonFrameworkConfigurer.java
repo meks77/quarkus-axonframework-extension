@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
+import at.meks.quarkiverse.axon.runtime.conf.SubscribingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import io.quarkus.arc.DefaultBean;
 
@@ -121,7 +122,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureEventHandling(Configurer configurer) {
         setDefaultEventProcessorType(configurer);
-
+        assignProcessingGroupsToSubscribingEventProcessor(configurer.eventProcessing());
         if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
             eventProcessingConfigurers.handles().forEach(
                     handle -> handle.get().configure(configurer.eventProcessing()));
@@ -140,6 +141,18 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 case TRACKING -> eventProcessingConfigurer.usingTrackingEventProcessors();
                 case POOLED -> eventProcessingConfigurer.usingPooledStreamingEventProcessors();
             }
+        });
+    }
+
+    private void assignProcessingGroupsToSubscribingEventProcessor(EventProcessingConfigurer configurer) {
+        SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();
+        conf.processingGroupNames().ifPresent(groupNames -> {
+            String processorName = conf.name().orElse("Subscribing");
+            configurer.registerSubscribingEventProcessor(processorName);
+            groupNames.stream()
+                    .map(String::trim)
+                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
+                            processorName));
         });
     }
 
