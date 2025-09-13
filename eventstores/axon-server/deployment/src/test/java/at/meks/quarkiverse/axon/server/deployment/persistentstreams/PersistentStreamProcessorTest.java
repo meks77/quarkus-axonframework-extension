@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.deployment;
+package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

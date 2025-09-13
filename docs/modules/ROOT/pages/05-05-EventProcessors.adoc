@@ -14,14 +14,14 @@ Event Processors are necessary for event handler.
 Those processors need to know which events are already processed.
 This information is stored in a token store.
 
-CAUTION: By default, the subscribing processor with an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
+CAUTION: By default an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
 
 You can set the default event processor type by setting the property `quarkus.axon.event-processing.default-event-processing-type`.
 
 == Tracking and Pooled Streaming Processor
 
 For the tracking processor you can set properties for the default tracking processor using the properties of 'quarkus.axon.tracking processor' without a processor name. +
-The set values are also used as default for the other defined tracking processors.
+Those values are also used as default for the other defined tracking processors.
 
 In the following example a default tracking processor is defined with a batch size of 100 and the initial position tail. +
 The processor `processor1` inherits the batch size while it overrides the initial position using the value head. +
@@ -53,10 +53,12 @@ For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
 
 == Persistent Stream Event Processors
-For Persistent Streams it is not possible to set a default processor, which is used in the case, that `Subscribing Event Processors` should be used by default. The reason is, that it wouldn't be possible
+Persistent streams are available, as soon as you have added the dependency for the link:05-02-EventStores.adoc[Axon Server Event Store].
+
+For Persistent Streams it is not possible to set a default processor, which is used in the case, that `Subscribing Event Processors` should be used by default. The reason is that it wouldn't be possible
 to use simple `Subscribing Event Processors` anymore.
 
-Therefor the default `Persistent Stream Configuration` is only used to define default value for named configurations, what works equally to Tracking and Pooled Streaming Processor configuration.
+Therefor the default `Persistent Stream Configuration` is only used to define default values for named configurations, what works equally to Tracking and Pooled Streaming Processor configuration.
 
 The following example is equal to Tracking and Pooled Processing Processor configuration examples,
 but for Persistent Stream Event Processors:
@@ -68,8 +70,6 @@ quarkus.axon.persistentstreams.initial-position=tail
 quarkus.axon.persistentstreams.processor1.initial-position=head
 quarkus.axon.persistentstreams.processor2.batch-size=10
 ----
-
-
 
 == Persistent Stream Configuration Reference
 include::includes/quarkus-axon-persistent-stream-eventprocessor.adoc[leveloffset=+1,opts=optional]

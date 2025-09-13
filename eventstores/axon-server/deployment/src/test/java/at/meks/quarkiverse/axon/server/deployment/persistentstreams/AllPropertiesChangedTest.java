@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.deployment;
+package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -16,6 +16,7 @@ public class AllPropertiesChangedTest extends PersistentStreamProcessorTest {
     @RegisterExtension
     static final QuarkusUnitTest config = JavaArchiveTest.application(
             JavaArchiveTest.javaArchiveBase().addAsResource(
-                    JavaArchiveTest.propertiesFile("/propertiesChanged.properties"), "application.properties"));
+                    JavaArchiveTest.propertiesFile("/persistenstreams/propertiesChanged.properties"),
+                    "application.properties"));
 
 }

@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
+package at.meks.quarkiverse.axon.server.runtime;
 
 import java.util.List;
 import java.util.Map;

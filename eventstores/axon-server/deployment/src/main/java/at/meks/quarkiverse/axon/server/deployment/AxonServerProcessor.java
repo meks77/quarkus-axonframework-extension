@@ -8,7 +8,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import at.meks.quarkiverse.axon.server.runtime.*;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
-import io.quarkus.deployment.IsNormal;
+import io.quarkus.deployment.IsProduction;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.DevServicesResultBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -28,7 +28,8 @@ public class AxonServerProcessor {
     @BuildStep
     AdditionalBeanBuildItem tokenStoreConfigurer() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class, AxonServers.class)
+                .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class, AxonServers.class,
+                        PersistentStreamEventProcessingConfigurer.class)
                 .build();
     }
 
@@ -40,7 +41,7 @@ public class AxonServerProcessor {
                 .build();
     }
 
-    @BuildStep(onlyIfNot = IsNormal.class, onlyIf = DevServicesConfig.Enabled.class)
+    @BuildStep(onlyIfNot = IsProduction.class, onlyIf = DevServicesConfig.Enabled.class)
     public DevServicesResultBuildItem createContainer(QuarkusAxonServerBuildTimeConfiguration buildTimeConfig) {
         if (!buildTimeConfig.devServices().enabled()) {
             return null;
@@ -61,9 +62,11 @@ public class AxonServerProcessor {
 
         Map<String, String> configOverrides = Map.of(
                 "quarkus.axon.server.default-grpc-port", apiPort.toString());
-        return new DevServicesResultBuildItem.RunningDevService(FEATURE, container.getContainerId(),
-                container::close, configOverrides)
-                .toBuildItem();
+        return DevServicesResultBuildItem.discovered()
+                .name(FEATURE)
+                .containerId(container.getContainerId())
+                .config(configOverrides)
+                .build();
     }
 
     @BuildStep

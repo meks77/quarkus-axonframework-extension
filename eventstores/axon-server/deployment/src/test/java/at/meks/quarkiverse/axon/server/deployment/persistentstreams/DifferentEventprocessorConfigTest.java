@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.deployment;
+package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -21,7 +21,7 @@ public class DifferentEventprocessorConfigTest extends PersistentStreamProcessor
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/differentProcessorConfigs.properties"),
+            javaArchiveBase().addAsResource(propertiesFile("/persistenstreams/differentProcessorConfigs.properties"),
                     "application.properties"));
 
     @Inject

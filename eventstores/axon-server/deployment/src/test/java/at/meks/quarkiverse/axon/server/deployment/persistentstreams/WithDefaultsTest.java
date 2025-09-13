@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.deployment;
+package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -9,6 +9,6 @@ public class WithDefaultsTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = JavaArchiveTest.application(JavaArchiveTest.javaArchiveBase()
-            .addAsResource(propertiesFile("/withDefaults.properties"), "application.properties"));
+            .addAsResource(propertiesFile("/persistenstreams/withDefaults.properties"), "application.properties"));
 
 }

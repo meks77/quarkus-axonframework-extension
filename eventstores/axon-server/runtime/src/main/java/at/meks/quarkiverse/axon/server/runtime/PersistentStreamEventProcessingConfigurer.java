@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime;
+package at.meks.quarkiverse.axon.server.runtime;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.meks.quarkiverse.axon.eventprocessor.persistentstream.runtime.PersistentStreamProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.server.runtime.PersistentStreamProcessorConf.ConfigOfOneProcessor;
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 
 @ApplicationScoped

@@ -40,18 +40,6 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-persistent-stream-eventprocessor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-tracking-eventprocessor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-pooled-eventprocessor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
             <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
         </dependency>
         <dependency>
