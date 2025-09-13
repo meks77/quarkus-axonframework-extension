@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import at.meks.quarkiverse.axon.runtime.AxonExtension;
 import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
 import at.meks.quarkiverse.axon.runtime.defaults.*;
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TrackingEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
@@ -49,7 +50,8 @@ class AxonExtensionProcessor {
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
                         InMemorySagaStoreConfigurer.class, InMemoryTokenStoreConfigurer.class,
                         InterceptorConfigurer.class, LocalCommandBusBuilder.class, NoMetricsConfigurer.class,
-                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class)
+                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class,
+                        TrackingEventProcessingConfigurer.class)
 
                 .build();
     }

@@ -1,5 +1,10 @@
 package at.meks.quarkiverse.axon.deployment.interceptor.event;
 
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
+
+import java.time.Duration;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -9,7 +14,6 @@ import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.messaging.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
@@ -59,10 +63,17 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
 
     @Override
     protected void assertOthers() {
-        InOrder inOrder = Mockito.inOrder(LOGGER);
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs event");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs event");
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs event");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs event");
+        // To maintain the number of invocations of the interceptor is too expensive.
+        // The number depends on the applied events, the number of event processors and which events are handled by
+        // the different processors. Because not every event processor is handling every event, it's not a simple
+        // calculation like: the number of applied events * number of event processors.
+
+        int numberOfInterceptors = 2;
+        int numberOfAppliedEvents = 8;
+        int minNumberOfInvocations = numberOfInterceptors * numberOfAppliedEvents;
+        await().atMost(Duration.ofSeconds(10))
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 1 logs event"));
+        await().atMost(Duration.ofSeconds(3))
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 2 logs event"));
     }
 }

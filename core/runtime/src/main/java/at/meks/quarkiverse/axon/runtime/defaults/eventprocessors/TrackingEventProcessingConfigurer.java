@@ -1,8 +1,7 @@
-package at.meks.quarkiverse.axon.eventprocessor.tracking.runtime;
+package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -15,8 +14,8 @@ import org.axonframework.eventhandling.TrackingEventProcessorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.meks.quarkiverse.axon.eventprocessor.tracking.runtime.TrackingProcessorConf.ConfigOfOneProcessor;
-import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
+import at.meks.quarkiverse.axon.runtime.conf.TrackingProcessorConf;
+import at.meks.quarkiverse.axon.runtime.conf.TrackingProcessorConf.ConfigOfOneProcessor;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 
 @ApplicationScoped
@@ -59,14 +58,15 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
     private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer) {
         trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
                 .filter(entry -> !entry.getKey().equals("default"))
-                .forEach(entry -> {
-                    List<String> groupNames = entry.getValue().processingGroupNames()
-                            .orElseThrow(() -> new IllegalStateException(
-                                    "processing group names must be configured for the processor " + entry.getKey()));
-                    groupNames.stream()
-                            .map(String::trim)
-                            .forEach(groupName -> configurer.assignProcessingGroup(groupName, entry.getKey()));
-                });
+                .forEach(entry -> entry.getValue().processingGroupNames()
+                        .ifPresentOrElse(
+                                groupNames -> groupNames.stream()
+                                        .map(String::trim)
+                                        .forEach(groupName -> configurer.assignProcessingGroup(groupName,
+                                                entry.getKey())),
+                                () -> LOG.warn(
+                                        "processing group names not configured for the processor {}",
+                                        entry.getKey())));
     }
 
     private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(

@@ -13,8 +13,6 @@
     <modules>
         <module>persistentstream</module>
         <module>pooled</module>
-        <module>tracking</module>
-        <module>shared</module>
     </modules>
 
 </project>

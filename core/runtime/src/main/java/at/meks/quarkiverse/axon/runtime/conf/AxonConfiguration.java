@@ -175,9 +175,9 @@ public interface AxonConfiguration {
 
         /**
          * The event processor type for processing groups, which are not assigned to a processor.
+         * If not set, default of the Axon Framework is used.
          */
-        @WithDefault("SUBSCRIBING")
-        EventProcessorType defaultEventProcessingType();
+        Optional<EventProcessorType> defaultEventProcessingType();
 
     }
 

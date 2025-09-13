@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessors.shared;
+package at.meks.quarkiverse.axon.runtime.conf;
 
 import java.util.Optional;
 

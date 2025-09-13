@@ -1,8 +1,10 @@
-package at.meks.quarkiverse.axon.eventprocessors.shared;
+package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import org.axonframework.eventhandling.TrackedEventMessage;
 import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.messaging.StreamableMessageSource;
+
+import at.meks.quarkiverse.axon.runtime.conf.InitialPosition;
 
 public class TokenBuilder {
 

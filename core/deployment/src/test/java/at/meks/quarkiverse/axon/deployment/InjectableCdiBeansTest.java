@@ -1,5 +1,10 @@
 package at.meks.quarkiverse.axon.deployment;
 
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.verify;
+
+import java.time.Duration;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -183,31 +188,33 @@ public class InjectableCdiBeansTest {
     @Test
     void cdiBeanIsInjectedInAggregateCommandHandler() {
         commandGateway.sendAndWait(new CommandHandledByAggregate("1"));
-        Mockito.verify(logger).debug("do something");
+        verify(logger).debug("do something");
     }
 
     @Test
     void cdiBeanIsInjectedInDomainServiceCommandHandler() {
         commandGateway.sendAndWait(new CommandHandledByDomainService("1"));
-        Mockito.verify(logger).debug("do something");
+        verify(logger).debug("do something");
     }
 
     @Test
     void cdiBeanIsInjectedInEventHandler() {
         eventGateway.publish(new MyEvent("1"));
-        Mockito.verify(logger).debug("do something");
+        await().atMost(Duration.ofSeconds(3))
+                .untilAsserted(() -> verify(logger).debug("do something"));
     }
 
     @Test
     void cdiBeanIsInjectedInQueryHandler() {
         queryGateway.query(new MyQuery("1"), Boolean.class).join();
-        Mockito.verify(logger).debug("do something");
+        verify(logger).debug("do something");
     }
 
     @Test
     void cdiBeanIsInjectedInSagaEventHandler() {
         eventGateway.publish(new MyEvent("1"));
-        Mockito.verify(sagaLogger).debug("do something");
+        await().atMost(Duration.ofSeconds(3))
+                .untilAsserted(() -> verify(sagaLogger).debug("do something"));
     }
 
 }

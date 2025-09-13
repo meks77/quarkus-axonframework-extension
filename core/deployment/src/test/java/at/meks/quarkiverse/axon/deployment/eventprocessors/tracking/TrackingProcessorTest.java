@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.tracking.deployment;
+package at.meks.quarkiverse.axon.deployment.eventprocessors.tracking;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -133,11 +133,14 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void setDefaultEventProcessorType(Configurer configurer) {
-        switch (axonConfiguration.eventProcessing().defaultEventProcessingType()) {
-            case SUBSCRIBING -> configurer.eventProcessing().usingSubscribingEventProcessors();
-            case TRACKING -> configurer.eventProcessing().usingTrackingEventProcessors();
-            case POOLED -> configurer.eventProcessing().usingPooledStreamingEventProcessors();
-        }
+        axonConfiguration.eventProcessing().defaultEventProcessingType().ifPresent(type -> {
+            var eventProcessingConfigurer = configurer.eventProcessing();
+            switch (type) {
+                case SUBSCRIBING -> eventProcessingConfigurer.usingSubscribingEventProcessors();
+                case TRACKING -> eventProcessingConfigurer.usingTrackingEventProcessors();
+                case POOLED -> eventProcessingConfigurer.usingPooledStreamingEventProcessors();
+            }
+        });
     }
 
     private void registerEventHandler(Object handler, Configurer configurer) {
@@ -157,7 +160,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void registerEventUpcasters(Configurer configurer) {
         if (eventUpcasterChain.isResolvable()) {
-            LOG.info("registering eventUpcasterChain " + eventUpcasterChain.get().getClass().getName());
+            LOG.info("registering eventUpcasterChain {}", eventUpcasterChain.get().getClass().getName());
             configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
         } else if (eventUpcasterChain.isAmbiguous()) {
             throw new IllegalStateException(

@@ -2,7 +2,6 @@ package at.meks.quarkiverse.axon.eventprocessor.pooled.runtime;
 
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.eventprocessor.pooled.runtime.PooledProcessorConf.ConfigOfOneProcessor;
-import at.meks.quarkiverse.axon.eventprocessors.shared.TokenBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TokenBuilder;
 
 @ApplicationScoped
 public class PooledEventProcessingConfigurer implements AxonEventProcessingConfigurer {
@@ -50,17 +49,19 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
 
     private void registerConfiguredNamedConfigurations(EventProcessingConfigurer configurer,
             ConfigOfOneProcessor defaultConfig) {
-        for (Map.Entry<String, ConfigOfOneProcessor> e : nonDefaultProcessorConfigurations()) {
-            LOG.info("registering pooled event processor with name {}", e.getKey());
-            configurer.registerPooledStreamingEventProcessor(e.getKey(), Configuration::eventStore,
-                    createProcessorConfig(e.getValue(), e.getKey(), defaultConfig));
-            List<String> groupNames = e.getValue().processingGroupNames()
-                    .orElseThrow(() -> new IllegalStateException(
-                            "processing group names must be configured for the processor " + e.getKey()));
-            for (String groupName : groupNames) {
-                LOG.info("assigning processing group {} to event processor {}", groupName, e.getKey());
-                configurer.assignProcessingGroup(groupName.trim(), e.getKey());
-            }
+        for (Map.Entry<String, ConfigOfOneProcessor> entry : nonDefaultProcessorConfigurations()) {
+            LOG.info("registering pooled event processor with name {}", entry.getKey());
+            configurer.registerPooledStreamingEventProcessor(entry.getKey(), Configuration::eventStore,
+                    createProcessorConfig(entry.getValue(), entry.getKey(), defaultConfig));
+            entry.getValue().processingGroupNames()
+                    .ifPresentOrElse(
+                            groupNames -> groupNames.stream()
+                                    .map(String::trim)
+                                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
+                                            entry.getKey())),
+                            () -> LOG.warn(
+                                    "processing group names not configured for the processor {}",
+                                    entry.getKey()));
         }
     }
 

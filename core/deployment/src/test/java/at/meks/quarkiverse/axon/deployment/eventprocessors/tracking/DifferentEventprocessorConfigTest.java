@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.tracking.deployment;
+package at.meks.quarkiverse.axon.deployment.eventprocessors.tracking;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +13,9 @@ public class DifferentEventprocessorConfigTest extends TrackingProcessorTest {
 
     @RegisterExtension
     static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/differentProcessorConfig.properties"), "application.properties"));
+            javaArchiveBase().addAsResource(
+                    propertiesFile("/eventprocessors/tracking/differentProcessorConfig.properties"),
+                    "application.properties"));
 
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> processors) {

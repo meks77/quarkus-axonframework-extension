@@ -1,4 +1,4 @@
-package at.meks.quarkiverse.axon.eventprocessor.tracking.deployment;
+package at.meks.quarkiverse.axon.deployment.eventprocessors.tracking;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,11 +9,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
 
-public class SingleThreadedTest extends TrackingProcessorTest {
+public class WithDefaultsTest extends TrackingProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/singleThreaded.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addAsResource(propertiesFile("/eventprocessors/tracking/defaults.properties"), "application.properties"));
 
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {
@@ -22,5 +22,4 @@ public class SingleThreadedTest extends TrackingProcessorTest {
             assertEquals(1, trackingEventProcessor.maxCapacity());
         });
     }
-
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import at.meks.quarkiverse.axon.eventprocessors.shared.EventProcessorConfiguration;
+import at.meks.quarkiverse.axon.runtime.conf.EventProcessorConfiguration;
 import io.quarkus.runtime.annotations.ConfigDocMapKey;
 import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigPhase;
