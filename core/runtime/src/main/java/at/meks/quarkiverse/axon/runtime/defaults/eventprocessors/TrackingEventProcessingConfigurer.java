@@ -16,10 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.TrackingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.conf.TrackingProcessorConf.ConfigOfOneProcessor;
-import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 
 @ApplicationScoped
-public class TrackingEventProcessingConfigurer implements AxonEventProcessingConfigurer {
+public class TrackingEventProcessingConfigurer extends AbstractEventProcessingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrackingEventProcessingConfigurer.class);
 
@@ -60,10 +59,7 @@ public class TrackingEventProcessingConfigurer implements AxonEventProcessingCon
                 .filter(entry -> !entry.getKey().equals("default"))
                 .forEach(entry -> entry.getValue().processingGroupNames()
                         .ifPresentOrElse(
-                                groupNames -> groupNames.stream()
-                                        .map(String::trim)
-                                        .forEach(groupName -> configurer.assignProcessingGroup(groupName,
-                                                entry.getKey())),
+                                groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, entry.getKey()),
                                 () -> LOG.warn(
                                         "processing group names not configured for the processor {}",
                                         entry.getKey())));

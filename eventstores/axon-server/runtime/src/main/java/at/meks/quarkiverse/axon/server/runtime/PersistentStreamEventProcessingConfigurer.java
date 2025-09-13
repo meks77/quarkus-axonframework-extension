@@ -15,12 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
-import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.AbstractEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.server.runtime.PersistentStreamProcessorConf.ConfigOfOneProcessor;
 import io.axoniq.axonserver.connector.event.PersistentStreamProperties;
 
 @ApplicationScoped
-public class PersistentStreamEventProcessingConfigurer implements AxonEventProcessingConfigurer {
+public class PersistentStreamEventProcessingConfigurer extends AbstractEventProcessingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersistentStreamEventProcessingConfigurer.class);
 
@@ -63,10 +63,7 @@ public class PersistentStreamEventProcessingConfigurer implements AxonEventProce
                     List<String> groupNames = getProcessorConfig(processorName).processingGroupNames()
                             .orElseThrow(() -> new IllegalStateException(
                                     "processing group names must be configured for the processor " + processorName));
-                    for (String groupName : groupNames) {
-                        LOG.info("assigning processing group {} to event processor {}", groupName, processorName);
-                        configurer.assignProcessingGroup(groupName.trim(), processorName);
-                    }
+                    assignProcessingGroupsToProcessor(configurer, groupNames, processorName);
                 });
     }
 
