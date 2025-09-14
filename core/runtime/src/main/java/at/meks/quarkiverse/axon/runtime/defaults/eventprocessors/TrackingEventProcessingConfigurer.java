@@ -4,6 +4,7 @@ import static at.meks.validation.args.ArgValidator.validate;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,8 +29,9 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
     @Override
     public void configure(EventProcessingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfiguration = registerDefaultConfiguration(configurer);
-        registerConfiguredTrackingEventProcessors(configurer, defaultConfiguration);
-        assignProcessingGroupsToEventProcessors(configurer);
+        RegisteredProcessorNames registeredProcessorNames = registerConfiguredTrackingEventProcessors(configurer,
+                defaultConfiguration);
+        assignProcessingGroupsToEventProcessors(configurer, registeredProcessorNames);
     }
 
     private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
@@ -45,21 +47,33 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
         return defaultConfiguration;
     }
 
-    private void registerConfiguredTrackingEventProcessors(EventProcessingConfigurer configurer,
+    private RegisteredProcessorNames registerConfiguredTrackingEventProcessors(EventProcessingConfigurer configurer,
             ConfigOfOneProcessor defaultConfiguration) {
-        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+        Map<String, ConfigOfOneProcessor> processorConfigs = trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
                 .filter(entry -> !entry.getKey().equals("default"))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<String, String> processorNameMap = processorConfigs.entrySet().stream()
                 .map(entry -> Map.entry(entry.getKey(),
+                        createProcessorName(entry.getKey(), entry.getValue().useRandomUuidSuffix().or(
+                                defaultConfiguration::useRandomUuidSuffix).orElse(false))))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        processorConfigs.entrySet().stream()
+                .map(entry -> Map.entry(processorNameMap.get(entry.getKey()),
                         createTrackingProcessorConfiguration(entry.getValue(), defaultConfiguration)))
-                .forEach(entry -> addProcessorConfig(configurer, entry.getKey(), entry.getValue()));
+                .forEach(entry -> addProcessorConfig(configurer,
+                        entry.getKey(),
+                        entry.getValue()));
+        return new RegisteredProcessorNames(processorNameMap);
     }
 
-    private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer) {
+    private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer,
+            RegisteredProcessorNames registeredProcessorNames) {
         trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
                 .filter(entry -> !entry.getKey().equals("default"))
                 .forEach(entry -> entry.getValue().processingGroupNames()
                         .ifPresentOrElse(
-                                groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, entry.getKey()),
+                                groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames,
+                                        registeredProcessorNames.getRegisteredNameFor(entry.getKey())),
                                 () -> LOG.warn(
                                         "processing group names not configured for the processor {}",
                                         entry.getKey())));
@@ -100,4 +114,15 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
 
     }
 
+    private static class RegisteredProcessorNames {
+        private final Map<String, String> processorNameMap;
+
+        RegisteredProcessorNames(Map<String, String> processorNameMap) {
+            this.processorNameMap = processorNameMap;
+        }
+
+        String getRegisteredNameFor(String configuredName) {
+            return processorNameMap.get(configuredName);
+        }
+    }
 }

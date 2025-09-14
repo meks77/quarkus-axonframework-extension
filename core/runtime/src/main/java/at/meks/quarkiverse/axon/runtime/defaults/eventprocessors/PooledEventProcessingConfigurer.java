@@ -98,7 +98,9 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 builder.enableCoordinatorClaimExtension();
             }
             if (name != null) {
-                builder.name(name);
+                builder.name(createProcessorName(name, configOfOneProcessor.useRandomUuidSuffix()
+                        .or(defaultConfig::useRandomUuidSuffix)
+                        .orElse(false)));
             }
             return builder;
         };

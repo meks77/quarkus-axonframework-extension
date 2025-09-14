@@ -22,4 +22,11 @@ public abstract class AbstractEventProcessingConfigurer implements AxonEventProc
                 });
     }
 
+    protected static String createProcessorName(String configuredName, boolean useUuidSuffix) {
+        if (useUuidSuffix) {
+            return configuredName + "-" + java.util.UUID.randomUUID();
+        }
+        return configuredName;
+    }
+
 }
