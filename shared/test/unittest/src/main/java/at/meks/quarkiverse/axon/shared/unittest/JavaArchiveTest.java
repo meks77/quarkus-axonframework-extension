@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.time.Duration;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -124,9 +123,6 @@ public class JavaArchiveTest {
             delayedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
             delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
             assertFalse(quarkusPaymentservice.isPaid(cardId2));
-            Optional<EventProcessor> eventProcessorOptional = configuration.eventProcessingConfiguration().eventProcessor(
-                    "at.meks.quarkiverse.axon.shared.projection");
-            assertThat(eventProcessorOptional).isPresent();
             assertConfiguration(configuration);
             assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
             assertOthers();

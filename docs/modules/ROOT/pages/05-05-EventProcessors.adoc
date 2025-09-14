@@ -45,6 +45,17 @@ quarkus.axon.pooledprocessor.processor1.initial-position=head
 quarkus.axon.pooledprocessor.processor2.batch-size=10
 ----
 
+For this both processor types, you can define that the processor should be registered with a random name. This is useful, if you want to hold a In-Memory projection. Using a random processor name has the impact, that on startup all events are processed from the initial position.
+
+To use a random name, you have to set the property `use-random-uuid-suffix` of the processor, or the default processor, to true.
+
+In the following example for the processor1 a random name is used.
+
+[source,properties]
+----
+quarkus.axon.pooledprocessor.processor1.use-random-uuid-suffix=true
+----
+
 With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
 
 For more details on how to add a persistent token store, read link:05-06-TokenStores.adoc[Token Stores].
@@ -53,7 +64,7 @@ For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
 
 == Persistent Stream Event Processors
-Persistent streams are available, as soon as you have added the dependency for the link:05-02-EventStores.adoc[Axon Server Event Store].
+Persistent streams are available as soon as you have added the dependency for the link:05-02-EventStores.adoc[Axon Server Event Store].
 
 For Persistent Streams it is not possible to set a default processor, which is used in the case, that `Subscribing Event Processors` should be used by default. The reason is that it wouldn't be possible
 to use simple `Subscribing Event Processors` anymore.
@@ -69,6 +80,17 @@ quarkus.axon.persistentstreams.batch-size=100
 quarkus.axon.persistentstreams.initial-position=tail
 quarkus.axon.persistentstreams.processor1.initial-position=head
 quarkus.axon.persistentstreams.processor2.batch-size=10
+----
+
+Like for Pooling and Tracking Event Processors, you can define that the processor should be registered with a random name. This is useful, if you want to hold a In-Memory projection. Using a random processor name has the impact, that on startup all events are processed from the initial position.
+
+To use a random name, you have to set the property `use-random-uuid-suffix` of the processor, or the default processor, to true.
+
+In the following example for the processor1 a random name is used.
+
+[source,properties]
+----
+quarkus.axon.persistentstreams.processor1.use-random-uuid-suffix=true
 ----
 
 == Subscribing Event Processor

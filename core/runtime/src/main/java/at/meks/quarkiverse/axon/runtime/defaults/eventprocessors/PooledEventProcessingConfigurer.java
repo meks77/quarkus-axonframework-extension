@@ -18,10 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf;
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf.ConfigOfOneProcessor;
-import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
 
 @ApplicationScoped
-public class PooledEventProcessingConfigurer implements AxonEventProcessingConfigurer {
+public class PooledEventProcessingConfigurer extends AbstractEventProcessingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(PooledEventProcessingConfigurer.class);
 
@@ -55,10 +54,7 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
                     createProcessorConfig(entry.getValue(), entry.getKey(), defaultConfig));
             entry.getValue().processingGroupNames()
                     .ifPresentOrElse(
-                            groupNames -> groupNames.stream()
-                                    .map(String::trim)
-                                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
-                                            entry.getKey())),
+                            groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, entry.getKey()),
                             () -> LOG.warn(
                                     "processing group names not configured for the processor {}",
                                     entry.getKey()));
@@ -102,7 +98,9 @@ public class PooledEventProcessingConfigurer implements AxonEventProcessingConfi
                 builder.enableCoordinatorClaimExtension();
             }
             if (name != null) {
-                builder.name(name);
+                builder.name(createProcessorName(name, configOfOneProcessor.useRandomUuidSuffix()
+                        .or(defaultConfig::useRandomUuidSuffix)
+                        .orElse(false)));
             }
             return builder;
         };

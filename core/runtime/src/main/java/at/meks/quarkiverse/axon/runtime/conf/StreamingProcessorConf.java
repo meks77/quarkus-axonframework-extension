@@ -9,4 +9,9 @@ public interface StreamingProcessorConf extends EventProcessorConfiguration {
      */
     Optional<InitialPosition> initialPosition();
 
+    /**
+     * if set to true, the name of the processor will be suffixed with a random UUID.
+     */
+    Optional<Boolean> useRandomUuidSuffix();
+
 }

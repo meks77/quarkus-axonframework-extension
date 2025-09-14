@@ -67,5 +67,10 @@ public interface PersistentStreamProcessorConf {
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @WithName("processing-groups")
         Optional<List<String>> processingGroupNames();
+
+        /**
+         * if set to true, the name of the processor will be suffixed with a random UUID.
+         */
+        Optional<Boolean> useRandomUuidSuffix();
     }
 }

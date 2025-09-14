@@ -414,6 +414,32 @@ endif::add-copy-button-to-env-var[]
 a|`head`, `tail`
 |
 
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix[`quarkus.axon.pooledprocessor.use-random-uuid-suffix`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".use-random-uuid-suffix`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+if set to true, the name of the processor will be suffixed with a random UUID.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_USE_RANDOM_UUID_SUFFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_USE_RANDOM_UUID_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 a| [[quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments[`quarkus.axon.pooledprocessor.max-claimed-segments`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.max-claimed-segments+++[]
@@ -594,6 +620,32 @@ Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix[`quarkus.axon.trackingprocessor.use-random-uuid-suffix`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".use-random-uuid-suffix`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+if set to true, the name of the processor will be suffixed with a random UUID.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_USE_RANDOM_UUID_SUFFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_USE_RANDOM_UUID_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
 |
 
 a| [[quarkus-axon_quarkus-axon-trackingprocessor-thread-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-thread-count[`quarkus.axon.trackingprocessor.thread-count`]##

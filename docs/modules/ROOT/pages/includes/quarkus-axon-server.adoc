@@ -409,5 +409,31 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix[`quarkus.axon.persistentstreams.use-random-uuid-suffix`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams.use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+if set to true, the name of the processor will be suffixed with a random UUID.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_USE_RANDOM_UUID_SUFFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_USE_RANDOM_UUID_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 |===
 
