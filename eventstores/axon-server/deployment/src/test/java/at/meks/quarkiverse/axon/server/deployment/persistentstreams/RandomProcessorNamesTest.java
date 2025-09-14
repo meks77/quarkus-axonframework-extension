@@ -28,7 +28,8 @@ public class RandomProcessorNamesTest extends JavaArchiveTest {
     private void assertRandomNameOfGiftCardInMemory(Map<String, EventProcessor> eventProcessors) {
         assertThat(getEventProcessorNameOfGiftCardInMemory(eventProcessors))
                 .hasValueSatisfying(
-                        name -> assertThat(name).startsWith("GiftCardInMemory" + "-").hasSize("GiftCardInMemory-".length() + 36));
+                        name -> assertThat(name).startsWith("GiftCardInMemory" + "-")
+                                .hasSize("GiftCardInMemory-".length() + 36));
     }
 
     private Optional<String> getEventProcessorNameOfGiftCardInMemory(Map<String, EventProcessor> eventProcessors) {
