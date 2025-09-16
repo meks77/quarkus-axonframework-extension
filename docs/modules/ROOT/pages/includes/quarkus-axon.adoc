@@ -440,6 +440,32 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store[`quarkus.axon.pooledprocessor.use-in-memory-token-store`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.use-in-memory-token-store+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".use-in-memory-token-store`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".use-in-memory-token-store+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+Enables or disables the in memory token store. If not set the configured default Tokenstore is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_USE_IN_MEMORY_TOKEN_STORE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_USE_IN_MEMORY_TOKEN_STORE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 a| [[quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments[`quarkus.axon.pooledprocessor.max-claimed-segments`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.max-claimed-segments+++[]
@@ -643,6 +669,32 @@ Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_USE_RANDOM_UUID_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store[`quarkus.axon.trackingprocessor.use-in-memory-token-store`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.use-in-memory-token-store+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".use-in-memory-token-store`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".use-in-memory-token-store+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+Enables or disables the in memory token store. If not set the configured default Tokenstore is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_USE_IN_MEMORY_TOKEN_STORE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_USE_IN_MEMORY_TOKEN_STORE+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean

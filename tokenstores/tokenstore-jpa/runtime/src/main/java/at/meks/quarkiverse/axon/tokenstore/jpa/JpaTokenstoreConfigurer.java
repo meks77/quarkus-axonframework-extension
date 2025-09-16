@@ -23,7 +23,7 @@ public class JpaTokenstoreConfigurer implements TokenStoreConfigurer {
 
     @Override
     public void configureTokenStore(Configurer configurer) {
-        configurer.registerComponent(TokenStore.class, this::createTokenStore);
+        configurer.eventProcessing().registerTokenStore(this::createTokenStore);
     }
 
     private TokenStore createTokenStore(Configuration configuration) {

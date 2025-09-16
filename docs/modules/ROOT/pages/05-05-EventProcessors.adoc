@@ -20,6 +20,7 @@ You can set the default event processor type by setting the property `quarkus.ax
 
 == Tracking and Pooled Streaming Processor
 
+=== Default values
 For the tracking processor you can set properties for the default tracking processor using the properties of 'quarkus.axon.tracking processor' without a processor name. +
 Those values are also used as default for the other defined tracking processors.
 
@@ -45,6 +46,8 @@ quarkus.axon.pooledprocessor.processor1.initial-position=head
 quarkus.axon.pooledprocessor.processor2.batch-size=10
 ----
 
+=== Random Processor Name
+
 For this both processor types, you can define that the processor should be registered with a random name. This is useful, if you want to hold a In-Memory projection. Using a random processor name has the impact, that on startup all events are processed from the initial position.
 
 To use a random name, you have to set the property `use-random-uuid-suffix` of the processor, or the default processor, to true.
@@ -56,9 +59,30 @@ In the following example for the processor1 a random name is used.
 quarkus.axon.pooledprocessor.processor1.use-random-uuid-suffix=true
 ----
 
+=== Tokenstore
+
 With the exception of the persistent stream, the other processors need a token store where the information is stored, which events were already processed.
 
-For more details on how to add a persistent token store, read link:05-06-TokenStores.adoc[Token Stores].
+By default the configured TokenStore is used(see link:05-06-TokenStores.adoc[Token Stores]). You have the possibility to override the default and use the In-Memory-Token-Store.
+
+A Use case would be if you use it together with a random name to build an In-Memory-Projection.
+
+For this case you have to set the property `use-in-memory-token-store` at the selected processor.
+
+The following example sets the use of the In-Memory-Tokenstore as default for Tracking-Event-Processors:
+
+[source,properties]
+----
+quarkus.axon.trackingprocessor.use-in-memory-token-store=true
+----
+
+In the next example, only the tracking processor with the name "MyTrackingProcessor" uses an In-Memory-Tokenstore:
+
+
+[source,properties]
+----
+quarkus.axon.trackingprocessor.MyTrackingProcessor.use-in-memory-token-store=true
+----
 
 For details about the different event processors and the token store,
 please read the documentation of the Axon framework.

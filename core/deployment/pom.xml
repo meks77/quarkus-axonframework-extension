@@ -38,6 +38,7 @@
             <artifactId>quarkus-axon</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5-internal</artifactId>
@@ -84,6 +85,7 @@
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
             <version>1.55.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

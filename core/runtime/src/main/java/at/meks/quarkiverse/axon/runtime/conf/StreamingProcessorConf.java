@@ -14,4 +14,8 @@ public interface StreamingProcessorConf extends EventProcessorConfiguration {
      */
     Optional<Boolean> useRandomUuidSuffix();
 
+    /**
+     * Enables or disables the in memory token store. If not set the configured default Tokenstore is used.
+     */
+    Optional<Boolean> useInMemoryTokenStore();
 }
