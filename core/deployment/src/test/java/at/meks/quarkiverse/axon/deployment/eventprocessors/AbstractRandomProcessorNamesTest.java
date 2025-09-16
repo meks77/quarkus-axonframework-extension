@@ -15,8 +15,9 @@ public abstract class AbstractRandomProcessorNamesTest extends JavaArchiveTest {
 
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
-        assertThat(eventProcessors.entrySet().stream().filter(e -> e.getKey().startsWith("GiftCardInMemory-")).map(
-                Map.Entry::getValue).findFirst())
+        assertThat(eventProcessors.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("GiftCardInMemory-"))
+                .map(Map.Entry::getValue).findFirst())
                 .hasValueSatisfying(processor -> assertThat(processor).isInstanceOf(expectedEventProcessorType()));
         assertRandomNameOfGiftCardInMemoryProcessor(eventProcessors);
         assertThat(eventProcessors).containsKeys("Second", "Third");
