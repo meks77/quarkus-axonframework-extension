@@ -122,15 +122,17 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureEventHandling(Configurer configurer) {
         setDefaultEventProcessorType(configurer);
-        assignProcessingGroupsToSubscribingEventProcessor(configurer.eventProcessing());
+        EventProcessingConfigurer processingConfigurer = configurer.eventProcessing();
+        assignProcessingGroupsToSubscribingEventProcessor(processingConfigurer);
         if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
-            eventProcessingConfigurers.handles().forEach(
-                    handle -> handle.get().configure(configurer.eventProcessing()));
             tokenStoreConfigurer.configureTokenStore(configurer);
+            eventProcessingConfigurers.handles().forEach(
+                    handle -> handle.get().configure(processingConfigurer));
             if (!eventhandlers.isEmpty()) {
                 eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
             }
         }
+
     }
 
     private void setDefaultEventProcessorType(Configurer configurer) {

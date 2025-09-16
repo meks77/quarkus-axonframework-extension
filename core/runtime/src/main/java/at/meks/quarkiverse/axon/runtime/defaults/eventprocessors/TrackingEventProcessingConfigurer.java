@@ -32,6 +32,7 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
         RegisteredProcessorNames registeredProcessorNames = registerConfiguredTrackingEventProcessors(configurer,
                 defaultConfiguration);
         assignProcessingGroupsToEventProcessors(configurer, registeredProcessorNames);
+        assignInMemoryTokenStoreIfNecessary(configurer, registeredProcessorNames, defaultConfiguration);
     }
 
     private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
@@ -66,19 +67,6 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
         return new RegisteredProcessorNames(processorNameMap);
     }
 
-    private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer,
-            RegisteredProcessorNames registeredProcessorNames) {
-        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
-                .filter(entry -> !entry.getKey().equals("default"))
-                .forEach(entry -> entry.getValue().processingGroupNames()
-                        .ifPresentOrElse(
-                                groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames,
-                                        registeredProcessorNames.getRegisteredNameFor(entry.getKey())),
-                                () -> LOG.warn(
-                                        "processing group names not configured for the processor {}",
-                                        entry.getKey())));
-    }
-
     private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(
             ConfigOfOneProcessor configOfOneProcessor, ConfigOfOneProcessor defaultConfiguration) {
         int threadCount = configOfOneProcessor.threadCount().or(defaultConfiguration::threadCount).orElse(1);
@@ -111,6 +99,35 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
             TrackingEventProcessorConfiguration trackingEventProcessorConfiguration) {
         configurer.registerTrackingEventProcessor(processorName, Configuration::eventStore,
                 conf -> trackingEventProcessorConfiguration);
+
+    }
+
+    private void assignProcessingGroupsToEventProcessors(EventProcessingConfigurer configurer,
+            RegisteredProcessorNames registeredProcessorNames) {
+        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .filter(entry -> !entry.getKey().equals("default"))
+                .forEach(entry -> entry.getValue().processingGroupNames()
+                        .ifPresentOrElse(
+                                groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames,
+                                        registeredProcessorNames.getRegisteredNameFor(entry.getKey())),
+                                () -> LOG.warn(
+                                        "processing group names not configured for the processor {}",
+                                        entry.getKey())));
+    }
+
+    private void assignInMemoryTokenStoreIfNecessary(EventProcessingConfigurer configurer,
+            RegisteredProcessorNames registeredProcessorNames, ConfigOfOneProcessor defaultConfiguration) {
+        trackingProcessorConf.eventprocessorConfigs().entrySet().stream()
+                .filter(entry -> !entry.getKey().equals("default"))
+                .forEach(entry -> {
+                    boolean useInMemoryTokenStore = entry.getValue().useInMemoryTokenStore()
+                            .or(defaultConfiguration::useInMemoryTokenStore)
+                            .orElse(false);
+                    if (useInMemoryTokenStore) {
+                        configurer.registerTokenStore(registeredProcessorNames.getRegisteredNameFor(entry.getKey()),
+                                config -> getSingletonInMemoryTokenStore());
+                    }
+                });
 
     }
 

@@ -46,11 +46,11 @@ public class ResetEventprocessorsTest {
         Set<Map.Entry<String, EventProcessor>> eventProcessors = configuration.eventProcessingConfiguration().eventProcessors()
                 .entrySet();
 
-        assertThat(eventProcessor("pooled"))
+        assertThat(eventProcessor("pooled1"))
                 .isInstanceOf(PooledStreamingEventProcessor.class);
-        assertThat(eventProcessor("tracking"))
+        assertThat(eventProcessor("tracking1"))
                 .isInstanceOf(TrackingEventProcessor.class);
-        EventProcessor streamsEventProcessor = eventProcessor("streams");
+        EventProcessor streamsEventProcessor = eventProcessor("streams1");
         assertThat(streamsEventProcessor)
                 .isInstanceOf(SubscribingEventProcessor.class);
         assertThat(((SubscribingEventProcessor) streamsEventProcessor).getMessageSource())

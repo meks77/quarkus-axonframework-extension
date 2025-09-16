@@ -14,7 +14,6 @@ import jakarta.inject.Inject;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -40,7 +39,6 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
             throw new IllegalStateException("Cannot configure token store with unsatisfied datasource");
         }
         configureAndSetupTokenstore(configurer.eventProcessing());
-        configurer.registerComponent(TokenStore.class, this::createTokenStore);
     }
 
     private void configureAndSetupTokenstore(EventProcessingConfigurer eventProcessingConfigurer) {

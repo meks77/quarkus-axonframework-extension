@@ -70,6 +70,7 @@ public interface PooledProcessorConf {
         // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @WithName("processing-groups")
         Optional<List<String>> processingGroupNames();
+
     }
 
 }

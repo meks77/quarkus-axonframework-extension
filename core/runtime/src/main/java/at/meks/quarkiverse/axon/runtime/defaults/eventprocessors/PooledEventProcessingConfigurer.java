@@ -12,7 +12,6 @@ import jakarta.inject.Inject;
 import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.config.Configuration;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,14 +49,24 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
             ConfigOfOneProcessor defaultConfig) {
         for (Map.Entry<String, ConfigOfOneProcessor> entry : nonDefaultProcessorConfigurations()) {
             LOG.info("registering pooled event processor with name {}", entry.getKey());
-            configurer.registerPooledStreamingEventProcessor(entry.getKey(), Configuration::eventStore,
-                    createProcessorConfig(entry.getValue(), entry.getKey(), defaultConfig));
-            entry.getValue().processingGroupNames()
+            ConfigOfOneProcessor configOfOneProcessor = entry.getValue();
+            String processorName = createProcessorName(entry.getKey(), configOfOneProcessor.useRandomUuidSuffix()
+                    .or(defaultConfig::useRandomUuidSuffix)
+                    .orElse(false));
+            configurer.registerPooledStreamingEventProcessor(processorName, Configuration::eventStore,
+                    createProcessorConfig(configOfOneProcessor, processorName, defaultConfig));
+
+            if (shouldUseInMemoryTokenStore(configOfOneProcessor, defaultConfig)) {
+                configurer.registerTokenStore(processorName,
+                        config -> getSingletonInMemoryTokenStore());
+            }
+
+            configOfOneProcessor.processingGroupNames()
                     .ifPresentOrElse(
-                            groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, entry.getKey()),
+                            groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, processorName),
                             () -> LOG.warn(
                                     "processing group names not configured for the processor {}",
-                                    entry.getKey()));
+                                    processorName));
         }
     }
 
@@ -77,7 +86,6 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                     .ifPresent(initialPosition -> builder.initialToken(messageSource -> TokenBuilder.with(messageSource)
                             .atPosition(initialPosition)
                             .build()));
-            builder.tokenStore(config.getComponent(TokenStore.class));
             configOfOneProcessor.batchSize().or(defaultConfig::batchSize)
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);
@@ -98,12 +106,16 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 builder.enableCoordinatorClaimExtension();
             }
             if (name != null) {
-                builder.name(createProcessorName(name, configOfOneProcessor.useRandomUuidSuffix()
-                        .or(defaultConfig::useRandomUuidSuffix)
-                        .orElse(false)));
+                builder.name(name);
             }
             return builder;
         };
+    }
+
+    private static boolean shouldUseInMemoryTokenStore(ConfigOfOneProcessor configOfOneProcessor,
+            ConfigOfOneProcessor defaultConfig) {
+        return configOfOneProcessor.useInMemoryTokenStore().or(
+                defaultConfig::useInMemoryTokenStore).orElse(false);
     }
 
 }
