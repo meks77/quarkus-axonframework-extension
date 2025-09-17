@@ -81,11 +81,11 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
     private EventProcessingConfigurer.PooledStreamingProcessorConfiguration createProcessorConfig(
             ConfigOfOneProcessor configOfOneProcessor, String name, ConfigOfOneProcessor defaultConfig) {
         return (config, builder) -> {
-            configOfOneProcessor.initialPosition()
-                    .or(defaultConfig::initialPosition)
-                    .ifPresent(initialPosition -> builder.initialToken(messageSource -> TokenBuilder.with(messageSource)
-                            .atPosition(initialPosition)
-                            .build()));
+            getInitialPositionConfig(configOfOneProcessor, defaultConfig)
+                    .ifPresent(posConfig -> {
+                        LOG.info("initial position for processor {} is {}", name, posConfig);
+                        builder.initialToken(messageSource -> TokenBuilder.with(name, messageSource).and(posConfig));
+                    });
             configOfOneProcessor.batchSize().or(defaultConfig::batchSize)
                     .filter(size -> size > 0)
                     .ifPresent(builder::batchSize);

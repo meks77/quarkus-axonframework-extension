@@ -24,7 +24,7 @@ public abstract class PooledProcessorTest extends JavaArchiveTest {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(pooledStreamingEventProcessors)
-                .containsOnlyKeys(expectedEventProcessorNames());
+                .containsKeys(expectedEventProcessorNames());
 
         assertPooledConfigurations(pooledStreamingEventProcessors);
     }

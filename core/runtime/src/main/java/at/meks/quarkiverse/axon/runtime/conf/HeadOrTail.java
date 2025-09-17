@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
-public enum InitialPosition {
+public enum HeadOrTail {
     HEAD,
     TAIL
 }
