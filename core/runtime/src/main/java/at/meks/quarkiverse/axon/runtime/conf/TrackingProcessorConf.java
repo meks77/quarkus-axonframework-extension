@@ -1,6 +1,5 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -37,34 +36,6 @@ public interface TrackingProcessorConf {
          * Sets the time to wait after a failed attempt to claim any token, before making another attempt.
          */
         TokenClaimInterval tokenClaim();
-
-        /**
-         * Set the maximum number of events that may be processed in a single transaction. If not set, the default of the Axon
-         * framework is used.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<Integer> batchSize();
-
-        /**
-         * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<Integer> initialSegments();
-
-        /**
-         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<InitialPosition> initialPosition();
-
-        /**
-         * The names of the processing groups for which the processor is responsible.
-         */
-        @WithName("processing-groups")
-        Optional<List<String>> processingGroupNames();
 
         interface TokenClaimInterval {
 

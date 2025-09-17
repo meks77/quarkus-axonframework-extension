@@ -64,7 +64,6 @@ public interface PersistentStreamProcessorConf {
         /**
          * The names of the processing groups for which the processor is responsible.
          */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
         @WithName("processing-groups")
         Optional<List<String>> processingGroupNames();
 

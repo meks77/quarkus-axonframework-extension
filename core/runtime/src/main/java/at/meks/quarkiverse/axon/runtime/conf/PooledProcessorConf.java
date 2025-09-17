@@ -1,6 +1,5 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,38 +37,9 @@ public interface PooledProcessorConf {
         Optional<Boolean> enabledCoordinatorClaimExtension();
 
         /**
-         * Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon
-         * framework is used.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<Integer> batchSize();
-
-        /**
          * The size of the threadpool for the worker threads. If not set, the framework default is used.
          */
         Optional<Integer> workerThreadPoolSize();
-
-        /**
-         * Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<Integer> initialSegments();
-
-        /**
-         * First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @Override
-        Optional<InitialPosition> initialPosition();
-
-        /**
-         * The names of the processing groups for which the processor is responsible.
-         */
-        // Sadly, the inheritance of the Super-Interface doesn't work and leads to build errors: Missing javadoc
-        @WithName("processing-groups")
-        Optional<List<String>> processingGroupNames();
 
     }
 

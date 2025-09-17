@@ -42,7 +42,7 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
                     "processing groups names are not supported for default event processor! The configured groups '{}' are not considered",
                     defaultConfiguration.processingGroupNames().get());
         }
-        TrackingEventProcessorConfiguration tepConfig = createTrackingProcessorConfiguration(
+        TrackingEventProcessorConfiguration tepConfig = createTrackingProcessorConfiguration("default",
                 defaultConfiguration, defaultConfiguration);
         configurer.registerTrackingEventProcessorConfiguration(conf -> tepConfig);
         return defaultConfiguration;
@@ -60,23 +60,22 @@ public class TrackingEventProcessingConfigurer extends AbstractEventProcessingCo
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         processorConfigs.entrySet().stream()
                 .map(entry -> Map.entry(processorNameMap.get(entry.getKey()),
-                        createTrackingProcessorConfiguration(entry.getValue(), defaultConfiguration)))
+                        createTrackingProcessorConfiguration(entry.getKey(), entry.getValue(), defaultConfiguration)))
                 .forEach(entry -> addProcessorConfig(configurer,
                         entry.getKey(),
                         entry.getValue()));
         return new RegisteredProcessorNames(processorNameMap);
     }
 
-    private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(
+    private static TrackingEventProcessorConfiguration createTrackingProcessorConfiguration(String processorName,
             ConfigOfOneProcessor configOfOneProcessor, ConfigOfOneProcessor defaultConfiguration) {
         int threadCount = configOfOneProcessor.threadCount().or(defaultConfiguration::threadCount).orElse(1);
         validate().that(threadCount).isGreater(0);
         var trackingEventProcessorConfiguration = TrackingEventProcessorConfiguration
                 .forParallelProcessing(threadCount);
-        configOfOneProcessor.initialPosition()
-                .or(defaultConfiguration::initialPosition)
+        getInitialPositionConfig(configOfOneProcessor, defaultConfiguration)
                 .ifPresent(initialPosition -> trackingEventProcessorConfiguration.andInitialTrackingToken(
-                        messageSource -> TokenBuilder.with(messageSource).atPosition(initialPosition).build()));
+                        messageSource -> TokenBuilder.with(processorName, messageSource).and(initialPosition)));
 
         configOfOneProcessor.batchSize().or(defaultConfiguration::batchSize)
                 .filter(size -> size > 1)

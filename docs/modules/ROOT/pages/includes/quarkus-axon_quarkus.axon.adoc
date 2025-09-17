@@ -349,7 +349,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
+the batch size of the event processor.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -375,7 +375,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+the initial segments of the event processor.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -388,30 +388,134 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position[`quarkus.axon.pooledprocessor.initial-position`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail[`quarkus.axon.pooledprocessor.initial-position.at-head-or-tail`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-position`
+`quarkus.axon.pooledprocessor."processor-name".initial-position.at-head-or-tail`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+The initial position of the processor. use `initial-position()` instead.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_HEAD_OR_TAIL+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION+++`
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_HEAD_OR_TAIL+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
+|
+
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence[`quarkus.axon.pooledprocessor.initial-position.at-sequence`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-sequence+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".initial-position.at-sequence`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-sequence+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position using the sequence number of the event store. If you set 0, it means that the next sequence, which is greater than 0, will be delivered to the processor.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_SEQUENCE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_SEQUENCE+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp[`quarkus.axon.pooledprocessor.initial-position.at-timestamp`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-timestamp+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".initial-position.at-timestamp`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-timestamp+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position of the processor at a given timestamp.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_TIMESTAMP+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_TIMESTAMP+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html[ZonedDateTime]
+|
+
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration[`quarkus.axon.pooledprocessor.initial-position.at-duration`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-duration+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".initial-position.at-duration`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-duration+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position of the processor before or equal to the duration. If you want to define that the processor should start at the sequence 12 hours ago, you can use: PT12H
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_DURATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_INITIAL_POSITION_AT_DURATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-axon_quarkus-axon[icon:question-circle[title=More information about the Duration format]]
+|
+
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-processing-groups[`quarkus.axon.pooledprocessor.processing-groups`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".processing-groups`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The names of the processing groups for which the processor is responsible.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
 |
 
 a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix[`quarkus.axon.pooledprocessor.use-random-uuid-suffix`]##
@@ -544,32 +648,6 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-processing-groups[`quarkus.axon.pooledprocessor.processing-groups`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`quarkus.axon.pooledprocessor."processor-name".processing-groups`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The names of the processing groups for which the processor is responsible.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++`
-endif::add-copy-button-to-env-var[]
---
-|list of string
-|
-
 a| [[quarkus-axon_quarkus-axon-trackingprocessor-batch-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-batch-size[`quarkus.axon.trackingprocessor.batch-size`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.batch-size+++[]
@@ -583,7 +661,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Set the maximum number of events that may be processed in a single transaction. If not set, the default of the Axon framework is used.
+the batch size of the event processor.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -609,7 +687,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
+the initial segments of the event processor.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -622,30 +700,134 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position[`quarkus.axon.trackingprocessor.initial-position`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail[`quarkus.axon.trackingprocessor.initial-position.at-head-or-tail`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position+++[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-position`
+`quarkus.axon.trackingprocessor."processor-name".initial-position.at-head-or-tail`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position+++[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-First token to read. This can be number of the token where should be started, or HEAD, or TAIL.
+The initial position of the processor. use `initial-position()` instead.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_HEAD_OR_TAIL+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION+++`
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_HEAD_OR_TAIL+++`
 endif::add-copy-button-to-env-var[]
 --
 a|`head`, `tail`
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence[`quarkus.axon.trackingprocessor.initial-position.at-sequence`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-sequence+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".initial-position.at-sequence`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-sequence+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position using the sequence number of the event store. If you set 0, it means that the next sequence, which is greater than 0, will be delivered to the processor.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_SEQUENCE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_SEQUENCE+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp[`quarkus.axon.trackingprocessor.initial-position.at-timestamp`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-timestamp+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".initial-position.at-timestamp`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-timestamp+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position of the processor at a given timestamp.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_TIMESTAMP+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_TIMESTAMP+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html[ZonedDateTime]
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration[`quarkus.axon.trackingprocessor.initial-position.at-duration`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-duration+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".initial-position.at-duration`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-duration+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The initial position of the processor before or equal to the duration. If you want to define that the processor should start at the sequence 12 hours ago, you can use: PT12H
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_DURATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_INITIAL_POSITION_AT_DURATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-axon_quarkus-axon[icon:question-circle[title=More information about the Duration format]]
+|
+
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-processing-groups[`quarkus.axon.trackingprocessor.processing-groups`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor.processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.trackingprocessor."processor-name".processing-groups`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".processing-groups+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+The names of the processing groups for which the processor is responsible.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
 |
 
 a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix[`quarkus.axon.trackingprocessor.use-random-uuid-suffix`]##
@@ -778,31 +960,24 @@ endif::add-copy-button-to-env-var[]
 a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-processing-groups[`quarkus.axon.trackingprocessor.processing-groups`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.trackingprocessor.processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`quarkus.axon.trackingprocessor."processor-name".processing-groups`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The names of the processing groups for which the processor is responsible.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_TRACKINGPROCESSOR_PROCESSING_GROUPS+++`
-endif::add-copy-button-to-env-var[]
---
-|list of string
-|
-
 |===
 
+ifndef::no-duration-note[]
+[NOTE]
+[id=duration-note-anchor-quarkus-axon_quarkus-axon]
+.About the Duration format
+====
+To write duration values, use the standard `java.time.Duration` format.
+See the link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html#parse(java.lang.CharSequence)[Duration#parse() Java API documentation] for more information.
+
+You can also use a simplified format, starting with a number:
+
+* If the value is only a number, it represents time in seconds.
+* If the value is a number followed by `ms`, it represents time in milliseconds.
+
+In other cases, the simplified format is translated to the `java.time.Duration` format for parsing:
+
+* If the value is a number followed by `h`, `m`, or `s`, it is prefixed with `PT`.
+* If the value is a number followed by `d`, it is prefixed with `P`.
+====
+endif::no-duration-note[]
