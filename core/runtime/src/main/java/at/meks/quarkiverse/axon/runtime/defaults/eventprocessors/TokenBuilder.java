@@ -2,8 +2,6 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -40,7 +38,7 @@ public class TokenBuilder {
                 .filter(Optional::isPresent)
                 .count();
         if (configuredPositionCount != 1) {
-            throw new IllegalArgumentException("Only one of configuration of initial position is allowd, but "
+            throw new IllegalArgumentException("Only one of configuration of initial position is allowed, but "
                     + configuredPositionCount + " were found for processor " + processorName);
         }
 
@@ -56,29 +54,6 @@ public class TokenBuilder {
             return new GlobalSequenceTrackingToken(initialPositionOfProcessor.atSequence().get());
         }
         throw new IllegalStateException();
-    }
-
-    private TrackingToken atPosition(HeadOrTail startPosition) {
-        if (startPosition == HeadOrTail.HEAD) {
-            return messageSource.createHeadToken();
-        } else if (startPosition == HeadOrTail.TAIL) {
-            return messageSource.createTailToken();
-        }
-
-        throw new IllegalArgumentException(
-                "The initial position configuration of the tracking event processor must be head or tail.");
-    }
-
-    private TrackingToken atSequence(long sequence) {
-        return new GlobalSequenceTrackingToken(sequence);
-    }
-
-    private TrackingToken atTimestamp(ZonedDateTime initialPositionAt) {
-        return messageSource.createTokenAt(initialPositionAt.toInstant());
-    }
-
-    private TrackingToken atTimestamp(Duration initialPositionAt) {
-        return messageSource.createTokenSince(initialPositionAt);
     }
 
 }
