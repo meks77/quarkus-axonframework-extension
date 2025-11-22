@@ -71,6 +71,12 @@ public interface QuarkusAxonServerConfiguration {
     @WithName("grpc.maxMessageSize")
     GrpcMessageSize maxMessageSize();
 
+    /**
+     * the number of threads used as commands threads. If not set, the default of the axon framework is used.
+     * The value is set to {@link org.axonframework.axonserver.connector.AxonServerConfiguration#setCommandThreads(int)}
+     */
+    Optional<Integer> commandThreads();
+
     interface GrpcMessageSize {
         enum Unit {
             Bytes(1),

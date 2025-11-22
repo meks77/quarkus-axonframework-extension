@@ -58,7 +58,10 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         }
         maxGrpcMessageSize().ifPresent(builder::maxMessageSize);
         serverConfiguration.token().ifPresent(builder::token);
-        return builder.build();
+
+        AxonServerConfiguration configuration = builder.build();
+        serverConfiguration.commandThreads().ifPresent(configuration::setCommandThreads);
+        return configuration;
     }
 
     Optional<Integer> maxGrpcMessageSize() {
