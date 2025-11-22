@@ -38,5 +38,7 @@ public class AxonServerTest extends JavaArchiveTest {
         AxonServerConfiguration serverConfiguration = axonConfiguration.getComponent(AxonServerConfiguration.class);
         assertThat(serverConfiguration.getMaxMessageSize())
                 .isEqualTo(16384);
+        assertThat(serverConfiguration.getCommandThreads())
+                .isEqualTo(9);
     }
 }

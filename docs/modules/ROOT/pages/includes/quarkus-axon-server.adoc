@@ -227,6 +227,27 @@ endif::add-copy-button-to-env-var[]
 a|`bytes`, `kb`, `mb`
 |`+++bytes+++`
 
+a| [[quarkus-axon-server_quarkus-axon-server-command-threads]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-command-threads[`quarkus.axon.server.command-threads`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.command-threads+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+the number of threads used as commands threads. If not set, the default of the axon framework is used. The value is set to `org.axonframework.axonserver.connector.AxonServerConfiguration++#++setCommandThreads(int)`
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_COMMAND_THREADS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_COMMAND_THREADS+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
 a| [[quarkus-axon-server_quarkus-axon-persistentstreams-batch-size]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-batch-size[`quarkus.axon.persistentstreams.batch-size`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.batch-size+++[]
