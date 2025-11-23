@@ -58,10 +58,60 @@ public interface AxonConfiguration {
     EventProcessingConfig eventProcessing();
 
     /**
+     * Configuration for Axon component discovery (aggregates, event handlers, command handlers, query handlers, saga handlers).
+     */
+    ComponentsDiscovery discovery();
+
+    /**
      * configuration for the subscribing processor.
      */
     @WithName("subscribingprocessor")
     SubscribingProcessorConf subscribingProcessorConf();
+
+    interface ComponentsDiscovery {
+
+        /**
+         * the configuration for the discovery of axon aggregates.
+         */
+        ComponentDiscovery aggregates();
+
+        /**
+         * the configuration for the discovery of axon command handlers.
+         */
+        ComponentDiscovery commandHandlers();
+
+        /**
+         * the configuration for the discovery of axon event handlers.
+         */
+        ComponentDiscovery eventHandlers();
+
+        /**
+         * the configuration for the discovery of axon query handlers.
+         */
+        ComponentDiscovery queryHandlers();
+
+        /**
+         * the configuration for the discovery of axon saga handlers.
+         */
+        ComponentDiscovery sagaHandlers();
+
+    }
+
+    /**
+     * Configuration for discovery of axon components like aggregates, event handlers, command handlers, ...
+     * </br>
+     * Currently, it is only possible to enable or disable the discovery. A future version will provide more configuration
+     * like included and excluded packages.
+     */
+    interface ComponentDiscovery {
+
+        /**
+         * if true, the discovery will be enabled.
+         */
+        @WithDefault("true")
+        boolean enabled();
+
+    }
 
     /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems

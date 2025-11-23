@@ -238,6 +238,111 @@ endif::add-copy-button-to-env-var[]
 a|`subscribing`, `tracking`, `pooled`
 |
 
+a| [[quarkus-axon_quarkus-axon-discovery-aggregates-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-enabled[`quarkus.axon.discovery.aggregates.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.aggregates.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-discovery-command-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-enabled[`quarkus.axon.discovery.command-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.command-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-discovery-event-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-enabled[`quarkus.axon.discovery.event-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.event-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-discovery-query-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-enabled[`quarkus.axon.discovery.query-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.query-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`quarkus.axon.discovery.saga-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
 a| [[quarkus-axon_quarkus-axon-subscribingprocessor-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-name[`quarkus.axon.subscribingprocessor.name`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.subscribingprocessor.name+++[]

@@ -45,9 +45,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     EventstoreConfigurer eventstoreConfigurer;
 
     @Inject
-    QuarkusAggregateConfigurer aggregateConfigurer;
-
-    @Inject
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
     @Inject
@@ -55,9 +52,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     @Inject
     InterceptorConfigurer interceptorConfigurer;
-
-    @Inject
-    SagaStoreConfigurer sagaStoreConfigurer;
 
     @Inject
     AxonSerializerProducer axonSerializerProducer;
@@ -78,6 +72,9 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonConfiguration axonConfiguration;
 
+    @Inject
+    AxonComponentenSetup axonComponentSetup;
+
     private Set<Class<?>> aggregateClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
@@ -95,29 +92,24 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .configureMessageSerializer(conf -> axonSerializerProducer.createMessageSerializer());
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
-        configureAggregates(configurer);
+        axonComponentSetup.configureAggregates(configurer, aggregateClasses);
         configureMessageHandler(configurer);
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
         interceptorConfigurer.registerInterceptors(configurer);
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
-        configureSagas(configurer);
+        axonComponentSetup.configureSagas(configurer, sagaEventhandlerClasses);
         commandBusConfigurer.configureCommandBus(configurer);
         configureCommandGateway(configurer);
         return configurer;
     }
 
-    private void configureAggregates(Configurer configurer) {
-        aggregateClasses.forEach(
-                aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
-    }
-
     private void configureMessageHandler(Configurer configurer) {
         configureEventHandling(configurer);
 
-        commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
-        queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
+        axonComponentSetup.configureCommandHandlers(configurer, commandhandlers);
+        axonComponentSetup.configureQueryHandlers(configurer, queryhandlers);
     }
 
     private void configureEventHandling(Configurer configurer) {
@@ -128,11 +120,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
                     handle -> handle.get().configure(processingConfigurer));
-            if (!eventhandlers.isEmpty()) {
-                eventhandlers.forEach(handler -> registerEventHandler(handler, configurer));
-            }
+            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
         }
-
     }
 
     private void setDefaultEventProcessorType(Configurer configurer) {
@@ -158,10 +147,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         });
     }
 
-    private void registerEventHandler(Object handler, Configurer configurer) {
-        configurer.eventProcessing().registerEventHandler(conf -> handler);
-    }
-
     private void configureTransactionManagement(Configurer configurer) {
         configurer.configureTransactionManager(conf -> transactionManager);
     }
@@ -183,14 +168,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                             .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
         } else {
             LOG.info("no eventUpcasterChain found");
-        }
-    }
-
-    private void configureSagas(Configurer configurer) {
-        if (!sagaEventhandlerClasses.isEmpty()) {
-            sagaStoreConfigurer.configureSagaStore(configurer);
-            EventProcessingConfigurer eventProcessingConfigurer = configurer.eventProcessing();
-            sagaEventhandlerClasses.forEach(eventProcessingConfigurer::registerSaga);
         }
     }
 
