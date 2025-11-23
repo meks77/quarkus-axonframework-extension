@@ -4,7 +4,7 @@
     <parent>
         <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
         <artifactId>test</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0-RC27</version>
     </parent>
 
     <name>Quarkus Axon - Unittest</name>
@@ -54,4 +54,8 @@
             </plugin>
         </plugins>
     </build>
+
+  <scm>
+    <tag>0.1.0-RC27</tag>
+  </scm>
 </project>
