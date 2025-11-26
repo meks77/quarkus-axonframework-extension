@@ -7,6 +7,226 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-enabled[`quarkus.axon.discovery.aggregates.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.aggregates.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-included-packages[`quarkus.axon.discovery.aggregates.included-packages`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.aggregates.included-packages+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+list of packages to include for component discovery.
+
+If not set, all packages are included.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_AGGREGATES_INCLUDED_PACKAGES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_AGGREGATES_INCLUDED_PACKAGES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-enabled[`quarkus.axon.discovery.command-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.command-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages[`quarkus.axon.discovery.command-handlers.included-packages`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.command-handlers.included-packages+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+list of packages to include for component discovery.
+
+If not set, all packages are included.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_INCLUDED_PACKAGES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_INCLUDED_PACKAGES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-enabled[`quarkus.axon.discovery.event-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.event-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages[`quarkus.axon.discovery.event-handlers.included-packages`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.event-handlers.included-packages+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+list of packages to include for component discovery.
+
+If not set, all packages are included.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_INCLUDED_PACKAGES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_INCLUDED_PACKAGES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-enabled[`quarkus.axon.discovery.query-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.query-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages[`quarkus.axon.discovery.query-handlers.included-packages`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.query-handlers.included-packages+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+list of packages to include for component discovery.
+
+If not set, all packages are included.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_INCLUDED_PACKAGES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_INCLUDED_PACKAGES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`quarkus.axon.discovery.saga-handlers.enabled`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+if true, the discovery will be enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages[`quarkus.axon.discovery.saga-handlers.included-packages`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.included-packages+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+list of packages to include for component discovery.
+
+If not set, all packages are included.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_INCLUDED_PACKAGES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_INCLUDED_PACKAGES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`quarkus.axon.health-enabled`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.health-enabled+++[]
@@ -237,111 +457,6 @@ endif::add-copy-button-to-env-var[]
 --
 a|`subscribing`, `tracking`, `pooled`
 |
-
-a| [[quarkus-axon_quarkus-axon-discovery-aggregates-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-enabled[`quarkus.axon.discovery.aggregates.enabled`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.aggregates.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_AGGREGATES_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
-a| [[quarkus-axon_quarkus-axon-discovery-command-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-enabled[`quarkus.axon.discovery.command-handlers.enabled`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.command-handlers.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_COMMAND_HANDLERS_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
-a| [[quarkus-axon_quarkus-axon-discovery-event-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-enabled[`quarkus.axon.discovery.event-handlers.enabled`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.event-handlers.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_EVENT_HANDLERS_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
-a| [[quarkus-axon_quarkus-axon-discovery-query-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-enabled[`quarkus.axon.discovery.query-handlers.enabled`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.query-handlers.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_QUERY_HANDLERS_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
-a| [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`quarkus.axon.discovery.saga-handlers.enabled`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
 
 a| [[quarkus-axon_quarkus-axon-subscribingprocessor-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-name[`quarkus.axon.subscribingprocessor.name`]##
 ifdef::add-copy-button-to-config-props[]

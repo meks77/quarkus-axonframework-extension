@@ -58,44 +58,10 @@ public interface AxonConfiguration {
     EventProcessingConfig eventProcessing();
 
     /**
-     * Configuration for Axon component discovery (aggregates, event handlers, command handlers, query handlers, saga handlers).
-     */
-    ComponentsDiscovery discovery();
-
-    /**
      * configuration for the subscribing processor.
      */
     @WithName("subscribingprocessor")
     SubscribingProcessorConf subscribingProcessorConf();
-
-    interface ComponentsDiscovery {
-
-        /**
-         * the configuration for the discovery of axon aggregates.
-         */
-        ComponentDiscovery aggregates();
-
-        /**
-         * the configuration for the discovery of axon command handlers.
-         */
-        ComponentDiscovery commandHandlers();
-
-        /**
-         * the configuration for the discovery of axon event handlers.
-         */
-        ComponentDiscovery eventHandlers();
-
-        /**
-         * the configuration for the discovery of axon query handlers.
-         */
-        ComponentDiscovery queryHandlers();
-
-        /**
-         * the configuration for the discovery of axon saga handlers.
-         */
-        ComponentDiscovery sagaHandlers();
-
-    }
 
     /**
      * Configuration for discovery of axon components like aggregates, event handlers, command handlers, ...

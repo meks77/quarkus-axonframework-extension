@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration.ComponentDiscovery;
-import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration.ComponentsDiscovery;
+import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 import at.meks.quarkiverse.axon.runtime.customizations.SagaStoreConfigurer;
 import at.meks.quarkiverse.axon.shared.model.CardReturnSaga;
@@ -41,7 +41,7 @@ class AxonComponentenSetupTest {
     private AxonConfiguration axonConfiguration;
 
     @Mock(strictness = Mock.Strictness.LENIENT)
-    private ComponentsDiscovery componentsDiscovery;
+    private ComponentDiscoveryConfiguration.ComponentDiscovery componentsDiscovery;
 
     @Mock(strictness = Mock.Strictness.LENIENT)
     private ComponentDiscovery componentDiscovery;
@@ -53,11 +53,6 @@ class AxonComponentenSetupTest {
     @Mock
     SagaStoreConfigurer sagaStoreConfigurer;
 
-    @BeforeEach
-    void setUp() {
-        when(axonConfiguration.discovery()).thenReturn(componentsDiscovery);
-    }
-
     @Nested
     class AggregateDiscovery {
 
@@ -68,24 +63,16 @@ class AxonComponentenSetupTest {
 
         @BeforeEach
         void setUp() {
-            when(componentsDiscovery.aggregates()).thenReturn(componentDiscovery);
             when(aggregateConfigurer.createConfigurer(Giftcard.class)).thenReturn(aggregateConfiguration);
         }
 
         @Test
-        void enabledAggregateDiscovery() {
+        void aggregatesAreSetup() {
             when(componentDiscovery.enabled()).thenReturn(true);
             setup.configureAggregates(configurer, classes);
             verify(configurer, Mockito.times(1)).configureAggregate(aggregateConfiguration);
         }
 
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            setup.configureAggregates(configurer, classes);
-            //noinspection unchecked
-            verify(configurer, Mockito.never()).configureAggregate(any(AggregateConfiguration.class));
-        }
     }
 
     @Nested
@@ -93,24 +80,13 @@ class AxonComponentenSetupTest {
 
         Set<Object> handlers = Set.of(DomainServiceExample.class);
 
-        @BeforeEach
-        void setUp() {
-            when(componentsDiscovery.commandHandlers()).thenReturn(componentDiscovery);
-        }
-
         @Test
-        void enabledAggregateDiscovery() {
+        void commandHandlersAreRegistered() {
             when(componentDiscovery.enabled()).thenReturn(true);
             setup.configureCommandHandlers(configurer, handlers);
             verify(configurer, Mockito.times(1)).registerCommandHandler(any());
         }
 
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            setup.configureCommandHandlers(configurer, handlers);
-            verify(configurer, Mockito.never()).registerCommandHandler(any());
-        }
     }
 
     @Nested
@@ -123,23 +99,16 @@ class AxonComponentenSetupTest {
 
         @BeforeEach
         void setUp() {
-            when(componentsDiscovery.eventHandlers()).thenReturn(componentDiscovery);
             when(configurer.eventProcessing()).thenReturn(eventProcessingConfigurer);
         }
 
         @Test
-        void enabledAggregateDiscovery() {
+        void eventHandlersAreRegistered() {
             when(componentDiscovery.enabled()).thenReturn(true);
             setup.configureEventHandlers(configurer, handlers);
             verify(eventProcessingConfigurer, Mockito.times(1)).registerEventHandler(any());
         }
 
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            setup.configureEventHandlers(configurer, handlers);
-            verify(eventProcessingConfigurer, Mockito.never()).registerEventHandler(any());
-        }
     }
 
     @Nested
@@ -147,24 +116,13 @@ class AxonComponentenSetupTest {
 
         Set<Object> handlers = Set.of(new GiftcardQueryHandler());
 
-        @BeforeEach
-        void setUp() {
-            when(componentsDiscovery.queryHandlers()).thenReturn(componentDiscovery);
-        }
-
         @Test
-        void enabledAggregateDiscovery() {
+        void queryHandlersAreRegistered() {
             when(componentDiscovery.enabled()).thenReturn(true);
             setup.configureQueryHandlers(configurer, handlers);
             verify(configurer, Mockito.times(1)).registerQueryHandler(any());
         }
 
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            setup.configureQueryHandlers(configurer, handlers);
-            verify(configurer, Mockito.never()).registerQueryHandler(any());
-        }
     }
 
     @Nested
@@ -177,24 +135,17 @@ class AxonComponentenSetupTest {
 
         @BeforeEach
         void setUp() {
-            when(componentsDiscovery.sagaHandlers()).thenReturn(componentDiscovery);
             when(configurer.eventProcessing()).thenReturn(eventProcessingConfigurer);
 
         }
 
         @Test
-        void enabledAggregateDiscovery() {
+        void sagaHandlersAreRegistered() {
             when(componentDiscovery.enabled()).thenReturn(true);
             setup.configureSagas(configurer, handlers);
             verify(eventProcessingConfigurer, Mockito.times(1)).registerSaga(CardReturnSaga.class);
         }
 
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            setup.configureSagas(configurer, handlers);
-            verify(eventProcessingConfigurer, Mockito.never()).registerSaga(CardReturnSaga.class);
-        }
     }
 
 }

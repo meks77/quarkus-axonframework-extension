@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import java.time.Duration;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.CommandHandler;
@@ -74,12 +76,17 @@ public class InjectableCdiBeansTest {
         void doSomething();
     }
 
-    @ApplicationScoped
     static class InjectableCdiBeanForAggregate {
 
         void doSomething() {
             logger.debug("do something");
         }
+    }
+
+    @Produces
+    @Dependent
+    InjectableCdiBeanForAggregate produceInjectableCdiBeanForAggregate() {
+        return new InjectableCdiBeanForAggregate();
     }
 
     @ApplicationScoped
