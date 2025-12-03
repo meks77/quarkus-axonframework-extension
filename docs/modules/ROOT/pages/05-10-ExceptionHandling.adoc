@@ -26,6 +26,6 @@ quarkus.axon.exception-handling.wrap-on-query-handler=false
 
 link:index.adoc[Index]
 
-link:05-08-Sagas.adoc[← Previous: Sagas]
+link:05-09-Sagas.adoc[← Previous: Sagas]
 
-link:05-10-CommandBus.adoc[Next: CommandBus →]
+link:05-11-CommandBus.adoc[Next: CommandBus →]

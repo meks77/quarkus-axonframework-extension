@@ -3,10 +3,14 @@ package at.meks.quarkiverse.axon.deployment;
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.*;
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.aggregateClasses;
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.classes;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.eventhandlerClasses;
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.sagaEventhandlerClasses;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Type;
+import org.jetbrains.annotations.NotNull;
 
 import at.meks.quarkiverse.axon.runtime.AxonExtension;
 import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
@@ -15,10 +19,7 @@ import at.meks.quarkiverse.axon.runtime.defaults.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.PooledEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TrackingEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
-import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
-import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
-import io.quarkus.arc.deployment.BeanContainerBuildItem;
-import io.quarkus.arc.deployment.UnremovableBeanBuildItem;
+import io.quarkus.arc.deployment.*;
 import io.quarkus.deployment.annotations.*;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -63,8 +64,12 @@ class AxonExtensionProcessor {
     @Record(ExecutionTime.STATIC_INIT)
     void scanForEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<EventhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        eventhandlerClasses(beanArchiveIndex, discoveryConfiguration)
+            BuildProducer<EventhandlerBeanBuildItem> beanProducer,
+            ComponentDiscoveryConfiguration discoveryConfiguration,
+            BeanDiscoveryFinishedBuildItem beanDiscoveryFinished) {
+        Set<DotName> discoveredBeanClasses = discoveredBeanClasses(beanDiscoveryFinished);
+        ClassDiscovery.eventhandlerClasses(
+                new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses, discoveryConfiguration))
                 .forEach(clazz -> {
                     produceEventhandlerBeanBuildItem(beanProducer, clazz);
                     Log.debugf("Configured eventhandler class: %s", clazz);
@@ -124,8 +129,12 @@ class AxonExtensionProcessor {
     @Record(ExecutionTime.STATIC_INIT)
     void scanForCommandhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<CommandhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        commandhandlerClasses(beanArchiveIndex, discoveryConfiguration)
+            BuildProducer<CommandhandlerBeanBuildItem> beanProducer,
+            ComponentDiscoveryConfiguration discoveryConfiguration,
+            BeanDiscoveryFinishedBuildItem beanDiscovery) {
+        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex,
+                discoveredBeanClasses(beanDiscovery), discoveryConfiguration);
+        ClassDiscovery.commandhandlerClasses(discoveyAttributes)
                 .forEach(clazz -> {
                     beanProducer.produce(new CommandhandlerBeanBuildItem(clazz));
                     Log.debugf("Configured commandhandler class: %s", clazz);
@@ -136,8 +145,13 @@ class AxonExtensionProcessor {
     @Record(ExecutionTime.STATIC_INIT)
     void scanForQueryhandler(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<QueryhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        queryhandlerClasses(beanArchiveIndex, discoveryConfiguration)
+            BuildProducer<QueryhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration,
+            BeanDiscoveryFinishedBuildItem beanDiscovery) {
+        var discoveyAttributes = new BeanDiscoveyAttributes(
+                beanArchiveIndex,
+                discoveredBeanClasses(beanDiscovery),
+                discoveryConfiguration);
+        ClassDiscovery.queryhandlerClasses(discoveyAttributes)
                 .forEach(clazz -> {
                     beanProducer.produce(new QueryhandlerBeanBuildItem(clazz));
                     Log.debugf("Configured queryhandler class: %s", clazz);
@@ -146,12 +160,15 @@ class AxonExtensionProcessor {
 
     @BuildStep
     UnremovableBeanBuildItem markEventhandlersUnremovable(BeanArchiveIndexBuildItem beanArchiveIndex,
-            ComponentDiscoveryConfiguration discoveryConfiguration) {
+            ComponentDiscoveryConfiguration discoveryConfiguration,
+            BeanDiscoveryFinishedBuildItem beanDiscovery) {
         ArrayList<Class<?>> unremovableItems = new ArrayList<>();
-        unremovableItems.addAll(eventhandlerClasses(beanArchiveIndex, discoveryConfiguration).toList());
-        unremovableItems.addAll(commandhandlerClasses(beanArchiveIndex, discoveryConfiguration).toList());
-        unremovableItems.addAll(queryhandlerClasses(beanArchiveIndex, discoveryConfiguration).toList());
-        unremovableItems.addAll(injectableBeanClasses(beanArchiveIndex, discoveryConfiguration).toList());
+        Set<DotName> discoveredBeanClasses = discoveredBeanClasses(beanDiscovery);
+        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses, discoveryConfiguration);
+        unremovableItems.addAll(ClassDiscovery.eventhandlerClasses(discoveyAttributes).toList());
+        unremovableItems.addAll(ClassDiscovery.commandhandlerClasses(discoveyAttributes).toList());
+        unremovableItems.addAll(ClassDiscovery.queryhandlerClasses(discoveyAttributes).toList());
+        unremovableItems.addAll(ClassDiscovery.injectableBeanClasses(discoveyAttributes).toList());
         return UnremovableBeanBuildItem.beanTypes(unremovableItems.toArray(Class[]::new));
     }
 
@@ -167,14 +184,24 @@ class AxonExtensionProcessor {
     void scanForInjectableCdiBeans(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<InjectableBeanBuildItem> beanProducer,
-            ComponentDiscoveryConfiguration componentDiscoveryConfiguration) {
-        injectableBeanClasses(beanArchiveIndex, componentDiscoveryConfiguration)
+            ComponentDiscoveryConfiguration componentDiscoveryConfiguration,
+            BeanDiscoveryFinishedBuildItem beanDiscovery) {
+        ClassDiscovery.injectableBeanClasses(
+                new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses(beanDiscovery),
+                        componentDiscoveryConfiguration))
                 .filter(clz -> beanArchiveIndex.getImmutableIndex().getClassByName(clz.getName()) != null)
                 .map(InjectableBeanBuildItem::new)
                 .forEach(item -> {
                     Log.infof("found injectable beans: %s", item.itemClass());
                     beanProducer.produce(item);
                 });
+    }
+
+    private static @NotNull Set<DotName> discoveredBeanClasses(BeanDiscoveryFinishedBuildItem beanDiscoveryFinished) {
+        return beanDiscoveryFinished.getBeans()
+                .stream().flatMap(beanInfo -> beanInfo.getTypes().stream())
+                .map(Type::name)
+                .collect(Collectors.toSet());
     }
 
 }

@@ -14,6 +14,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.jboss.jandex.*;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.quality.Strictness;
 
+import at.meks.quarkiverse.axon.deployment.ClassDiscovery.BeanDiscoveyAttributes;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration.ComponentDiscovery;
 import at.meks.quarkiverse.axon.shared.model.CardReturnSaga;
@@ -119,7 +121,7 @@ class ClassDiscoveryTest {
         @Test
         void enabledAggregateDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
-            givenClassWithAnnotatedFieldInIndex(AggregateIdentifier.class, Giftcard.class);
+            givenGiftcardIsDiscoveredAsAggregateInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -131,7 +133,7 @@ class ClassDiscoveryTest {
         void includedPackageMatch(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenClassWithAnnotatedFieldInIndex(AggregateIdentifier.class, Giftcard.class);
+            givenGiftcardIsDiscoveredAsAggregateInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -143,7 +145,7 @@ class ClassDiscoveryTest {
         void includedPackageDontMatch(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenClassWithAnnotatedFieldInIndex(AggregateIdentifier.class, Giftcard.class);
+            givenGiftcardIsDiscoveredAsAggregateInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -159,19 +161,19 @@ class ClassDiscoveryTest {
 
     }
 
-    private <T, R> void givenClassWithAnnotatedFieldInIndex(Class<T> annotationClass, Class<R> annotatedClass) {
+    private void givenGiftcardIsDiscoveredAsAggregateInIndex() {
         AnnotationInstance annotationInstance = mock(AnnotationInstance.class,
                 Mockito.withSettings().strictness(Strictness.LENIENT));
         AnnotationTarget annotationTarget = mock(AnnotationTarget.class, Mockito.withSettings().strictness(Strictness.LENIENT));
         FieldInfo fieldInfo = mock(FieldInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
         ClassInfo classInfo = mock(ClassInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
 
-        when(indexView.getAnnotations(annotationClass)).thenReturn(List.of(annotationInstance));
+        when(indexView.getAnnotations(AggregateIdentifier.class)).thenReturn(List.of(annotationInstance));
         when(annotationInstance.target()).thenReturn(annotationTarget);
         when(annotationTarget.asField()).thenReturn(fieldInfo);
         when(fieldInfo.declaringClass()).thenReturn(classInfo);
         when(classInfo.asClass()).thenReturn(classInfo);
-        when(classInfo.name()).thenReturn(DotName.createSimple(annotatedClass));
+        when(classInfo.name()).thenReturn(DotName.createSimple(Giftcard.class));
     }
 
     private <T, R> void givenClassWithAnnotatedMethodInIndex(Class<T> annotationClass, Class<R> annotatedClass) {
@@ -179,6 +181,8 @@ class ClassDiscoveryTest {
         AnnotationTarget annotationTarget = mock(AnnotationTarget.class);
         MethodInfo methodInfo = mock(MethodInfo.class);
         ClassInfo classInfo = mock(ClassInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
+        when(classInfo.name()).thenReturn(DotName.createSimple(annotatedClass));
+        when(indexView.getClassByName(annotatedClass)).thenReturn(classInfo);
 
         when(indexView.getAnnotations(annotationClass)).thenReturn(List.of(annotationInstance));
         when(annotationInstance.target()).thenReturn(annotationTarget);
@@ -202,15 +206,16 @@ class ClassDiscoveryTest {
             when(discoveryConfiguration.commandHandlers()).thenReturn(componentDiscovery);
             when(discoveryConfiguration.aggregates()).thenReturn(aggregateDiscovery);
             when(aggregateDiscovery.enabled()).thenReturn(true);
-            givenClassWithAnnotatedFieldInIndex(AggregateIdentifier.class, Giftcard.class);
+            givenGiftcardIsDiscoveredAsAggregateInIndex();
         }
 
         @Test
-        void enabledDiscoveryUsingADomainService() {
+        void onlyEnabledDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
             givenClassWithAnnotatedMethodInIndex(CommandHandler.class, DomainServiceExample.class);
 
-            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(DomainServiceExample.class));
+            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(DomainServiceExample.class);
         }
@@ -222,7 +227,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(CommandHandler.class, DomainServiceExample.class);
 
-            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(DomainServiceExample.class));
+            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(DomainServiceExample.class);
         }
@@ -234,7 +240,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(CommandHandler.class, DomainServiceExample.class);
 
-            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(DomainServiceExample.class));
+            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).isEmpty();
         }
@@ -242,9 +249,15 @@ class ClassDiscoveryTest {
         @Test
         void disabledAggregateDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
-            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(DomainServiceExample.class));
+            Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(discoveryAttributes(discoveredBeanClasses));
             assertThat(result).isEmpty();
         }
+    }
+
+    private @NotNull BeanDiscoveyAttributes discoveryAttributes(Set<DotName> discoveredBeanClasses) {
+        return new BeanDiscoveyAttributes(beanArchiveIndex,
+                discoveredBeanClasses, discoveryConfiguration);
     }
 
     @Nested
@@ -259,11 +272,12 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void enabledDiscoveryUsingADomainService() {
+        void onlyEnabledDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
             givenClassWithAnnotatedMethodInIndex(EventHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(GiftcardQueryHandler.class);
         }
@@ -275,7 +289,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(EventHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(GiftcardQueryHandler.class);
         }
@@ -287,7 +302,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(EventHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).isEmpty();
         }
@@ -295,7 +311,8 @@ class ClassDiscoveryTest {
         @Test
         void disabledAggregateDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
-            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(discoveryAttributes(discoveredBeanClasses));
             assertThat(result).isEmpty();
         }
     }
@@ -312,11 +329,12 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void enabledDiscoveryUsingADomainService() {
+        void onlyEnabledDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
             givenClassWithAnnotatedMethodInIndex(QueryHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(GiftcardQueryHandler.class);
         }
@@ -328,7 +346,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(QueryHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).containsExactly(GiftcardQueryHandler.class);
         }
@@ -340,7 +359,8 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenClassWithAnnotatedMethodInIndex(QueryHandler.class, GiftcardQueryHandler.class);
 
-            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(discoveryAttributes(discoveredBeanClasses));
 
             assertThat(result).isEmpty();
         }
@@ -348,7 +368,8 @@ class ClassDiscoveryTest {
         @Test
         void disabledAggregateDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
-            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(beanArchiveIndex, discoveryConfiguration);
+            Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
+            Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(discoveryAttributes(discoveredBeanClasses));
             assertThat(result).isEmpty();
         }
 
@@ -366,7 +387,7 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void enabledDiscoveryUsingADomainService() {
+        void onlyEnabledDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
             givenClassWithAnnotatedMethodInIndex(SagaEventHandler.class, CardReturnSaga.class);
 

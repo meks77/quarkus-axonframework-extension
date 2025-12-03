@@ -8,6 +8,6 @@ For each Aggregate, the method `createConfigurer` is invoked. This method has to
 
 link:index.adoc[Index]
 
-link:05-03-Snapshots.adoc[← Previous: Snapshots]
+link:05-04-Snapshots.adoc[← Previous: Snapshots]
 
-link:05-05-EventProcessors.adoc[Next: Event Processors →]
+link:05-06-EventProcessors.adoc[Next: Event Processors →]

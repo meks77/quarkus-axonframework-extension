@@ -1,4 +1,4 @@
-= CommandHandler
+= Command Handlers
 :toc:
 :toclevels: 3
 
@@ -13,6 +13,6 @@ If the annotation `@CommandHandler` is used in a class which doesn't match to on
 '''
 link:index.adoc[Index]
 
-link:05-00-SetupAndUsage.adoc[← Previous: Setup & Usage]
+link:05-01-ComponentDiscovery.adoc[← Previous: Component Discovery]
 
-link:05-02-EventStores.adoc[Next: EventStores →]
+link:05-03-EventStores.adoc[Next: EventStores →]

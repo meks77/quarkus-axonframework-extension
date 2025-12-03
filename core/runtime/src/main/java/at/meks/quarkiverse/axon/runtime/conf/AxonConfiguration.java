@@ -64,22 +64,6 @@ public interface AxonConfiguration {
     SubscribingProcessorConf subscribingProcessorConf();
 
     /**
-     * Configuration for discovery of axon components like aggregates, event handlers, command handlers, ...
-     * </br>
-     * Currently, it is only possible to enable or disable the discovery. A future version will provide more configuration
-     * like included and excluded packages.
-     */
-    interface ComponentDiscovery {
-
-        /**
-         * if true, the discovery will be enabled.
-         */
-        @WithDefault("true")
-        boolean enabled();
-
-    }
-
-    /**
      * Live reloading needs a wait time, to wait for axon's framework or axon's server to cleanup. This wait time seems
      * to be dependent on the hardware. The default configuration works well on a MacBook Pro with M1 Chip.
      * If you get the error that no command handler is available after a reload, increase the wait time until this
