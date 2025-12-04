@@ -6,9 +6,9 @@
 
 link:index.adoc[Index]
 
-link:05-05-EventProcessors.adoc[← Previous: Event Processors]
+link:05-06-EventProcessors.adoc[← Previous: Event Processors]
 
-link:05-07-EventUpcasting.adoc[Next: Event Upcasting →]
+link:05-08-EventUpcasting.adoc[Next: Event Upcasting →]
 
 '''
 
@@ -31,7 +31,7 @@ If you would like to use the JDBC Tokenstore, you simply have to add the depende
 By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
 
 CAUTION: Normally in production environment you need a proper transaction manager configured in the axon framework. For detailed information see
-link:05-14-Transaction.adoc[Transaction].
+link:05-15-Transaction.adoc[Transaction].
 
 [source,properties]
 ----
@@ -98,6 +98,6 @@ include::includes/quarkus-axon-tokenstore-jpa.adoc[leveloffset=+1,opts=optional]
 
 link:index.adoc[Index]
 
-link:05-05-EventProcessors.adoc[← Previous: Event Processors]
+link:05-06-EventProcessors.adoc[← Previous: Event Processors]
 
-link:05-07-EventUpcasting.adoc[Next: Event Upcasting →]
+link:05-08-EventUpcasting.adoc[Next: Event Upcasting →]

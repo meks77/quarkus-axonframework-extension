@@ -16,6 +16,6 @@ If you'd like to view the traces localy in dev mode, use Jaeger or Grafana OTel 
 
 link:index.adoc[Index]
 
-link:05-15-Metrics.adoc[← Previous: Metrics]
+link:05-16-Metrics.adoc[← Previous: Metrics]
 
-link:05-17-HealthChecks.adoc[Next: Health Checks →]
+link:05-18-HealthChecks.adoc[Next: Health Checks →]

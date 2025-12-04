@@ -5,9 +5,9 @@
 '''
 link:index.adoc[Index]
 
-link:05-01-CommandHandler.adoc[← Previous: CommandHandler]
+link:05-02-CommandHandler.adoc[← Previous: CommandHandler]
 
-link:05-03-Snapshots.adoc[Next: Snapshots →]
+link:05-04-Snapshots.adoc[Next: Snapshots →]
 
 '''
 
@@ -186,6 +186,6 @@ include::includes/quarkus-axon-jdbc-eventstore.adoc[leveloffset=+1,opts=optional
 '''
 link:index.adoc[Index]
 
-link:05-01-CommandHandler.adoc[← Previous: CommandHandler]
+link:05-02-CommandHandler.adoc[← Previous: CommandHandler]
 
-link:05-03-Snapshots.adoc[Next: Snapshots →]
+link:05-04-Snapshots.adoc[Next: Snapshots →]

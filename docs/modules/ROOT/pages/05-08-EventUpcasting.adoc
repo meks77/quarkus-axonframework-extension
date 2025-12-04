@@ -19,6 +19,6 @@ EventUpcasterChain eventUpcasterChain() {
 
 link:index.adoc[Index]
 
-link:05-06-TokenStores.adoc[← Previous: Token Stores]
+link:05-07-TokenStores.adoc[← Previous: Token Stores]
 
-link:05-08-Sagas.adoc[Next: Sagas →]
+link:05-09-Sagas.adoc[Next: Sagas →]

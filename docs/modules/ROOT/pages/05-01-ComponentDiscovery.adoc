@@ -1,0 +1,65 @@
+= Component Discovery
+:toc:
+:toclevels: 3
+
+Components which are added to the Axon Configuration are discovered automatically.
+
+The following types are discovered:
+
+* Classes where a field is annotated with the annotation `AggregateIdentifier` as Aggregate
+* CDI beans where a method is annotated with the annotation `CommandHandler` as CommandHandler
+* CDI beans where a method is annotated with the annotation `EventHandler` as EventHandler
+* CDI beans where a method is annotated with the annotation `QueryHandler` as QueryHandler
+* Classes where a method is annotated with the annotation `SagaEventHandler` as SagaEventhandler
+* CDI beans which are used as method arguments in Command-, Event-, Query- or SagaEventHandler methods
+
+CAUTION: SagaEventHandler mustn't be CDI beans. They are instantiated by the AxonFramework.
+
+The discovery of those components can be configured.
+
+The property prefix for the discovery is `quarkus.axon.discovery`. These properties are fixed at build time to avoid different behaviour at runtime configuration in different environments, e.g. test and production.
+
+For each type you can either disable the discovery or only include selected packages.
+
+== Examples
+
+=== Disable discovery for aggregates
+The use case could be that you have a maven or gradle module, where your domain classes are, which are containing the annotation `AggregateIdentifier`.
+
+In the referencing module you would like to implement event handlers and simply resuse some of the classes in the 'domain module'. But this doesn't work, because automatically the aggregate with it's command handler is registered.
+
+The solution is to disable discovery for aggregates.
+
+[source,properties]
+----
+quarkus.axon.discovery.aggregates.enabled=false
+----
+
+=== Only consider a package for discovery
+The use case is again that you have a referenced module, where aggreates, command handlers, event handlers and query handlers are defined. In the referencing module you also have aggregates and all types of message handlers.
+
+You would like to reference it to reuse some of the classes e.g. of the aggreates or entities. But by default, when you start the quarkus instance, all event, command and query handlers and all aggregates are registered, and that's not valid for you.
+
+The solution is to define the included packages for the different types:
+
+[source,properties]
+----
+quarkus.axon.discovery.aggregates.included-packages=foo.bar.module2
+quarkus.axon.discovery.command-handlers.included-packages=foo.bar.module2
+quarkus.axon.discovery.event-handlers.included-packages=foo.bar.module2
+quarkus.axon.discovery.query-handlers.included-packages=foo.bar.module2
+quarkus.axon.discovery.saga-handlers.included-packages=foolbar.module2
+----
+
+Now only those packages are scanned for the components.
+
+== Configuration Reference
+
+include::includes/quarkus-axon.adoc[leveloffset=+1,opts=optional]
+
+'''
+link:index.adoc[Index]
+
+link:05-00-SetupAndUsage.adoc[← Previous: Setup & Usage]
+
+link:05-02-CommandHandler.adoc[Next: Command Hanlders →]

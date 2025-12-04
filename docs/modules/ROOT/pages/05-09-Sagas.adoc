@@ -4,9 +4,9 @@
 
 link:index.adoc[Index]
 
-link:05-07-EventUpcasting.adoc[← Previous: Event Upcasting]
+link:05-08-EventUpcasting.adoc[← Previous: Event Upcasting]
 
-link:05-09-ExceptionHandling.adoc[Next: Exception Handling →]
+link:05-10-ExceptionHandling.adoc[Next: Exception Handling →]
 
 '''
 
@@ -58,7 +58,7 @@ public class CardReturnSaga {
     }
 }
 ----
-<1> Necessary annotation, that this Saga is registered with field for serialization, if the serializer cannot access fields(see link:05-19-Serialization.adoc[Serialization])
+<1> Necessary annotation, that this Saga is registered with field for serialization, if the serializer cannot access fields(see link:05-20-Serialization.adoc[Serialization])
 <2> An application scoped bean is injected. It must be transient because of serialization
 <3> the application scoped bean is used to do some necessary task
 <4> the application scoped bean is used to do some necessary task
@@ -81,7 +81,7 @@ If you would like to use the JDBC Sagastore, you simply have to add the dependen
 </dependency>
 ----
 
-NOTE: The dependency quarkus-axon-transaction for transaction management is automatically added. For detailed information see link:05-14-Transaction.adoc[Transaction].
+NOTE: The dependency quarkus-axon-transaction for transaction management is automatically added. For detailed information see link:05-15-Transaction.adoc[Transaction].
 
 By default the database table is created on startup. If you don't want to create the table automatically, you can disable the creation.
 
@@ -117,6 +117,6 @@ include::includes/quarkus-axon-sagastore-jdbc.adoc[leveloffset=+1,opts=optional]
 
 link:index.adoc[Index]
 
-link:05-07-EventUpcasting.adoc[← Previous: Event Upcasting]
+link:05-08-EventUpcasting.adoc[← Previous: Event Upcasting]
 
-link:05-09-ExceptionHandling.adoc[Next: Exception Handling →]
+link:05-10-ExceptionHandling.adoc[Next: Exception Handling →]
