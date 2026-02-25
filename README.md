@@ -24,7 +24,7 @@ Currently, the LTS version 3.15 is supported in the branch release/quarkus-3.15
 * EventBus
 * EventGateway
 * CommandBus
-* CoammandGateway
+* CommandGateway
 * QueryBus
 * QueryGateway
 * Repository\<T>(e.g. Repository\<GiftCard> if GiftCard is a aggregate)
