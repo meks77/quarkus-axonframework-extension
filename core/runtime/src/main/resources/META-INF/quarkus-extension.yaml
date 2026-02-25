@@ -8,6 +8,7 @@ metadata:
     - "event sourcing"
     - "cqrs"
 #  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+  guide: https://github.com/meks77/quarkus-axonframework-extension/blob/main/docs/modules/ROOT/pages/index.adoc#index
   categories:
     - "data"
   status: "experimental"

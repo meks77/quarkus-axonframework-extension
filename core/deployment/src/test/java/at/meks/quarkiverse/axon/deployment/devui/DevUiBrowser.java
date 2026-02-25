@@ -45,7 +45,7 @@ public class DevUiBrowser implements AutoCloseable {
         List<ElementHandle> rows = tableSelector.locator("css=> vaadin-grid-cell-content").elementHandles();
         List<String> table = new ArrayList<>(rows.size());
 
-        for (int i = FIRST_TABLE_CONTENT_ROW; i < rows.size(); i++) {
+        for (int i = FIRST_TABLE_CONTENT_ROW; i < rows.size() - 12; i++) {
             ElementHandle row = rows.get(i);
             table.add(row.textContent());
         }

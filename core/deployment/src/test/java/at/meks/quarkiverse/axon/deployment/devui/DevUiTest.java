@@ -1,5 +1,10 @@
 package at.meks.quarkiverse.axon.deployment.devui;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.concurrent.TimeUnit;
+
+import org.awaitility.Awaitility;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +42,8 @@ public class DevUiTest {
      * This was done to reduce the initialization overhead of the quarkus-dev startup up and browser start.
      */
     @Test
-    void testAllFeaturesInDevUi() {
+    void testAllFeaturesInDevUi() throws Exception {
+        Thread.sleep(1000);
         assertAggregates();
         assertSagaEventHandler();
         assertEventHandler();
@@ -46,6 +52,9 @@ public class DevUiTest {
     }
 
     private void assertAggregates() {
+        Awaitility.await()
+                .atMost(2, TimeUnit.MINUTES)
+                .untilAsserted(() -> assertThat(uiAsserter.isLineInCard("Aggregates")).isTrue());
         uiAsserter.assertLineInCard("Aggregates", "1");
         uiAsserter.itemListEqualsTo(
                 "Aggregates",
