@@ -15,6 +15,10 @@ public class UiAsserter implements AutoCloseable {
         PlaywrightAssertions.assertThat(devUiBrowser.titleLocatorOfLine(lineLocator)).containsText(lineTitle);
     }
 
+    boolean isLineInCard(String lineTitle) {
+        return devUiBrowser.lineLocatorInExtensionCard(lineTitle).isVisible();
+    }
+
     void itemListEqualsTo(String lineTitle, String... expectedLines) {
         Assertions.assertThat(devUiBrowser.getSingleColumnTableAfterClickOnLine(lineTitle))
                 .containsExactly(expectedLines);
