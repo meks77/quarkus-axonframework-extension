@@ -8,7 +8,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class DeactivatedTracing3Test extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/deactivatedTracing3.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("deactivatedTracing3.properties");
 
 }

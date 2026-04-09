@@ -17,8 +17,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class OneUpcasterChainTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
 
     private static EventUpcasterChain producedChain;
 

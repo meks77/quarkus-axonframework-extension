@@ -8,8 +8,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class BackoffRetrySchedulerTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/commandgateway/backoffretry.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("commandgateway/backoffretry.properties");
 
 }

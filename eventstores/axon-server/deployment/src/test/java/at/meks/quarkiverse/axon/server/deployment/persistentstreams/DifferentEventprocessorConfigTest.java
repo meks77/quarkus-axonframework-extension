@@ -20,9 +20,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class DifferentEventprocessorConfigTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/persistenstreams/differentProcessorConfigs.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("persistenstreams/differentProcessorConfigs.properties");
 
     @Inject
     QuarkusAxonServerConfiguration axonServerConfiguration;

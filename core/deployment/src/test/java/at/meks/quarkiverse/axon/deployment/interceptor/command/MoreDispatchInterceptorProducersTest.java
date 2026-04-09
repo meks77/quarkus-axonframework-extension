@@ -40,9 +40,8 @@ public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
     }
 
     @RegisterExtension()
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setExpectedException(IllegalStateException.class, true)
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(InterceptorsProducer1.class, InterceptorsProducer2.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(InterceptorsProducer1.class, InterceptorsProducer2.class))
+            .setExpectedException(IllegalStateException.class, true);
 
 }

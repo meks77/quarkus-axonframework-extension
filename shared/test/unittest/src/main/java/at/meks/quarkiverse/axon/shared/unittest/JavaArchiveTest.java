@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Api;
-import at.meks.quarkiverse.axon.shared.model.DomainServiceExample;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;
@@ -42,21 +41,28 @@ public class JavaArchiveTest {
                 .setArchiveProducer(() -> javaArchive);
     }
 
+    protected static QuarkusUnitTest application() {
+        return application(javaArchiveBase());
+    }
+
     public static JavaArchive javaArchiveBase() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Giftcard.class, Api.class, GiftcardInMemoryHistory.class, DomainServiceExample.class,
-                        GiftcardQueryHandler.class, GiftcardView.class, GiftcardResource.class)
+                .addPackage(Giftcard.class.getPackage())
+                .addPackage(GiftcardView.class.getPackage())
+                .addPackage(AnotherProjection.class.getPackage())
+                .addPackage(QuarkusPaymentservice.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     public static FileAsset propertiesFile(String name) {
         Log.infof("provide properties file %s for java archive", name);
-        FileAsset fileAsset = new FileAsset(new File("src/test/resources" + name));
-        if (!fileAsset.getSource().exists()) {
-            Log.errorf("file %s doesn't exist", fileAsset.getSource().getAbsolutePath());
-            throw new RuntimeException("file doesn't exist: " + fileAsset.getSource().getAbsolutePath());
+        String path = name.startsWith("/") ? name : "/" + name;
+        File file = new File("src/test/resources" + path);
+        if (!file.exists()) {
+            Log.errorf("file %s doesn't exist", file.getAbsolutePath());
+            throw new RuntimeException("file doesn't exist: " + file.getAbsolutePath());
         }
-        return fileAsset;
+        return new FileAsset(file);
     }
 
     @Inject

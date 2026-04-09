@@ -12,9 +12,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class SingleThreadedTest extends TrackingProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/eventprocessors/tracking/singleThreaded.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/tracking/singleThreaded.properties");
 
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {

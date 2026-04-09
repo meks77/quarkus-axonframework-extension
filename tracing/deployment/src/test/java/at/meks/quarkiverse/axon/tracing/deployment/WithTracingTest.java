@@ -8,7 +8,6 @@ import io.quarkus.test.QuarkusUnitTest;
 public class WithTracingTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase());
+    static final QuarkusUnitTest config = application();
 
 }

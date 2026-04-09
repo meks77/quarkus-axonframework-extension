@@ -8,6 +8,6 @@ import io.quarkus.test.QuarkusUnitTest;
 public class ConfigurationWithDefaultsTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase());
+    static final QuarkusUnitTest config = application();
 
 }

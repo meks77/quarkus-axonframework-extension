@@ -14,8 +14,7 @@ import io.restassured.RestAssured;
 public class WithMetricsTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase());
+    static final QuarkusUnitTest config = application();
 
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {

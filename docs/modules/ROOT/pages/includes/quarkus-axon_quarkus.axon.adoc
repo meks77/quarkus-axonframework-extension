@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-enabled[`quarkus.axon.discovery.aggregates.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-enabled[`+++quarkus.axon.discovery.aggregates.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.aggregates.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -28,7 +28,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-included-packages[`quarkus.axon.discovery.aggregates.included-packages`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-aggregates-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-aggregates-included-packages[`+++quarkus.axon.discovery.aggregates.included-packages+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.aggregates.included-packages+++[]
 endif::add-copy-button-to-config-props[]
@@ -51,7 +51,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-enabled[`quarkus.axon.discovery.command-handlers.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-enabled[`+++quarkus.axon.discovery.command-handlers.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.command-handlers.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -72,7 +72,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages[`quarkus.axon.discovery.command-handlers.included-packages`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-command-handlers-included-packages[`+++quarkus.axon.discovery.command-handlers.included-packages+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.command-handlers.included-packages+++[]
 endif::add-copy-button-to-config-props[]
@@ -95,7 +95,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-enabled[`quarkus.axon.discovery.event-handlers.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-enabled[`+++quarkus.axon.discovery.event-handlers.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.event-handlers.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -116,7 +116,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages[`quarkus.axon.discovery.event-handlers.included-packages`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-event-handlers-included-packages[`+++quarkus.axon.discovery.event-handlers.included-packages+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.event-handlers.included-packages+++[]
 endif::add-copy-button-to-config-props[]
@@ -139,7 +139,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-enabled[`quarkus.axon.discovery.query-handlers.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-enabled[`+++quarkus.axon.discovery.query-handlers.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.query-handlers.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -160,7 +160,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages[`quarkus.axon.discovery.query-handlers.included-packages`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-query-handlers-included-packages[`+++quarkus.axon.discovery.query-handlers.included-packages+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.query-handlers.included-packages+++[]
 endif::add-copy-button-to-config-props[]
@@ -183,7 +183,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`quarkus.axon.discovery.saga-handlers.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`+++quarkus.axon.discovery.saga-handlers.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -204,7 +204,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages[`quarkus.axon.discovery.saga-handlers.included-packages`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages[`+++quarkus.axon.discovery.saga-handlers.included-packages+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.included-packages+++[]
 endif::add-copy-button-to-config-props[]
@@ -227,7 +227,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`quarkus.axon.health-enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`+++quarkus.axon.health-enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.health-enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -248,7 +248,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`quarkus.axon.axon-application-name`]##
+a| [[quarkus-axon_quarkus-axon-axon-application-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-axon-application-name[`+++quarkus.axon.axon-application-name+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.axon-application-name+++[]
 endif::add-copy-button-to-config-props[]
@@ -269,7 +269,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++quarkus-axon+++`
 
-a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`quarkus.axon.live-reload.shutdown.wait-duration.unit`]##
+a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`+++quarkus.axon.live-reload.shutdown.wait-duration.unit+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.live-reload.shutdown.wait-duration.unit+++[]
 endif::add-copy-button-to-config-props[]
@@ -290,7 +290,7 @@ endif::add-copy-button-to-env-var[]
 a|`nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`
 |`+++milliseconds+++`
 
-a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount[`quarkus.axon.live-reload.shutdown.wait-duration.amount`]##
+a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-amount[`+++quarkus.axon.live-reload.shutdown.wait-duration.amount+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.live-reload.shutdown.wait-duration.amount+++[]
 endif::add-copy-button-to-config-props[]
@@ -311,7 +311,7 @@ endif::add-copy-button-to-env-var[]
 |long
 |`+++500+++`
 
-a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`quarkus.axon.exception-handling.wrap-on-command-handler`]##
+a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`+++quarkus.axon.exception-handling.wrap-on-command-handler+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.exception-handling.wrap-on-command-handler+++[]
 endif::add-copy-button-to-config-props[]
@@ -332,7 +332,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler[`quarkus.axon.exception-handling.wrap-on-query-handler`]##
+a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-query-handler[`+++quarkus.axon.exception-handling.wrap-on-query-handler+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.exception-handling.wrap-on-query-handler+++[]
 endif::add-copy-button-to-config-props[]
@@ -353,7 +353,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval[`quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval`]##
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval[`+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval+++[]
 endif::add-copy-button-to-config-props[]
@@ -374,7 +374,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count[`quarkus.axon.command-gateway.retry.scheduling.max-retry-count`]##
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-max-retry-count[`+++quarkus.axon.command-gateway.retry.scheduling.max-retry-count+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.max-retry-count+++[]
 endif::add-copy-button-to-config-props[]
@@ -395,7 +395,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor[`quarkus.axon.command-gateway.retry.scheduling.backoff-factor`]##
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-backoff-factor[`+++quarkus.axon.command-gateway.retry.scheduling.backoff-factor+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.backoff-factor+++[]
 endif::add-copy-button-to-config-props[]
@@ -416,7 +416,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver[`quarkus.axon.command-bus.duplicate-command-handler-resolver`]##
+a| [[quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-bus-duplicate-command-handler-resolver[`+++quarkus.axon.command-bus.duplicate-command-handler-resolver+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.command-bus.duplicate-command-handler-resolver+++[]
 endif::add-copy-button-to-config-props[]
@@ -437,7 +437,7 @@ endif::add-copy-button-to-env-var[]
 a|`log-and-override`, `silent-override`, `reject-duplicates`
 |`+++reject-duplicates+++`
 
-a| [[quarkus-axon_quarkus-axon-event-processing-default-event-processing-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-event-processing-default-event-processing-type[`quarkus.axon.event-processing.default-event-processing-type`]##
+a| [[quarkus-axon_quarkus-axon-event-processing-default-event-processing-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-event-processing-default-event-processing-type[`+++quarkus.axon.event-processing.default-event-processing-type+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.event-processing.default-event-processing-type+++[]
 endif::add-copy-button-to-config-props[]
@@ -458,7 +458,7 @@ endif::add-copy-button-to-env-var[]
 a|`subscribing`, `tracking`, `pooled`
 |
 
-a| [[quarkus-axon_quarkus-axon-subscribingprocessor-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-name[`quarkus.axon.subscribingprocessor.name`]##
+a| [[quarkus-axon_quarkus-axon-subscribingprocessor-name]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-name[`+++quarkus.axon.subscribingprocessor.name+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.subscribingprocessor.name+++[]
 endif::add-copy-button-to-config-props[]
@@ -479,7 +479,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups[`quarkus.axon.subscribingprocessor.processing-groups`]##
+a| [[quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups[`+++quarkus.axon.subscribingprocessor.processing-groups+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.subscribingprocessor.processing-groups+++[]
 endif::add-copy-button-to-config-props[]
@@ -500,13 +500,13 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`quarkus.axon.snapshots.trigger-type`]##
+a| [[quarkus-axon_quarkus-axon-snapshots-trigger-type]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-trigger-type[`+++quarkus.axon.snapshots.trigger-type+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots.trigger-type+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.snapshots."aggregate-name".trigger-type`
+`+++quarkus.axon.snapshots."aggregate-name".trigger-type+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots."aggregate-name".trigger-type+++[]
 endif::add-copy-button-to-config-props[]
@@ -526,13 +526,13 @@ endif::add-copy-button-to-env-var[]
 a|`no-snapshots`, `load-time`, `event-count`
 |`+++no-snapshots+++`
 
-a| [[quarkus-axon_quarkus-axon-snapshots-threshold]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-threshold[`quarkus.axon.snapshots.threshold`]##
+a| [[quarkus-axon_quarkus-axon-snapshots-threshold]] [.property-path]##link:#quarkus-axon_quarkus-axon-snapshots-threshold[`+++quarkus.axon.snapshots.threshold+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots.threshold+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.snapshots."aggregate-name".threshold`
+`+++quarkus.axon.snapshots."aggregate-name".threshold+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.snapshots."aggregate-name".threshold+++[]
 endif::add-copy-button-to-config-props[]
@@ -556,13 +556,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |`+++-1+++`
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-batch-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-batch-size[`quarkus.axon.pooledprocessor.batch-size`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-batch-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-batch-size[`+++quarkus.axon.pooledprocessor.batch-size+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".batch-size`
+`+++quarkus.axon.pooledprocessor."processor-name".batch-size+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".batch-size+++[]
 endif::add-copy-button-to-config-props[]
@@ -582,13 +582,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-segments[`quarkus.axon.pooledprocessor.initial-segments`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-segments[`+++quarkus.axon.pooledprocessor.initial-segments+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-segments`
+`+++quarkus.axon.pooledprocessor."processor-name".initial-segments+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-segments+++[]
 endif::add-copy-button-to-config-props[]
@@ -608,13 +608,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail[`quarkus.axon.pooledprocessor.initial-position.at-head-or-tail`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-head-or-tail[`+++quarkus.axon.pooledprocessor.initial-position.at-head-or-tail+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-position.at-head-or-tail`
+`+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-head-or-tail+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
@@ -634,13 +634,13 @@ endif::add-copy-button-to-env-var[]
 a|`head`, `tail`
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence[`quarkus.axon.pooledprocessor.initial-position.at-sequence`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-sequence[`+++quarkus.axon.pooledprocessor.initial-position.at-sequence+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-sequence+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-position.at-sequence`
+`+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-sequence+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-sequence+++[]
 endif::add-copy-button-to-config-props[]
@@ -660,13 +660,13 @@ endif::add-copy-button-to-env-var[]
 |long
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp[`quarkus.axon.pooledprocessor.initial-position.at-timestamp`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-timestamp[`+++quarkus.axon.pooledprocessor.initial-position.at-timestamp+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-timestamp+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-position.at-timestamp`
+`+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-timestamp+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-timestamp+++[]
 endif::add-copy-button-to-config-props[]
@@ -686,13 +686,13 @@ endif::add-copy-button-to-env-var[]
 |link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html[ZonedDateTime]
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration[`quarkus.axon.pooledprocessor.initial-position.at-duration`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-initial-position-at-duration[`+++quarkus.axon.pooledprocessor.initial-position.at-duration+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.initial-position.at-duration+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".initial-position.at-duration`
+`+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-duration+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".initial-position.at-duration+++[]
 endif::add-copy-button-to-config-props[]
@@ -712,13 +712,13 @@ endif::add-copy-button-to-env-var[]
 |link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-axon_quarkus-axon[icon:question-circle[title=More information about the Duration format]]
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-processing-groups[`quarkus.axon.pooledprocessor.processing-groups`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-processing-groups[`+++quarkus.axon.pooledprocessor.processing-groups+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".processing-groups`
+`+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++[]
 endif::add-copy-button-to-config-props[]
@@ -738,13 +738,13 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix[`quarkus.axon.pooledprocessor.use-random-uuid-suffix`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-random-uuid-suffix[`+++quarkus.axon.pooledprocessor.use-random-uuid-suffix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".use-random-uuid-suffix`
+`+++quarkus.axon.pooledprocessor."processor-name".use-random-uuid-suffix+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]
@@ -764,13 +764,13 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store[`quarkus.axon.pooledprocessor.use-in-memory-token-store`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-use-in-memory-token-store[`+++quarkus.axon.pooledprocessor.use-in-memory-token-store+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.use-in-memory-token-store+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".use-in-memory-token-store`
+`+++quarkus.axon.pooledprocessor."processor-name".use-in-memory-token-store+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".use-in-memory-token-store+++[]
 endif::add-copy-button-to-config-props[]
@@ -790,13 +790,13 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments[`quarkus.axon.pooledprocessor.max-claimed-segments`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-max-claimed-segments[`+++quarkus.axon.pooledprocessor.max-claimed-segments+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.max-claimed-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".max-claimed-segments`
+`+++quarkus.axon.pooledprocessor."processor-name".max-claimed-segments+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".max-claimed-segments+++[]
 endif::add-copy-button-to-config-props[]
@@ -816,13 +816,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension[`quarkus.axon.pooledprocessor.enabled-coordinator-claim-extension`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-enabled-coordinator-claim-extension[`+++quarkus.axon.pooledprocessor.enabled-coordinator-claim-extension+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.enabled-coordinator-claim-extension+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".enabled-coordinator-claim-extension`
+`+++quarkus.axon.pooledprocessor."processor-name".enabled-coordinator-claim-extension+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".enabled-coordinator-claim-extension+++[]
 endif::add-copy-button-to-config-props[]
@@ -842,13 +842,13 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-worker-thread-pool-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-worker-thread-pool-size[`quarkus.axon.pooledprocessor.worker-thread-pool-size`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-worker-thread-pool-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-worker-thread-pool-size[`+++quarkus.axon.pooledprocessor.worker-thread-pool-size+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.worker-thread-pool-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.pooledprocessor."processor-name".worker-thread-pool-size`
+`+++quarkus.axon.pooledprocessor."processor-name".worker-thread-pool-size+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".worker-thread-pool-size+++[]
 endif::add-copy-button-to-config-props[]
@@ -868,13 +868,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-batch-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-batch-size[`quarkus.axon.trackingprocessor.batch-size`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-batch-size]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-batch-size[`+++quarkus.axon.trackingprocessor.batch-size+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".batch-size`
+`+++quarkus.axon.trackingprocessor."processor-name".batch-size+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".batch-size+++[]
 endif::add-copy-button-to-config-props[]
@@ -894,13 +894,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-segments[`quarkus.axon.trackingprocessor.initial-segments`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-segments]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-segments[`+++quarkus.axon.trackingprocessor.initial-segments+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-segments`
+`+++quarkus.axon.trackingprocessor."processor-name".initial-segments+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-segments+++[]
 endif::add-copy-button-to-config-props[]
@@ -920,13 +920,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail[`quarkus.axon.trackingprocessor.initial-position.at-head-or-tail`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-head-or-tail[`+++quarkus.axon.trackingprocessor.initial-position.at-head-or-tail+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-position.at-head-or-tail`
+`+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-head-or-tail+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-head-or-tail+++[]
 endif::add-copy-button-to-config-props[]
@@ -946,13 +946,13 @@ endif::add-copy-button-to-env-var[]
 a|`head`, `tail`
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence[`quarkus.axon.trackingprocessor.initial-position.at-sequence`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-sequence[`+++quarkus.axon.trackingprocessor.initial-position.at-sequence+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-sequence+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-position.at-sequence`
+`+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-sequence+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-sequence+++[]
 endif::add-copy-button-to-config-props[]
@@ -972,13 +972,13 @@ endif::add-copy-button-to-env-var[]
 |long
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp[`quarkus.axon.trackingprocessor.initial-position.at-timestamp`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-timestamp[`+++quarkus.axon.trackingprocessor.initial-position.at-timestamp+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-timestamp+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-position.at-timestamp`
+`+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-timestamp+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-timestamp+++[]
 endif::add-copy-button-to-config-props[]
@@ -998,13 +998,13 @@ endif::add-copy-button-to-env-var[]
 |link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html[ZonedDateTime]
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration[`quarkus.axon.trackingprocessor.initial-position.at-duration`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-initial-position-at-duration[`+++quarkus.axon.trackingprocessor.initial-position.at-duration+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.initial-position.at-duration+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".initial-position.at-duration`
+`+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-duration+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".initial-position.at-duration+++[]
 endif::add-copy-button-to-config-props[]
@@ -1024,13 +1024,13 @@ endif::add-copy-button-to-env-var[]
 |link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-axon_quarkus-axon[icon:question-circle[title=More information about the Duration format]]
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-processing-groups[`quarkus.axon.trackingprocessor.processing-groups`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-processing-groups[`+++quarkus.axon.trackingprocessor.processing-groups+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.processing-groups+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".processing-groups`
+`+++quarkus.axon.trackingprocessor."processor-name".processing-groups+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".processing-groups+++[]
 endif::add-copy-button-to-config-props[]
@@ -1050,13 +1050,13 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix[`quarkus.axon.trackingprocessor.use-random-uuid-suffix`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-random-uuid-suffix[`+++quarkus.axon.trackingprocessor.use-random-uuid-suffix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".use-random-uuid-suffix`
+`+++quarkus.axon.trackingprocessor."processor-name".use-random-uuid-suffix+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]
@@ -1076,13 +1076,13 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store[`quarkus.axon.trackingprocessor.use-in-memory-token-store`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-use-in-memory-token-store[`+++quarkus.axon.trackingprocessor.use-in-memory-token-store+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.use-in-memory-token-store+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".use-in-memory-token-store`
+`+++quarkus.axon.trackingprocessor."processor-name".use-in-memory-token-store+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".use-in-memory-token-store+++[]
 endif::add-copy-button-to-config-props[]
@@ -1102,13 +1102,13 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-thread-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-thread-count[`quarkus.axon.trackingprocessor.thread-count`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-thread-count]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-thread-count[`+++quarkus.axon.trackingprocessor.thread-count+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.thread-count+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".thread-count`
+`+++quarkus.axon.trackingprocessor."processor-name".thread-count+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".thread-count+++[]
 endif::add-copy-button-to-config-props[]
@@ -1128,13 +1128,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-token-claim-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-token-claim-interval[`quarkus.axon.trackingprocessor.token-claim.interval`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-token-claim-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-token-claim-interval[`+++quarkus.axon.trackingprocessor.token-claim.interval+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.interval+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".token-claim.interval`
+`+++quarkus.axon.trackingprocessor."processor-name".token-claim.interval+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".token-claim.interval+++[]
 endif::add-copy-button-to-config-props[]
@@ -1154,13 +1154,13 @@ endif::add-copy-button-to-env-var[]
 |long
 |
 
-a| [[quarkus-axon_quarkus-axon-trackingprocessor-token-claim-time-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-token-claim-time-unit[`quarkus.axon.trackingprocessor.token-claim.time-unit`]##
+a| [[quarkus-axon_quarkus-axon-trackingprocessor-token-claim-time-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-trackingprocessor-token-claim-time-unit[`+++quarkus.axon.trackingprocessor.token-claim.time-unit+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor.token-claim.time-unit+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit`
+`+++quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.trackingprocessor."processor-name".token-claim.time-unit+++[]
 endif::add-copy-button-to-config-props[]

@@ -12,8 +12,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class WithDefaultsTest extends TrackingProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/eventprocessors/tracking/defaults.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/tracking/defaults.properties");
 
     @Override
     protected void assertTrackingConfiguration(Map<String, TrackingEventProcessor> trackingEventProcessors) {

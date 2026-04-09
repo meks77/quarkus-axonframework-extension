@@ -10,9 +10,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class RandomProcessorNamesTest extends AbstractRandomProcessorNamesTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/eventprocessors/pooled/randomProcessorNames.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/pooled/randomProcessorNames.properties");
 
     @Override
     protected Class<? extends StreamingEventProcessor> expectedEventProcessorType() {

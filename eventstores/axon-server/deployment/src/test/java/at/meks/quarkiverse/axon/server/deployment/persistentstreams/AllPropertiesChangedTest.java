@@ -14,9 +14,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class AllPropertiesChangedTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = JavaArchiveTest.application(
-            JavaArchiveTest.javaArchiveBase().addAsResource(
-                    JavaArchiveTest.propertiesFile("/persistenstreams/propertiesChanged.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = JavaArchiveTest.application()
+            .withConfigurationResource("persistenstreams/propertiesChanged.properties");
 
 }

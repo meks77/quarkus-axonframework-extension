@@ -13,12 +13,9 @@ import io.quarkus.test.QuarkusUnitTest;
 public class RejectDuplicatesTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setExpectedException(LifecycleHandlerInvocationException.class)
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClass(MyCommandHandler.class)
-                    .addAsResource(propertiesFile("/commandhandler/duplicateresolver/rejectDuplicates.properties"),
-                            "application.properties"));
+    static final QuarkusUnitTest config = application(javaArchiveBase().addClass(MyCommandHandler.class))
+            .withConfigurationResource("commandhandler/duplicateresolver/rejectDuplicates.properties")
+            .setExpectedException(LifecycleHandlerInvocationException.class);
 
     @ApplicationScoped
     public static class MyCommandHandler {

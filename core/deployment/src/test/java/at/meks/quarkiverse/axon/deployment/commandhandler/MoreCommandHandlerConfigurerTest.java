@@ -33,9 +33,8 @@ public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
     }
 
     @RegisterExtension()
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setExpectedException(IllegalStateException.class, true)
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(CommandHandlerProducer1.class, CommandHandlerProducer2.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(CommandHandlerProducer1.class, CommandHandlerProducer2.class))
+            .setExpectedException(IllegalStateException.class, true);
 
 }

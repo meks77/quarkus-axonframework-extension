@@ -10,7 +10,7 @@ import io.restassured.RestAssured;
 public class HealthTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase());
+    static final QuarkusUnitTest config = application();
 
     @Override
     protected void assertOthers() {

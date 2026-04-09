@@ -11,8 +11,10 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.model.Api;
+import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
+import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
+import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import at.meks.quarkiverse.axon.shared.unittest.GiftcardResource;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
@@ -24,7 +26,11 @@ public class LiveReloadTest {
     @RegisterExtension
     final static QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(GiftcardResource.class, DomainServiceForLiveReloading.class, Api.class, Giftcard.class)
+                    .addPackage(Giftcard.class.getPackage())
+                    .addPackage(GiftcardView.class.getPackage())
+                    .addPackage(AnotherProjection.class.getPackage())
+                    .addPackage(QuarkusPaymentservice.class.getPackage())
+                    .addClasses(GiftcardResource.class, DomainServiceForLiveReloading.class)
                     .addAsResource(JavaArchiveTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));
 

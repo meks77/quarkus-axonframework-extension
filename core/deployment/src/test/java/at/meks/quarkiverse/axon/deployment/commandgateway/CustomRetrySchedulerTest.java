@@ -22,9 +22,8 @@ public class CustomRetrySchedulerTest extends JavaArchiveTest {
     RetryScheduler retryScheduler;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(MyRetrySchedulerProducer.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(MyRetrySchedulerProducer.class));
 
     public static class MyRetrySchedulerProducer {
 

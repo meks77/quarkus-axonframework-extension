@@ -14,9 +14,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class MultipleUpcasterChainsTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(EventUpcasterChainProducer1.class, EventUpcasterChainProducer2.class))
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(EventUpcasterChainProducer1.class, EventUpcasterChainProducer2.class))
             .assertException(throwable -> assertThat(throwable).hasMessageContaining("multiple eventUpcasterChain found"));
 
     @ApplicationScoped
