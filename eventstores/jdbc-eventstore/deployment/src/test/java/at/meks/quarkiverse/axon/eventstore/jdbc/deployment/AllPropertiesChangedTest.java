@@ -10,7 +10,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class AllPropertiesChangedTest extends JdbcEventstoreTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/changed.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("changed.properties");
 
 }

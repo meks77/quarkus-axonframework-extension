@@ -44,10 +44,8 @@ public class InitialPositionTest extends PooledProcessorTest {
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(
-                    propertiesFile("/eventprocessors/pooled/initialPosition.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/pooled/initialPosition.properties");
 
     @Override
     protected void assertOthers() {

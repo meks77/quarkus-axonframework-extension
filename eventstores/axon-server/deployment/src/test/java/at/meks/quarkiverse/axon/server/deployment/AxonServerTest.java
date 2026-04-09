@@ -17,8 +17,8 @@ import io.restassured.RestAssured;
 public class AxonServerTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/axonservertest.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("axonservertest.properties");
 
     @Inject
     QuarkusAxonServerConfiguration configuration;

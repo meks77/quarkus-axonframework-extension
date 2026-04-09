@@ -13,8 +13,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class JpaSagaStoreTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/application.properties"), "application.properties"));
+    static final QuarkusUnitTest config = application().withConfigurationResource("application.properties");
 
     @Inject
     SqlExecutor sqlExecutor;

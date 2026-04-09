@@ -16,9 +16,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class CustomCommandBusTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(MyCommandBusProducer.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(MyCommandBusProducer.class));
 
     @ApplicationScoped
     public static class MyCommandBusProducer implements CommandBusProducer {

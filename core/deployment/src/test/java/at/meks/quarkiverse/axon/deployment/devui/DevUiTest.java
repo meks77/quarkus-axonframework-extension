@@ -6,14 +6,17 @@ import java.util.concurrent.TimeUnit;
 
 import org.awaitility.Awaitility;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.model.Api;
+import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
+import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
+import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 
@@ -22,8 +25,12 @@ public class DevUiTest {
     @RegisterExtension
     final static QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(Api.class, Giftcard.class)
-                    .addAsResource(JavaArchiveTest.propertiesFile("/devUiTest.properties"), "application.properties"));
+                    .addPackage(Giftcard.class.getPackage())
+                    .addPackage(GiftcardView.class.getPackage())
+                    .addPackage(AnotherProjection.class.getPackage())
+                    .addPackage(QuarkusPaymentservice.class.getPackage())
+                    .addAsResource(JavaArchiveTest.propertiesFile("/devUiTest.properties"), "application.properties")
+                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
     private UiAsserter uiAsserter;
 

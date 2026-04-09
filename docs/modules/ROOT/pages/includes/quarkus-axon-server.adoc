@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-health-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-health-enabled[`quarkus.axon.server.health-enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-health-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-health-enabled[`+++quarkus.axon.server.health-enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.health-enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -28,7 +28,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-dev-services-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-dev-services-enabled[`quarkus.axon.server.dev-services.enabled`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-dev-services-enabled]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-dev-services-enabled[`+++quarkus.axon.server.dev-services.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.dev-services.enabled+++[]
 endif::add-copy-button-to-config-props[]
@@ -49,7 +49,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-servers]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-servers[`quarkus.axon.server.servers`]##
+a| [[quarkus-axon-server_quarkus-axon-server-servers]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-servers[`+++quarkus.axon.server.servers+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.servers+++[]
 endif::add-copy-button-to-config-props[]
@@ -78,7 +78,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++localhost+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-default-grpc-port]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-default-grpc-port[`quarkus.axon.server.default-grpc-port`]##
+a| [[quarkus-axon-server_quarkus-axon-server-default-grpc-port]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-default-grpc-port[`+++quarkus.axon.server.default-grpc-port+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.default-grpc-port+++[]
 endif::add-copy-button-to-config-props[]
@@ -99,7 +99,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |`+++8124+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-context[`quarkus.axon.server.context`]##
+a| [[quarkus-axon-server_quarkus-axon-server-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-context[`+++quarkus.axon.server.context+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.context+++[]
 endif::add-copy-button-to-config-props[]
@@ -120,7 +120,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++default+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-token]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token[`quarkus.axon.server.token`]##
+a| [[quarkus-axon-server_quarkus-axon-server-token]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token[`+++quarkus.axon.server.token+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.token+++[]
 endif::add-copy-button-to-config-props[]
@@ -141,7 +141,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon-server_quarkus-axon-server-token-required]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token-required[`quarkus.axon.server.token-required`]##
+a| [[quarkus-axon-server_quarkus-axon-server-token-required]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-token-required[`+++quarkus.axon.server.token-required+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.token-required+++[]
 endif::add-copy-button-to-config-props[]
@@ -162,7 +162,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-ssl-trust-store]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-ssl-trust-store[`quarkus.axon.server.ssl-trust-store`]##
+a| [[quarkus-axon-server_quarkus-axon-server-ssl-trust-store]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-ssl-trust-store[`+++quarkus.axon.server.ssl-trust-store+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.ssl-trust-store+++[]
 endif::add-copy-button-to-config-props[]
@@ -185,7 +185,7 @@ endif::add-copy-button-to-env-var[]
 |path
 |
 
-a| [[quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-value]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-value[`quarkus.axon.server.grpc.maxMessageSize.value`]##
+a| [[quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-value]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-value[`+++quarkus.axon.server.grpc.maxMessageSize.value+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.grpc.maxMessageSize.value+++[]
 endif::add-copy-button-to-config-props[]
@@ -206,7 +206,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-unit]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-unit[`quarkus.axon.server.grpc.maxMessageSize.unit`]##
+a| [[quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-unit]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-grpc-maxmessagesize-unit[`+++quarkus.axon.server.grpc.maxMessageSize.unit+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.grpc.maxMessageSize.unit+++[]
 endif::add-copy-button-to-config-props[]
@@ -227,7 +227,7 @@ endif::add-copy-button-to-env-var[]
 a|`bytes`, `kb`, `mb`
 |`+++bytes+++`
 
-a| [[quarkus-axon-server_quarkus-axon-server-command-threads]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-command-threads[`quarkus.axon.server.command-threads`]##
+a| [[quarkus-axon-server_quarkus-axon-server-command-threads]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-command-threads[`+++quarkus.axon.server.command-threads+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.command-threads+++[]
 endif::add-copy-button-to-config-props[]
@@ -248,13 +248,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-batch-size]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-batch-size[`quarkus.axon.persistentstreams.batch-size`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-batch-size]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-batch-size[`+++quarkus.axon.persistentstreams.batch-size+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.batch-size+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".batch-size`
+`+++quarkus.axon.persistentstreams."processor-name".batch-size+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".batch-size+++[]
 endif::add-copy-button-to-config-props[]
@@ -274,13 +274,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments[`quarkus.axon.persistentstreams.initial-segments`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments[`+++quarkus.axon.persistentstreams.initial-segments+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.initial-segments+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".initial-segments`
+`+++quarkus.axon.persistentstreams."processor-name".initial-segments+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".initial-segments+++[]
 endif::add-copy-button-to-config-props[]
@@ -300,13 +300,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-context[`quarkus.axon.persistentstreams.context`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-context[`+++quarkus.axon.persistentstreams.context+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.context+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".context`
+`+++quarkus.axon.persistentstreams."processor-name".context+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".context+++[]
 endif::add-copy-button-to-config-props[]
@@ -326,13 +326,13 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-segments[`quarkus.axon.persistentstreams.segments`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-segments[`+++quarkus.axon.persistentstreams.segments+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.segments+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".segments`
+`+++quarkus.axon.persistentstreams."processor-name".segments+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".segments+++[]
 endif::add-copy-button-to-config-props[]
@@ -352,13 +352,13 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-position]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-position[`quarkus.axon.persistentstreams.initial-position`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-position]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-position[`+++quarkus.axon.persistentstreams.initial-position+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.initial-position+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".initial-position`
+`+++quarkus.axon.persistentstreams."processor-name".initial-position+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".initial-position+++[]
 endif::add-copy-button-to-config-props[]
@@ -378,13 +378,13 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-filter]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-filter[`quarkus.axon.persistentstreams.filter`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-filter]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-filter[`+++quarkus.axon.persistentstreams.filter+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.filter+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".filter`
+`+++quarkus.axon.persistentstreams."processor-name".filter+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".filter+++[]
 endif::add-copy-button-to-config-props[]
@@ -404,13 +404,13 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups[`quarkus.axon.persistentstreams.processing-groups`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups[`+++quarkus.axon.persistentstreams.processing-groups+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.processing-groups+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".processing-groups`
+`+++quarkus.axon.persistentstreams."processor-name".processing-groups+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".processing-groups+++[]
 endif::add-copy-button-to-config-props[]
@@ -430,13 +430,13 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix[`quarkus.axon.persistentstreams.use-random-uuid-suffix`]##
+a| [[quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix[`+++quarkus.axon.persistentstreams.use-random-uuid-suffix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams.use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix`
+`+++quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix+++`
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix+++[]
 endif::add-copy-button-to-config-props[]

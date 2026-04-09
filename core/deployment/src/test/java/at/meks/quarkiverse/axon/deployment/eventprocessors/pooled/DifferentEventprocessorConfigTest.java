@@ -12,10 +12,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class DifferentEventprocessorConfigTest extends PooledProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(
-                    propertiesFile("/eventprocessors/pooled/differentProcessorConfigs.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/pooled/differentProcessorConfigs.properties");
 
     @Override
     protected void assertPooledConfigurations(Map<String, PooledStreamingEventProcessor> processors) {

@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-autocreate-table]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-autocreate-table[`quarkus.axon.sagastore.jdbc.autocreate-table`]##
+a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-autocreate-table]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-autocreate-table[`+++quarkus.axon.sagastore.jdbc.autocreate-table+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.sagastore.jdbc.autocreate-table+++[]
 endif::add-copy-button-to-config-props[]
@@ -28,7 +28,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name[`quarkus.axon.sagastore.jdbc.saga-table-name`]##
+a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-saga-table-name[`+++quarkus.axon.sagastore.jdbc.saga-table-name+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.sagastore.jdbc.saga-table-name+++[]
 endif::add-copy-button-to-config-props[]
@@ -49,7 +49,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-association-value-table-name]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-association-value-table-name[`quarkus.axon.sagastore.jdbc.association-value-table-name`]##
+a| [[quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-association-value-table-name]] [.property-path]##link:#quarkus-axon-sagastore-jdbc_quarkus-axon-sagastore-jdbc-association-value-table-name[`+++quarkus.axon.sagastore.jdbc.association-value-table-name+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.sagastore.jdbc.association-value-table-name+++[]
 endif::add-copy-button-to-config-props[]

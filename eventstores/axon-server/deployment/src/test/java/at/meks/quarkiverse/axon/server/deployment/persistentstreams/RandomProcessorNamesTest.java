@@ -15,9 +15,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class RandomProcessorNamesTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/persistenstreams/randomProcessorNames.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("persistenstreams/randomProcessorNames.properties");
 
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {

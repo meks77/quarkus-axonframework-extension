@@ -8,8 +8,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class TokenIsRequiredTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
-            .addAsResource(propertiesFile("/token-required.properties"), "application.properties"))
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("token-required.properties")
             .setExpectedException(IllegalStateException.class, true);
 
 }

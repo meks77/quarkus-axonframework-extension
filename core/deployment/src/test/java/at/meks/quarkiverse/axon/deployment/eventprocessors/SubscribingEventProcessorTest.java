@@ -15,9 +15,8 @@ import io.quarkus.test.QuarkusUnitTest;
 public class SubscribingEventProcessorTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(
-            javaArchiveBase().addAsResource(propertiesFile("/eventprocessors/subscribingEventProcessors.properties"),
-                    "application.properties"));
+    static final QuarkusUnitTest config = application()
+            .withConfigurationResource("eventprocessors/subscribingEventProcessors.properties");
 
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {

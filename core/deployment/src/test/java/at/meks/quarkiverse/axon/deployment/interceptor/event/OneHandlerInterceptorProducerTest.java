@@ -57,9 +57,8 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
-            .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase()
-                    .addClasses(InterceptorsProducer.class, LoggerProducer.class));
+    static final QuarkusUnitTest config = application(javaArchiveBase()
+            .addClasses(InterceptorsProducer.class, LoggerProducer.class));
 
     @Override
     protected void assertOthers() {
