@@ -1,15 +1,14 @@
 package at.meks.quarkiverse.axon.shared.model;
 
-import static org.axonframework.modelling.command.AggregateLifecycle.apply;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.modelling.command.AggregateIdentifier;
-import org.axonframework.modelling.command.AggregateMember;
+import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
+import org.axonframework.eventsourcing.annotation.reflection.EntityCreator;
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
+import org.axonframework.messaging.eventhandling.gateway.EventAppender;
+import org.axonframework.modelling.entity.annotation.EntityMember;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
@@ -17,28 +16,29 @@ import at.meks.quarkiverse.axon.shared.model.Api.IssueCardCommand;
 import io.quarkus.logging.Log;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@EventSourcedEntity
 public class Giftcard {
 
-    @AggregateIdentifier
     private String id;
     private int currentAmount;
     private final List<Integer> cardRedemptions = new ArrayList<>();
 
-    @AggregateMember
+    @EntityMember
     private final PersonalInformation personalInformation = new PersonalInformation();
 
+    @EntityCreator
     @SuppressWarnings("unused")
     Giftcard() {
         // necesarry for the axon framework
     }
 
     @CommandHandler
-    Giftcard(IssueCardCommand command) {
+    public static void handle(IssueCardCommand command, EventAppender eventAppender) {
         if (command == null) {
             throw new IllegalArgumentException("command mustn't be null");
         }
-        apply(new Api.CardIssuedEvent(command.id(), command.initialAmount()));
-        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(), currentAmount);
+        eventAppender.append(new Api.CardIssuedEvent(command.id(), command.initialAmount()));
+        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(), command.initialAmount());
     }
 
     @EventSourcingHandler
@@ -48,15 +48,16 @@ public class Giftcard {
         this.currentAmount = event.amount();
     }
 
-    public void requestRedeem(int amount) {
-        if (this.currentAmount < amount) {
-            throw new IllegalArgumentException("amount must be less than current card amount");
-        }
-        apply(new Api.CardRedeemedEvent(id, amount));
-        if (currentAmount == 0) {
-            apply(new Api.CardGotEmptyEvent(id));
-        }
-    }
+    //    TODO: Is it really not used?
+    //    public void requestRedeem(int amount) {
+    //        if (this.currentAmount < amount) {
+    //            throw new IllegalArgumentException("amount must be less than current card amount");
+    //        }
+    //        apply(new Api.CardRedeemedEvent(id, amount));
+    //        if (currentAmount == 0) {
+    //            apply(new Api.CardGotEmptyEvent(id));
+    //        }
+    //    }
 
     @EventSourcingHandler
     void handle(Api.CardRedeemedEvent event) {
@@ -64,22 +65,23 @@ public class Giftcard {
         cardRedemptions.add(event.amount());
     }
 
-    public void undoRedemption(int amount) {
-        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
-        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
-            throw new IllegalArgumentException("amount must be the lastest redeem amount");
-        } else {
-            apply(new Api.LatestRedemptionUndoneEvent(id, amount));
-            Log.infof("latest redemption was undone");
-        }
-    }
-
-    private Optional<Integer> lastestRedeemedAmount() {
-        if (!cardRedemptions.isEmpty()) {
-            return Optional.of(cardRedemptions.get(cardRedemptions.size() - 1));
-        }
-        return Optional.empty();
-    }
+    //    TODO: Is it really not used?
+    //    public void undoRedemption(int amount) {
+    //        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
+    //        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
+    //            throw new IllegalArgumentException("amount must be the lastest redeem amount");
+    //        } else {
+    //            apply(new Api.LatestRedemptionUndoneEvent(id, amount));
+    //            Log.infof("latest redemption was undone");
+    //        }
+    //    }
+    //
+    //    private Optional<Integer> lastestRedeemedAmount() {
+    //        if (!cardRedemptions.isEmpty()) {
+    //            return Optional.of(cardRedemptions.get(cardRedemptions.size() - 1));
+    //        }
+    //        return Optional.empty();
+    //    }
 
     @EventSourcingHandler
     void handle(Api.LatestRedemptionUndoneEvent event) {
@@ -88,8 +90,8 @@ public class Giftcard {
     }
 
     @CommandHandler
-    void handle(Api.ReturnCardCommand command) {
-        apply(new Api.CardReturnedEvent(command.id()));
+    void handle(Api.ReturnCardCommand command, EventAppender eventAppender) {
+        eventAppender.append(new Api.CardReturnedEvent(command.id()));
     }
 
 }

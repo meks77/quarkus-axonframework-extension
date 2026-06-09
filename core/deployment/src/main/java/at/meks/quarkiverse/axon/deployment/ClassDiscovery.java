@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.saga.SagaEventHandler;

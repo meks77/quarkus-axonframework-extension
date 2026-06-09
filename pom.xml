@@ -72,22 +72,10 @@
             </dependency>
             <dependency>
                 <groupId>org.axonframework</groupId>
-                <artifactId>axon-bom</artifactId>
-                <version>4.13.1</version>
+                <artifactId>axon-framework-bom</artifactId>
+                <version>5.1.1</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.axonframework</groupId>
-                <artifactId>axon-messaging</artifactId>
-                <!-- maven doesn't use the version of the imported axon-bom. Better than duplicated exclusion? -->
-                <version>4.12.1</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.thoughtworks.xstream</groupId>
-                        <artifactId>xstream</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <!-- The dependency is necessary, because the axon framework and the axon server connector use different

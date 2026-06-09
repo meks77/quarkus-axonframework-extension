@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.shared.projection2;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.ResetHandler;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.replay.annotation.ResetHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 

@@ -5,14 +5,17 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.*;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.annotation.SequenceNumber;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
+import org.axonframework.messaging.eventhandling.replay.ReplayStatus;
+import org.axonframework.messaging.eventhandling.replay.annotation.ResetHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped
-@ProcessingGroup("GiftCardInMemory")
+//@ProcessingGroup("GiftCardInMemory")
 public class GiftcardInMemoryHistory {
 
     private final List<Object> history = new ArrayList<>();

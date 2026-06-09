@@ -64,3 +64,13 @@ Ein Command kann zu Events führen, welche mehrere Entities betreffen. Wie wird 
 === DCB
 
 Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht mitgeteilt(e.g. wie bei flyway, neue Tags schon vorab, und später funktionalität deployen)
+
+== TODOS
+* Aggregate configuration
+** [ ] Aggregate configuration: Search for EventSourcedAggregate and configure them
+** [ ] Remove consideration of annotation AggregateIdentifier
+* Event Processing configuration
+** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
+** [ ] Remove TrackingEventProcessor
+** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq
+

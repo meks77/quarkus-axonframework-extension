@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -29,7 +29,6 @@ import org.mockito.quality.Strictness;
 import at.meks.quarkiverse.axon.deployment.ClassDiscovery.BeanDiscoveyAttributes;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration.ComponentDiscovery;
-import at.meks.quarkiverse.axon.shared.model.CardReturnSaga;
 import at.meks.quarkiverse.axon.shared.model.DomainServiceExample;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;

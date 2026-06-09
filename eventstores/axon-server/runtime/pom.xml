@@ -22,8 +22,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.axonframework</groupId>
+            <groupId>io.axoniq.framework</groupId>
             <artifactId>axon-server-connector</artifactId>
+            <!-- The version is not in the Axoniq BOM(2026.06.09)  -->
+            <version>5.1.1</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
