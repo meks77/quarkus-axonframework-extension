@@ -1,0 +1,66 @@
+= Axoniq Framework 5.1 Migration Guide
+
+== Links
+- https://docs.axoniq.io/axon-framework-reference/5.1/migration/[Official Migration Guide]
+- https://docs.axoniq.io/axon-framework-reference/5.1/migration/paths/[Official Migration Path]
+
+== Notes from webinar
+
+I made some notes(in german, I am sorry), while joining a webinar for the upgrade to 5.1.
+
+* Event haben neues Format
+* Die AggregateId wird als Tag migriert
+* Migration passiert im Hintergrund, am Ende gibts ein paar Sekunden eine "Hickup" danach ist alles migriert
+* keine Migration möglich wenn
+* Transformation APi was used
+* Multi-Tier Storage is used
+
+* Routing by TargetAggregateIdentifier gibts nicht mehr ->
+* TargetAggregateIdentifier -> TargetEntityId
+* neue Annotation Command ist notwendig auf den Commands
+* enthält routingKey
+* Events
+* neue Annotation Event welche die version enhält
+* Revision Annotation is gone
+* namespace = packagename
+* name = ClassName
+* Annotation EventTag muss auf die Id(aggregateId) gesetzt werden -> Wir haben Events ohne AggregateIdId :(
+* Eventhandlers können unterschiedliche Version der Event empfangen(1 handler pro version) -> Upcaster größtenteils nicht mehr notwendig
+* Aggregates
+* AggregateLifecycle -> inject argument EventAppender und call auf append
+* Aggreate -> EventSourced
+* AggregateId ->
+* CommandHandler am Konstruktor geht nicht mehr -> repalce with static void Methode  und default Construtor mit Annotation EntityCreator
+* DispatchInterceptor
+* CommandMessage nicht mehr generic
+* Signatur hat sich etwas geändert
+* EventHandler
+* QueryHandler
+* Query Klassen müssen mit der Annotation @Query versehen werden
+* CommandGateway: APi changed -> getResultMessage
+* AggregateTextFixture -> AggregateTestFixture
+* Konfi guration nicht mehr notwendig, das produktivkonfiguration verwendet werden kann???
+* api hat sich geändert bei given, when, then
+
+* Um DCB nicht standardmäßig aktiviert zu haben. Die EventStorageEngine muss als AggregateBaseAxonServerEventStorageEngine konfiguriert werden.
+* Das ist notwendig wenn der AxonServer nicht migriert wird
+
+* ProcessingContext ersetzt UnitOfWork
+
+
+
+
+* Es gibt eine API um Events um Tags zu ergänzen
+
+
+Migrationsschritte
+
+* Simple Migration (Entity centric)
+* Dann weiter auf Command centric falls sinnvoll
+* Dann DCB falls sinnvoll
+
+Ein Command kann zu Events führen, welche mehrere Entities betreffen. Wie wird dafür der Routing Key definiert, damit es nicht zu paralleler Verarbeitung kommt?
+
+=== DCB
+
+Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht mitgeteilt(e.g. wie bei flyway, neue Tags schon vorab, und später funktionalität deployen)
