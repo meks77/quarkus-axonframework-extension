@@ -10,6 +10,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -20,10 +21,11 @@ import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 
-public class DevUiTest {
+@Disabled("This Test is disabled because it leads to a timeout in a linux wsl vm")
+class DevUiTest {
 
     @RegisterExtension
-    final static QuarkusDevModeTest test = new QuarkusDevModeTest()
+    static final QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
