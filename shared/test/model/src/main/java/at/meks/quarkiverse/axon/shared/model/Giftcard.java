@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.shared.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
@@ -48,16 +49,15 @@ public class Giftcard {
         this.currentAmount = event.amount();
     }
 
-    //    TODO: Is it really not used?
-    //    public void requestRedeem(int amount) {
-    //        if (this.currentAmount < amount) {
-    //            throw new IllegalArgumentException("amount must be less than current card amount");
-    //        }
-    //        apply(new Api.CardRedeemedEvent(id, amount));
-    //        if (currentAmount == 0) {
-    //            apply(new Api.CardGotEmptyEvent(id));
-    //        }
-    //    }
+    public void requestRedeem(int amount, EventAppender eventAppender) {
+        if (this.currentAmount < amount) {
+            throw new IllegalArgumentException("amount must be less than current card amount");
+        }
+        eventAppender.append(new Api.CardRedeemedEvent(id, amount));
+        if (currentAmount == 0) {
+            eventAppender.append(new Api.CardGotEmptyEvent(id));
+        }
+    }
 
     @EventSourcingHandler
     void handle(Api.CardRedeemedEvent event) {
@@ -65,23 +65,22 @@ public class Giftcard {
         cardRedemptions.add(event.amount());
     }
 
-    //    TODO: Is it really not used?
-    //    public void undoRedemption(int amount) {
-    //        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
-    //        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
-    //            throw new IllegalArgumentException("amount must be the lastest redeem amount");
-    //        } else {
-    //            apply(new Api.LatestRedemptionUndoneEvent(id, amount));
-    //            Log.infof("latest redemption was undone");
-    //        }
-    //    }
-    //
-    //    private Optional<Integer> lastestRedeemedAmount() {
-    //        if (!cardRedemptions.isEmpty()) {
-    //            return Optional.of(cardRedemptions.get(cardRedemptions.size() - 1));
-    //        }
-    //        return Optional.empty();
-    //    }
+    public void undoRedemption(int amount, EventAppender eventAppender) {
+        Optional<Integer> lastestRedeemedAmount = lastestRedeemedAmount();
+        if (lastestRedeemedAmount.isEmpty() || lastestRedeemedAmount.get() != amount) {
+            throw new IllegalArgumentException("amount must be the lastest redeem amount");
+        } else {
+            eventAppender.append(new Api.LatestRedemptionUndoneEvent(id, amount));
+            Log.infof("latest redemption was undone");
+        }
+    }
+
+    private Optional<Integer> lastestRedeemedAmount() {
+        if (!cardRedemptions.isEmpty()) {
+            return Optional.of(cardRedemptions.get(cardRedemptions.size() - 1));
+        }
+        return Optional.empty();
+    }
 
     @EventSourcingHandler
     void handle(Api.LatestRedemptionUndoneEvent event) {
