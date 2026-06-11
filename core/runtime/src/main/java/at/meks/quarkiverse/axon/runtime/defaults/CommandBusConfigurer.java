@@ -6,16 +6,15 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.CommandBus;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
-
-import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 @Dependent
 public class CommandBusConfigurer {

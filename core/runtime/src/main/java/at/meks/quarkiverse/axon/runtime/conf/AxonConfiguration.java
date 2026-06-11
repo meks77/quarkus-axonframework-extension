@@ -189,7 +189,6 @@ public interface AxonConfiguration {
 
     enum EventProcessorType {
         SUBSCRIBING,
-        TRACKING,
         POOLED
     }
 }

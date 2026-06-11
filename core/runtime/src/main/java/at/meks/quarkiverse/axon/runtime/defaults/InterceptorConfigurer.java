@@ -7,13 +7,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.messaging.commandhandling.CommandExecutionException;
-import org.axonframework.messaging.commandhandling.CommandMessage;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.messaging.eventhandling.EventBus;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.CommandExecutionException;
+import org.axonframework.messaging.commandhandling.CommandMessage;
+import org.axonframework.messaging.eventhandling.EventBus;
 import org.axonframework.messaging.queryhandling.QueryBus;
 import org.axonframework.messaging.queryhandling.QueryExecutionException;
 import org.axonframework.messaging.queryhandling.QueryMessage;

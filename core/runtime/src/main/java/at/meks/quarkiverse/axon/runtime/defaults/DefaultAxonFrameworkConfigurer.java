@@ -8,11 +8,11 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.conversion.DelegatingGeneralConverter;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.messaging.core.conversion.DelegatingMessageConverter;
 import org.axonframework.messaging.core.conversion.MessageConverter;
 import org.axonframework.messaging.core.retry.RetryScheduler;
@@ -134,7 +134,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             var eventProcessingConfigurer = configurer.eventProcessing();
             switch (type) {
                 case SUBSCRIBING -> eventProcessingConfigurer.usingSubscribingEventProcessors();
-                case TRACKING -> eventProcessingConfigurer.usingTrackingEventProcessors();
                 case POOLED -> eventProcessingConfigurer.usingPooledStreamingEventProcessors();
             }
         });

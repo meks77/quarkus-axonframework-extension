@@ -17,7 +17,6 @@ import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.defaults.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.PooledEventProcessingConfigurer;
-import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TrackingEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
 import io.quarkus.arc.deployment.*;
 import io.quarkus.deployment.annotations.*;
@@ -40,10 +39,9 @@ class AxonExtensionProcessor {
         return AdditionalBeanBuildItem.builder()
                 .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultAggregateConfigurer.class,
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
-                        InMemoryTokenStoreConfigurer.class,
-                        InterceptorConfigurer.class, LocalCommandBusBuilder.class, NoMetricsConfigurer.class,
-                        NoTransactionManager.class, QuarkusAxonConverterProducer.class, RetrySchedulerConfigurer.class,
-                        TrackingEventProcessingConfigurer.class, PooledEventProcessingConfigurer.class,
+                        InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
+                        NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
+                        RetrySchedulerConfigurer.class, PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
                 .build();
     }

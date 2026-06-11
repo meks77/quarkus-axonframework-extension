@@ -4,11 +4,9 @@ import java.util.Set;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
-
-import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 public class AxonComponentenSetup {
 
