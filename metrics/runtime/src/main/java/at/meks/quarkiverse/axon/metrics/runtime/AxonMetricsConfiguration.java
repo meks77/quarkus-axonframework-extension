@@ -19,6 +19,6 @@ public interface AxonMetricsConfiguration {
      * enables or disables tags for the metrics.
      */
     @WithDefault("true")
-    boolean withTags();
+    boolean useDimensions();
 
 }

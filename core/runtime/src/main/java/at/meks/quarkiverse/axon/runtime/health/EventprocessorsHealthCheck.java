@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.eventhandling.EventTrackerStatus;
-import org.axonframework.eventhandling.StreamingEventProcessor;
+import org.axonframework.common.configuration.AxonConfiguration;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.streaming.segmenting.EventTrackerStatus;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
@@ -21,7 +21,7 @@ import org.eclipse.microprofile.health.Readiness;
 public class EventprocessorsHealthCheck implements HealthCheck {
 
     @Inject
-    Configuration configuration;
+    AxonConfiguration configuration;
 
     @Override
     public HealthCheckResponse call() {
@@ -35,7 +35,7 @@ public class EventprocessorsHealthCheck implements HealthCheck {
         for (EventProcessor processor : processorNamesWithErrors) {
             if (processor.isError()) {
                 responseBuilder.down();
-                responseBuilder.withData(processor.getName(), "shtudown with error");
+                responseBuilder.withData(processor.name(), "shtudown with error");
             } else if (processor instanceof StreamingEventProcessor streamingProcessor) {
                 Map<Integer, EventTrackerStatus> segmentsWithError = segmentsWithError(streamingProcessor);
                 if (!segmentsWithError.isEmpty()) {
@@ -47,7 +47,7 @@ public class EventprocessorsHealthCheck implements HealthCheck {
     }
 
     private Collection<EventProcessor> eventprocessors() {
-        return configuration.eventProcessingConfiguration().eventProcessors().values();
+        return configuration.getComponents(EventProcessor.class).values();
     }
 
     private Map<Integer, EventTrackerStatus> segmentsWithError(StreamingEventProcessor processor) {
@@ -61,7 +61,7 @@ public class EventprocessorsHealthCheck implements HealthCheck {
             Map<Integer, EventTrackerStatus> segmentsWithError) {
         for (Map.Entry<Integer, EventTrackerStatus> errorSegment : segmentsWithError.entrySet()) {
             responseBuilder.withData(
-                    "%s; Segment %s".formatted(processor.getName(), errorSegment.getKey()),
+                    "%s; Segment %s".formatted(processor.name(), errorSegment.getKey()),
                     errorSegment.getValue().getError().getMessage());
         }
     }

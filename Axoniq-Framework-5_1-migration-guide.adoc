@@ -83,5 +83,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 == Migration Guide for Extension Users
 * AxonSerializerProducer renamed AxonConverterProducer, because Axon Classes have been renamed too
+* Micrometer Metrics withTags is now useDimensions
 
 

@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.configuration.EventProcessingConfigurer;
 
 /**
  * An interface to customize the configuration of Axon Framework's event processing.

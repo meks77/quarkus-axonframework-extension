@@ -3,8 +3,8 @@ package at.meks.quarkiverse.axon.metrics.runtime;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configurer;
-import org.axonframework.micrometer.GlobalMetricRegistry;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.extension.metrics.micrometer.MetricsConfigurationEnhancer;
 
 import at.meks.quarkiverse.axon.runtime.customizations.AxonMetricsConfigurer;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -19,15 +19,12 @@ public class MicrometerMetricsConfigurer implements AxonMetricsConfigurer {
     AxonMetricsConfiguration metricsConfiguration;
 
     @Override
-    public void configure(Configurer configurer) {
+    public void configure(EventSourcingConfigurer configurer) {
         if (metricsConfiguration.enabled()) {
-            GlobalMetricRegistry globalMetricRegistry = new GlobalMetricRegistry(meterRegistry);
-            if (metricsConfiguration.withTags()) {
-                globalMetricRegistry.registerWithConfigurerWithDefaultTags(configurer);
-            } else {
-                globalMetricRegistry.registerWithConfigurer(configurer);
-            }
+            MetricsConfigurationEnhancer metricsEnhancer = new MetricsConfigurationEnhancer(meterRegistry,
+                    metricsConfiguration.useDimensions());
+            configurer.componentRegistry(cr -> cr.registerEnhancer(metricsEnhancer));
         }
     }
-
 }
+
