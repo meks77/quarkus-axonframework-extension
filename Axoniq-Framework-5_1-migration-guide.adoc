@@ -79,6 +79,8 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] Remove JdbcEventStorageEngine
 * Repositories
 ** [ ] In AxonExtension#repository: Produce the repository and get it from the framework
+* CommandBusBuilder
+** [ ] DuplicateCommandHandlerResolver
 
 
 == Migration Guide for Extension Users

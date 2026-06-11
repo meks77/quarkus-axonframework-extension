@@ -6,16 +6,16 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
+
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 @Dependent
 public class CommandBusConfigurer {
@@ -29,7 +29,7 @@ public class CommandBusConfigurer {
     @Inject
     AxonConfiguration axonConfiguration;
 
-    void configureCommandBus(Configurer configurer) {
+    void configureCommandBus(EventSourcingConfigurer configurer) {
         verifyProvidedBeans();
         if (commandBusProducer.isResolvable()) {
             configureCommandBusUsingCustomProducer(configurer);
@@ -47,15 +47,15 @@ public class CommandBusConfigurer {
         }
     }
 
-    private void configureCommandBusUsingCustomProducer(Configurer configurer) {
+    private void configureCommandBusUsingCustomProducer(EventSourcingConfigurer configurer) {
         configurer.configureCommandBus(configuration -> commandBusProducer.get().createCommandBus(configuration));
     }
 
-    private void configureCommandBusUsingBuilder(Configurer configurer) {
+    private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
         configurer.configureCommandBus(this::createCommandBusWithBuilder);
     }
 
-    private CommandBus createCommandBusWithBuilder(Configuration axonConfiguration) {
+    private CommandBus createCommandBusWithBuilder(org.axonframework.common.configuration.AxonConfiguration axonConfiguration) {
         return commandBusBuilder
                 .duplicateCommandHandlerResolver(toResolver(duplicateCommandHandlerResolverType()))
                 .build(axonConfiguration);

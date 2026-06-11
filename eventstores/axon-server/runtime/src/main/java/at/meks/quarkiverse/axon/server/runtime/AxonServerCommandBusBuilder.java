@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
+import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
+
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
@@ -8,7 +10,8 @@ import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.command.AxonServerCommandBus;
 import org.axonframework.axonserver.connector.command.CommandPriorityCalculator;
-import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.common.configuration.AxonConfiguration;
+import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DefaultCommandBusSpanFactory;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
 import org.axonframework.commandhandling.distributed.AnnotationRoutingStrategy;
@@ -35,7 +38,7 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
     }
 
     @Override
-    public CommandBus build(Configuration configuration) {
+    public CommandBus build(AxonConfiguration configuration) {
         AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
         return AxonServerCommandBus.builder()
                 .localSegment(

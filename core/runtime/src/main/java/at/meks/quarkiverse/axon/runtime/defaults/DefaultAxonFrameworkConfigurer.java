@@ -8,8 +8,8 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.conversion.DelegatingGeneralConverter;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
@@ -110,18 +110,18 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         return configurer;
     }
 
-    private void configureMessageHandler(Configurer configurer) {
+    private void configureMessageHandler(EventSourcingConfigurer configurer) {
         configureEventHandling(configurer);
 
         axonComponentSetup.configureCommandHandlers(configurer, commandhandlers);
         axonComponentSetup.configureQueryHandlers(configurer, queryhandlers);
     }
 
-    private void configureEventHandling(Configurer configurer) {
+    private void configureEventHandling(EventSourcingConfigurer configurer) {
         setDefaultEventProcessorType(configurer);
         EventProcessingConfigurer processingConfigurer = configurer.eventProcessing();
         assignProcessingGroupsToSubscribingEventProcessor(processingConfigurer);
-        if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
+        if (!eventhandlers.isEmpty()) {
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
                     handle -> handle.get().configure(processingConfigurer));
@@ -129,7 +129,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private void setDefaultEventProcessorType(Configurer configurer) {
+    private void setDefaultEventProcessorType(EventSourcingConfigurer configurer) {
         axonConfiguration.eventProcessing().defaultEventProcessingType().ifPresent(type -> {
             var eventProcessingConfigurer = configurer.eventProcessing();
             switch (type) {
@@ -152,18 +152,18 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         });
     }
 
-    private void configureTransactionManagement(Configurer configurer) {
+    private void configureTransactionManagement(EventSourcingConfigurer configurer) {
         configurer.configureTransactionManager(conf -> transactionManager);
     }
 
-    private void registerInjectableBeans(Configurer configurer) {
+    private void registerInjectableBeans(EventSourcingConfigurer configurer) {
         for (Map.Entry<Class<?>, Object> entry : injectableBeans.entrySet()) {
             //noinspection unchecked
             configurer.registerComponent((Class<Object>) entry.getKey(), configuration -> entry.getValue());
         }
     }
 
-    private void registerEventUpcasters(Configurer configurer) {
+    private void registerEventUpcasters(EventSourcingConfigurer configurer) {
         if (eventUpcasterChain.isResolvable()) {
             LOG.info("registering eventUpcasterChain {}", eventUpcasterChain.get().getClass().getName());
             configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
@@ -176,13 +176,14 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private void configureCommandGateway(Configurer configurer) {
+    private void configureCommandGateway(EventSourcingConfigurer configurer) {
         retrySchedulerConfigurer.retryScheduler()
                 .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
                         conf -> createCommandGateway(conf, retryScheduler)));
     }
 
-    private DefaultCommandGateway createCommandGateway(Configuration conf, RetryScheduler retryScheduler) {
+    private DefaultCommandGateway createCommandGateway(org.axonframework.common.configuration.AxonConfiguration conf,
+            RetryScheduler retryScheduler) {
         LOG.info("using CommandGateway with retryScheduler {}", retryScheduler.getClass().getName());
         return DefaultCommandGateway.builder()
                 .commandBus(conf.commandBus())
