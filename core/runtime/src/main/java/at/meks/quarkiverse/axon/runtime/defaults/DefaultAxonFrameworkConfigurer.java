@@ -152,7 +152,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureTransactionManagement(EventSourcingConfigurer configurer) {
-        configurer.configureTransactionManager(conf -> transactionManager);
+        configurer.componentRegistry(
+                reg -> reg.registerComponent(TransactionManager.class, config -> transactionManager));
     }
 
     private void registerInjectableBeans(EventSourcingConfigurer configurer) {
@@ -182,7 +183,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private DefaultCommandGateway createCommandGateway(org.axonframework.common.configuration.AxonConfiguration conf,
-            RetryScheduler retryScheduler) {
+                                                       RetryScheduler retryScheduler) {
         LOG.info("using CommandGateway with retryScheduler {}", retryScheduler.getClass().getName());
         return DefaultCommandGateway.builder()
                 .commandBus(conf.commandBus())

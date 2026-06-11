@@ -4,8 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.inject.Inject;
 
-import org.axonframework.common.transaction.Transaction;
-import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.messaging.core.unitofwork.transaction.Transaction;
+import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
+
 
 @ApplicationScoped
 public class JdbcTransactionManager implements TransactionManager {

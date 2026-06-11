@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.common.transaction.Transaction;
-import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.messaging.core.unitofwork.transaction.Transaction;
+import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
 
 import io.quarkus.arc.DefaultBean;
 

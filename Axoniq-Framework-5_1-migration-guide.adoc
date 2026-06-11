@@ -81,6 +81,8 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] In AxonExtension#repository: Produce the repository and get it from the framework
 * CommandBusBuilder
 ** [ ] DuplicateCommandHandlerResolver
+* Configuration
+** [ ] Usage of EntityManagerTransactionManager from Axon
 
 
 == Migration Guide for Extension Users
