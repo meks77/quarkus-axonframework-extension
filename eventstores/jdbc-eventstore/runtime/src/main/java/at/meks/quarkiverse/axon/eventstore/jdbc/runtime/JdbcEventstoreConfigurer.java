@@ -11,9 +11,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.config.Configurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.eventsourcing.eventstore.jdbc.*;
+import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
@@ -34,7 +34,7 @@ public class JdbcEventstoreConfigurer implements EventstoreConfigurer {
     String dbKind;
 
     @Override
-    public void configure(Configurer configurer) {
+    public void configure(EventSourcingConfigurer configurer) {
         if (dataSource.isAmbiguous()) {
             throw new IllegalStateException("Cannot configure token store with ambiguous datasource");
         } else if (dataSource.isUnsatisfied()) {

@@ -73,4 +73,15 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
 ** [ ] Remove TrackingEventProcessor
 ** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq
+* Tracing configuration as soon as it is supported by Axoniq Framework 5.x
+* Eventstore configuration
+** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
+** [ ] Remove JdbcEventStorageEngine
+* Repositories
+** [ ] In AxonExtension#repository: Produce the repository and get it from the framework
+
+
+== Migration Guide for Extension Users
+* AxonSerializerProducer renamed AxonConverterProducer, because Axon Classes have been renamed too
+
 

@@ -40,9 +40,9 @@ class AxonExtensionProcessor {
         return AdditionalBeanBuildItem.builder()
                 .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultAggregateConfigurer.class,
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
-                        InMemorySagaStoreConfigurer.class, InMemoryTokenStoreConfigurer.class,
+                        InMemoryTokenStoreConfigurer.class,
                         InterceptorConfigurer.class, LocalCommandBusBuilder.class, NoMetricsConfigurer.class,
-                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class,
+                        NoTransactionManager.class, QuarkusAxonConverterProducer.class, RetrySchedulerConfigurer.class,
                         TrackingEventProcessingConfigurer.class, PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
                 .build();

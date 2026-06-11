@@ -1,7 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,12 +10,16 @@ import jakarta.inject.Inject;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
-import org.axonframework.commandhandling.gateway.RetryScheduler;
-import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.config.DefaultConfigurer;
-import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.conversion.DelegatingGeneralConverter;
+import org.axonframework.conversion.GeneralConverter;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.core.conversion.DelegatingMessageConverter;
+import org.axonframework.messaging.core.conversion.MessageConverter;
+import org.axonframework.messaging.core.retry.RetryScheduler;
+import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
+import org.axonframework.messaging.eventhandling.configuration.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.conversion.DelegatingEventConverter;
+import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +57,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     InterceptorConfigurer interceptorConfigurer;
 
     @Inject
-    AxonSerializerProducer axonSerializerProducer;
+    AxonConverterProducer axonConverterProducer;
 
     @SuppressWarnings("unused")
     @Inject
@@ -80,16 +83,19 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     private Set<Object> commandhandlers;
     private Set<Object> queryhandlers;
     private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
-    private final Set<Class<?>> sagaEventhandlerClasses = new HashSet<>();
 
     @Override
-    public Configurer configure() {
-        final Configurer configurer;
+    public EventSourcingConfigurer configure() {
         LOG.debug("creating the axon configuration");
-        configurer = DefaultConfigurer.defaultConfiguration()
-                .configureSerializer(conf -> axonSerializerProducer.createSerializer())
-                .configureEventSerializer(config -> axonSerializerProducer.createEventSerializer())
-                .configureMessageSerializer(conf -> axonSerializerProducer.createMessageSerializer());
+        final EventSourcingConfigurer configurer = EventSourcingConfigurer.create()
+                .componentRegistry(registry -> {
+                    registry.registerComponent(GeneralConverter.class, c -> new DelegatingGeneralConverter(
+                            axonConverterProducer.createGeneralConverter()));
+                    registry.registerComponent(MessageConverter.class, c -> new DelegatingMessageConverter(
+                            axonConverterProducer.createMessageConverter()));
+                    registry.registerComponent(EventConverter.class, c -> new DelegatingEventConverter(
+                            axonConverterProducer.createEventConverter()));
+                });
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
         axonComponentSetup.configureAggregates(configurer, aggregateClasses);
@@ -99,7 +105,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         interceptorConfigurer.registerInterceptors(configurer);
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
-        axonComponentSetup.configureSagas(configurer, sagaEventhandlerClasses);
         commandBusConfigurer.configureCommandBus(configurer);
         configureCommandGateway(configurer);
         return configurer;
@@ -185,7 +190,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .build();
     }
 
-    private void configureTracing(Configurer configurer) {
+    private void configureTracing(EventSourcingConfigurer configurer) {
         if (axonTracingConfigurer.isResolvable()) {
             axonTracingConfigurer.get().configureTracing(configurer);
         } else {
@@ -216,11 +221,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Override
     public void injectableBeans(Map<Class<?>, Object> injectableBeans) {
         this.injectableBeans.putAll(injectableBeans);
-    }
-
-    @Override
-    public void sagaClasses(Set<Class<?>> sagaEventhandlerClasses) {
-        this.sagaEventhandlerClasses.addAll(sagaEventhandlerClasses);
     }
 
 }

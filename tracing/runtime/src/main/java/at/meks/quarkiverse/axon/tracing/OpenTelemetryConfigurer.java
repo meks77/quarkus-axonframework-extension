@@ -4,8 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configurer;
-import org.axonframework.tracing.opentelemetry.OpenTelemetrySpanFactory;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +24,13 @@ public class OpenTelemetryConfigurer implements AxonTracingConfigurer {
     Instance<OpenTelemetry> openTelemetry;
 
     @Override
-    public void configureTracing(Configurer configurer) {
+    public void configureTracing(EventSourcingConfigurer configurer) {
         if (openTelemetry.isResolvable() && tracer.isResolvable() && openTelemetry.get() != null) {
             LOG.info("configure OpenTelemetry tracing");
-            configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
-                    .tracer(tracer.get())
-                    .build());
+            // TODO: configure span factory as soon as AxonFramework 5.x supports it
+//            configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
+//                    .tracer(tracer.get())
+//                    .build());
         } else {
             LOG.info("OpenTelemetry tracing is deactivated");
         }

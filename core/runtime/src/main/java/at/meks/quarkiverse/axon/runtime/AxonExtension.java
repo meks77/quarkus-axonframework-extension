@@ -15,15 +15,15 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.modelling.command.Repository;
-import org.axonframework.queryhandling.QueryBus;
-import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.eventhandling.EventBus;
+import org.axonframework.messaging.eventhandling.gateway.EventGateway;
+import org.axonframework.messaging.queryhandling.QueryBus;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
+import org.axonframework.modelling.repository.Repository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class AxonExtension {
     @ConfigProperty(name = "quarkus.profile", defaultValue = "prod")
     String profile;
 
-    private Configuration configuration;
+    private org.axonframework.common.configuration.AxonConfiguration configuration;
     private final Set<Class<?>> aggregateClasses = new HashSet<>();
     private final Set<Object> evenhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
@@ -65,9 +65,9 @@ public class AxonExtension {
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
             axonFrameworkConfigurer.injectableBeans(Map.copyOf(injectableBeans));
             axonFrameworkConfigurer.sagaClasses(sagaEventhandlerClasses);
-            final Configurer configurer = axonFrameworkConfigurer.configure();
+            final EventSourcingConfigurer configurer = axonFrameworkConfigurer.configure();
             LOG.info("starting axon");
-            LOG.debug("with axon configuration " + System.identityHashCode(configurer));
+            LOG.debug("with axon configuration {}", System.identityHashCode(configurer));
             configuration = configurer.start();
 
         }
@@ -89,7 +89,7 @@ public class AxonExtension {
     void onShutdown() {
         if (configuration != null) {
             LOG.info("shutdown axon");
-            LOG.debug("with axon configuration " + System.identityHashCode(configuration));
+            LOG.debug("with axon configuration {}", System.identityHashCode(configuration));
             configuration.shutdown();
             if (profile.equals("dev") && !shutdownWaitDuration().isNegative() && !shutdownWaitDuration().isZero()) {
                 LOG.debug("wait started");
@@ -110,37 +110,37 @@ public class AxonExtension {
     @Produces
     @ApplicationScoped
     public EventGateway eventGateway() {
-        return configuration.eventGateway();
+        return configuration.getComponent(EventGateway.class);
     }
 
     @Produces
     @ApplicationScoped
     public EventBus eventBus() {
-        return configuration.eventBus();
+        return configuration.getComponent(EventBus.class);
     }
 
     @Produces
     @ApplicationScoped
     public CommandBus commandBus() {
-        return configuration.commandBus();
+        return configuration.getComponent(CommandBus.class);
     }
 
     @Produces
     @ApplicationScoped
     public CommandGateway commandGateway() {
-        return configuration.commandGateway();
+        return configuration.getComponent(CommandGateway.class);
     }
 
     @Produces
     @ApplicationScoped
     public QueryGateway queryGateway() {
-        return configuration.queryGateway();
+        return configuration.getComponent(QueryGateway.class);
     }
 
     @Produces
     @ApplicationScoped
     public QueryBus queryBus() {
-        return configuration.queryBus();
+        return configuration.getComponent(QueryBus.class);
     }
 
     @Produces
@@ -155,10 +155,12 @@ public class AxonExtension {
 
     @Produces
     @Dependent
-    public <T> Repository<T> repository(InjectionPoint injectionPoint) {
+    public <ID, T> Repository<ID, T> repository(InjectionPoint injectionPoint) {
         Class<T> aggregateClass = aggregateClass(
                 ((ParameterizedType) injectionPoint.getType()).getActualTypeArguments()[0].getTypeName());
-        return configuration.repository(aggregateClass);
+        // TODO: How to get a repository from the axoniq framework?
+        //        return configuration.repository(aggregateClass);
+        return null;
     }
 
     @SuppressWarnings("unchecked")

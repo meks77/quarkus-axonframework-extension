@@ -3,7 +3,7 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 import java.util.Map;
 import java.util.Set;
 
-import org.axonframework.config.Configurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 /**
  * Interface for configuring Axon Framework components such as aggregates, handlers, and general configurations.
@@ -14,7 +14,7 @@ public interface AxonFrameworkConfigurer {
      *
      * @return the Configurer instance to configure the Axon Framework.
      */
-    Configurer configure();
+    EventSourcingConfigurer configure();
 
     /**
      * Registers the aggregate classes with the Axon Framework configuration.
