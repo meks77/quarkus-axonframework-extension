@@ -7,17 +7,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.CommandExecutionException;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.config.Configurer;
+import org.axonframework.messaging.commandhandling.CommandExecutionException;
+import org.axonframework.messaging.commandhandling.CommandMessage;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.EventBus;
+import org.axonframework.messaging.eventhandling.EventBus;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.InterceptorChain;
-import org.axonframework.messaging.unitofwork.UnitOfWork;
-import org.axonframework.queryhandling.QueryBus;
-import org.axonframework.queryhandling.QueryExecutionException;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.queryhandling.QueryBus;
+import org.axonframework.messaging.queryhandling.QueryExecutionException;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
@@ -46,13 +45,13 @@ public class InterceptorConfigurer {
     @Inject
     AxonConfiguration axonConfiguration;
 
-    void registerInterceptors(Configurer configurer) {
+    void registerInterceptors(EventSourcingConfigurer configurer) {
         registerCommandBusInterceptors(configurer);
         registerQueryBusInterceptors(configurer);
         registerEventBusInterceptors(configurer);
     }
 
-    private void registerCommandBusInterceptors(Configurer configurer) {
+    private void registerCommandBusInterceptors(EventSourcingConfigurer configurer) {
         configurer.onInitialize(configuration -> {
             CommandBus commandBus = configuration.getComponent(CommandBus.class);
             configureCommandDispatchInterceptors(commandBus);
@@ -108,7 +107,7 @@ public class InterceptorConfigurer {
         }
     }
 
-    private void registerQueryBusInterceptors(Configurer configurer) {
+    private void registerQueryBusInterceptors(EventSourcingConfigurer configurer) {
         configurer.onInitialize(configuration -> {
             QueryBus queryBus = configuration.queryBus();
             configureQueryDispatchInterceptors(queryBus);
@@ -161,7 +160,7 @@ public class InterceptorConfigurer {
         }
     }
 
-    private void registerEventBusInterceptors(Configurer configurer) {
+    private void registerEventBusInterceptors(EventSourcingConfigurer configurer) {
         configurer.onInitialize(configuration -> {
             EventBus eventBus = configuration.eventBus();
             configureEventDispatchInterceptors(eventBus);
@@ -180,7 +179,7 @@ public class InterceptorConfigurer {
         }
     }
 
-    private void configureEventHandlerInterceptors(Configurer configurer) {
+    private void configureEventHandlerInterceptors(EventSourcingConfigurer configurer) {
         if (eventHandlerInterceptorProducers.isAmbiguous()) {
             throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
                     EventHandlerInterceptorsProducer.class.getName(),

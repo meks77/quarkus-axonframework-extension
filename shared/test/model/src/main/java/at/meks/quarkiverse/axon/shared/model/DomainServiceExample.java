@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.shared.model;
 
-import java.util.Optional;
+import static java.util.Optional.ofNullable;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -12,8 +13,6 @@ import org.axonframework.messaging.core.unitofwork.ProcessingContext;
 import org.axonframework.messaging.eventhandling.gateway.EventAppender;
 import org.axonframework.modelling.repository.ManagedEntity;
 import org.axonframework.modelling.repository.Repository;
-
-import static java.util.Optional.ofNullable;
 
 @ApplicationScoped
 public class DomainServiceExample {
