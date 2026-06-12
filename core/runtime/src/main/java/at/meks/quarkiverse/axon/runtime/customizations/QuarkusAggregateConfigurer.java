@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.common.configuration.AggregateConfiguration;
+import org.axonframework.eventsourcing.configuration.EventSourcedEntityModule;
 
 /**
  * Interface for configuring aggregates in a Quarkus-based Axon Framework application.
@@ -9,11 +9,11 @@ import org.axonframework.common.configuration.AggregateConfiguration;
 public interface QuarkusAggregateConfigurer {
 
     /**
-     * Creates an {@link AggregateConfiguration} for a specific aggregate type.
+     * Creates an {@link EventSourcedEntityModule} for a specific eventSourcedEntity type.
      *
-     * @param <T> the type of the aggregate
-     * @param aggregate the class of the aggregate type
-     * @return an {@link AggregateConfiguration} instance for the given aggregate type
+     * @param <T> the type of the eventSourcedEntity
+     * @param eventSourcedEntity the class of the eventSourcedEntity type
+     * @return an {@link EventSourcedEntityModule} instance for the given eventSourcedEntity type
      */
-    <T> AggregateConfiguration<T> createConfigurer(Class<T> aggregate);
+    <ID, T> EventSourcedEntityModule<ID, T> createConfigurer(Class<T> eventSourcedEntity);
 }

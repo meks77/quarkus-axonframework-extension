@@ -17,7 +17,7 @@ public interface ComponentDiscoveryConfiguration {
     /**
      * the configuration for the discovery of axon aggregates.
      */
-    ComponentDiscovery aggregates();
+    ComponentDiscovery eventSourcedEntities();
 
     /**
      * the configuration for the discovery of axon command handlers.

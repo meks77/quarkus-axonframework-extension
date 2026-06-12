@@ -17,7 +17,7 @@ import org.awaitility.core.ThrowingRunnable;
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.eventhandling.EventProcessor;
-import org.axonframework.messaging.queryhandling.QueryGateway;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.FileAsset;

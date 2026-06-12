@@ -1,11 +1,8 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import io.quarkus.runtime.annotations.ConfigDocMapKey;
-import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.*;
@@ -19,17 +16,6 @@ public interface AxonConfiguration {
      */
     @WithDefault("quarkus-axon")
     String axonApplicationName();
-
-    /**
-     * Configuration for snapshots in the event store.
-     * <p/>
-     * When using no name, the default is defined. If you want to config for an aggregate, the class name must be used as key.
-     */
-    @ConfigDocMapKey("aggregate-name")
-    @WithName("snapshots")
-    @WithDefaults
-    @WithUnnamedKey("<default>")
-    Map<String, SnapshotConfiguration> snapshotConfigs();
 
     /**
      * additional configuration for live reloading for axon.
@@ -100,29 +86,6 @@ public interface AxonConfiguration {
          */
         @WithDefault("500")
         long amount();
-
-    }
-
-    @ConfigGroup
-    interface SnapshotConfiguration {
-
-        /**
-         * Defines the type of the trigger.
-         */
-        @WithDefault("no-snapshots")
-        TriggerType triggerType();
-
-        /**
-         * If the type is LoadTime, then it's value is the max load time of an aggregate, before a snapshot creation is
-         * triggered.
-         * <p>
-         * If the type is EventCount, then it's value is the max number of events, which are read from the repository, before a
-         * snapshot creation is triggered.
-         * <p>
-         * if the type is NoSnapshot, then the value is ignored.
-         */
-        @WithDefault("-1")
-        int threshold();
 
     }
 

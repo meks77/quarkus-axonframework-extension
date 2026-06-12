@@ -7,12 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.annotation.Nonnull;
-import jakarta.inject.Inject;
 
+import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
-import org.axonframework.modelling.entity.AggregateIdentifier;
-import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
 import org.jboss.jandex.*;
 
@@ -51,13 +49,13 @@ class ClassDiscovery {
                 pkg -> clazz.getPackageName().startsWith(pkg));
     }
 
-    static Stream<Class<?>> aggregateClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
-            ComponentDiscoveryConfiguration discoveryConfiguration) {
-        ComponentDiscovery discovery = discoveryConfiguration.aggregates();
+    static Stream<Class<?>> eventSourcedEntityClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
+                                                      ComponentDiscoveryConfiguration discoveryConfiguration) {
+        ComponentDiscovery discovery = discoveryConfiguration.eventSourcedEntities();
         if (!discovery.enabled()) {
             return Stream.empty();
         }
-        return annotatedClasses(AggregateIdentifier.class, "aggregates",
+        return annotatedClasses(EventSourcedEntity.class, "eventSourcedEntities",
                 annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(),
                 beanArchiveIndex, discovery);
     }
@@ -108,7 +106,7 @@ class ClassDiscovery {
         return annotatedClasses(CommandHandler.class, "commandhandlers",
                 annotationInstance -> annotationInstance.target().asMethod().declaringClass(), beanArchiveIndex,
                 discoveryConfiguration.commandHandlers())
-                .filter(commandhandlerClass -> aggregateClasses(beanArchiveIndex, discoveryConfiguration)
+                .filter(commandhandlerClass -> eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration)
                         .noneMatch(commandhandlerClass::equals))
                 .filter(clz -> isRelevantBeanClass(indexView.getClassByName(clz),
                         discoveyAttributes.discoveredBeanClasses()));
@@ -121,13 +119,6 @@ class ClassDiscovery {
                 beanArchiveIndex, beanDiscoveyAttributes.discoveryConfiguration().eventHandlers())
                 .filter(clz -> isRelevantBeanClass(beanArchiveIndex.getIndex().getClassByName(clz),
                         beanDiscoveyAttributes.discoveredBeanClasses()));
-    }
-
-    static Stream<Class<?>> sagaEventhandlerClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
-            ComponentDiscoveryConfiguration discoveryConfiguration) {
-        return annotatedClasses(SagaEventHandler.class, "saga eventhandler methods",
-                annotationInstance -> annotationInstance.target().asMethod().declaringClass().asClass(),
-                beanArchiveIndex, discoveryConfiguration.sagaHandlers());
     }
 
     static Stream<Class<?>> injectableBeanClasses(BeanDiscoveyAttributes beanDiscoveyAttributes) {
@@ -145,8 +136,6 @@ class ClassDiscovery {
         injectableBeanClasses
                 .addAll(classesOfInjectedMethodParams(beanArchiveIndex, indexView.getAnnotations(QueryHandler.class),
                         discoveryConfiguration.queryHandlers(), discoveredBeanClasses));
-        injectableBeanClasses
-                .addAll(classesOfInjectedFieldsOfSagas(beanArchiveIndex, discoveryConfiguration, discoveredBeanClasses));
         return injectableBeanClasses.stream();
     }
 
@@ -160,22 +149,6 @@ class ClassDiscovery {
                 .map(MethodParameterInfo::type);
         return filterRelevantBeanClasses(beanArchiveIndex, typeStream, discoveredBeanClasses)
                 .collect(Collectors.toSet());
-    }
-
-    private static Collection<Class<Object>> classesOfInjectedFieldsOfSagas(BeanArchiveIndexBuildItem beanArchiveIndex,
-            ComponentDiscoveryConfiguration discoveryConfiguration, Set<DotName> discoveredBeanClasses) {
-        IndexView indexView = beanArchiveIndex.getIndex();
-        Stream<Type> typeStream = indexView.getAnnotations(SagaEventHandler.class).stream()
-                .map(methodAnnotation -> methodAnnotation.target().asMethod().declaringClass())
-                .filter(clz -> shouldBeDiscovered(clz.asClass().getClass(), discoveryConfiguration.sagaHandlers()))
-                .map(ClassInfo::fields)
-                .flatMap(Collection::stream)
-                .map(fieldInfo -> fieldInfo.annotations(DotName.createSimple(Inject.class)))
-                .flatMap(Collection::stream)
-                .map(AnnotationInstance::target)
-                .map(AnnotationTarget::asField)
-                .map(FieldInfo::type);
-        return filterRelevantBeanClasses(beanArchiveIndex, typeStream, discoveredBeanClasses).collect(Collectors.toSet());
     }
 
     private static @NotNull Stream<Class<Object>> filterRelevantBeanClasses(BeanArchiveIndexBuildItem beanArchiveIndex,

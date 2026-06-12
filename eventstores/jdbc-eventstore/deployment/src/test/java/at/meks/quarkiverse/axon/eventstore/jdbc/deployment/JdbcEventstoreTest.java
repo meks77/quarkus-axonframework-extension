@@ -15,11 +15,6 @@ public abstract class JdbcEventstoreTest extends JavaArchiveTest {
     @Override
     protected final void assertOthers() {
         assertThat(eventCountInDatabase()).isGreaterThanOrEqualTo(2);
-        assertThat(snapshotCountInDatabase()).isGreaterThanOrEqualTo(0);
-    }
-
-    private int snapshotCountInDatabase() {
-        return countTableRecords("JdbcSnapshotEventEntry");
     }
 
     private int eventCountInDatabase() {

@@ -8,10 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
-import org.axonframework.modelling.entity.AggregateIdentifier;
-import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
 import org.jboss.jandex.*;
 import org.jetbrains.annotations.NotNull;
@@ -114,7 +113,7 @@ class ClassDiscoveryTest {
 
         @BeforeEach
         void setUp() {
-            when(discoveryConfiguration.aggregates()).thenReturn(componentDiscovery);
+            when(discoveryConfiguration.eventSourcedEntities()).thenReturn(componentDiscovery);
         }
 
         @Test
@@ -122,7 +121,7 @@ class ClassDiscoveryTest {
             when(componentDiscovery.enabled()).thenReturn(true);
             givenGiftcardIsDiscoveredAsAggregateInIndex();
 
-            Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
+            Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
             assertThat(result).containsExactly(Giftcard.class);
         }
@@ -134,7 +133,7 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenGiftcardIsDiscoveredAsAggregateInIndex();
 
-            Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
+            Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
             assertThat(result).containsExactly(Giftcard.class);
         }
@@ -146,7 +145,7 @@ class ClassDiscoveryTest {
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
             givenGiftcardIsDiscoveredAsAggregateInIndex();
 
-            Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
+            Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
             assertThat(result).isEmpty();
         }
@@ -154,7 +153,7 @@ class ClassDiscoveryTest {
         @Test
         void disabledAggregateDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
-            Stream<Class<?>> result = ClassDiscovery.aggregateClasses(beanArchiveIndex, discoveryConfiguration);
+            Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
             assertThat(result).isEmpty();
         }
 
@@ -167,7 +166,7 @@ class ClassDiscoveryTest {
         FieldInfo fieldInfo = mock(FieldInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
         ClassInfo classInfo = mock(ClassInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
 
-        when(indexView.getAnnotations(AggregateIdentifier.class)).thenReturn(List.of(annotationInstance));
+        when(indexView.getAnnotations(EventSourcedEntity.class)).thenReturn(List.of(annotationInstance));
         when(annotationInstance.target()).thenReturn(annotationTarget);
         when(annotationTarget.asField()).thenReturn(fieldInfo);
         when(fieldInfo.declaringClass()).thenReturn(classInfo);
@@ -203,7 +202,7 @@ class ClassDiscoveryTest {
         @BeforeEach
         void setUp() {
             when(discoveryConfiguration.commandHandlers()).thenReturn(componentDiscovery);
-            when(discoveryConfiguration.aggregates()).thenReturn(aggregateDiscovery);
+            when(discoveryConfiguration.eventSourcedEntities()).thenReturn(aggregateDiscovery);
             when(aggregateDiscovery.enabled()).thenReturn(true);
             givenGiftcardIsDiscoveredAsAggregateInIndex();
         }
@@ -372,59 +371,6 @@ class ClassDiscoveryTest {
             assertThat(result).isEmpty();
         }
 
-    }
-
-    @Nested
-    class SagaEventHandlersDiscovery {
-
-        @Mock(strictness = Mock.Strictness.LENIENT)
-        private ComponentDiscovery componentDiscovery;
-
-        @BeforeEach
-        void setUp() {
-            when(discoveryConfiguration.sagaHandlers()).thenReturn(componentDiscovery);
-        }
-
-        @Test
-        void onlyEnabledDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(true);
-            givenClassWithAnnotatedMethodInIndex(SagaEventHandler.class, CardReturnSaga.class);
-
-            Stream<Class<?>> result = ClassDiscovery.sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
-
-            assertThat(result).containsExactly(CardReturnSaga.class);
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = { "at.meks.quarkiverse.axon.shared.model", "at.meks.quarkiverse.axon", "at.meks" })
-        void includedPackageMatch(String packageName) {
-            when(componentDiscovery.enabled()).thenReturn(true);
-            when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenClassWithAnnotatedMethodInIndex(SagaEventHandler.class, CardReturnSaga.class);
-
-            Stream<Class<?>> result = ClassDiscovery.sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
-
-            assertThat(result).containsExactly(CardReturnSaga.class);
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = { "at.meks.quarkiverse.axon.shared.projection", "at.meks.quarkiverse.axon.core", "com.meks" })
-        void includedPackageDontMatch(String packageName) {
-            when(componentDiscovery.enabled()).thenReturn(true);
-            when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenClassWithAnnotatedMethodInIndex(SagaEventHandler.class, CardReturnSaga.class);
-
-            Stream<Class<?>> result = ClassDiscovery.sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
-
-            assertThat(result).isEmpty();
-        }
-
-        @Test
-        void disabledAggregateDiscovery() {
-            when(componentDiscovery.enabled()).thenReturn(false);
-            Stream<Class<?>> result = ClassDiscovery.sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration);
-            assertThat(result).isEmpty();
-        }
     }
 
 }

@@ -21,7 +21,7 @@ public class Api {
     }
 
     @Event(name = "CardRedeemedEvent")
-    public record CardRedeemedEvent(String id, int amount) {
+    public record CardRedeemedEvent(@EventTag(key = "Giftcard") String id, int amount) {
     }
 
     @Query

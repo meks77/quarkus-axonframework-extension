@@ -15,7 +15,8 @@ public class AxonComponentenSetup {
 
     void configureAggregates(EventSourcingConfigurer configurer, Set<Class<?>> aggregateClasses) {
         aggregateClasses.forEach(
-                aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
+                aggregate -> configurer.modelling(
+                        mc -> mc.registerEntity(aggregateConfigurer.createConfigurer(aggregate))));
     }
 
     void configureCommandHandlers(EventSourcingConfigurer configurer, Set<Object> commandhandlers) {

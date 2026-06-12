@@ -3,9 +3,10 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 import java.util.List;
 import java.util.Optional;
 
-import org.axonframework.common.configuration.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.configuration.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.inmemory.InMemoryTokenStore;
 import org.axonframework.messaging.eventhandling.tokenstore.TokenStore;
-import org.axonframework.messaging.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,7 @@ public abstract class AbstractEventProcessingConfigurer implements AxonEventProc
 
     private static InMemoryTokenStore singletonInMemoryTokenStore;
 
-    protected synchronized static TokenStore getSingletonInMemoryTokenStore() {
+    protected static synchronized TokenStore getSingletonInMemoryTokenStore() {
         if (singletonInMemoryTokenStore == null) {
             singletonInMemoryTokenStore = new InMemoryTokenStore();
         }

@@ -1,9 +1,8 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.*;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.aggregateClasses;
+import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.eventSourcedEntityClasses;
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.classes;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.sagaEventhandlerClasses;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ class AxonExtensionProcessor {
     void scanForAggregates(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
             BuildProducer<AggregateBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        aggregateClasses(beanArchiveIndex, discoveryConfiguration)
+        eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration)
                 .forEach(beanClass -> {
                     beanProducer.produce(new AggregateBeanBuildItem(beanClass));
                     Log.debugf("Configured bean: %s", beanClass);
@@ -80,18 +79,6 @@ class AxonExtensionProcessor {
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
-    void scanForSagaEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
-            BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<SagaEventhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration)
-                .forEach(clazz -> {
-                    beanProducer.produce(new SagaEventhandlerBeanBuildItem(clazz));
-                    Log.debugf("Configured saga eventhandler class: %s", clazz);
-                });
-    }
-
-    @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void startAxon(AxonInitializationRecorder recorder,
             List<AggregateBeanBuildItem> aggregateBeanBuildItems,
@@ -103,7 +90,7 @@ class AxonExtensionProcessor {
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate",
-                discoveryConfiguration.aggregates());
+                discoveryConfiguration.eventSourcedEntities());
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler",
                 discoveryConfiguration.eventHandlers());
         Set<Class<?>> commandhandlerClasses = classes(commandhandlerBeanBuildItems, "commandhandler",
@@ -111,7 +98,7 @@ class AxonExtensionProcessor {
         Set<Class<?>> queryhandlerClasses = classes(queryhandlerBeanBuildItems, "queryhandler",
                 discoveryConfiguration.queryHandlers());
         Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean",
-                discoveryConfiguration.aggregates());
+                discoveryConfiguration.eventSourcedEntities());
         Set<Class<?>> sagaEventhandlerClasses = classes(sagaEventhandlerBeanBuildItems,
                 "saga eventhandler", discoveryConfiguration.sagaHandlers());
         recorder.startAxon(beanContainerBuildItem.getValue(),

@@ -1,18 +1,9 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
-import org.axonframework.common.configuration.AggregateConfiguration;
-import org.axonframework.common.configuration.AggregateConfigurer;
-import org.axonframework.eventsourcing.AggregateLoadTimeSnapshotTriggerDefinition;
-import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
-import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.axonframework.eventsourcing.configuration.EventSourcedEntityModule;
 
-import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
-import at.meks.quarkiverse.axon.runtime.conf.TriggerType;
 import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 import io.quarkus.arc.DefaultBean;
 
@@ -20,51 +11,10 @@ import io.quarkus.arc.DefaultBean;
 @DefaultBean
 public class DefaultAggregateConfigurer implements QuarkusAggregateConfigurer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultAggregateConfigurer.class);
-
-    public static final AxonConfiguration.SnapshotConfiguration NO_SNAPSHOT_CONFIG = new AxonConfiguration.SnapshotConfiguration() {
-        @Override
-        public TriggerType triggerType() {
-            return TriggerType.NoSnapshots;
-        }
-
-        @Override
-        public int threshold() {
-            return 0;
-        }
-    };
-
-    @Inject
-    AxonConfiguration axonConfiguration;
-
     @Override
-    public <T> AggregateConfiguration<T> createConfigurer(Class<T> aggregate) {
-        AggregateConfigurer<T> aggregateConfigurer = AggregateConfigurer.defaultConfiguration(aggregate);
-
-        configureSnapshots(aggregate, aggregateConfigurer);
-
-        return aggregateConfigurer;
-    }
-
-    private <T> void configureSnapshots(Class<T> aggregate, AggregateConfigurer<T> aggregateConfigurer) {
-        AxonConfiguration.SnapshotConfiguration snapshotConfig = snapshotConfig(aggregate);
-        LOG.info("Snapshotconfig: trigger type: {}}, threshold: {}}", snapshotConfig.triggerType(), snapshotConfig.threshold());
-        if (snapshotConfig.triggerType() == TriggerType.EventCount) {
-            aggregateConfigurer.configureSnapshotTrigger(
-                    conf -> new EventCountSnapshotTriggerDefinition(conf.snapshotter(), snapshotConfig.threshold()));
-        } else if (snapshotConfig.triggerType() == TriggerType.LoadTime) {
-            aggregateConfigurer.configureSnapshotTrigger(
-                    conf -> new AggregateLoadTimeSnapshotTriggerDefinition(conf.snapshotter(), snapshotConfig.threshold()));
-        } else {
-            aggregateConfigurer.configureSnapshotTrigger(conf -> NoSnapshotTriggerDefinition.INSTANCE);
-        }
-    }
-
-    private <T> AxonConfiguration.SnapshotConfiguration snapshotConfig(Class<T> aggregate) {
-        if (axonConfiguration.snapshotConfigs().containsKey(aggregate.getName())) {
-            return axonConfiguration.snapshotConfigs().get(aggregate.getName());
-        }
-        return axonConfiguration.snapshotConfigs().getOrDefault("<default>", NO_SNAPSHOT_CONFIG);
+    public <ID, T> EventSourcedEntityModule<ID, T> createConfigurer(Class<T> eventSourcedEntity) {
+        // TODO: Fix this by supporting entities with other id types than string
+        return EventSourcedEntityModule.autodetected((Class<ID>) String.class, eventSourcedEntity);
     }
 
 }

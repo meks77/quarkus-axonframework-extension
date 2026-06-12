@@ -67,8 +67,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 == TODOS
 * Aggregate configuration
-** [ ] Aggregate configuration: Search for EventSourcedAggregate and configure them
-** [ ] Remove consideration of annotation AggregateIdentifier
+** [x] Aggregate configuration: Search for EventSourcedAggregate and configure them
+** [x] Remove consideration of annotation AggregateIdentifier
+** [ ] Entity Configuration with Id Type <> String
 * Event Processing configuration
 ** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
 ** [ ] Remove TrackingEventProcessor
@@ -83,10 +84,59 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] DuplicateCommandHandlerResolver
 * Configuration
 ** [ ] Usage of EntityManagerTransactionManager from Axon
+** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
+* [ ] DCB Support
 
 
 == Migration Guide for Extension Users
 * AxonSerializerProducer renamed AxonConverterProducer, because Axon Classes have been renamed too
+* QuarkusAggregateConfigurer: signature of createConfigurer changed
 * Micrometer Metrics withTags is now useDimensions
+* migrate Snapshot configuration to Annotations
+* snapshots are only supported in memory and in AxonServer
+* Configuration
+** quarkus.axon.discovery aggregates renamed to event-sourced-entities
+** implement QuarkusAggregateConfigurer if id of EventSourcedEntities is not of type String (the default implementation maybe change in the future to consider the type of the id somehow else)
+
+== Fragen an Axoniq:
+* Unterschied JacksonConverter vs. Jackson2Converter
+* Wie kann ich eine Instanz eines JacksonConverters erstellen, dem ich einen Jackson ObjectMapper setzen kann. Ist der richtige Weg der Jackson2Converter?
+* Tracing ist lt. Doku nicht in 5.0 unterstützt. Wann steht es bereit?
+* Wie kann ich aus der AxonConfiguration ein Repository bekommen?
+* Gibt es einen Ersatz für den DuplicateCommandHandlerResolver?
+* RetryScheduler in CommandGateway?
+* Keine JdbcEventStore mehr?(nicht so wichtig)
+* Keine Snapshots mehr für Relationale Datenbanken?(nicht so wichtig)
+
+=== API existiert nicht wie in Doku beschrieben und ist irritierend
+
+API existiert so nicht. Ich habe es nun anders implementiert:
+
+Doku(nicht kompilierbar):
+[source,java]
+----
+configurer.modelling().registerEventSourcedEntity(
+EventSourcedEntityModule.autodetected(String.class, GiftCard.class)
+);
+----
+
+Wie ist es nun richtig?
+
+So:
+[source,java]
+----
+configurer
+    .modelling(mc -> mc.registerEntity(aggregateConfigurer.createConfigurer(id, entity)));
+----
+
+oder so:
+
+[source,java]
+----
+configurer
+    .modelling(mc -> {})
+    .registerEntity(aggregateConfigurer.createConfigurer(id, entity)));
+----
+
 
 
