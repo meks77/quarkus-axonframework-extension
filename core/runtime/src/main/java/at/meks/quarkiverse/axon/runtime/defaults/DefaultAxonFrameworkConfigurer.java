@@ -159,7 +159,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     private void registerInjectableBeans(EventSourcingConfigurer configurer) {
         for (Map.Entry<Class<?>, Object> entry : injectableBeans.entrySet()) {
             //noinspection unchecked
-            configurer.registerComponent((Class<Object>) entry.getKey(), configuration -> entry.getValue());
+            configurer.componentRegistry(
+                    reg -> reg.registerComponent((Class<Object>) entry.getKey(), config -> entry.getValue()));
         }
     }
 
