@@ -11,8 +11,6 @@ import jakarta.inject.Inject;
 import org.axonframework.conversion.DelegatingGeneralConverter;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
-import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.messaging.core.conversion.DelegatingMessageConverter;
 import org.axonframework.messaging.core.conversion.MessageConverter;
 import org.axonframework.messaging.core.retry.RetryScheduler;
@@ -106,7 +104,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         commandBusConfigurer.configureCommandBus(configurer);
-        configureCommandGateway(configurer);
+//        configureCommandGateway(configurer);
         return configurer;
     }
 
@@ -177,20 +175,12 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private void configureCommandGateway(EventSourcingConfigurer configurer) {
-        retrySchedulerConfigurer.retryScheduler()
-                .ifPresent(retryScheduler -> configurer.registerComponent(CommandGateway.class,
-                        conf -> createCommandGateway(conf, retryScheduler)));
-    }
-
-    private DefaultCommandGateway createCommandGateway(org.axonframework.common.configuration.AxonConfiguration conf,
-                                                       RetryScheduler retryScheduler) {
-        LOG.info("using CommandGateway with retryScheduler {}", retryScheduler.getClass().getName());
-        return DefaultCommandGateway.builder()
-                .commandBus(conf.commandBus())
-                .retryScheduler(retryScheduler)
-                .build();
-    }
+//    TODO where to put the retry strategy?
+//    private void configureCommandGateway(EventSourcingConfigurer configurer) {
+//        retrySchedulerConfigurer.retryScheduler()
+//                .ifPresent(retryScheduler -> configurer.messaging( c -> c.componentRegistry(
+//                        reg -> reg.registerComponent(RetryScheduler.class, config -> retryScheduler))));
+//    }
 
     private void configureTracing(EventSourcingConfigurer configurer) {
         if (axonTracingConfigurer.isResolvable()) {

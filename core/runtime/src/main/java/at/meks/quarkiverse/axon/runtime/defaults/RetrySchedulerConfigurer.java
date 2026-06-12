@@ -8,9 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.IntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.RetryScheduler;
+import org.axonframework.messaging.core.retry.RetryScheduler;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 
