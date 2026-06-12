@@ -5,8 +5,8 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
+import org.axonframework.messaging.core.MessageDispatchInterceptor;
 import org.axonframework.messaging.eventhandling.EventMessage;
-import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InOrder;
@@ -39,15 +39,15 @@ public class OneDispatchInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageDispatchInterceptor<EventMessage<?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<EventMessage>> createDispatchInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageDispatchInterceptor<EventMessage<?>> interceptor(String interceptorName) {
-            return messages -> (index, event) -> {
-                logger.debug(interceptorName + " logs event");
-                return event;
-            };
+        private @NotNull MessageDispatchInterceptor<EventMessage> interceptor(String interceptorName) {
+            return ((message, context, interceptorChain) -> {
+                logger.debug("{} logs event", interceptorName);
+                return interceptorChain.proceed(message, context);
+            });
         }
 
     }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.axonframework.messaging.core.MessageDispatchInterceptor;
 import org.axonframework.messaging.eventhandling.EventMessage;
-import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -19,7 +19,7 @@ public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer1 implements EventDispatchInterceptorsProducer {
 
         @Override
-        public List<MessageDispatchInterceptor<EventMessage<?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<EventMessage>> createDispatchInterceptor() {
             return List.of(interceptor());
         }
 
@@ -29,14 +29,14 @@ public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer2 implements EventDispatchInterceptorsProducer {
 
         @Override
-        public List<MessageDispatchInterceptor<EventMessage<?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<EventMessage>> createDispatchInterceptor() {
             return List.of(interceptor());
         }
 
     }
 
-    private static @NotNull MessageDispatchInterceptor<EventMessage<?>> interceptor() {
-        return messages -> (index, eventMessage) -> eventMessage;
+    private static @NotNull MessageDispatchInterceptor<EventMessage> interceptor() {
+        return ((message, context, interceptorChain) -> interceptorChain.proceed(message, context));
     }
 
     @RegisterExtension()

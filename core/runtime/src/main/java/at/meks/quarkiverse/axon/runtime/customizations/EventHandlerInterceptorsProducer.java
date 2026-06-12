@@ -2,7 +2,7 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 
 import java.util.List;
 
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 import org.axonframework.messaging.eventhandling.EventMessage;
 
 /**
@@ -20,6 +20,6 @@ public interface EventHandlerInterceptorsProducer {
      * @return a list of {@link MessageHandlerInterceptor} objects
      *         for handling {@link EventMessage} instances.
      */
-    List<MessageHandlerInterceptor<EventMessage<?>>> createHandlerInterceptor();
+    List<MessageHandlerInterceptor<EventMessage>> createHandlerInterceptor();
 
 }

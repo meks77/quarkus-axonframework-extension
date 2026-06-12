@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
 import org.axonframework.messaging.commandhandling.CommandMessage;
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InOrder;
@@ -39,14 +39,14 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<CommandMessage>> createHandlerInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageHandlerInterceptor<CommandMessage<?>> interceptor(String interceptorName) {
-            return (unitOfWork, interceptorChain) -> {
-                logger.debug(interceptorName + " logs command");
-                return interceptorChain.proceed();
+        private @NotNull MessageHandlerInterceptor<CommandMessage> interceptor(String interceptorName) {
+            return (message, context, interceptorChain) -> {
+                logger.debug("{} logs command", interceptorName);
+                return interceptorChain.proceed(message, context);
             };
         }
 

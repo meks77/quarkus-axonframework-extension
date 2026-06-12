@@ -10,8 +10,8 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 import org.axonframework.messaging.eventhandling.EventMessage;
-import org.axonframework.messaging.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
@@ -43,15 +43,15 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageHandlerInterceptor<EventMessage<?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<EventMessage>> createHandlerInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageHandlerInterceptor<EventMessage<?>> interceptor(String interceptorName) {
-            return (unitOfWork, interceptorChain) -> {
-                logger.debug(interceptorName + " logs event");
-                return interceptorChain.proceed();
-            };
+        private @NotNull MessageHandlerInterceptor<EventMessage> interceptor(String interceptorName) {
+            return ((message, context, interceptorChain) -> {
+                logger.debug("{} logs event", interceptorName);
+                interceptorChain.proceed(message, context);
+            });
         }
 
     }

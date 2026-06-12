@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -19,7 +19,7 @@ public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer1 implements QueryHandlerInterceptorsProducer {
 
         @Override
-        public List<MessageHandlerInterceptor<QueryMessage<?, ?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<QueryMessage>> createHandlerInterceptor() {
             return List.of(interceptor());
         }
 
@@ -29,14 +29,14 @@ public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer2 implements QueryHandlerInterceptorsProducer {
 
         @Override
-        public List<MessageHandlerInterceptor<QueryMessage<?, ?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<QueryMessage>> createHandlerInterceptor() {
             return List.of(interceptor());
         }
 
     }
 
-    private static @NotNull MessageHandlerInterceptor<QueryMessage<?, ?>> interceptor() {
-        return (unitOfWork, interceptorChain) -> interceptorChain.proceed();
+    private static @NotNull MessageHandlerInterceptor<QueryMessage> interceptor() {
+        return ((message, context, interceptorChain) -> interceptorChain.proceed(message, context));
     }
 
     @RegisterExtension()

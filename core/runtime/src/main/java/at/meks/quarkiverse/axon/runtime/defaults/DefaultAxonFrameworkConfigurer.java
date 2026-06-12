@@ -100,11 +100,11 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         configureMessageHandler(configurer);
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
-        interceptorConfigurer.registerInterceptors(configurer);
+        configurer.messaging(messagingConfigurer -> interceptorConfigurer.registerInterceptors(messagingConfigurer));
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         commandBusConfigurer.configureCommandBus(configurer);
-//        configureCommandGateway(configurer);
+        //        configureCommandGateway(configurer);
         return configurer;
     }
 
@@ -175,12 +175,12 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-//    TODO where to put the retry strategy?
-//    private void configureCommandGateway(EventSourcingConfigurer configurer) {
-//        retrySchedulerConfigurer.retryScheduler()
-//                .ifPresent(retryScheduler -> configurer.messaging( c -> c.componentRegistry(
-//                        reg -> reg.registerComponent(RetryScheduler.class, config -> retryScheduler))));
-//    }
+    //    TODO where to put the retry strategy?
+    //    private void configureCommandGateway(EventSourcingConfigurer configurer) {
+    //        retrySchedulerConfigurer.retryScheduler()
+    //                .ifPresent(retryScheduler -> configurer.messaging( c -> c.componentRegistry(
+    //                        reg -> reg.registerComponent(RetryScheduler.class, config -> retryScheduler))));
+    //    }
 
     private void configureTracing(EventSourcingConfigurer configurer) {
         if (axonTracingConfigurer.isResolvable()) {

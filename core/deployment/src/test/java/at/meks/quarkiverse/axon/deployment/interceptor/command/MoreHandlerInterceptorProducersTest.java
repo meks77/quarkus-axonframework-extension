@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.messaging.commandhandling.CommandMessage;
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -19,7 +19,7 @@ public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer1 implements CommandHandlerInterceptorsProducer {
 
         @Override
-        public List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<CommandMessage>> createHandlerInterceptor() {
             return List.of(interceptor());
         }
 
@@ -29,14 +29,14 @@ public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer2 implements CommandHandlerInterceptorsProducer {
 
         @Override
-        public List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<CommandMessage>> createHandlerInterceptor() {
             return List.of(interceptor());
         }
 
     }
 
-    private static @NotNull MessageHandlerInterceptor<CommandMessage<?>> interceptor() {
-        return (unitOfWork, interceptorChain) -> interceptorChain.proceed();
+    private static @NotNull MessageHandlerInterceptor<CommandMessage> interceptor() {
+        return (message, context, interceptorChain) -> interceptorChain.proceed(message, context);
     }
 
     @RegisterExtension()

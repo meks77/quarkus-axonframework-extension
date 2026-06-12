@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.axonframework.messaging.core.MessageDispatchInterceptor;
 import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -39,15 +39,15 @@ public class OneDispatchInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageDispatchInterceptor<QueryMessage<?, ?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<QueryMessage>> createDispatchInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageDispatchInterceptor<QueryMessage<?, ?>> interceptor(String interceptorName) {
-            return messages -> (index, query) -> {
-                logger.debug(interceptorName + " logs query");
-                return query;
-            };
+        private @NotNull MessageDispatchInterceptor<QueryMessage> interceptor(String interceptorName) {
+            return ((message, context, interceptorChain) -> {
+                logger.debug("{} logs query", interceptorName);
+                return interceptorChain.proceed(message, context);
+            });
         }
 
     }

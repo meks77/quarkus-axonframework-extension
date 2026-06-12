@@ -2,7 +2,7 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 
 import java.util.List;
 
-import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.axonframework.messaging.core.MessageDispatchInterceptor;
 import org.axonframework.messaging.eventhandling.EventMessage;
 
 /**
@@ -22,6 +22,6 @@ public interface EventDispatchInterceptorsProducer {
      *
      * @return a list of message dispatch interceptors for event messages.
      */
-    List<MessageDispatchInterceptor<EventMessage<?>>> createDispatchInterceptor();
+    List<MessageDispatchInterceptor<EventMessage>> createDispatchInterceptor();
 
 }
