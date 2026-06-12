@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import org.axonframework.eventhandling.GlobalSequenceTrackingToken;
-import org.axonframework.eventhandling.TrackedEventMessage;
-import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.messaging.StreamableMessageSource;
+import org.axonframework.messaging.eventhandling.GlobalSequenceTrackingToken;
+import org.axonframework.messaging.eventhandling.TrackedEventMessage;
+import org.axonframework.messaging.eventhandling.TrackingToken;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -10,10 +10,10 @@ import jakarta.annotation.Nonnull;
 import jakarta.inject.Inject;
 
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.modelling.entity.AggregateIdentifier;
 import org.axonframework.modelling.saga.SagaEventHandler;
-import org.axonframework.queryhandling.QueryHandler;
+import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
 import org.jboss.jandex.*;
 
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;

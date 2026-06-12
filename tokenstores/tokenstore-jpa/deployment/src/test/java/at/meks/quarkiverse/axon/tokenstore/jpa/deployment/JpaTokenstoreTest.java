@@ -7,7 +7,7 @@ import java.util.List;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry;
+import org.axonframework.messaging.eventhandling.tokenstore.jpa.TokenEntry;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 

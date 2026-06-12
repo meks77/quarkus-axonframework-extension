@@ -1,7 +1,7 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.CommandBus;
 
 /**
  * This interface is thought for those cases where a CommandBus is needed, which is not setup

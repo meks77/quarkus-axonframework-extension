@@ -1,7 +1,7 @@
 package at.meks.quarkiverse.axon.deployment.eventprocessors.tracking;
 
-import org.axonframework.eventhandling.StreamingEventProcessor;
-import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.axonframework.messaging.eventhandling.StreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.TrackingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.deployment.eventprocessors.AbstractRandomProcessorNamesTest;

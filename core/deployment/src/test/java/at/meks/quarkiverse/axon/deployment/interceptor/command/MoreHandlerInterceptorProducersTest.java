@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.commandhandling.CommandMessage;
+import org.axonframework.messaging.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageHandlerInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;

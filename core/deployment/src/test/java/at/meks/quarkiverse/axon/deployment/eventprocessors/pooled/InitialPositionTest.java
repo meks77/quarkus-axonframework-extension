@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.SequenceNumber;
+import org.axonframework.common.configuration.ProcessingGroup;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.SequenceNumber;
 import org.junit.jupiter.api.extension.*;
 
 import io.quarkus.test.QuarkusUnitTest;

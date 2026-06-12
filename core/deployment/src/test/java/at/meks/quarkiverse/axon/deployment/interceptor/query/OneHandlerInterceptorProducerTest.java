@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
 import org.axonframework.messaging.MessageHandlerInterceptor;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InOrder;

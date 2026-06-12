@@ -11,10 +11,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.tokenstore.jdbc.*;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.configuration.Configurer;
+import org.axonframework.common.configuration.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.tokenstore.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;

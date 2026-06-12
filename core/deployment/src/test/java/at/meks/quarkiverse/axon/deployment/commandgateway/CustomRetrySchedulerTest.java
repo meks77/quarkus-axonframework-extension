@@ -7,9 +7,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Produces;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
-import org.axonframework.commandhandling.gateway.RetryScheduler;
-import org.axonframework.config.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.RetryScheduler;
+import org.axonframework.common.configuration.Configuration;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 

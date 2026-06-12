@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.axonframework.messaging.eventhandling.TrackingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;

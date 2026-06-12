@@ -11,10 +11,10 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.inject.Instance;
 
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.IntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.RetryScheduler;
+import org.axonframework.messaging.commandhandling.CommandMessage;
+import org.axonframework.messaging.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
+import org.axonframework.messaging.commandhandling.gateway.IntervalRetryScheduler;
+import org.axonframework.messaging.commandhandling.gateway.RetryScheduler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

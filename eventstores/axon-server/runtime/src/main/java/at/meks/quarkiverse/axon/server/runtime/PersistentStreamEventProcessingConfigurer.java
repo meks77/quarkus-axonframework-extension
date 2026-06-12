@@ -11,8 +11,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.configuration.EventProcessingConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

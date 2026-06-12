@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

@@ -3,9 +3,9 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 import java.util.List;
 import java.util.Optional;
 
-import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
+import org.axonframework.common.configuration.EventProcessingConfigurer;
+import org.axonframework.messaging.eventhandling.tokenstore.TokenStore;
+import org.axonframework.messaging.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
