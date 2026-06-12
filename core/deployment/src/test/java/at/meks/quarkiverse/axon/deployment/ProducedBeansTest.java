@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.modelling.command.Repository;
-import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.eventhandling.EventBus;
+import org.axonframework.messaging.eventhandling.gateway.EventGateway;
+import org.axonframework.modelling.entity.Repository;
+import org.axonframework.messaging.queryhandling.QueryGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

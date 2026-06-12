@@ -3,7 +3,7 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 import java.util.List;
 
 import org.axonframework.messaging.MessageDispatchInterceptor;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 
 /**
  * A producer interface for creating command dispatch interceptors in Axon Framework.

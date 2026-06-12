@@ -7,7 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.common.configuration.EventProcessingConfigurer;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.commandhandling.CommandBus;

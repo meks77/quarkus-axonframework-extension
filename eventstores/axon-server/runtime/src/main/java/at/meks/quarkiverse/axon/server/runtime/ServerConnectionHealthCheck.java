@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
 import org.eclipse.microprofile.health.*;
 
 @Readiness

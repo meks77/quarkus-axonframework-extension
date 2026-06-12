@@ -5,10 +5,10 @@ import static at.meks.validation.args.ArgValidator.validate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.axonframework.eventhandling.GlobalSequenceTrackingToken;
-import org.axonframework.eventhandling.TrackedEventMessage;
-import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.messaging.StreamableMessageSource;
+import org.axonframework.messaging.eventhandling.GlobalSequenceTrackingToken;
+import org.axonframework.messaging.eventhandling.TrackedEventMessage;
+import org.axonframework.messaging.eventhandling.TrackingToken;
 
 import at.meks.quarkiverse.axon.runtime.conf.HeadOrTail;
 import at.meks.quarkiverse.axon.runtime.conf.StreamingProcessorConf.InitialPosition;

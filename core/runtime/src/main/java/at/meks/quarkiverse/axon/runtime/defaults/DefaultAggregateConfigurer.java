@@ -3,8 +3,8 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.AggregateConfiguration;
-import org.axonframework.config.AggregateConfigurer;
+import org.axonframework.common.configuration.AggregateConfiguration;
+import org.axonframework.common.configuration.AggregateConfigurer;
 import org.axonframework.eventsourcing.AggregateLoadTimeSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.NoSnapshotTriggerDefinition;

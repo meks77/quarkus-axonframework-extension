@@ -10,9 +10,9 @@ import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
-import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.eventhandling.EventProcessor;
+import org.axonframework.messaging.eventhandling.SubscribingEventProcessor;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;

@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 
 import java.util.List;
 
-import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.axonframework.messaging.eventhandling.EventMessage;
 
 /**
  * This interface defines a contract for producing a list of event message dispatch interceptors.

@@ -7,7 +7,7 @@ import jakarta.inject.Inject;
 
 import org.axonframework.common.jpa.EntityManagerProvider;
 import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.config.Configurer;
+import org.axonframework.common.configuration.Configurer;
 import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;

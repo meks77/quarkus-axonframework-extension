@@ -2,7 +2,7 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.Configurer;
+import org.axonframework.common.configuration.Configurer;
 
 import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;
 import io.quarkus.arc.DefaultBean;

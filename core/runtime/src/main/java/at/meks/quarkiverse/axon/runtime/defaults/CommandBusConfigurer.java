@@ -6,10 +6,10 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolution;
+import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;

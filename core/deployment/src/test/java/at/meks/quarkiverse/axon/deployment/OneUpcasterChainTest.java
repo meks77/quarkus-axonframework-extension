@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.serialization.upcasting.event.EventUpcaster;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 import org.junit.jupiter.api.extension.RegisterExtension;

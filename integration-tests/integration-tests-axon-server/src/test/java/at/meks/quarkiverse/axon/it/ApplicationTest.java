@@ -11,15 +11,15 @@ import jakarta.inject.Inject;
 
 import org.awaitility.Awaitility;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.EventProcessingConfiguration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.eventhandling.SubscribingEventProcessor;
-import org.axonframework.eventhandling.TrackingEventProcessor;
-import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
-import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.configuration.EventProcessingConfiguration;
+import org.axonframework.messaging.eventhandling.EventProcessor;
+import org.axonframework.messaging.eventhandling.SubscribingEventProcessor;
+import org.axonframework.messaging.eventhandling.TrackingEventProcessor;
+import org.axonframework.messaging.eventhandling.pooled.PooledStreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.tokenstore.TokenStore;
+import org.axonframework.messaging.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
+import org.axonframework.messaging.eventhandling.tokenstore.jdbc.JdbcTokenStore;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 

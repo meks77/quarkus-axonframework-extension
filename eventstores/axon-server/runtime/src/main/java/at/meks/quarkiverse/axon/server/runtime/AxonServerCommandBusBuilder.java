@@ -12,10 +12,10 @@ import org.axonframework.axonserver.connector.command.AxonServerCommandBus;
 import org.axonframework.axonserver.connector.command.CommandPriorityCalculator;
 import org.axonframework.common.configuration.AxonConfiguration;
 import org.axonframework.messaging.commandhandling.CommandBus;
-import org.axonframework.commandhandling.DefaultCommandBusSpanFactory;
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
-import org.axonframework.commandhandling.distributed.AnnotationRoutingStrategy;
-import org.axonframework.config.Configuration;
+import org.axonframework.messaging.commandhandling.DefaultCommandBusSpanFactory;
+import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
+import org.axonframework.messaging.commandhandling.distributed.AnnotationRoutingStrategy;
+import org.axonframework.common.configuration.Configuration;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.defaults.LocalCommandBusBuilder;

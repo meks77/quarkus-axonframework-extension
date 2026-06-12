@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConfiguration;
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

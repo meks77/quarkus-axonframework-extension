@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import jakarta.enterprise.context.Dependent;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.DefaultCommandBusSpanFactory;
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
-import org.axonframework.commandhandling.SimpleCommandBus;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.config.Configuration;
+import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.DefaultCommandBusSpanFactory;
+import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
+import org.axonframework.messaging.commandhandling.SimpleCommandBus;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import io.quarkus.arc.DefaultBean;

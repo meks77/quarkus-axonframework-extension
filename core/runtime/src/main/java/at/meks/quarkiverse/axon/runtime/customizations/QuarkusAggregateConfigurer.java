@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.config.AggregateConfiguration;
+import org.axonframework.common.configuration.AggregateConfiguration;
 
 /**
  * Interface for configuring aggregates in a Quarkus-based Axon Framework application.

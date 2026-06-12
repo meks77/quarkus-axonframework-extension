@@ -8,9 +8,9 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.inject.Instance;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.configuration.Configurer;
+import org.axonframework.messaging.commandhandling.CommandBus;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

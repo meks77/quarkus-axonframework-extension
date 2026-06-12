@@ -9,7 +9,7 @@ import java.util.Map;
 import jakarta.inject.Inject;
 
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.messaging.eventhandling.SubscribingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;

@@ -15,10 +15,10 @@ import jakarta.inject.Inject;
 import org.awaitility.Awaitility;
 import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.*;
-import org.axonframework.eventhandling.pooled.PooledStreamingEventProcessor;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.eventhandling.*;
+import org.axonframework.messaging.eventhandling.pooled.PooledStreamingEventProcessor;
 import org.junit.jupiter.api.Test;
 
 import at.meks.quarkiverse.axon.shared.model.Api;

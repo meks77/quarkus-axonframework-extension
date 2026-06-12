@@ -5,10 +5,10 @@ import java.time.Duration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.eventhandling.tokenstore.TokenStore;
-import org.axonframework.eventhandling.tokenstore.jpa.JpaTokenStore;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.configuration.Configurer;
+import org.axonframework.messaging.eventhandling.tokenstore.TokenStore;
+import org.axonframework.messaging.eventhandling.tokenstore.jpa.JpaTokenStore;
 
 import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;
 
