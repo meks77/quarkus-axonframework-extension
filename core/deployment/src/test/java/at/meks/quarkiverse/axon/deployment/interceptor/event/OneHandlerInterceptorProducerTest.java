@@ -50,7 +50,7 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         private @NotNull MessageHandlerInterceptor<EventMessage> interceptor(String interceptorName) {
             return ((message, context, interceptorChain) -> {
                 logger.debug("{} logs event", interceptorName);
-                interceptorChain.proceed(message, context);
+                return interceptorChain.proceed(message, context);
             });
         }
 
