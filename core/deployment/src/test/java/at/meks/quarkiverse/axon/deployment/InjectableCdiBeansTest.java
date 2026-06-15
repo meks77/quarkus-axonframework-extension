@@ -28,7 +28,7 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import at.meks.quarkiverse.axon.shared.TestModelConfig;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class InjectableCdiBeansTest {
 
@@ -45,7 +45,7 @@ public class InjectableCdiBeansTest {
     QueryGateway queryGateway;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     record CommandHandledByAggregate(@TargetEntityId String id) {

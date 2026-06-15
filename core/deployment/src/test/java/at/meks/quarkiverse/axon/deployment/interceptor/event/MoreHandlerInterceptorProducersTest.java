@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
 
@@ -40,7 +40,7 @@ public class MoreHandlerInterceptorProducersTest extends JavaArchiveTest {
     }
 
     @RegisterExtension()
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(InterceptorsProducer1.class, InterceptorsProducer2.class))
             .setExpectedException(IllegalStateException.class, true);
 

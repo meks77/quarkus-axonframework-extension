@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
 
@@ -57,7 +57,7 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(InterceptorsProducer.class, LoggerProducer.class));
 
     @Override

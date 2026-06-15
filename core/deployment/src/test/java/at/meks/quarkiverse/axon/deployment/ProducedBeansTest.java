@@ -15,12 +15,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class ProducedBeansTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase);
 
     @Inject

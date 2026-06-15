@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class CommandExceptionInterceptorTest {
 
@@ -21,7 +21,7 @@ public class CommandExceptionInterceptorTest {
     CommandGateway commandGateway;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase);
 
     @Test

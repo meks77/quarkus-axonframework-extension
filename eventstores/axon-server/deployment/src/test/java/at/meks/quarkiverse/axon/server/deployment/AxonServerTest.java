@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 import io.restassured.RestAssured;
 
 public class AxonServerTest extends JavaArchiveTest {

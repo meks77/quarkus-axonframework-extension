@@ -9,7 +9,7 @@ import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 import org.axonframework.messaging.eventhandling.annotation.SequenceNumber;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class InitialPositionTest extends PooledProcessorTest {
 
@@ -44,7 +44,7 @@ public class InitialPositionTest extends PooledProcessorTest {
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("eventprocessors/pooled/initialPosition.properties");
 
     @Override

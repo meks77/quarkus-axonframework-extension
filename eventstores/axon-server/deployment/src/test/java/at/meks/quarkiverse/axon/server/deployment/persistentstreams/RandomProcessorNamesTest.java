@@ -10,12 +10,12 @@ import org.axonframework.messaging.eventhandling.EventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class RandomProcessorNamesTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("persistenstreams/randomProcessorNames.properties");
 
     @Override

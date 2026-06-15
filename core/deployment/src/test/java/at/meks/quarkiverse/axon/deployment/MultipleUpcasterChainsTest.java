@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 @Disabled("Upcaster not available at the moment")
 public class MultipleUpcasterChainsTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(EventUpcasterChainProducer1.class, EventUpcasterChainProducer2.class))
             .assertException(throwable -> assertThat(throwable).hasMessageContaining("multiple eventUpcasterChain found"));
 
