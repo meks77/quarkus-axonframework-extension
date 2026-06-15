@@ -1,11 +1,15 @@
 package at.meks.quarkiverse.axon.deployment.live.reloading;
 
+import java.util.concurrent.ExecutionException;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.messaging.commandhandling.CommandExecutionException;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.messaging.core.interception.annotation.ExceptionHandler;
+import org.axonframework.messaging.core.unitofwork.ProcessingContext;
+import org.axonframework.messaging.eventhandling.gateway.EventAppender;
 import org.axonframework.modelling.repository.ManagedEntity;
 import org.axonframework.modelling.repository.Repository;
 
@@ -19,9 +23,13 @@ public class DomainServiceForLiveReloading {
     Repository<String, Giftcard> giftcardRepository;
 
     @CommandHandler
-    void handle(Api.RedeemCardCommand command) {
-        ManagedEntity<String, Giftcard> giftcardAggregate = giftcardRepository.load(command.id());
-        giftcardAggregate.applyStateChange(giftcard -> giftcard.requestRedeem(command.amount()));
+    void handle(Api.RedeemCardCommand command, ProcessingContext processingContext, EventAppender eventAppender)
+            throws ExecutionException, InterruptedException {
+        ManagedEntity<String, Giftcard> giftcardAggregate = giftcardRepository.load(command.id(), processingContext).get();
+        giftcardAggregate.applyStateChange(giftcard -> {
+            giftcard.requestRedeem(command.amount(), eventAppender);
+            return giftcard;
+        });
     }
 
     @ExceptionHandler
