@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.configuration.CommandHandlingModule;
+import org.axonframework.messaging.queryhandling.configuration.QueryHandlingModule;
 
 import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 
@@ -30,7 +31,12 @@ public class AxonComponentenSetup {
     }
 
     void configureQueryHandlers(EventSourcingConfigurer configurer, Set<Object> queryhandlers) {
-        queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
+        // TODO moduleName?
+        configurer.messaging(mc -> queryhandlers.forEach(handler -> mc.registerQueryHandlingModule(
+                QueryHandlingModule.named("query-handler").queryHandlers().autodetectedQueryHandlingComponent(
+                        config -> handler).build()
+        )));
+
     }
 
     //    void configureEventHandlers(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
