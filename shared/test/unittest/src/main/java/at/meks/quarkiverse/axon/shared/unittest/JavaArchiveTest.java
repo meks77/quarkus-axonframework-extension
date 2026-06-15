@@ -14,8 +14,8 @@ import java.util.concurrent.CompletableFuture;
 import jakarta.inject.Inject;
 
 import org.awaitility.core.ThrowingRunnable;
-import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.eventhandling.EventProcessor;
 import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
