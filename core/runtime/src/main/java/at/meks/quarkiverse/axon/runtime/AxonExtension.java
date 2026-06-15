@@ -52,7 +52,6 @@ public class AxonExtension {
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
     private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
-    private Set<Class<?>> sagaEventhandlerClasses;
 
     // the request context is necessary in the case if the jpa saga store is active.
     // otherwise an exception ContextNotActiveException is thrown
@@ -64,7 +63,6 @@ public class AxonExtension {
             axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
             axonFrameworkConfigurer.injectableBeans(Map.copyOf(injectableBeans));
-            axonFrameworkConfigurer.sagaClasses(sagaEventhandlerClasses);
             final EventSourcingConfigurer configurer = axonFrameworkConfigurer.configure();
             LOG.info("starting axon");
             LOG.debug("with axon configuration {}", System.identityHashCode(configurer));
@@ -175,7 +173,4 @@ public class AxonExtension {
         injectableBeans.put(clazz, bean);
     }
 
-    public void setSagaClasses(Set<Class<?>> sagaEventhandlerClasses) {
-        this.sagaEventhandlerClasses = Set.copyOf(sagaEventhandlerClasses);
-    }
 }

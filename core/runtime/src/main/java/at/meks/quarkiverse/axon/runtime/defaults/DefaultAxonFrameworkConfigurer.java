@@ -49,8 +49,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     Instance<AxonEventProcessingConfigurer> eventProcessingConfigurers;
 
     // TODO: Migrate Eventupcasting as soon as it is supported by Axoniq
-//    @Inject
-//    Instance<EventUpcasterChain> eventUpcasterChain;
+    //    @Inject
+    //    Instance<EventUpcasterChain> eventUpcasterChain;
 
     @Inject
     InterceptorConfigurer interceptorConfigurer;
@@ -124,8 +124,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         if (!eventhandlers.isEmpty()) {
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
-                    handle -> handle.get().configure(processingConfigurer));
-            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
+                    handle -> handle.get().configure(configurer, eventhandlers));
+//            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
         }
     }
 
@@ -166,16 +166,16 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void registerEventUpcasters(EventSourcingConfigurer configurer) {
         // TODO: Migrate Eventupcasting as soon as it is supported by Axoniq
-//        if (eventUpcasterChain.isResolvable()) {
-//            LOG.info("registering eventUpcasterChain {}", eventUpcasterChain.get().getClass().getName());
-//            configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
-//        } else if (eventUpcasterChain.isAmbiguous()) {
-//            throw new IllegalStateException(
-//                    "multiple eventUpcasterChain found: %s"
-//                            .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
-//        } else {
-//            LOG.info("no eventUpcasterChain found");
-//        }
+        //        if (eventUpcasterChain.isResolvable()) {
+        //            LOG.info("registering eventUpcasterChain {}", eventUpcasterChain.get().getClass().getName());
+        //            configurer.registerEventUpcaster(conf -> eventUpcasterChain.get());
+        //        } else if (eventUpcasterChain.isAmbiguous()) {
+        //            throw new IllegalStateException(
+        //                    "multiple eventUpcasterChain found: %s"
+        //                            .formatted(eventUpcasterChain.stream().map(Object::getClass).map(Class::getName).toList()));
+        //        } else {
+        //            LOG.info("no eventUpcasterChain found");
+        //        }
     }
 
     //    TODO where to put the retry strategy?

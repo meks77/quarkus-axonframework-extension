@@ -27,9 +27,9 @@ public class AxonComponentenSetup {
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
     }
 
-    void configureEventHandlers(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
-        if (!eventhandlers.isEmpty()) {
-            eventhandlers.forEach(handler -> configurer.eventProcessing().registerEventHandler(conf -> handler));
-        }
-    }
+//    void configureEventHandlers(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
+//        if (!eventhandlers.isEmpty()) {
+//            eventhandlers.forEach(handler -> configurer.eventProcessing().registerEventHandler(conf -> handler));
+//        }
+//    }
 }

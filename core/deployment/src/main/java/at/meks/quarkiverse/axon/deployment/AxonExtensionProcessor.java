@@ -1,10 +1,10 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.*;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.eventSourcedEntityClasses;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.classes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jboss.jandex.DotName;
@@ -18,7 +18,9 @@ import at.meks.quarkiverse.axon.runtime.defaults.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.PooledEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
 import io.quarkus.arc.deployment.*;
-import io.quarkus.deployment.annotations.*;
+import io.quarkus.deployment.annotations.BuildProducer;
+import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.ExecutionTime;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.logging.Log;
@@ -87,8 +89,7 @@ class AxonExtensionProcessor {
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
-            List<SagaEventhandlerBeanBuildItem> sagaEventhandlerBeanBuildItems,
-            List<InjectableBeanBuildItem> injectableBeanBuildItems,
+                   List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate",
@@ -101,14 +102,11 @@ class AxonExtensionProcessor {
                 discoveryConfiguration.queryHandlers());
         Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean",
                 discoveryConfiguration.eventSourcedEntities());
-        Set<Class<?>> sagaEventhandlerClasses = classes(sagaEventhandlerBeanBuildItems,
-                "saga eventhandler", discoveryConfiguration.sagaHandlers());
         recorder.startAxon(beanContainerBuildItem.getValue(),
                 aggregateClasses,
                 commandhandlerClasses,
                 queryhandlerClasses,
                 eventhandlerClasses,
-                sagaEventhandlerClasses,
                 injectableBeanClasses);
     }
 

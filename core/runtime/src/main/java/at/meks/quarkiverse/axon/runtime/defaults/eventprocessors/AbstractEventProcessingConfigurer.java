@@ -3,10 +3,9 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 import java.util.List;
 import java.util.Optional;
 
-import org.axonframework.messaging.eventhandling.configuration.EventProcessingConfigurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
 import org.axonframework.messaging.eventhandling.processing.streaming.token.store.inmemory.InMemoryTokenStore;
-import org.axonframework.messaging.eventhandling.tokenstore.TokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,14 +26,15 @@ public abstract class AbstractEventProcessingConfigurer implements AxonEventProc
         return singletonInMemoryTokenStore;
     }
 
-    protected static void assignProcessingGroupsToProcessor(EventProcessingConfigurer configurer,
-            List<String> groupNames, String processorName) {
-        groupNames.stream()
-                .map(String::trim)
-                .forEach(groupName -> {
-                    LOG.info("assigning processing group {} to event processor {}", groupName, processorName);
-                    configurer.assignProcessingGroup(groupName, processorName);
-                });
+    protected static void assignNamespacesToProcessor(EventSourcingConfigurer configurer,
+                                                      List<String> namespaces, String processorName) {
+        //        TODO
+        //        namespaces.stream()
+        //                .map(String::trim)
+        //                .forEach(groupName -> {
+        //                    LOG.info("assigning processing group {} to event processor {}", groupName, processorName);
+        //                    configurer.assignProcessingGroup(groupName, processorName);
+        //                });
     }
 
     protected static String createProcessorName(String configuredName, boolean useUuidSuffix) {

@@ -13,6 +13,7 @@ import jakarta.inject.Inject;
 import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.common.configuration.EventProcessingConfigurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,15 +68,15 @@ public class PersistentStreamEventProcessingConfigurer extends AbstractEventProc
         return new RegisteredProcessorNames(processorNameMap);
     }
 
-    private void assignConfiguredProcessingGroupsToStreamingEventProcessors(EventProcessingConfigurer configurer,
-            RegisteredProcessorNames registeredProcessorNames) {
+    private void assignConfiguredProcessingGroupsToStreamingEventProcessors(EventSourcingConfigurer configurer,
+                                                                            RegisteredProcessorNames registeredProcessorNames) {
         processorNames().stream()
                 .filter(processorName -> !processorName.equals("default"))
                 .forEach(processorName -> {
                     List<String> groupNames = getProcessorConfig(processorName).processingGroupNames()
                             .orElseThrow(() -> new IllegalStateException(
                                     "processing group names must be configured for the processor " + processorName));
-                    assignProcessingGroupsToProcessor(configurer, groupNames,
+                    assignNamespacesToProcessor(configurer, groupNames,
                             registeredProcessorNames.getRegisteredNameFor(processorName));
                 });
     }
