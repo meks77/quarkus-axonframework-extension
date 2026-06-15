@@ -16,7 +16,7 @@ import jakarta.inject.Inject;
 import org.awaitility.core.ThrowingRunnable;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.eventhandling.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -130,7 +130,7 @@ public class JavaArchiveTest {
             delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
             assertFalse(quarkusPaymentservice.isPaid(cardId2));
             assertConfiguration(configuration);
-            assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
+            assertConfiguration(configuration.getComponents(EventProcessor.class));
             assertOthers();
         } finally {
             teardown();
