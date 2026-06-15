@@ -8,8 +8,9 @@ import jakarta.ws.rs.Produces;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
-import org.axonframework.messaging.commandhandling.gateway.RetryScheduler;
+import org.axonframework.messaging.core.retry.RetryScheduler;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 
@@ -37,7 +38,7 @@ public class CustomRetrySchedulerTest extends JavaArchiveTest {
 
     @Override
     protected void assertConfiguration(Configuration configuration) {
-        DefaultCommandGateway commandGateway = (DefaultCommandGateway) configuration.commandGateway();
+        DefaultCommandGateway commandGateway = (DefaultCommandGateway) configuration.getComponent(CommandGateway.class);
         try {
             Object actualRetryScheduler = FieldUtils.readField(commandGateway, "retryScheduler", true);
             assertThat(actualRetryScheduler).isSameAs(retryScheduler);

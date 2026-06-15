@@ -8,8 +8,8 @@ import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.eventhandling.EventBus;
 import org.axonframework.messaging.eventhandling.gateway.EventGateway;
-import org.axonframework.messaging.queryhandling.QueryGateway;
-import org.axonframework.modelling.entity.Repository;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
+import org.axonframework.modelling.repository.Repository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -35,7 +35,7 @@ public class ProducedBeansTest {
     QueryGateway queryGateway;
 
     @Inject
-    Repository<Giftcard> giftcardRepository;
+    Repository<String, Giftcard> giftcardRepository;
 
     @Test
     void eventGatewayIsProduced() {

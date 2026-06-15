@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.axonframework.messaging.eventhandling.EventProcessor;
-import org.axonframework.messaging.eventhandling.StreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 

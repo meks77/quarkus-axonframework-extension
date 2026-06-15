@@ -21,20 +21,20 @@ public class MultipleUpcasterChainsTest extends JavaArchiveTest {
     @ApplicationScoped
     static class EventUpcasterChainProducer1 {
 
-//        @Produces
-//        EventUpcasterChain eventUpcasterChain() {
-//            return new EventUpcasterChain();
-//        }
+        //        @Produces
+        //        EventUpcasterChain eventUpcasterChain() {
+        //            return new EventUpcasterChain();
+        //        }
 
     }
 
     @ApplicationScoped
     static class EventUpcasterChainProducer2 {
 
-//        @Produces
-//        EventUpcasterChain eventUpcasterChain() {
-//            return new EventUpcasterChain();
-//        }
+        //        @Produces
+        //        EventUpcasterChain eventUpcasterChain() {
+        //            return new EventUpcasterChain();
+        //        }
 
     }
 

@@ -9,8 +9,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.messaging.queryhandling.QueryExecutionException;
-import org.axonframework.messaging.queryhandling.QueryGateway;
-import org.axonframework.messaging.queryhandling.QueryHandler;
+import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

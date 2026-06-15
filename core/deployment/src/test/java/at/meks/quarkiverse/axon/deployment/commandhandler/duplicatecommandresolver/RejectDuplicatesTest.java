@@ -2,7 +2,7 @@ package at.meks.quarkiverse.axon.deployment.commandhandler.duplicatecommandresol
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.lifecycle.LifecycleHandlerInvocationException;
+import org.axonframework.common.lifecycle.LifecycleHandlerInvocationException;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

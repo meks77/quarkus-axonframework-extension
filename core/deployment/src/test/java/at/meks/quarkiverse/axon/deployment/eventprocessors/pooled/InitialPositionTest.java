@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.common.configuration.ProcessingGroup;
-import org.axonframework.messaging.eventhandling.SequenceNumber;
+import org.axonframework.messaging.core.annotation.Namespace;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
-import org.junit.jupiter.api.extension.*;
+import org.axonframework.messaging.eventhandling.annotation.SequenceNumber;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
 
@@ -18,7 +18,7 @@ public class InitialPositionTest extends PooledProcessorTest {
     private static Long firstSequenceNumberStartingAtTail;
 
     @ApplicationScoped
-    @ProcessingGroup("HandlerStartingAt1")
+    @Namespace("HandlerStartingAt1")
     public static class HandlerStartingAt1 {
 
         @EventHandler
@@ -31,7 +31,7 @@ public class InitialPositionTest extends PooledProcessorTest {
     }
 
     @ApplicationScoped
-    @ProcessingGroup("HandlerStartingAtTail")
+    @Namespace("HandlerStartingAtTail")
     public static class HandlerStartingAtTail {
 
         @EventHandler

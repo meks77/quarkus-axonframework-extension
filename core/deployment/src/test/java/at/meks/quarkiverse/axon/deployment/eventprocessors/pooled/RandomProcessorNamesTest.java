@@ -1,7 +1,7 @@
 package at.meks.quarkiverse.axon.deployment.eventprocessors.pooled;
 
-import org.axonframework.messaging.eventhandling.StreamingEventProcessor;
-import org.axonframework.messaging.eventhandling.pooled.PooledStreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.deployment.eventprocessors.AbstractRandomProcessorNamesTest;
