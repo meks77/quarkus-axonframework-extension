@@ -5,7 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
-import io.smallrye.config.*;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
 
 @ConfigMapping(prefix = "quarkus.axon")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
@@ -37,11 +39,6 @@ public interface AxonConfiguration {
      * configuration for the local command bus.
      */
     CommandBusConfiguration commandBus();
-
-    /**
-     * general configuration for event processing.
-     */
-    EventProcessingConfig eventProcessing();
 
     /**
      * configuration for the subscribing processor.
@@ -137,16 +134,6 @@ public interface AxonConfiguration {
         @WithName("duplicate-command-handler-resolver")
         @WithDefault("rejectDuplicates")
         DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType();
-
-    }
-
-    interface EventProcessingConfig {
-
-        /**
-         * The event processor type for processing groups, which are not assigned to a processor.
-         * If not set, default of the Axon Framework is used.
-         */
-        Optional<EventProcessorType> defaultEventProcessingType();
 
     }
 

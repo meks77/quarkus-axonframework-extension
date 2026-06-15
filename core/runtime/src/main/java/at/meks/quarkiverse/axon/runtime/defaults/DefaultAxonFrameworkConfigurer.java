@@ -15,7 +15,6 @@ import org.axonframework.messaging.core.conversion.DelegatingMessageConverter;
 import org.axonframework.messaging.core.conversion.MessageConverter;
 import org.axonframework.messaging.core.retry.RetryScheduler;
 import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
-import org.axonframework.messaging.eventhandling.configuration.EventProcessingConfigurer;
 import org.axonframework.messaging.eventhandling.conversion.DelegatingEventConverter;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 //import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
@@ -118,9 +117,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureEventHandling(EventSourcingConfigurer configurer) {
-        setDefaultEventProcessorType(configurer);
-        EventProcessingConfigurer processingConfigurer = configurer.eventProcessing();
-        assignProcessingGroupsToSubscribingEventProcessor(processingConfigurer);
+        assignProcessingGroupsToSubscribingEventProcessor(configurer);
         if (!eventhandlers.isEmpty()) {
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
@@ -129,26 +126,26 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private void setDefaultEventProcessorType(EventSourcingConfigurer configurer) {
-        axonConfiguration.eventProcessing().defaultEventProcessingType().ifPresent(type -> {
-            var eventProcessingConfigurer = configurer.eventProcessing();
-            switch (type) {
-                case SUBSCRIBING -> eventProcessingConfigurer.usingSubscribingEventProcessors();
-                case POOLED -> eventProcessingConfigurer.usingPooledStreamingEventProcessors();
-            }
-        });
-    }
-
-    private void assignProcessingGroupsToSubscribingEventProcessor(EventProcessingConfigurer configurer) {
+    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer) {
         SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();
-        conf.processingGroupNames().ifPresent(groupNames -> {
-            String processorName = conf.name().orElse("Subscribing");
-            configurer.registerSubscribingEventProcessor(processorName);
-            groupNames.stream()
-                    .map(String::trim)
-                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
-                            processorName));
-        });
+        //        TODO
+        //        conf.processingGroupNames().ifPresent(groupNames -> {
+        //            String processorName = conf.name().orElse("Subscribing");
+        //
+        //            configurer.messaging(mc -> mc.eventProcessing(ep -> ep.subscribing(sc -> {
+        //                return sc.processor(processorName, config -> config.eventHandlingComponents(
+        //                        rcp -> rcp.autodetected(c -> new AnnotatedEventhandlingClass())).customized(
+        //                        (configuration, subscribingEventProcessorConfiguration) -> subscribingEventProcessorConfiguration.eventSource(
+        //                                configuration.getComponent(
+        //                                        EventBus.class))));
+        //            })));
+        //
+        ////            configurer.registerSubscribingEventProcessor(processorName);
+        ////            groupNames.stream()
+        ////                    .map(String::trim)
+        ////                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
+        ////                            processorName));
+        //        });
     }
 
     private void configureTransactionManagement(EventSourcingConfigurer configurer) {
