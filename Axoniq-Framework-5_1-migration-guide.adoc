@@ -87,6 +87,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
 ** [ ] remove or upgrade for DuplicateCommandHandlerResolver
 ** [ ] remove or upgrade RetryScheduler
+** [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 * [ ] DCB Support
 
 
