@@ -2,13 +2,13 @@ package at.meks.quarkiverse.axon.it;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.common.configuration.ProcessingGroup;
+import org.axonframework.messaging.core.annotation.Namespace;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 
 @ApplicationScoped
-@ProcessingGroup("EventProcessorGroup6")
+@Namespace("EventProcessorGroup6")
 public class EventProcessorGroup6 {
 
     @EventHandler

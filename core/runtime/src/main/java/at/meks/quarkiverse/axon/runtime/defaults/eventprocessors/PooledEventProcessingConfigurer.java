@@ -12,6 +12,8 @@ import jakarta.inject.Inject;
 import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.common.configuration.EventProcessingConfigurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.eventstreaming.StreamableEventSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,27 +28,27 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
     @Inject
     PooledProcessorConf pooledProcessorConf;
 
-    @Override
-    public void configure(EventProcessingConfigurer configurer) {
+    public void configure(EventSourcingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfig = registerDefaultConfiguration(configurer);
         registerConfiguredNamedConfigurations(configurer, defaultConfig);
     }
 
-    private ConfigOfOneProcessor registerDefaultConfiguration(EventProcessingConfigurer configurer) {
+    private ConfigOfOneProcessor registerDefaultConfiguration(EventSourcingConfigurer configurer) {
         ConfigOfOneProcessor defaultConfig = pooledProcessorConf.eventprocessorConfigs().get("default");
         if (defaultConfig.processingGroupNames().isPresent()) {
             LOG.warn(
                     "processing groups names are not supported for default event processor! The configured groups '{}' are not considered",
                     defaultConfig.processingGroupNames().get());
         }
-        configurer
-                .registerPooledStreamingEventProcessorConfiguration(
-                        createProcessorConfig(defaultConfig, null, defaultConfig));
+        extracted(configurer, null, defaultConfig, defaultConfig);
+
+//                createProcessorConfig(defaultConfig, null, defaultConfig));
         return defaultConfig;
     }
 
+
     private void registerConfiguredNamedConfigurations(EventProcessingConfigurer configurer,
-            ConfigOfOneProcessor defaultConfig) {
+                                                       ConfigOfOneProcessor defaultConfig) {
         for (Map.Entry<String, ConfigOfOneProcessor> entry : nonDefaultProcessorConfigurations()) {
             LOG.info("registering pooled event processor with name {}", entry.getKey());
             ConfigOfOneProcessor configOfOneProcessor = entry.getValue();
@@ -78,6 +80,38 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 .collect(Collectors.toSet());
     }
 
+    private static void extracted(EventSourcingConfigurer configurer, String name, ConfigOfOneProcessor configOfOneProcessor, ConfigOfOneProcessor defaultConfig) {
+        configurer.messaging(messagingConfigurer -> messagingConfigurer.eventProcessing(
+                eventProcessingConfigurer -> eventProcessingConfigurer.pooledStreaming(
+                        pooledStreaming -> pooledStreaming.defaults(
+                                (configuration, pooledStreamingEventProcessorConfiguration) -> {
+                                    getInitialPositionConfig(configOfOneProcessor, defaultConfig)
+                                            .ifPresent(
+                                                    posConfig -> pooledStreamingEventProcessorConfiguration.initialToken(
+                                                            trackingTokenSource -> TokenBuilder.with(name,
+                                                                    trackingTokenSource).and(posConfig)));
+                                    pooledStreamingEventProcessorConfiguration.eventSource(
+                                            configuration.getComponent(
+                                                    StreamableEventSource.class));
+                                    configOfOneProcessor.batchSize().ifPresent(
+                                            pooledStreamingEventProcessorConfiguration::batchSize);
+                                    configOfOneProcessor.initialSegments().ifPresent(
+                                            pooledStreamingEventProcessorConfiguration::initialSegmentCount);
+                                    configOfOneProcessor.maxClaimedSegments().ifPresent(
+                                            pooledStreamingEventProcessorConfiguration::maxClaimedSegments);
+                                    configOfOneProcessor.enabledCoordinatorClaimExtension().ifPresent(enabled -> {
+                                        if (enabled)
+                                            pooledStreamingEventProcessorConfiguration.enableCoordinatorClaimExtension();
+                                    });
+                                    configOfOneProcessor.workerThreadPoolSize().ifPresent(
+                                            size -> pooledStreamingEventProcessorConfiguration.workerExecutor(
+                                                    newScheduledThreadPool(size,
+                                                            new AxonThreadFactory("Worker - " + name))));
+                                    return pooledStreamingEventProcessorConfiguration;
+                                }
+                        ))));
+    }
+
     private EventProcessingConfigurer.PooledStreamingProcessorConfiguration createProcessorConfig(
             ConfigOfOneProcessor configOfOneProcessor, String name, ConfigOfOneProcessor defaultConfig) {
         return (config, builder) -> {
@@ -101,7 +135,7 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                             .workerExecutor(newScheduledThreadPool(size, new AxonThreadFactory("Worker - " + name))));
             builder.coordinatorExecutor(newScheduledThreadPool(1, new AxonThreadFactory("Coordinator - " + name)));
             if (configOfOneProcessor.enabledCoordinatorClaimExtension().or(
-                    defaultConfig::enabledCoordinatorClaimExtension)
+                            defaultConfig::enabledCoordinatorClaimExtension)
                     .orElse(false)) {
                 builder.enableCoordinatorClaimExtension();
             }
@@ -113,7 +147,7 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
     }
 
     private static boolean shouldUseInMemoryTokenStore(ConfigOfOneProcessor configOfOneProcessor,
-            ConfigOfOneProcessor defaultConfig) {
+                                                       ConfigOfOneProcessor defaultConfig) {
         return configOfOneProcessor.useInMemoryTokenStore().or(
                 defaultConfig::useInMemoryTokenStore).orElse(false);
     }

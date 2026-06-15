@@ -2,32 +2,33 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import static at.meks.validation.args.ArgValidator.validate;
 
+import java.time.Instant;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import org.axonframework.messaging.StreamableMessageSource;
-import org.axonframework.messaging.eventhandling.GlobalSequenceTrackingToken;
-import org.axonframework.messaging.eventhandling.TrackedEventMessage;
-import org.axonframework.messaging.eventhandling.TrackingToken;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.GlobalSequenceTrackingToken;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
+import org.axonframework.messaging.eventstreaming.TrackingTokenSource;
 
 import at.meks.quarkiverse.axon.runtime.conf.HeadOrTail;
 import at.meks.quarkiverse.axon.runtime.conf.StreamingProcessorConf.InitialPosition;
 
 public class TokenBuilder {
 
-    private final StreamableMessageSource<TrackedEventMessage<?>> messageSource;
+    private final TrackingTokenSource trackingTokenSource;
     private final String processorName;
 
-    public static TokenBuilder with(String processorName, StreamableMessageSource<TrackedEventMessage<?>> messageSource) {
-        return new TokenBuilder(messageSource, processorName);
+    public static TokenBuilder with(String processorName, TrackingTokenSource trackingTokenSource) {
+        return new TokenBuilder(trackingTokenSource, processorName);
     }
 
-    private TokenBuilder(StreamableMessageSource<TrackedEventMessage<?>> messageSource, String processorName) {
-        this.messageSource = messageSource;
+    private TokenBuilder(TrackingTokenSource trackingTokenSource, String processorName) {
+        this.trackingTokenSource = trackingTokenSource;
         this.processorName = processorName;
     }
 
-    public TrackingToken and(InitialPosition initialPositionOfProcessor) {
+    public CompletableFuture<TrackingToken> and(InitialPosition initialPositionOfProcessor) {
         validate().that(initialPositionOfProcessor).isNotNull();
 
         long configuredPositionCount = Stream.of(
@@ -43,15 +44,17 @@ public class TokenBuilder {
         }
 
         if (initialPositionOfProcessor.atHeadOrTail().orElse(null) == HeadOrTail.TAIL) {
-            return messageSource.createTailToken();
+            return trackingTokenSource.firstToken(null);
         } else if (initialPositionOfProcessor.atHeadOrTail().orElse(null) == HeadOrTail.HEAD) {
-            return messageSource.createHeadToken();
+            return trackingTokenSource.latestToken(null);
         } else if (initialPositionOfProcessor.atDuration().isPresent()) {
-            return messageSource.createTokenSince(initialPositionOfProcessor.atDuration().get());
+            return trackingTokenSource.tokenAt(Instant.now().minus(initialPositionOfProcessor.atDuration().get()),
+                    null);
         } else if (initialPositionOfProcessor.atTimestamp().isPresent()) {
-            return messageSource.createTokenAt(initialPositionOfProcessor.atTimestamp().get().toInstant());
+            return trackingTokenSource.tokenAt(initialPositionOfProcessor.atTimestamp().get().toInstant(), null);
         } else if (initialPositionOfProcessor.atSequence().isPresent()) {
-            return new GlobalSequenceTrackingToken(initialPositionOfProcessor.atSequence().get());
+            return CompletableFuture.completedFuture(
+                    new GlobalSequenceTrackingToken(initialPositionOfProcessor.atSequence().get()));
         }
         throw new IllegalStateException();
     }
