@@ -85,7 +85,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Configuration
 ** [ ] Usage of EntityManagerTransactionManager from Axon
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
+** [ ] remove or upgrade for DuplicateCommandHandlerResolver
 * [ ] DCB Support
+
 
 
 == Migration Guide for Extension Users
@@ -107,6 +109,10 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * RetryScheduler in CommandGateway?
 * Keine JdbcEventStore mehr?(nicht so wichtig)
 * Keine Snapshots mehr für Relationale Datenbanken?(nicht so wichtig)
+* CommandBusBuilder: War notwendig um
+** Tracing zu konfigurieren
+** den DuplicateCommandHandlerResolver zu konfigurieren
+** Ist es nun nicht mehr notwendig einen CommandBus manuell zu erstellen?
 
 === API existiert nicht wie in Doku beschrieben und ist irritierend
 

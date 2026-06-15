@@ -8,9 +8,9 @@ import jakarta.inject.Inject;
 
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.CommandBus;
-import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolution;
-import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
 
+//import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolution;
+//import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
@@ -33,7 +33,8 @@ public class CommandBusConfigurer {
         if (commandBusProducer.isResolvable()) {
             configureCommandBusUsingCustomProducer(configurer);
         } else {
-            configureCommandBusUsingBuilder(configurer);
+            // TODO: Configure CommandBus if still necessary or remove it
+            //            configureCommandBusUsingBuilder(configurer);
         }
     }
 
@@ -47,29 +48,34 @@ public class CommandBusConfigurer {
     }
 
     private void configureCommandBusUsingCustomProducer(EventSourcingConfigurer configurer) {
-        configurer.configureCommandBus(configuration -> commandBusProducer.get().createCommandBus(configuration));
+        configurer.componentRegistry(
+                cr -> cr.registerComponent(CommandBus.class, config -> commandBusProducer.get().createCommandBus(config)));
     }
 
-    private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
-        configurer.configureCommandBus(this::createCommandBusWithBuilder);
-    }
+    // TODO: Configure CommandBus if still necessary or remove it
+    //    private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
+    //        configurer.configureCommandBus(this::createCommandBusWithBuilder);
+    //    }
 
+    // TODO: Configure CommandBus if still necessary or remove it
     private CommandBus createCommandBusWithBuilder(org.axonframework.common.configuration.AxonConfiguration axonConfiguration) {
         return commandBusBuilder
-                .duplicateCommandHandlerResolver(toResolver(duplicateCommandHandlerResolverType()))
+                //                .duplicateCommandHandlerResolver(toResolver(duplicateCommandHandlerResolverType()))
                 .build(axonConfiguration);
     }
 
+    // TODO: Configure CommandBus if still necessary or remove it
     private DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType() {
         return axonConfiguration.commandBus().duplicateCommandHandlerResolverType();
     }
 
-    private DuplicateCommandHandlerResolver toResolver(DuplicateCommandHandlerResolverType resolverType) {
-        return switch (resolverType) {
-            case logAndOverride -> DuplicateCommandHandlerResolution.logAndOverride();
-            case rejectDuplicates -> DuplicateCommandHandlerResolution.rejectDuplicates();
-            case silentOverride -> DuplicateCommandHandlerResolution.silentOverride();
-        };
-    }
+    // TODO: Configure CommandBus if still necessary or remove it
+    //    private DuplicateCommandHandlerResolver toResolver(DuplicateCommandHandlerResolverType resolverType) {
+    //        return switch (resolverType) {
+    //            case logAndOverride -> DuplicateCommandHandlerResolution.logAndOverride();
+    //            case rejectDuplicates -> DuplicateCommandHandlerResolution.rejectDuplicates();
+    //            case silentOverride -> DuplicateCommandHandlerResolution.silentOverride();
+    //        };
+    //    }
 
 }

@@ -29,29 +29,29 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
     @Inject
     LocalCommandBusBuilder localCommandBusBuilder;
 
-    private DuplicateCommandHandlerResolver duplicateResolver;
+//    private DuplicateCommandHandlerResolver duplicateResolver;
 
-    @Override
-    public CommandBusBuilder duplicateCommandHandlerResolver(DuplicateCommandHandlerResolver resolver) {
-        this.duplicateResolver = resolver;
-        return this;
-    }
+//    @Override
+//    public CommandBusBuilder duplicateCommandHandlerResolver(DuplicateCommandHandlerResolver resolver) {
+//        this.duplicateResolver = resolver;
+//        return this;
+//    }
 
     @Override
     public CommandBus build(AxonConfiguration configuration) {
-        AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
-        return AxonServerCommandBus.builder()
-                .localSegment(
-                        localCommandBusBuilder.duplicateCommandHandlerResolver(duplicateResolver).build(configuration))
-                .configuration(axonServerConfiguration)
-                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
-                .defaultContext(axonServerConfiguration.getContext())
-                .serializer(configuration.serializer())
-                .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
-                .priorityCalculator(CommandPriorityCalculator.defaultCommandPriorityCalculator())
-                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(
-                        configuration.spanFactory()).distributedInSameTrace(true).build())
-                .build();
+//        AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
+//        return AxonServerCommandBus.builder()
+////                .localSegment(
+////                        localCommandBusBuilder.duplicateCommandHandlerResolver(duplicateResolver).build(configuration))
+//                .configuration(axonServerConfiguration)
+//                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
+//                .defaultContext(axonServerConfiguration.getContext())
+//                .serializer(configuration.serializer())
+//                .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
+//                .priorityCalculator(CommandPriorityCalculator.defaultCommandPriorityCalculator())
+//                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(
+//                        configuration.spanFactory()).distributedInSameTrace(true).build())
+//                .build();
     }
 
 }
