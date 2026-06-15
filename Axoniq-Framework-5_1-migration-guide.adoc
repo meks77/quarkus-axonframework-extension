@@ -73,7 +73,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Event Processing configuration
 ** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
 ** [ ] Remove TrackingEventProcessor
-** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq
+** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
 * Tracing configuration as soon as it is supported by Axoniq Framework 5.x
 * Eventstore configuration
 ** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
