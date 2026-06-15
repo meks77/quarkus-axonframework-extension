@@ -125,7 +125,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
                     handle -> handle.get().configure(configurer, eventhandlers));
-//            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
+            //            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
         }
     }
 

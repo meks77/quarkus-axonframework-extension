@@ -34,8 +34,7 @@ public class AxonComponentenSetup {
         // TODO moduleName?
         configurer.messaging(mc -> queryhandlers.forEach(handler -> mc.registerQueryHandlingModule(
                 QueryHandlingModule.named("query-handler").queryHandlers().autodetectedQueryHandlingComponent(
-                        config -> handler).build()
-        )));
+                        config -> handler).build())));
 
     }
 
