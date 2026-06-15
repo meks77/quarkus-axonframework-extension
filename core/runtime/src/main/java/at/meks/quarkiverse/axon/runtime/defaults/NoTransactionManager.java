@@ -11,8 +11,21 @@ import io.quarkus.arc.DefaultBean;
 @DefaultBean
 public class NoTransactionManager implements TransactionManager {
 
+    private static final Transaction singletonNoTransaction = new Transaction() {
+
+        @Override
+        public void commit() {
+
+        }
+
+        @Override
+        public void rollback() {
+
+        }
+    };
+
     @Override
     public Transaction startTransaction() {
-        return org.axonframework.common.transaction.NoTransactionManager.instance().startTransaction();
+        return singletonNoTransaction;
     }
 }
