@@ -86,6 +86,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] Usage of EntityManagerTransactionManager from Axon
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
 ** [ ] remove or upgrade for DuplicateCommandHandlerResolver
+** [ ] remove or upgrade RetryScheduler
 * [ ] DCB Support
 
 

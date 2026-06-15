@@ -61,8 +61,9 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     Instance<RetryScheduler> retrySchedulerProducer;
 
-    @Inject
-    RetrySchedulerConfigurer retrySchedulerConfigurer;
+    // TODO: Migrate RetrySchedulerConfigurer or remove it, if it is not necessary anymore
+    //    @Inject
+    //    RetrySchedulerConfigurer retrySchedulerConfigurer;
 
     @Inject
     CommandBusConfigurer commandBusConfigurer;
