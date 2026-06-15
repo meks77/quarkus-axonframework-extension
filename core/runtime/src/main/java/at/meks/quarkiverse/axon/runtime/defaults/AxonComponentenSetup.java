@@ -5,6 +5,7 @@ import java.util.Set;
 import jakarta.inject.Inject;
 
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.configuration.CommandHandlingModule;
 
 import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
 
@@ -20,16 +21,21 @@ public class AxonComponentenSetup {
     }
 
     void configureCommandHandlers(EventSourcingConfigurer configurer, Set<Object> commandhandlers) {
-        commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
+        configurer.messaging(mc -> commandhandlers.forEach(handler -> mc.registerCommandHandlingModule(
+                CommandHandlingModule
+                        .named("command-handler")
+                        .commandHandlers()
+                        .autodetectedCommandHandlingComponent(config -> handler)
+                        .build())));
     }
 
     void configureQueryHandlers(EventSourcingConfigurer configurer, Set<Object> queryhandlers) {
         queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
     }
 
-//    void configureEventHandlers(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
-//        if (!eventhandlers.isEmpty()) {
-//            eventhandlers.forEach(handler -> configurer.eventProcessing().registerEventHandler(conf -> handler));
-//        }
-//    }
+    //    void configureEventHandlers(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
+    //        if (!eventhandlers.isEmpty()) {
+    //            eventhandlers.forEach(handler -> configurer.eventProcessing().registerEventHandler(conf -> handler));
+    //        }
+    //    }
 }
