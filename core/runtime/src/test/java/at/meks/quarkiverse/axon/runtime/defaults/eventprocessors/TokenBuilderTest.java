@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.Optional;
@@ -100,7 +99,7 @@ class TokenBuilderTest {
     void atDuration() {
         long expectedPosition = new Random().nextLong();
         Duration startPosition = Duration.ofDays(-4);
-        Temporal expectedTimeOfPosition = startPosition.addTo(LocalDateTime.now());
+        Temporal expectedTimeOfPosition = startPosition.addTo(ZonedDateTime.now());
         when(messageSource.tokenAt(Mockito.any(Instant.class), Mockito.isNull()))
                 .thenReturn(CompletableFuture.completedFuture(new GlobalSequenceTrackingToken(expectedPosition)));
         when(initialPositionOfProcessor.atDuration())

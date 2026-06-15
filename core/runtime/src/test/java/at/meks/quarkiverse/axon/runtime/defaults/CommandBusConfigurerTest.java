@@ -1,9 +1,8 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.inject.Instance;
@@ -14,13 +13,10 @@ import org.axonframework.messaging.commandhandling.CommandBus;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 
 @ExtendWith(MockitoExtension.class)
