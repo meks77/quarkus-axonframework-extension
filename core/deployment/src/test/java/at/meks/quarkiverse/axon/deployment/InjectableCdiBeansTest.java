@@ -10,17 +10,15 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
-import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
+import org.axonframework.eventsourcing.annotation.reflection.EntityCreator;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 import org.axonframework.messaging.eventhandling.gateway.EventGateway;
-import org.axonframework.messaging.queryhandling.QueryGateway;
 import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.axonframework.modelling.annotation.TargetEntityId;
-import org.axonframework.modelling.entity.AggregateIdentifier;
-import org.axonframework.modelling.saga.SagaEventHandler;
-import org.axonframework.modelling.saga.StartSaga;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,16 +127,16 @@ public class InjectableCdiBeansTest {
     @SuppressWarnings("unused")
     static class AggregateCommandHandlerUsingCdiBean {
 
-        @AggregateIdentifier
         String id;
 
+        @EntityCreator
         @SuppressWarnings("unused")
         AggregateCommandHandlerUsingCdiBean() {
             //necessary for axon framework
         }
 
         @CommandHandler
-        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
+        public static void handle(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
                 TestModelConfig testModelConfig) {
             bean.doSomething();
         }
@@ -171,21 +169,6 @@ public class InjectableCdiBeansTest {
 
     }
 
-    @SuppressWarnings("unused")
-    public static class SagaEventHandlerUsingCdiBean {
-
-        @SuppressWarnings("QsPrivateBeanMembersInspection")
-        @Inject
-        private transient InjectableCdiBeanForSagaEventHandler bean;
-
-        @StartSaga
-        @SagaEventHandler(associationProperty = "id")
-        void on(MyEvent event) {
-            bean.doSomething();
-        }
-
-    }
-
     @BeforeEach
     void setup() {
         logger = Mockito.mock(Logger.class);
@@ -206,7 +189,7 @@ public class InjectableCdiBeansTest {
 
     @Test
     void cdiBeanIsInjectedInEventHandler() {
-        eventGateway.publish(new MyEvent("1"));
+        eventGateway.publish(null, new MyEvent("1"));
         await().atMost(Duration.ofSeconds(3))
                 .untilAsserted(() -> verify(logger).debug("do something"));
     }
@@ -219,7 +202,7 @@ public class InjectableCdiBeansTest {
 
     @Test
     void cdiBeanIsInjectedInSagaEventHandler() {
-        eventGateway.publish(new MyEvent("1"));
+        eventGateway.publish(null, new MyEvent("1"));
         await().atMost(Duration.ofSeconds(3))
                 .untilAsserted(() -> verify(sagaLogger).debug("do something"));
     }
