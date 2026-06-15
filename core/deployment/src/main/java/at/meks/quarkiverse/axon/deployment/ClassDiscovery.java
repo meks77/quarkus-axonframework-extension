@@ -50,7 +50,7 @@ class ClassDiscovery {
     }
 
     static Stream<Class<?>> eventSourcedEntityClasses(BeanArchiveIndexBuildItem beanArchiveIndex,
-                                                      ComponentDiscoveryConfiguration discoveryConfiguration) {
+            ComponentDiscoveryConfiguration discoveryConfiguration) {
         ComponentDiscovery discovery = discoveryConfiguration.eventSourcedEntities();
         if (!discovery.enabled()) {
             return Stream.empty();

@@ -27,7 +27,7 @@ public abstract class AbstractEventProcessingConfigurer implements AxonEventProc
     }
 
     protected static void assignNamespacesToProcessor(EventSourcingConfigurer configurer,
-                                                      List<String> namespaces, String processorName) {
+            List<String> namespaces, String processorName) {
         //        TODO
         //        namespaces.stream()
         //                .map(String::trim)

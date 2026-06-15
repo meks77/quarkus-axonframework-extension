@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.AsynchronousCommandBus;
 import org.axonframework.messaging.commandhandling.CommandBus;
-import org.axonframework.common.configuration.Configuration;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;

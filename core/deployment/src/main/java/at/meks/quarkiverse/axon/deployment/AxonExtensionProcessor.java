@@ -43,7 +43,7 @@ class AxonExtensionProcessor {
                         InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
                         NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
                         // TODO: Migrate RetrySchedulerConfigurer or remove it, if it is not necessary anymore
-//                        RetrySchedulerConfigurer.class,
+                        //                        RetrySchedulerConfigurer.class,
                         PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
                 .build();
@@ -89,7 +89,7 @@ class AxonExtensionProcessor {
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
-                   List<InjectableBeanBuildItem> injectableBeanBuildItems,
+            List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
         Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate",

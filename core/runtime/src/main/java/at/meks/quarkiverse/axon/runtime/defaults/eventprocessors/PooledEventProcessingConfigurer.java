@@ -54,8 +54,8 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
 
             pooledStreamingEventProcessorsConfigurer.processor(processorName,
                     config -> config.eventHandlingComponents(
-                                    requiredComponentPhase -> configureHandlingComponents(requiredComponentPhase,
-                                            eventhandlers))
+                            requiredComponentPhase -> configureHandlingComponents(requiredComponentPhase,
+                                    eventhandlers))
                             .customized(
                                     (configuration, pooledStreamingEventProcessorConfiguration) -> configureEventProcessor(
                                             pooledStreamingEventProcessorConfiguration, configuration,
@@ -106,10 +106,10 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 pooledStreamingEventProcessorConfiguration::batchSize);
         namedConfig.initialSegments().or(defaultConfig::initialSegments).filter(
                 initialSegments -> initialSegments > 0).ifPresent(
-                pooledStreamingEventProcessorConfiguration::initialSegmentCount);
+                        pooledStreamingEventProcessorConfiguration::initialSegmentCount);
         namedConfig.maxClaimedSegments().or(defaultConfig::maxClaimedSegments).filter(
                 maxClaimedSegments -> maxClaimedSegments > 0).ifPresent(
-                pooledStreamingEventProcessorConfiguration::maxClaimedSegments);
+                        pooledStreamingEventProcessorConfiguration::maxClaimedSegments);
         if (namedConfig.enabledCoordinatorClaimExtension().or(
                 defaultConfig::enabledCoordinatorClaimExtension).orElse(false)) {
             pooledStreamingEventProcessorConfiguration.enableCoordinatorClaimExtension();
@@ -120,16 +120,16 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
         pooledStreamingEventProcessorConfiguration.tokenStore();
         namedConfig.workerThreadPoolSize().or(defaultConfig::workerThreadPoolSize).filter(
                 poolSize -> poolSize > 0).ifPresent(
-                size -> pooledStreamingEventProcessorConfiguration.workerExecutor(
-                        newScheduledThreadPool(size,
-                                new AxonThreadFactory(
-                                        "Worker - " + pooledStreamingEventProcessorConfiguration.processorName()))));
+                        size -> pooledStreamingEventProcessorConfiguration.workerExecutor(
+                                newScheduledThreadPool(size,
+                                        new AxonThreadFactory(
+                                                "Worker - " + pooledStreamingEventProcessorConfiguration.processorName()))));
         // TODO configure coordinatorExecutor?
         return pooledStreamingEventProcessorConfiguration;
     }
 
     private static boolean shouldUseInMemoryTokenStore(ConfigOfOneProcessor configOfOneProcessor,
-                                                       ConfigOfOneProcessor defaultConfig) {
+            ConfigOfOneProcessor defaultConfig) {
         return configOfOneProcessor.useInMemoryTokenStore().or(
                 defaultConfig::useInMemoryTokenStore).orElse(false);
     }

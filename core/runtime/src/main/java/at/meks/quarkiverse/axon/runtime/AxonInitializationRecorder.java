@@ -15,7 +15,7 @@ public class AxonInitializationRecorder {
 
     public void startAxon(BeanContainer beanContainer, Collection<Class<?>> aggregateClasses,
             Collection<Class<?>> commandhandlerClasses, Collection<Class<?>> queryhandlerClasses,
-                          Collection<Class<?>> eventhandlerClasses,
+            Collection<Class<?>> eventhandlerClasses,
             Set<Class<?>> injectableBeanClasses) {
         AxonExtension axonExtension = beanContainer.beanInstance(AxonExtension.class);
         aggregateClasses.forEach(axonExtension::addAggregateForRegistration);
