@@ -14,7 +14,6 @@
     <modules>
         <module>axon-server</module>
         <module>jpa-eventstore</module>
-        <module>jdbc-eventstore</module>
     </modules>
 
 

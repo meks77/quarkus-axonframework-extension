@@ -30,12 +30,12 @@ public class AxonComponentenSetup {
 
         // TODO do we prefer one module with all handlers, or one module per handler?
 
-//        configurer.messaging(mc -> commandhandlers.forEach(handler -> mc.registerCommandHandlingModule(
-//                CommandHandlingModule
-//                        .named(handler.getClass().getCanonicalName())
-//                        .commandHandlers()
-//                        .autodetectedCommandHandlingComponent(config -> handler)
-//                        .build())));
+        //        configurer.messaging(mc -> commandhandlers.forEach(handler -> mc.registerCommandHandlingModule(
+        //                CommandHandlingModule
+        //                        .named(handler.getClass().getCanonicalName())
+        //                        .commandHandlers()
+        //                        .autodetectedCommandHandlingComponent(config -> handler)
+        //                        .build())));
     }
 
     void configureQueryHandlers(EventSourcingConfigurer configurer, Set<Object> queryhandlers) {

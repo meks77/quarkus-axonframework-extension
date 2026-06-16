@@ -13,7 +13,6 @@
     <description>This module contains modules which provide different implementations of Tokenstores</description>
 
     <modules>
-        <module>tokenstore-jdbc</module>
         <module>tokenstore-jpa</module>
     </modules>
 </project>

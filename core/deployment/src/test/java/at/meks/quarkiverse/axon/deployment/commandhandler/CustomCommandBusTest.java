@@ -19,37 +19,37 @@ import io.quarkus.test.QuarkusExtensionTest;
 @Disabled("kein AsynchronousCommandBus?")
 public class CustomCommandBusTest extends JavaArchiveTest {
 
-        @RegisterExtension
-        static final QuarkusExtensionTest config = application(javaArchiveBase()
-                .addClasses(MyCommandBusProducer.class));
+    @RegisterExtension
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
+            .addClasses(MyCommandBusProducer.class));
 
-        @ApplicationScoped
-        public static class MyCommandBusProducer implements CommandBusProducer {
-
-            @Override
-            public CommandBus createCommandBus(Configuration configuration) {
-                return new MyCommandBus(configuration.getComponent(UnitOfWorkFactory.class));
-            }
-        }
-
-        private static class MyCommandBus extends SimpleCommandBus {
-
-            /**
-             * Construct a {@code SimpleCommandBus}, using the given {@code unitOfWorkFactory} to construct
-             * {@link ProcessingContext contexts} to handle commands in.
-             *
-             * @param unitOfWorkFactory the {@code UnitOfWorkFactory} used to construct {@link ProcessingContext contexts} to
-             *                          handle commands in
-             */
-            public MyCommandBus(UnitOfWorkFactory unitOfWorkFactory) {
-                super(unitOfWorkFactory);
-            }
-        }
+    @ApplicationScoped
+    public static class MyCommandBusProducer implements CommandBusProducer {
 
         @Override
-        protected void assertConfiguration(Configuration configuration) {
-            CommandBus commandBus = configuration.getComponent(CommandBus.class);
-            assertThat(commandBus).isInstanceOf(MyCommandBus.class);
+        public CommandBus createCommandBus(Configuration configuration) {
+            return new MyCommandBus(configuration.getComponent(UnitOfWorkFactory.class));
         }
+    }
+
+    private static class MyCommandBus extends SimpleCommandBus {
+
+        /**
+         * Construct a {@code SimpleCommandBus}, using the given {@code unitOfWorkFactory} to construct
+         * {@link ProcessingContext contexts} to handle commands in.
+         *
+         * @param unitOfWorkFactory the {@code UnitOfWorkFactory} used to construct {@link ProcessingContext contexts} to
+         *                          handle commands in
+         */
+        public MyCommandBus(UnitOfWorkFactory unitOfWorkFactory) {
+            super(unitOfWorkFactory);
+        }
+    }
+
+    @Override
+    protected void assertConfiguration(Configuration configuration) {
+        CommandBus commandBus = configuration.getComponent(CommandBus.class);
+        assertThat(commandBus).isInstanceOf(MyCommandBus.class);
+    }
 
 }
