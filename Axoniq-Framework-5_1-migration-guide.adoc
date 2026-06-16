@@ -78,10 +78,10 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] migrate Axon-Server-EventStore
 * [ ] Configuration
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
-** [ ] remove or upgrade for DuplicateCommandHandlerResolver
+** [ ] remove of DuplicateCommandHandlerResolver
 ** [ ] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
 * [ ] Migration Metrics
-** [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
+* [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 * [ ] DCB Support?
 
 === DONE
