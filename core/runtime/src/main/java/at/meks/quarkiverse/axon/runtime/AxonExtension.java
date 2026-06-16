@@ -1,6 +1,7 @@
 package at.meks.quarkiverse.axon.runtime;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import org.axonframework.messaging.eventhandling.EventBus;
 import org.axonframework.messaging.eventhandling.gateway.EventGateway;
 import org.axonframework.messaging.queryhandling.QueryBus;
 import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
+import org.axonframework.modelling.StateManager;
 import org.axonframework.modelling.repository.Repository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
@@ -66,6 +68,7 @@ public class AxonExtension {
             final EventSourcingConfigurer configurer = axonFrameworkConfigurer.configure();
             LOG.info("starting axon");
             LOG.debug("with axon configuration {}", System.identityHashCode(configurer));
+
             configuration = configurer.start();
 
         }
@@ -154,11 +157,10 @@ public class AxonExtension {
     @Produces
     @Dependent
     public <ID, T> Repository<ID, T> repository(InjectionPoint injectionPoint) {
-        Class<T> aggregateClass = aggregateClass(
-                ((ParameterizedType) injectionPoint.getType()).getActualTypeArguments()[0].getTypeName());
-        // TODO: How to get a repository from the axoniq framework?
-        //        return configuration.repository(aggregateClass);
-        return null;
+        Type[] actualTypeArguments = ((ParameterizedType) injectionPoint.getType()).getActualTypeArguments();
+        Class<ID> idClass = (Class<ID>) actualTypeArguments[0];
+        Class<T> aggregateClass = (Class<T>) actualTypeArguments[1];
+        return configuration.getComponent(StateManager.class).repository(aggregateClass, idClass);
     }
 
     @SuppressWarnings("unchecked")

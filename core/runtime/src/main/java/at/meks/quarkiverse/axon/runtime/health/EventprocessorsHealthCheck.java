@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.common.configuration.AxonConfiguration;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.segmenting.EventTrackerStatus;
@@ -21,7 +21,7 @@ import org.eclipse.microprofile.health.Readiness;
 public class EventprocessorsHealthCheck implements HealthCheck {
 
     @Inject
-    AxonConfiguration configuration;
+    Configuration configuration;
 
     @Override
     public HealthCheckResponse call() {
