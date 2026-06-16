@@ -47,7 +47,12 @@ public class LiveReloadTest {
 
         test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/DomainServiceForLiveReloading.java",
                 source -> source.replace(
-                        "giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));",
+                        """
+                                        giftcardAggregate.applyStateChange(giftcard -> {
+                                            giftcard.requestRedeem(command.amount(), eventAppender);
+                                            return giftcard;
+                                        });
+                                """,
                         "throw new java.lang.IllegalStateException(\"whatever\");"));
 
         // After reloading, the InMemoryEventStore created new and therefore empty
