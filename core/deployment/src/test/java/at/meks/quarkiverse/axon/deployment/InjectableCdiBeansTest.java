@@ -104,15 +104,6 @@ public class InjectableCdiBeansTest {
 
     }
 
-    @ApplicationScoped
-    static class InjectableCdiBeanForSagaEventHandler {
-
-        void doSomething() {
-            sagaLogger.debug("do something");
-        }
-
-    }
-
     @SuppressWarnings("unused")
     @ApplicationScoped
     static class DomainServiceCommandHandlerUsingCdiBean {
