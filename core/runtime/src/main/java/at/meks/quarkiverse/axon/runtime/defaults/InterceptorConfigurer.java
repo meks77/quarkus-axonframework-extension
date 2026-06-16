@@ -92,17 +92,15 @@ public class InterceptorConfigurer {
     private @NonNull MessageHandlerInterceptor<CommandMessage> handleExceptionInCommandHandling() {
         return (message, context, interceptorChain) -> {
             MessageStream<?> messageStream = interceptorChain.proceed(message, context);
-            if (messageStream.error().isPresent()) {
-                var e = messageStream.error().get();
+            messageStream.error().ifPresent(e -> {
                 if (!(e instanceof CommandExecutionException)) {
                     throw new CommandExecutionException(
                             "error while executing command handler for command %s".formatted(
                                     message.payloadType().getCanonicalName()),
                             e);
                 }
-            }
+            });
             return messageStream;
-
         };
     }
 
@@ -145,17 +143,15 @@ public class InterceptorConfigurer {
 
     private @NonNull MessageHandlerInterceptor<QueryMessage> handleExceptionInQueryHandling() {
         return (message, context, interceptorChain) -> {
-            try {
-                return interceptorChain.proceed(message, context);
-            } catch (Exception e) {
+            var messageStream = interceptorChain.proceed(message, context);
+            messageStream.error().ifPresent(e -> {
                 if (!(e instanceof QueryExecutionException)) {
-                    throw new QueryExecutionException(
-                            "error while executing query handler for query %s".formatted(
-                                    message.payloadType().getCanonicalName()),
+                    throw new QueryExecutionException("error while executing query handler for query %s".formatted(
+                            message.payloadType().getCanonicalName()),
                             e);
                 }
-                throw (QueryExecutionException) e;
-            }
+            });
+            return messageStream;
         };
     }
 
