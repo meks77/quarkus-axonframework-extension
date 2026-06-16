@@ -10,6 +10,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
+import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 import org.axonframework.eventsourcing.annotation.reflection.EntityCreator;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
@@ -116,6 +117,7 @@ public class InjectableCdiBeansTest {
     }
 
     @SuppressWarnings("unused")
+    @EventSourcedEntity
     static class AggregateCommandHandlerUsingCdiBean {
 
         String id;
