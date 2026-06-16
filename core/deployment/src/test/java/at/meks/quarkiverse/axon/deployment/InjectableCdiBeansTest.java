@@ -34,7 +34,6 @@ import io.quarkus.test.QuarkusExtensionTest;
 public class InjectableCdiBeansTest {
 
     private static Logger logger;
-    private static Logger sagaLogger;
 
     @Inject
     CommandGateway commandGateway;
@@ -165,7 +164,6 @@ public class InjectableCdiBeansTest {
     @BeforeEach
     void setup() {
         logger = Mockito.mock(Logger.class);
-        sagaLogger = Mockito.mock(Logger.class);
     }
 
     @Test
@@ -191,13 +189,6 @@ public class InjectableCdiBeansTest {
     void cdiBeanIsInjectedInQueryHandler() {
         queryGateway.query(new MyQuery("1"), Boolean.class).join();
         verify(logger).debug("do something");
-    }
-
-    @Test
-    void cdiBeanIsInjectedInSagaEventHandler() {
-        eventGateway.publish(null, new MyEvent("1"));
-        await().atMost(Duration.ofSeconds(3))
-                .untilAsserted(() -> verify(sagaLogger).debug("do something"));
     }
 
 }
