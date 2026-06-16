@@ -56,7 +56,7 @@ class ClassDiscovery {
             return Stream.empty();
         }
         return annotatedClasses(EventSourcedEntity.class, "eventSourcedEntities",
-                annotationInstance -> annotationInstance.target().asField().declaringClass().asClass(),
+                annotationInstance -> annotationInstance.target().asClass(),
                 beanArchiveIndex, discovery);
     }
 
