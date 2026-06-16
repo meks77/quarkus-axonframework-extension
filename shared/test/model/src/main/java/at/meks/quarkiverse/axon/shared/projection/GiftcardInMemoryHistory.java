@@ -23,7 +23,7 @@ public class GiftcardInMemoryHistory {
 
     @EventHandler
     void handle(Api.CardIssuedEvent event, @SequenceNumber long sequenceNumber) {
-        Log.debugf("handling event %s", event);
+        Log.infof("handling event %s", event);
         cardIssuedEventWasHandled = true;
         history.add(event);
     }
@@ -31,14 +31,14 @@ public class GiftcardInMemoryHistory {
     @EventHandler
     void handle(Api.CardIssuedEvent event, TrackingToken trackingToken, @SequenceNumber Long sequenceNumber,
             ReplayStatus replayStatus) {
-        Log.debugf("handling event %s", event);
+        Log.infof("handling event %s", event);
         cardIssuedEventWasHandled = true;
         history.add(event);
     }
 
     @EventHandler
     void handle(Api.CardRedeemedEvent event) {
-        Log.debugf("handling event %s", event);
+        Log.infof("handling event %s", event);
         history.add(event);
     }
 

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
@@ -29,7 +28,6 @@ public class LiveReloadTest {
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
                     .addPackage(AnotherProjection.class.getPackage())
-                    .addPackage(QuarkusPaymentservice.class.getPackage())
                     .addClasses(GiftcardResource.class, DomainServiceForLiveReloading.class)
                     .addAsResource(JavaArchiveTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));

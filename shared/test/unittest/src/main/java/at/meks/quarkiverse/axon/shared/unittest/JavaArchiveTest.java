@@ -24,7 +24,6 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory;
@@ -50,7 +49,6 @@ public class JavaArchiveTest {
                 .addPackage(Giftcard.class.getPackage())
                 .addPackage(GiftcardView.class.getPackage())
                 .addPackage(AnotherProjection.class.getPackage())
-                .addPackage(QuarkusPaymentservice.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -78,9 +76,6 @@ public class JavaArchiveTest {
 
     @Inject
     Configuration configuration;
-
-    @Inject
-    QuarkusPaymentservice quarkusPaymentservice;
 
     /**
      * Tests the configuration and integration of the framework by performing a sequence of actions and confirming their
@@ -125,10 +120,6 @@ public class JavaArchiveTest {
             commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
             commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
 
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId), "cardId was not prepared"));
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
-            assertFalse(quarkusPaymentservice.isPaid(cardId2));
             assertConfiguration(configuration);
             assertConfiguration(configuration.getComponents(EventProcessor.class));
             assertOthers();

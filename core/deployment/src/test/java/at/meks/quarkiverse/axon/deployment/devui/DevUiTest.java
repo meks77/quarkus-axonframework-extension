@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
@@ -30,7 +29,6 @@ class DevUiTest {
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
                     .addPackage(AnotherProjection.class.getPackage())
-                    .addPackage(QuarkusPaymentservice.class.getPackage())
                     .addAsResource(JavaArchiveTest.propertiesFile("/devUiTest.properties"), "application.properties")
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
