@@ -83,6 +83,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * [ ] Migration Metrics
 * [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 * [ ] DCB Support?
+* [ ] LiveReloadTest -> fixed code replacement, the thrown exception leads to HTTP 500 in the API
 
 === DONE
 
