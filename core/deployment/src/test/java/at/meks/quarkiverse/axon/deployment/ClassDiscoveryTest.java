@@ -106,7 +106,7 @@ class ClassDiscoveryTest {
     }
 
     @Nested
-    class AggregateClasses {
+    class EventSourcedEntityClasses {
 
         @Mock
         ComponentDiscovery componentDiscovery;
@@ -163,13 +163,11 @@ class ClassDiscoveryTest {
         AnnotationInstance annotationInstance = mock(AnnotationInstance.class,
                 Mockito.withSettings().strictness(Strictness.LENIENT));
         AnnotationTarget annotationTarget = mock(AnnotationTarget.class, Mockito.withSettings().strictness(Strictness.LENIENT));
-        FieldInfo fieldInfo = mock(FieldInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
         ClassInfo classInfo = mock(ClassInfo.class, Mockito.withSettings().strictness(Strictness.LENIENT));
 
         when(indexView.getAnnotations(EventSourcedEntity.class)).thenReturn(List.of(annotationInstance));
         when(annotationInstance.target()).thenReturn(annotationTarget);
-        when(annotationTarget.asField()).thenReturn(fieldInfo);
-        when(fieldInfo.declaringClass()).thenReturn(classInfo);
+        when(annotationTarget.asClass()).thenReturn(classInfo);
         when(classInfo.asClass()).thenReturn(classInfo);
         when(classInfo.name()).thenReturn(DotName.createSimple(Giftcard.class));
     }
