@@ -22,19 +22,28 @@ public class AxonComponentenSetup {
     }
 
     void configureCommandHandlers(EventSourcingConfigurer configurer, Set<Object> commandhandlers) {
-        configurer.messaging(mc -> commandhandlers.forEach(handler -> mc.registerCommandHandlingModule(
-                CommandHandlingModule
-                        .named("command-handler")
-                        .commandHandlers()
-                        .autodetectedCommandHandlingComponent(config -> handler)
-                        .build())));
+        CommandHandlingModule.CommandHandlerPhase chm = CommandHandlingModule
+                .named("command-handler")
+                .commandHandlers();
+        commandhandlers.forEach(handler -> chm.autodetectedCommandHandlingComponent(config -> handler));
+        configurer.registerCommandHandlingModule(chm.build());
+
+        // TODO do we prefer one module with all handlers, or one module per handler?
+
+//        configurer.messaging(mc -> commandhandlers.forEach(handler -> mc.registerCommandHandlingModule(
+//                CommandHandlingModule
+//                        .named(handler.getClass().getCanonicalName())
+//                        .commandHandlers()
+//                        .autodetectedCommandHandlingComponent(config -> handler)
+//                        .build())));
     }
 
     void configureQueryHandlers(EventSourcingConfigurer configurer, Set<Object> queryhandlers) {
+        var qhm = QueryHandlingModule.named(
+                "query-handler").queryHandlers();
+        queryhandlers.forEach(handler -> qhm.autodetectedQueryHandlingComponent(config -> handler));
         // TODO moduleName?
-        configurer.messaging(mc -> queryhandlers.forEach(handler -> mc.registerQueryHandlingModule(
-                QueryHandlingModule.named("query-handler").queryHandlers().autodetectedQueryHandlingComponent(
-                        config -> handler).build())));
+        configurer.messaging(mc -> mc.registerQueryHandlingModule(qhm.build()));
 
     }
 
