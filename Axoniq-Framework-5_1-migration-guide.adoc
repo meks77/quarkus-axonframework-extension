@@ -120,6 +120,8 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** Wie muss ich die EventProcessors mit den EventHandlern verbinden? Muss ich jede Handlerinstanz mit einem EventProcessor verbinden, oder nur jene für welche der Prozessor zuständig ist? Früher war dafür die Annotation ProcessingGroup zuständig. Die wurde ersetzt durch Namespace, aber scheinbar muss man trotzdem gleich die richtigen Eventhandler beim Prozessor registrieren?
 ** Wie wird der default EventProcessor konfiguriert? Pooled WithDefaultsTest funktioniert nur, wenn ich den EventProcessor explizit konfiguriere, aber laut Doku soll es doch einen Default geben.
 * AsynchronousCommandBus nicht mehr verfügbar?
+* Interceptor für das Wrappen beliebiger Throwables in EventExecutionException obsolet?
+Interceptor bekommen bereits diesen Exception Typ im MessageStream
 
 === API existiert nicht wie in Doku beschrieben und ist irritierend
 
