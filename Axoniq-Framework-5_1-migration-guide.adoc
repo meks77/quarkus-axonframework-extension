@@ -66,30 +66,35 @@ Ein Command kann zu Events führen, welche mehrere Entities betreffen. Wie wird 
 Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht mitgeteilt(e.g. wie bei flyway, neue Tags schon vorab, und später funktionalität deployen)
 
 == TODOS
+
+* [ ] Event Processing configuration
+** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
+** [ ] setup the default event processor in the axon framework
+** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
+* [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
+* [ ] Eventstore configuration
+** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
+** [ ] Remove JdbcEventStorageEngine
+** [ ] migrate Axon-Server-EventStore
+* [ ] Configuration
+** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
+** [ ] remove or upgrade for DuplicateCommandHandlerResolver
+** [ ] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
+* [ ] Migration Metrics
+** [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
+* [ ] DCB Support?
+
+=== DONE
+
 * Aggregate configuration
 ** [x] Aggregate configuration: Search for EventSourcedAggregate and configure them
 ** [x] Remove consideration of annotation AggregateIdentifier
-** [ ] Entity Configuration with Id Type <> String
-* Event Processing configuration
-** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
-** [ ] setup the default event processor in the axon framework
-** [x] Remove TrackingEventProcessor
-** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
-* Tracing configuration as soon as it is supported by Axoniq Framework 5.x
-* Eventstore configuration
-** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
-** [ ] Remove JdbcEventStorageEngine
-* Repositories
-** [x] In AxonExtension#repository: Produce the repository and get it from the framework
-* CommandBusBuilder
-** [ ] DuplicateCommandHandlerResolver
+** [x] Entity Configuration with Id Type <> String
+* [x] Remove TrackingEventProcessor
+* [x] Repositories: In AxonExtension#repository: Produce the repository and get it from the framework
 * Configuration
-** [ ] Usage of EntityManagerTransactionManager from Axon
-** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
-** [ ] remove or upgrade for DuplicateCommandHandlerResolver
-** [ ] remove or upgrade RetryScheduler
-** [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
-* [ ] DCB Support
+** [x] Migrate AsynchronousCommandBus.
+** [x] upgraded use of transactions
 
 
 
@@ -104,20 +109,13 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** implement QuarkusAggregateConfigurer if id of EventSourcedEntities is not of type String (the default implementation maybe change in the future to consider the type of the id somehow else)
 * Interceptors have changed APIs, existing Axon 4 Interceptors will not work in Axon 5
 
-== Fragen an Axoniq:
+== Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter
 * Wie kann ich eine Instanz eines JacksonConverters erstellen, dem ich einen Jackson ObjectMapper setzen kann. Ist der richtige Weg der Jackson2Converter?
 * Tracing ist lt. Doku nicht in 5.0 unterstützt. Wann steht es bereit?
-* Wie kann ich aus der AxonConfiguration ein Repository bekommen? Mit dem StateManager?
-* Gibt es einen Ersatz für den DuplicateCommandHandlerResolver?
-* RetryScheduler in CommandGateway?
-* Keine JdbcEventStore mehr?(nicht so wichtig)
 * Keine Snapshots mehr für Relationale Datenbanken?(nicht so wichtig)
-* CommandBusBuilder: War notwendig um
-** Tracing zu konfigurieren
-** den DuplicateCommandHandlerResolver zu konfigurieren
+* CommandBusBuilder: War notwendig um Tracing zu konfigurieren
 ** Ist es nun nicht mehr notwendig einen CommandBus manuell zu erstellen?
-* Kein EventUpcaster mehr? Was wenn wir nun plötzlich Events haben, die nicht mehr kompatibel zu den alten Events sind? Wie können wir das lösen, wenn es keinen Upcaster mehr gibt?
 * EventProcessor-Config:
 ** Wie muss ich die EventProcessors mit den EventHandlern verbinden? Muss ich jede Handlerinstanz mit einem EventProcessor verbinden, oder nur jene für welche der Prozessor zuständig ist? Früher war dafür die Annotation ProcessingGroup zuständig. Die wurde ersetzt durch Namespace, aber scheinbar muss man trotzdem gleich die richtigen Eventhandler beim Prozessor registrieren?
 ** Wie wird der default EventProcessor konfiguriert? Pooled WithDefaultsTest funktioniert nur, wenn ich den EventProcessor explizit konfiguriere, aber laut Doku soll es doch einen Default geben.
