@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import org.axonframework.messaging.commandhandling.CommandExecutionException;
 import org.axonframework.messaging.commandhandling.CommandMessage;
 import org.axonframework.messaging.core.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageStream;
 import org.axonframework.messaging.core.configuration.MessagingConfigurer;
 import org.axonframework.messaging.queryhandling.QueryExecutionException;
 import org.axonframework.messaging.queryhandling.QueryMessage;
@@ -90,17 +91,18 @@ public class InterceptorConfigurer {
 
     private @NonNull MessageHandlerInterceptor<CommandMessage> handleExceptionInCommandHandling() {
         return (message, context, interceptorChain) -> {
-            try {
-                return interceptorChain.proceed(message, context);
-            } catch (Exception e) {
+            MessageStream<?> messageStream = interceptorChain.proceed(message, context);
+            if (messageStream.error().isPresent()) {
+                var e = messageStream.error().get();
                 if (!(e instanceof CommandExecutionException)) {
                     throw new CommandExecutionException(
                             "error while executing command handler for command %s".formatted(
                                     message.payloadType().getCanonicalName()),
                             e);
                 }
-                throw (CommandExecutionException) e;
             }
+            return messageStream;
+
         };
     }
 
