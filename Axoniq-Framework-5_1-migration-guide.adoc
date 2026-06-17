@@ -85,7 +85,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
 * Configuration
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
-** [ ] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
 * [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 
 === DONE
@@ -101,6 +100,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Configuration
 ** [x] Migrate AsynchronousCommandBus.
 ** [x] upgraded use of transactions
+** [x] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
 * [x] Migrate JPA Tokenstore
 * [x] Migration Metrics
 
