@@ -72,9 +72,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] setup the default event processor in the axon framework
 ** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
 * [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
+* [ ] Migrate JPA Tokenstore
 * [ ] Eventstore configuration
 ** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
-** [ ] Remove JdbcEventStorageEngine
 ** [ ] migrate Axon-Server-EventStore
 * [ ] Configuration
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
@@ -93,6 +93,8 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [x] Entity Configuration with Id Type <> String
 * [x] Remove TrackingEventProcessor
 * [x] Repositories: In AxonExtension#repository: Produce the repository and get it from the framework
+* Eventstore Configuration
+** [x] Remove JdbcEventStorageEngine
 * Configuration
 ** [x] Migrate AsynchronousCommandBus.
 ** [x] upgraded use of transactions

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.axonframework.messaging.eventhandling.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
