@@ -73,7 +73,7 @@ public interface QuarkusAxonServerConfiguration {
 
     /**
      * the number of threads used as commands threads. If not set, the default of the axon framework is used.
-     * The value is set to {@link org.axonframework.axonserver.connector.AxonServerConfiguration#setCommandThreads(int)}
+     * The value is set to {@link io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration#setCommandThreads(int)}
      */
     Optional<Integer> commandThreads();
 

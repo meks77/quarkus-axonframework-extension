@@ -86,6 +86,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Configuration
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
 * [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
+* [ ] Upgrade "Persisteent Streams" as soon as it is available in Axon Framework 5.x
 
 === DONE
 

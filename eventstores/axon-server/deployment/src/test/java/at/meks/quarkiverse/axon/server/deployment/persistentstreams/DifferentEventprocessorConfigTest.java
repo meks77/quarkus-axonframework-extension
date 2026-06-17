@@ -8,13 +8,13 @@ import java.util.Map;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.messaging.eventhandling.SubscribingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.subscribing.SubscribingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import io.axoniq.axonserver.connector.AxonServerConnection;
 import io.axoniq.axonserver.grpc.streams.StreamStatus;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 import io.quarkus.test.QuarkusExtensionTest;
 
 public class DifferentEventprocessorConfigTest extends PersistentStreamProcessorTest {

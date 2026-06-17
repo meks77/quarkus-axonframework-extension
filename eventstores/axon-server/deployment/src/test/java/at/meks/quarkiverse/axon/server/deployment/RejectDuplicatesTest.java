@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.server.deployment;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.axonframework.common.lifecycle.LifecycleHandlerInvocationException;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
-import org.axonframework.lifecycle.LifecycleHandlerInvocationException;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Api;

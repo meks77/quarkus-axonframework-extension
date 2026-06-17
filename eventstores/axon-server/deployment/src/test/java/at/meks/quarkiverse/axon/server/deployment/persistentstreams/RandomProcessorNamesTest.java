@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.axonframework.messaging.eventhandling.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;

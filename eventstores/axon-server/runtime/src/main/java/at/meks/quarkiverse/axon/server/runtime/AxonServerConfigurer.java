@@ -7,23 +7,17 @@ import java.util.Optional;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConfiguration;
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
-import org.axonframework.common.configuration.Configuration;
-import org.axonframework.common.configuration.Configurer;
-import org.axonframework.messaging.eventhandling.EventBusSpanFactory;
-import org.axonframework.eventsourcing.eventstore.EventStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
+import io.axoniq.framework.axonserver.connector.event.AggregateBasedAxonServerEventStorageEngine;
 
 @ApplicationScoped
 public class AxonServerConfigurer implements EventstoreConfigurer {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AxonServerConfigurer.class);
 
     @Inject
     QuarkusAxonServerConfiguration serverConfiguration;
@@ -34,12 +28,19 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     @Inject
     AxonServers axonSevers;
 
-    public void configure(Configurer configurer) {
+    public void configure(EventSourcingConfigurer configurer) {
         AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
-        configurer.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
-                .registerComponent(AxonServerConnectionManager.class,
-                        cfg -> axonServerConnectionManager(axonServerConfiguration))
-                .configureEventStore(this::axonserverEventStore);
+        configurer.componentRegistry(cr ->
+                        cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
+                                .registerComponent(AxonServerConnectionManager.class,
+                                        cfg -> axonServerConnectionManager(axonServerConfiguration)))
+
+                .registerEventStorageEngine(config -> {
+                    var connectionManager = config.getComponent(AxonServerConnectionManager.class);
+                    return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
+                            config.getComponent(
+                                    EventConverter.class));
+                });
     }
 
     private AxonServerConfiguration axonServerConfiguration() {
@@ -75,18 +76,4 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
                 .build();
     }
 
-    private EventStore axonserverEventStore(Configuration conf) {
-        LOG.info("configure connection to axon server");
-        return AxonServerEventStore.builder()
-                .configuration(axonServerConfiguration())
-                .platformConnectionManager(conf.getComponent(AxonServerConnectionManager.class))
-                .defaultContext(serverConfiguration.context())
-                .messageMonitor(conf.messageMonitor(AxonServerEventStore.class, "eventStore"))
-                .snapshotSerializer(conf.serializer())
-                .eventSerializer(conf.eventSerializer())
-                .snapshotFilter(conf.snapshotFilter())
-                .upcasterChain(conf.upcasterChain())
-                .spanFactory(conf.getComponent(EventBusSpanFactory.class))
-                .build();
-    }
 }
