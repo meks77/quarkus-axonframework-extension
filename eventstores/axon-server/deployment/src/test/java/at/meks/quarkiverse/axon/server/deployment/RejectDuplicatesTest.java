@@ -14,8 +14,7 @@ public class RejectDuplicatesTest extends JavaArchiveTest {
 
     @RegisterExtension
     static final QuarkusExtensionTest config = application(javaArchiveBase().addClass(MyCommandHandler.class))
-            .setExpectedException(LifecycleHandlerInvocationException.class)
-            .withConfigurationResource("rejectDuplicates.properties");
+            .setExpectedException(LifecycleHandlerInvocationException.class);
 
     @ApplicationScoped
     public static class MyCommandHandler {

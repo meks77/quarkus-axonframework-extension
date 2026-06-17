@@ -9,10 +9,7 @@ import jakarta.inject.Inject;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.CommandBus;
 
-//import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolution;
-//import org.axonframework.messaging.commandhandling.DuplicateCommandHandlerResolver;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
-import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 
@@ -60,13 +57,7 @@ public class CommandBusConfigurer {
     // TODO: Configure CommandBus if still necessary or remove it
     private CommandBus createCommandBusWithBuilder(org.axonframework.common.configuration.AxonConfiguration axonConfiguration) {
         return commandBusBuilder
-                //                .duplicateCommandHandlerResolver(toResolver(duplicateCommandHandlerResolverType()))
                 .build(axonConfiguration);
-    }
-
-    // TODO: Configure CommandBus if still necessary or remove it
-    private DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType() {
-        return axonConfiguration.commandBus().duplicateCommandHandlerResolverType();
     }
 
     // TODO: Configure CommandBus if still necessary or remove it

@@ -19,21 +19,11 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
     @Inject
     LocalCommandBusBuilder localCommandBusBuilder;
 
-    //    private DuplicateCommandHandlerResolver duplicateResolver;
-
-    //    @Override
-    //    public CommandBusBuilder duplicateCommandHandlerResolver(DuplicateCommandHandlerResolver resolver) {
-    //        this.duplicateResolver = resolver;
-    //        return this;
-    //    }
-
     @Override
     public CommandBus build(AxonConfiguration configuration) {
         // TODO: Configure CommandBus if still necessary or remove it
         //        AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
         //        return AxonServerCommandBus.builder()
-        ////                .localSegment(
-////                        localCommandBusBuilder.duplicateCommandHandlerResolver(duplicateResolver).build(configuration))
         //                .configuration(axonServerConfiguration)
         //                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
         //                .defaultContext(axonServerConfiguration.getContext())

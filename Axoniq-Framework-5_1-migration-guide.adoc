@@ -75,8 +75,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * [ ] Eventstore configuration
 ** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
 ** [ ] migrate Axon-Server-EventStore
-* [ ] Configuration
-** [ ] remove of DuplicateCommandHandlerResolver
 * [ ] DCB Support?
 * [ ] LiveReloadTest -> fixed code replacement, the thrown exception leads to HTTP 500 in the API
 
@@ -102,6 +100,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [x] Migrate AsynchronousCommandBus.
 ** [x] upgraded use of transactions
 ** [x] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
+** [x] remove of DuplicateCommandHandlerResolver
 * [x] Migrate JPA Tokenstore
 * [x] Migration Metrics
 

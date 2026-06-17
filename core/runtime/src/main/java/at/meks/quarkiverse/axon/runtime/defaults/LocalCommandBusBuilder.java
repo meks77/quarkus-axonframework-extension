@@ -21,13 +21,6 @@ public class LocalCommandBusBuilder implements CommandBusBuilder {
     @Inject
     private RetrySchedulerConfigurer retrySchedulerConfigurer;
 
-    //    private DuplicateCommandHandlerResolver resolver;
-
-    //    public CommandBusBuilder duplicateCommandHandlerResolver(DuplicateCommandHandlerResolver resolver) {
-    //        this.resolver = resolver;
-    //        return this;
-    //    }
-
     public CommandBus build(AxonConfiguration config) {
         SimpleCommandBus simpleCommandBus = new SimpleCommandBus(config.getComponent(UnitOfWorkFactory.class));
         Optional<CommandBus> enhancedCommandBus = retrySchedulerConfigurer.retryScheduler()
@@ -39,7 +32,6 @@ public class LocalCommandBusBuilder implements CommandBusBuilder {
         //                        .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(config.spanFactory())
         //                                .distributedInSameTrace(true).build())
         //                        .messageMonitor(config.messageMonitor(SimpleCommandBus.class, "commandBus"));
-        //                Optional.ofNullable(resolver).ifPresent(builder::duplicateCommandHandlerResolver);
         //                return builder.build();
     }
 }

@@ -29,8 +29,8 @@ public class AxonServerProcessor {
     AdditionalBeanBuildItem tokenStoreConfigurer() {
         return AdditionalBeanBuildItem.builder()
                 .addBeanClasses(AxonServerConfigurer.class, AxonServerComponentProducer.class, AxonServers.class
-                        //TODO: uncomment as soon as AxonFramework supports PersistentStreams again
-                        //                        PersistentStreamEventProcessingConfigurer.class
+                //TODO: uncomment as soon as AxonFramework supports PersistentStreams again
+                //                        PersistentStreamEventProcessingConfigurer.class
                 )
                 .build();
     }

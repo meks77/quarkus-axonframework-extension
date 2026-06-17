@@ -36,11 +36,6 @@ public interface AxonConfiguration {
     CommandRetryScheduling commandGatewayRetryScheduling();
 
     /**
-     * configuration for the local command bus.
-     */
-    CommandBusConfiguration commandBus();
-
-    /**
      * configuration for the subscribing processor.
      */
     @WithName("subscribingprocessor")
@@ -122,17 +117,6 @@ public interface AxonConfiguration {
          * This initial wait time is doubled on every retry by the default axon framework implementation used.
          */
         Optional<Integer> backoffInitialWait();
-    }
-
-    interface CommandBusConfiguration {
-
-        /**
-         * Configure how duplicate commands are handled. If not set, the defaults of the Axonframework are used.
-         */
-        @WithName("duplicate-command-handler-resolver")
-        @WithDefault("rejectDuplicates")
-        DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType();
-
     }
 
     enum EventProcessorType {

@@ -29,14 +29,14 @@ public class JpaEventstoreConfigurer implements EventstoreConfigurer {
         configurer.registerEventStorageEngine(
                 c -> new AggregateBasedJpaEventStorageEngine(transactionalExecutorProvider, c.getComponent(
                         EventConverter.class), engineConfig -> {
-                    batchSize().ifPresent(engineConfig::batchSize);
-                    gapCleaningThreshold().ifPresent(engineConfig::gapCleaningThreshold);
-                    lowestGlobalSequence().ifPresent(engineConfig::lowestGlobalSequence);
-                    gapTimeout().ifPresent(engineConfig::gapTimeout);
-                    maxGapOffset().ifPresent(engineConfig::maxGapOffset);
-                    //                    config.explicitFlush()?
-                    return engineConfig;
-                }));
+                            batchSize().ifPresent(engineConfig::batchSize);
+                            gapCleaningThreshold().ifPresent(engineConfig::gapCleaningThreshold);
+                            lowestGlobalSequence().ifPresent(engineConfig::lowestGlobalSequence);
+                            gapTimeout().ifPresent(engineConfig::gapTimeout);
+                            maxGapOffset().ifPresent(engineConfig::maxGapOffset);
+                            //                    config.explicitFlush()?
+                            return engineConfig;
+                        }));
     }
 
     private Optional<Integer> batchSize() {
