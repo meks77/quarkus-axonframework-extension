@@ -15,6 +15,7 @@ import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.eventhandling.configuration.EventHandlingComponentsConfigurer;
 import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessorConfiguration;
 import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessorsConfigurer;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
 import org.axonframework.messaging.eventstreaming.StreamableEventSource;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
@@ -117,7 +118,7 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
         if (shouldUseInMemoryTokenStore(namedConfig, defaultConfig)) {
             pooledStreamingEventProcessorConfiguration.tokenStore(getSingletonInMemoryTokenStore());
         }
-        pooledStreamingEventProcessorConfiguration.tokenStore();
+        pooledStreamingEventProcessorConfiguration.tokenStore(configuration.getComponent(TokenStore.class));
         namedConfig.workerThreadPoolSize().or(defaultConfig::workerThreadPoolSize).filter(
                 poolSize -> poolSize > 0).ifPresent(
                         size -> pooledStreamingEventProcessorConfiguration.workerExecutor(

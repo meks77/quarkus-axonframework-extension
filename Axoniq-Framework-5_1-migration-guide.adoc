@@ -72,7 +72,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] setup the default event processor in the axon framework
 ** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
 * [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
-* [ ] Migrate JPA Tokenstore
 * [ ] Eventstore configuration
 ** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
 ** [ ] migrate Axon-Server-EventStore
@@ -98,6 +97,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Configuration
 ** [x] Migrate AsynchronousCommandBus.
 ** [x] upgraded use of transactions
+* [x] Migrate JPA Tokenstore
 
 
 
