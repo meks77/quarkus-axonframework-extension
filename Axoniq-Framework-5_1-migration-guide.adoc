@@ -67,22 +67,27 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 == TODOS
 
+=== Prio 1
 * [ ] Event Processing configuration
 ** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
 ** [ ] setup the default event processor in the axon framework
 ** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
-* [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
 * [ ] Eventstore configuration
 ** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
 ** [ ] migrate Axon-Server-EventStore
 * [ ] Configuration
-** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
 ** [ ] remove of DuplicateCommandHandlerResolver
-** [ ] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
 * [ ] Migration Metrics
-* [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 * [ ] DCB Support?
 * [ ] LiveReloadTest -> fixed code replacement, the thrown exception leads to HTTP 500 in the API
+
+=== for later
+
+* [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
+* Configuration
+** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
+** [ ] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
+* [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 
 === DONE
 
