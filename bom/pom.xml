@@ -36,11 +36,6 @@
             </dependency>
             <dependency>
                 <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-jdbc-eventstore</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
                 <artifactId>quarkus-axon-jdbc-eventstore-deployment</artifactId>
                 <version>${project.version}</version>
             </dependency>

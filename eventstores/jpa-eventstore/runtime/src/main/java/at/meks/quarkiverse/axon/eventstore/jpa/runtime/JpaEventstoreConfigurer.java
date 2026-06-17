@@ -6,9 +6,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.common.jpa.EntityManagerProvider;
-import org.axonframework.common.transaction.TransactionManager;
-import org.axonframework.common.configuration.Configurer;
-import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.eventsourcing.eventstore.jpa.AggregateBasedJpaEventStorageEngine;
+import org.axonframework.messaging.core.unitofwork.transaction.jpa.JpaTransactionalExecutorProvider;
+import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 
@@ -21,26 +22,21 @@ public class JpaEventstoreConfigurer implements EventstoreConfigurer {
     @Inject
     EntityManagerProvider entityManagerProvider;
 
-    @Inject
-    TransactionManager transactionManager;
-
     @Override
-    public void configure(Configurer configurer) {
-        configurer.configureEmbeddedEventStore(conf -> {
-            JpaEventStorageEngine.Builder builder = JpaEventStorageEngine.builder()
-                    .eventSerializer(conf.eventSerializer())
-                    .snapshotSerializer(conf.serializer())
-                    .entityManagerProvider(entityManagerProvider)
-                    .transactionManager(transactionManager)
-                    .explicitFlush(config.explicitFlush());
-            batchSize().ifPresent(builder::batchSize);
-            gapCleaningThreshold().ifPresent(builder::gapCleaningThreshold);
-            lowestGlobalSequence().ifPresent(builder::lowestGlobalSequence);
-            gapTimeout().ifPresent(builder::gapTimeout);
-            maxGapOffset().ifPresent(builder::maxGapOffset);
-            return builder.build();
-        });
-
+    public void configure(EventSourcingConfigurer configurer) {
+        var transactionalExecutorProvider = new JpaTransactionalExecutorProvider(
+                entityManagerProvider.getEntityManager().getEntityManagerFactory());
+        configurer.registerEventStorageEngine(
+                c -> new AggregateBasedJpaEventStorageEngine(transactionalExecutorProvider, c.getComponent(
+                        EventConverter.class), engineConfig -> {
+                    batchSize().ifPresent(engineConfig::batchSize);
+                    gapCleaningThreshold().ifPresent(engineConfig::gapCleaningThreshold);
+                    lowestGlobalSequence().ifPresent(engineConfig::lowestGlobalSequence);
+                    gapTimeout().ifPresent(engineConfig::gapTimeout);
+                    maxGapOffset().ifPresent(engineConfig::maxGapOffset);
+                    //                    config.explicitFlush()?
+                    return engineConfig;
+                }));
     }
 
     private Optional<Integer> batchSize() {

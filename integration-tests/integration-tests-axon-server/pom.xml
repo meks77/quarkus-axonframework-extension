@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
+            <artifactId>quarkus-axon-tokenstore-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

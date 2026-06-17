@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.AbstractEventProcessingConfigurer;
+
 // TODO: uncomment code as soon as AxonFramework support PersistentStream again
 @ApplicationScoped
 public class PersistentStreamEventProcessingConfigurer extends AbstractEventProcessingConfigurer {

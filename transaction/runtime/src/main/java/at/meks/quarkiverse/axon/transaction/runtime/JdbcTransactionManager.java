@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 import org.axonframework.messaging.core.unitofwork.transaction.Transaction;
 import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
 
-
 @ApplicationScoped
 public class JdbcTransactionManager implements TransactionManager {
 

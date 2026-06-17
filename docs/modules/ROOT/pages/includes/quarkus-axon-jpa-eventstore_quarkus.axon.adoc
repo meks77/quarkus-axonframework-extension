@@ -38,7 +38,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Sets the explicitFlush field specifying whether to explicitly call EntityManager. flush() after inserting the Events published in this Unit of Work.
+TODO: not present in axon framework 5? Sets the explicitFlush field specifying whether to explicitly call EntityManager. flush() after inserting the Events published in this Unit of Work.
 
 
 ifdef::add-copy-button-to-env-var[]

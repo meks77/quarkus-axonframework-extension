@@ -91,7 +91,7 @@ public class JavaArchiveTest {
             var cardId = UUID.randomUUID().toString();
             commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
             commandGateway.sendAndWait(new Api.AddPersonalInformationCommand(cardId, "Bruce Wayne"));
-            await().atMost(Duration.ofSeconds(10))
+            await().atMost(Duration.ofSeconds(1))
                     .pollDelay(Duration.ZERO)
                     .untilAsserted(
                             () -> assertTrue(

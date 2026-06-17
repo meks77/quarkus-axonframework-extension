@@ -28,9 +28,9 @@ public class OpenTelemetryConfigurer implements AxonTracingConfigurer {
         if (openTelemetry.isResolvable() && tracer.isResolvable() && openTelemetry.get() != null) {
             LOG.info("configure OpenTelemetry tracing");
             // TODO: configure span factory as soon as AxonFramework 5.x supports it
-//            configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
-//                    .tracer(tracer.get())
-//                    .build());
+            //            configurer.configureSpanFactory(conf -> OpenTelemetrySpanFactory.builder()
+            //                    .tracer(tracer.get())
+            //                    .build());
         } else {
             LOG.info("OpenTelemetry tracing is deactivated");
         }

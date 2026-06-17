@@ -43,10 +43,6 @@
             <artifactId>quarkus-axon-tokenstore-jdbc</artifactId>
         </dependency>
         <dependency>
-            <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-            <artifactId>quarkus-axon-jdbc-eventstore</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-mariadb</artifactId>
         </dependency>
