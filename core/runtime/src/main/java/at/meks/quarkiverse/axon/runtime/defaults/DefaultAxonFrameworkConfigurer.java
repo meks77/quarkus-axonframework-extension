@@ -61,10 +61,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     Instance<RetryScheduler> retrySchedulerProducer;
 
-    // TODO: Migrate RetrySchedulerConfigurer or remove it, if it is not necessary anymore
-    //    @Inject
-    //    RetrySchedulerConfigurer retrySchedulerConfigurer;
-
     @Inject
     CommandBusConfigurer commandBusConfigurer;
 
@@ -174,13 +170,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         //            LOG.info("no eventUpcasterChain found");
         //        }
     }
-
-    //    TODO where to put the retry strategy?
-    //    private void configureCommandGateway(EventSourcingConfigurer configurer) {
-    //        retrySchedulerConfigurer.retryScheduler()
-    //                .ifPresent(retryScheduler -> configurer.messaging( c -> c.componentRegistry(
-    //                        reg -> reg.registerComponent(RetryScheduler.class, config -> retryScheduler))));
-    //    }
 
     private void configureTracing(EventSourcingConfigurer configurer) {
         if (axonTracingConfigurer.isResolvable()) {

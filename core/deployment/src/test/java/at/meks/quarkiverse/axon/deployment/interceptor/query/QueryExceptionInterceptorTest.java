@@ -51,6 +51,6 @@ public class QueryExceptionInterceptorTest {
                 .withMessageContaining(
                         "error while executing query handler for query at.meks.quarkiverse.axon.deployment.interceptor.query.QueryExceptionInterceptorTest$FaultyQuery")
                 .withStackTraceContaining("oops, I did it again");
-//        TODO is already wrapped in QueryExecutionException, message asserts fail
+        //        TODO is already wrapped in QueryExecutionException, message asserts fail
     }
 }

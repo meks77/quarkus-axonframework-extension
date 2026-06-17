@@ -43,7 +43,7 @@ class AxonExtensionProcessor {
                         InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
                         NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
                         // TODO: Migrate RetrySchedulerConfigurer or remove it, if it is not necessary anymore
-                        //                        RetrySchedulerConfigurer.class,
+                        RetrySchedulerConfigurer.class,
                         PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
                 .build();
@@ -149,7 +149,8 @@ class AxonExtensionProcessor {
             BeanDiscoveryFinishedBuildItem beanDiscovery) {
         ArrayList<Class<?>> unremovableItems = new ArrayList<>();
         Set<DotName> discoveredBeanClasses = discoveredBeanClasses(beanDiscovery);
-        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses, discoveryConfiguration);
+        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses,
+                discoveryConfiguration);
         unremovableItems.addAll(ClassDiscovery.eventhandlerClasses(discoveyAttributes).toList());
         unremovableItems.addAll(ClassDiscovery.commandhandlerClasses(discoveyAttributes).toList());
         unremovableItems.addAll(ClassDiscovery.queryhandlerClasses(discoveyAttributes).toList());

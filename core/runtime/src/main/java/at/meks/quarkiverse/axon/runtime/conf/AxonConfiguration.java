@@ -112,18 +112,16 @@ public interface AxonConfiguration {
         Optional<Integer> fixedRetryInterval();
 
         /**
-         * if you have configured either the {@link #fixedRetryInterval()} or the {@link #backoffFactor()} you must
+         * if you have configured either the {@link #fixedRetryInterval()} or the {@link #backoffInitialWait()} you must
          * configure the maximum retries as well.
          */
         Optional<Integer> maxRetryCount();
 
         /**
-         * backoff factor for retry scheduling(ExponentialBackOffIntervalRetryScheduler). This value is used in
-         * conjunction with an exponential backoff retry mechanism, where the interval
-         * between retries increases over time based on this factor. If configured, the
-         * maximum retries must also be set.
+         * backoff initial wait for {@link org.axonframework.messaging.core.retry.ExponentialBackOffRetryPolicy}.
+         * This initial wait time is doubled on every retry by the default axon framework implementation used.
          */
-        Optional<Integer> backoffFactor();
+        Optional<Integer> backoffInitialWait();
     }
 
     interface CommandBusConfiguration {

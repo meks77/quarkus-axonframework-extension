@@ -39,7 +39,7 @@ public class CustomCommandBusTest extends JavaArchiveTest {
          * {@link ProcessingContext contexts} to handle commands in.
          *
          * @param unitOfWorkFactory the {@code UnitOfWorkFactory} used to construct {@link ProcessingContext contexts} to
-         *                          handle commands in
+         *        handle commands in
          */
         public MyCommandBus(UnitOfWorkFactory unitOfWorkFactory) {
             super(unitOfWorkFactory);
