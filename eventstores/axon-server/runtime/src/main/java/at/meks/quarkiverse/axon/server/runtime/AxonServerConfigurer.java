@@ -7,14 +7,18 @@ import java.util.Optional;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
+import org.jspecify.annotations.NonNull;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 import io.axoniq.framework.axonserver.connector.event.AggregateBasedAxonServerEventStorageEngine;
+import io.axoniq.framework.axonserver.connector.event.AxonServerEventStorageEngine;
 
 @ApplicationScoped
 public class AxonServerConfigurer implements EventstoreConfigurer {
@@ -37,10 +41,18 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
 
                 .registerEventStorageEngine(config -> {
                     var connectionManager = config.getComponent(AxonServerConnectionManager.class);
-                    return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
-                            config.getComponent(
-                                    EventConverter.class));
+                    return configureStorageEngine(config, connectionManager);
                 });
+    }
+
+    private @NonNull EventStorageEngine configureStorageEngine(Configuration config, AxonServerConnectionManager connectionManager) {
+        if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
+            return new AxonServerEventStorageEngine(connectionManager.getConnection(), config.getComponent(
+                    EventConverter.class));
+        }
+        return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
+                config.getComponent(
+                        EventConverter.class));
     }
 
     private AxonServerConfiguration axonServerConfiguration() {

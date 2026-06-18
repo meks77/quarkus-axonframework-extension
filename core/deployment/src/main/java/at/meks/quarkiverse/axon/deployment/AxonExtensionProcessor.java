@@ -42,7 +42,6 @@ class AxonExtensionProcessor {
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
                         InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
                         NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
-                        // TODO: Migrate RetrySchedulerConfigurer or remove it, if it is not necessary anymore
                         RetrySchedulerConfigurer.class,
                         PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
