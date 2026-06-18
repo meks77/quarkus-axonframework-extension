@@ -28,6 +28,12 @@ public interface QuarkusAxonServerBuildTimeConfiguration {
         @WithDefault("true")
         boolean enabled();
 
+        /**
+         * specifies, if the Axon Server container should be started with dcb
+         */
+        @WithDefault("false")
+        Boolean useDcb();
+
     }
 
 }
