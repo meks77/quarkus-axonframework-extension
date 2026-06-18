@@ -106,10 +106,16 @@ public interface QuarkusAxonServerConfiguration {
         Unit unit();
     }
 
+    /**
+     * The type of storage engine for the axon server
+     *
+     * @return
+     */
     StorageEngineType storageEngine();
 
     enum StorageEngineType {
-        AGGREGATE_BASED, DCB;
+        AGGREGATE_BASED,
+        DCB;
     }
 
 }
