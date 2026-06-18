@@ -46,7 +46,7 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     }
 
     private @NonNull EventStorageEngine configureStorageEngine(Configuration config,
-                                                               AxonServerConnectionManager connectionManager) {
+            AxonServerConnectionManager connectionManager) {
         if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
             return new AxonServerEventStorageEngine(connectionManager.getConnection(), config.getComponent(
                     EventConverter.class));

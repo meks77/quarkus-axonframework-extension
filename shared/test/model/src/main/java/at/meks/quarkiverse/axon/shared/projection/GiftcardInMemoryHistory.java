@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.axonframework.messaging.core.annotation.Namespace;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 import org.axonframework.messaging.eventhandling.annotation.SequenceNumber;
 import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
@@ -15,7 +16,7 @@ import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped
-//@ProcessingGroup("GiftCardInMemory")
+@Namespace("GiftCardInMemory")
 public class GiftcardInMemoryHistory {
 
     private final List<Object> history = new ArrayList<>();
