@@ -4,6 +4,7 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,7 +32,8 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
     @Inject
     PooledProcessorConf pooledProcessorConf;
 
-    public void configure(EventSourcingConfigurer configurer, Set<Object> eventhandlers) {
+    @Override
+    public void configure(EventSourcingConfigurer configurer, Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventhandlers) {
         configurer.messaging(messagingConfigurer -> messagingConfigurer.eventProcessing(
                 eventProcessingConfigurer -> eventProcessingConfigurer.pooledStreaming(
                         pooledStreamingEventProcessorsConfigurer -> configurePooledStreamingProcessor(
@@ -39,18 +41,18 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
     }
 
     private PooledStreamingEventProcessorsConfigurer configurePooledStreamingProcessor(
-            PooledStreamingEventProcessorsConfigurer pooledStreamingEventProcessorsConfigurer, Set<Object> eventhandlers) {
+            PooledStreamingEventProcessorsConfigurer pooledStreamingEventProcessorsConfigurer, Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventhandlers) {
         ConfigOfOneProcessor defaultConfig = pooledProcessorConf.eventprocessorConfigs().get("default");
         pooledStreamingEventProcessorsConfigurer.defaults(
                 (configuration, pooledStreamingEventProcessorConfiguration) -> configureEventProcessor(
                         pooledStreamingEventProcessorConfiguration, configuration,
                         defaultConfig, defaultConfig));
-        // TODO: Do this at compile time!!!
+        // TODO: group eventhandlers by namespace at compile time!!!
         // TODO: Warning for configured, but unused event processors
         // TODO: exclude eventhandlers with namespaces, configured for subscribing processors
         // TODO: throw exception if more processors are responsible for one namespace
         // TODO: rename group to namespace
-        new EventhandlersPerNamespace(eventhandlers).stream()
+        eventhandlers
                 .forEach(namespace -> {
                     LOG.info("registering pooled event processor for namespaces {}", namespace.namespaceName().value());
                     Map.Entry<String, ConfigOfOneProcessor> processorNameAndConfig = nonDefaultProcessorConfigurations()

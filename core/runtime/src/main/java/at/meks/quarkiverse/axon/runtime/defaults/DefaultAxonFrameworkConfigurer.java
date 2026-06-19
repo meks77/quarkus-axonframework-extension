@@ -1,8 +1,9 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
+
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
@@ -15,9 +16,11 @@ import org.axonframework.messaging.core.conversion.DelegatingMessageConverter;
 import org.axonframework.messaging.core.conversion.MessageConverter;
 import org.axonframework.messaging.core.retry.RetryScheduler;
 import org.axonframework.messaging.core.unitofwork.transaction.TransactionManager;
+import org.axonframework.messaging.eventhandling.configuration.EventHandlingComponentsConfigurer;
 import org.axonframework.messaging.eventhandling.conversion.DelegatingEventConverter;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 //import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,35 +116,51 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     private void configureEventHandling(EventSourcingConfigurer configurer) {
-        assignProcessingGroupsToSubscribingEventProcessor(configurer);
         if (!eventhandlers.isEmpty()) {
+            EventhandlersPerNamespace eventhandlersPerNamespace = new EventhandlersPerNamespace(this.eventhandlers);
+            List<EventhandlersPerNamespace.NamespaceName> subscribingProcessorNamespaceNames = axonConfiguration
+                    .subscribingProcessorConf().processingGroupNames().stream()
+                    .flatMap(List::stream)
+                    .map(EventhandlersPerNamespace.NamespaceName::new)
+                    .toList();
+
+            assignProcessingGroupsToSubscribingEventProcessor(configurer, eventhandlersPerNamespace.getEventhandlers(subscribingProcessorNamespaceNames));
+
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
-                    handle -> handle.get().configure(configurer, eventhandlers));
-            //            axonComponentSetup.configureEventHandlers(configurer, eventhandlers);
+                    handle -> handle.get().configure(configurer, eventhandlersForPoolProcessors(
+                            eventhandlersPerNamespace, subscribingProcessorNamespaceNames)));
         }
     }
 
-    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer) {
+    private static @NonNull Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventhandlersForPoolProcessors(EventhandlersPerNamespace eventhandlersPerNamespace, List<EventhandlersPerNamespace.NamespaceName> subscribingProcessorNamespaceNames) {
+        return eventhandlersPerNamespace.stream()
+                .filter(namespace -> !subscribingProcessorNamespaceNames.contains(namespace.namespaceName()));
+    }
+
+    // TODO: Refactor code into new class in evenprocessor package and optimize code(eg. reduce duplicates, remove visibility of records)
+    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer, Stream<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
         SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();
-        //        TODO
-        //        conf.processingGroupNames().ifPresent(groupNames -> {
-        //            String processorName = conf.name().orElse("Subscribing");
-        //
-        //            configurer.messaging(mc -> mc.eventProcessing(ep -> ep.subscribing(sc -> {
-        //                return sc.processor(processorName, config -> config.eventHandlingComponents(
-        //                        rcp -> rcp.autodetected(c -> new AnnotatedEventhandlingClass())).customized(
-        //                        (configuration, subscribingEventProcessorConfiguration) -> subscribingEventProcessorConfiguration.eventSource(
-        //                                configuration.getComponent(
-        //                                        EventBus.class))));
-        //            })));
-        //
-        ////            configurer.registerSubscribingEventProcessor(processorName);
-        ////            groupNames.stream()
-        ////                    .map(String::trim)
-        ////                    .forEach(groupName -> configurer.assignProcessingGroup(groupName,
-        ////                            processorName));
-        //        });
+        List<EventhandlersPerNamespace.NamespaceName> namespacenames = conf.processingGroupNames().stream().flatMap(List::stream).map(EventhandlersPerNamespace.NamespaceName::new).toList();
+        if (!namespacenames.isEmpty()) {
+
+        configurer.messaging(messagingConfigurer -> messagingConfigurer.eventProcessing(
+                eventProcessingConfigurer -> eventProcessingConfigurer.subscribing(
+                        subscribingEventProcessorsConfigurer ->  subscribingEventProcessorsConfigurer.processor(conf.name().orElse("Subscribing"),
+                                config -> config.eventHandlingComponents(requiredComponentPhase ->
+                                        configureHandlingComponents(requiredComponentPhase, eventhandlers.toList())).notCustomized()))));
+        }
+    }
+
+    private EventHandlingComponentsConfigurer.CompletePhase configureHandlingComponents(
+            EventHandlingComponentsConfigurer.RequiredComponentPhase requiredComponentPhase,
+            Collection<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
+        EventHandlingComponentsConfigurer.AdditionalComponentPhase componentPhase = null;
+        for (var eventhandler : eventhandlers) {
+            componentPhase = requiredComponentPhase.autodetected(eventhandler.name(), config -> eventhandler.instance());
+        }
+
+        return componentPhase;
     }
 
     private void configureTransactionManagement(EventSourcingConfigurer configurer) {

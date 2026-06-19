@@ -21,13 +21,12 @@ public class SubscribingEventProcessorTest extends JavaArchiveTest {
     @Override
     protected void assertConfiguration(Map<String, EventProcessor> eventProcessors) {
 
-        Map<String, SubscribingEventProcessor> pooledStreamingEventProcessors = eventProcessors.entrySet().stream()
+        Map<String, SubscribingEventProcessor> subscribingEventprocessors = eventProcessors.entrySet().stream()
                 .filter(e -> e.getValue() instanceof SubscribingEventProcessor)
-                .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
                 .map(entry -> Map.entry(entry.getKey(), (SubscribingEventProcessor) entry.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        assertThat(pooledStreamingEventProcessors)
+        assertThat(subscribingEventprocessors)
                 .containsOnlyKeys(expectedEventProcessorNames());
 
     }
