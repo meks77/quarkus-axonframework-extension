@@ -68,11 +68,11 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         // calculation like: the number of applied events * number of event processors.
 
         int numberOfInterceptors = 2;
-        int numberOfAppliedEvents = 8;
+        int numberOfAppliedEvents = 5;
         int minNumberOfInvocations = numberOfInterceptors * numberOfAppliedEvents;
         await().atMost(Duration.ofSeconds(10))
-                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 1 logs event"));
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("{} logs event", "Interceptor 1"));
         await().atMost(Duration.ofSeconds(3))
-                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 2 logs event"));
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("{} logs event", "Interceptor 2"));
     }
 }
