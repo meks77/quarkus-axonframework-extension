@@ -59,7 +59,7 @@ public class OneDispatchInterceptorProducerTest extends JavaArchiveTest {
     @Override
     protected void assertOthers() {
         InOrder inOrder = Mockito.inOrder(LOGGER);
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs query");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs query");
+        inOrder.verify(LOGGER).debug("{} logs query", "Interceptor 1");
+        inOrder.verify(LOGGER).debug("{} logs query", "Interceptor 2");
     }
 }

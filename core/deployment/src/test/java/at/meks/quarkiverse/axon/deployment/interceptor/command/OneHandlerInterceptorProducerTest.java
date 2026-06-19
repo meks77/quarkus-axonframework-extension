@@ -59,9 +59,9 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
     @Override
     protected void assertOthers() {
         InOrder inOrder = Mockito.inOrder(LOGGER);
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs command");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs command");
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs command");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs command");
+        inOrder.verify(LOGGER).debug("{} logs command", "Interceptor 1");
+        inOrder.verify(LOGGER).debug("{} logs command", "Interceptor 2");
+        inOrder.verify(LOGGER).debug("{} logs command", "Interceptor 1");
+        inOrder.verify(LOGGER).debug("{} logs command", "Interceptor 2");
     }
 }
