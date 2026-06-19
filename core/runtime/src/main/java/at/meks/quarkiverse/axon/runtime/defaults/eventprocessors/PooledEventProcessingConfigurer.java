@@ -55,12 +55,9 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
         eventhandlers
                 .forEach(namespace -> {
                     LOG.info("registering pooled event processor for namespaces {}", namespace.namespaceName().value());
-                    Map.Entry<String, ConfigOfOneProcessor> processorNameAndConfig = nonDefaultProcessorConfigurations()
-                            .stream()
-                            .filter(entry -> entry.getValue().processingGroupNames()
-                                    .map(groupNames -> groupNames.contains(namespace.namespaceName().value()))
-                                    .orElse(false))
-                            .findFirst().orElseGet(() -> Map.entry(namespace.namespaceName().value(), defaultConfig));
+                    Map.Entry<String, ConfigOfOneProcessor> processorNameAndConfig = processorForNamespace(namespace)
+                            .orElseGet(() -> processorWithName(namespace)
+                            .orElseGet(() -> Map.entry(namespace.namespaceName().value(), defaultConfig)));
                     ConfigOfOneProcessor processorConfig = processorNameAndConfig.getValue();
                     String processorName = createProcessorName(processorNameAndConfig.getKey(),
                             processorConfig.useRandomUuidSuffix().or(defaultConfig::useRandomUuidSuffix).orElse(false));
@@ -76,6 +73,25 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                                                             processorConfig, defaultConfig)));
                 });
         return pooledStreamingEventProcessorsConfigurer;
+    }
+
+    private @NonNull Optional<Map.Entry<String, ConfigOfOneProcessor>> processorWithName(EventhandlersPerNamespace.EventhandlersOfANamespace namespace) {
+        return Optional.ofNullable(
+                pooledProcessorConf.eventprocessorConfigs().get(namespace.namespaceName().value())).map(
+                config -> Map.entry(namespace.namespaceName().value(), config));
+    }
+
+    private @NonNull Optional<Map.Entry<String, ConfigOfOneProcessor>> processorForNamespace(EventhandlersPerNamespace.EventhandlersOfANamespace namespace) {
+        List<Map.Entry<String, ConfigOfOneProcessor>> processorConfigs = nonDefaultProcessorConfigurations()
+                .stream()
+                .filter(entry -> entry.getValue().processingGroupNames()
+                        .map(groupNames -> groupNames.contains(namespace.namespaceName().value()))
+                        .orElse(false))
+                .toList();
+        if (processorConfigs.size() > 1) {
+            throw new IllegalStateException("Multiple processors for namespace " + namespace.namespaceName().value() + " found");
+        }
+        return processorConfigs.stream().findFirst();
     }
 
     private EventHandlingComponentsConfigurer.CompletePhase configureHandlingComponents(
