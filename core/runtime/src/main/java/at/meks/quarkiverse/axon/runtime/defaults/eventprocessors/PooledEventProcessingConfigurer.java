@@ -143,8 +143,9 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
         }
         if (shouldUseInMemoryTokenStore(namedConfig, defaultConfig)) {
             pooledStreamingEventProcessorConfiguration.tokenStore(getSingletonInMemoryTokenStore());
+        } else {
+            pooledStreamingEventProcessorConfiguration.tokenStore(configuration.getComponent(TokenStore.class));
         }
-        pooledStreamingEventProcessorConfiguration.tokenStore(configuration.getComponent(TokenStore.class));
         namedConfig.workerThreadPoolSize()
                 .or(defaultConfig::workerThreadPoolSize)
                 .filter(poolSize -> poolSize > 0)
