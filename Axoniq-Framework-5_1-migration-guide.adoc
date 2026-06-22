@@ -118,6 +118,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** implement QuarkusAggregateConfigurer if id of EventSourcedEntities is not of type String (the default implementation maybe change in the future to consider the type of the id somehow else)
 * Interceptors have changed APIs, existing Axon 4 Interceptors will not work in Axon 5
 * Retry Scheduling: backoff-factor replaced by backoff-initial-wait
+* Metric names changed
 
 == Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter
