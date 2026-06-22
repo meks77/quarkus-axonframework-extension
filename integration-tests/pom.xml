@@ -12,7 +12,6 @@
     <name>Quarkus Axon Extension - Integration Tests - Parent</name>
 
     <modules>
-        <module>integration-tests-jdbc</module>
         <module>integration-tests-axon-server</module>
     </modules>
 
