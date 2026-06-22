@@ -38,6 +38,7 @@ public class JpaTokenstoreConfigurer implements TokenStoreConfigurer {
                         .map(timeout -> (TemporalAmount) Duration.of(timeout.amount(), timeout.unit().toChronoUnit()))
                         .orElse(defaultTokenStoreConfig.claimTimeout()),
                 defaultTokenStoreConfig.nodeId());
+
         var transactionalExecutorProvider = new JpaTransactionalExecutorProvider(
                 entityManagerProvider.getEntityManager().getEntityManagerFactory());
         return new JpaTokenStore(transactionalExecutorProvider, configuration.getComponent(GeneralConverter.class),
