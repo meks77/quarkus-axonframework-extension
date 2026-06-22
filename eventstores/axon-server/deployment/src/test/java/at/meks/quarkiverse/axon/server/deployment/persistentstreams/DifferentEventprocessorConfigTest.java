@@ -9,6 +9,7 @@ import java.util.Map;
 import jakarta.inject.Inject;
 
 import org.axonframework.messaging.eventhandling.processing.subscribing.SubscribingEventProcessor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
@@ -17,6 +18,7 @@ import io.axoniq.axonserver.grpc.streams.StreamStatus;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 import io.quarkus.test.QuarkusExtensionTest;
 
+@Disabled("TODO: Activate as soon as it is available again in Axon Framework")
 public class DifferentEventprocessorConfigTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension

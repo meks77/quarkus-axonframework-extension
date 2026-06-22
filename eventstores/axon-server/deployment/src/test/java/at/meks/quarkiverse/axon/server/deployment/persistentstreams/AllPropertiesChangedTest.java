@@ -1,5 +1,6 @@
 package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
@@ -11,6 +12,7 @@ import io.quarkus.test.QuarkusExtensionTest;
  * <p>
  * The context can't be changed because the axon server without enterprise license supports just one context.
  */
+@Disabled("TODO: Activate as soon as it is available again in Axon Framework")
 public class AllPropertiesChangedTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension

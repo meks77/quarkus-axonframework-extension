@@ -7,11 +7,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.axonframework.messaging.eventhandling.processing.EventProcessor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
 
+@Disabled("TODO: Activate as soon as it is available again in Axon Framework")
 public class RandomProcessorNamesTest extends JavaArchiveTest {
 
     @RegisterExtension
