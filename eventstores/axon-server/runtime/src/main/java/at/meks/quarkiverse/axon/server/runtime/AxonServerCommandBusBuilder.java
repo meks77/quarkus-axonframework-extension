@@ -9,6 +9,9 @@ import org.axonframework.messaging.commandhandling.CommandBus;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.defaults.LocalCommandBusBuilder;
+import io.axoniq.framework.messaging.commandhandling.distributed.CommandBusConnector;
+import io.axoniq.framework.messaging.commandhandling.distributed.DistributedCommandBus;
+import io.axoniq.framework.messaging.commandhandling.distributed.DistributedCommandBusConfiguration;
 import io.quarkus.arc.DefaultBean;
 
 @Dependent
@@ -21,19 +24,9 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
 
     @Override
     public CommandBus build(Configuration configuration) {
-        // TODO: Configure CommandBus if still necessary or remove it
-        //        AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
-        //        return AxonServerCommandBus.builder()
-        //                .configuration(axonServerConfiguration)
-        //                .axonServerConnectionManager(configuration.getComponent(AxonServerConnectionManager.class))
-        //                .defaultContext(axonServerConfiguration.getContext())
-        //                .serializer(configuration.serializer())
-        //                .routingStrategy(AnnotationRoutingStrategy.defaultStrategy())
-        //                .priorityCalculator(CommandPriorityCalculator.defaultCommandPriorityCalculator())
-        //                .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(
-        //                        configuration.spanFactory()).distributedInSameTrace(true).build())
-        //                .build();
-        return null;
+        var localCommandBus = localCommandBusBuilder.build(configuration);
+        return new DistributedCommandBus(localCommandBus, configuration.getComponent(CommandBusConnector.class),
+                DistributedCommandBusConfiguration.DEFAULT);
     }
 
 }

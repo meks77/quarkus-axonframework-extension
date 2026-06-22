@@ -14,6 +14,7 @@ public class ProducedComponentsTest {
 
     @RegisterExtension
     static final QuarkusExtensionTest config = new QuarkusExtensionTest()
+            .withConfigurationResource("axonservertest.properties")
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase);
 
     @Inject
