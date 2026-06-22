@@ -3,10 +3,8 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 import java.util.Optional;
 
 import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Inject;
 
-import org.axonframework.common.configuration.AxonConfiguration;
-//import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.messaging.commandhandling.SimpleCommandBus;
 import org.axonframework.messaging.commandhandling.retry.RetryingCommandBus;
@@ -18,20 +16,18 @@ import io.quarkus.arc.DefaultBean;
 @Dependent
 @DefaultBean
 public class LocalCommandBusBuilder implements CommandBusBuilder {
-    @Inject
-    private RetrySchedulerConfigurer retrySchedulerConfigurer;
 
-    public CommandBus build(AxonConfiguration config) {
-        SimpleCommandBus simpleCommandBus = new SimpleCommandBus(config.getComponent(UnitOfWorkFactory.class));
+    private final RetrySchedulerConfigurer retrySchedulerConfigurer;
+
+    public LocalCommandBusBuilder(RetrySchedulerConfigurer retrySchedulerConfigurer) {
+        this.retrySchedulerConfigurer = retrySchedulerConfigurer;
+    }
+
+    public CommandBus build(Configuration config) {
         Optional<CommandBus> enhancedCommandBus = retrySchedulerConfigurer.retryScheduler()
-                .map(retryScheduler -> new RetryingCommandBus(simpleCommandBus, retryScheduler));
-        return enhancedCommandBus.orElse(simpleCommandBus);
-        //        return new RetryingCommandBus(simpleCommandBus, retryScheduler);
-        //                SimpleCommandBus.Builder builder = SimpleCommandBus.builder()
-        //                        .transactionManager(config.getComponent(TransactionManager.class))
-        //                        .spanFactory(DefaultCommandBusSpanFactory.builder().spanFactory(config.spanFactory())
-        //                                .distributedInSameTrace(true).build())
-        //                        .messageMonitor(config.messageMonitor(SimpleCommandBus.class, "commandBus"));
-        //                return builder.build();
+                .map(retryScheduler -> new RetryingCommandBus(
+                        new SimpleCommandBus(config.getComponent(UnitOfWorkFactory.class)), retryScheduler));
+        return enhancedCommandBus
+                .orElse(new SimpleCommandBus(config.getComponent(UnitOfWorkFactory.class)));
     }
 }

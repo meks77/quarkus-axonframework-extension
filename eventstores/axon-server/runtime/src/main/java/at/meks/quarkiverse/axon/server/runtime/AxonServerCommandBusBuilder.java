@@ -4,7 +4,7 @@ import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 
-import org.axonframework.common.configuration.AxonConfiguration;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.CommandBus;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
@@ -20,7 +20,7 @@ public class AxonServerCommandBusBuilder implements CommandBusBuilder {
     LocalCommandBusBuilder localCommandBusBuilder;
 
     @Override
-    public CommandBus build(AxonConfiguration configuration) {
+    public CommandBus build(Configuration configuration) {
         // TODO: Configure CommandBus if still necessary or remove it
         //        AxonServerConfiguration axonServerConfiguration = configuration.getComponent(AxonServerConfiguration.class);
         //        return AxonServerCommandBus.builder()

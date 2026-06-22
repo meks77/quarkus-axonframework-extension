@@ -9,7 +9,6 @@ import jakarta.ws.rs.Produces;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.messaging.core.retry.RetryScheduler;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
@@ -38,9 +37,12 @@ public class CustomRetrySchedulerTest extends JavaArchiveTest {
 
     @Override
     protected void assertConfiguration(Configuration configuration) {
-        DefaultCommandGateway commandGateway = (DefaultCommandGateway) configuration.getComponent(CommandGateway.class);
+        CommandGateway commandGateway = configuration.getComponent(CommandGateway.class);
         try {
-            Object actualRetryScheduler = FieldUtils.readField(commandGateway, "retryScheduler", true);
+            Object delegatingCommandGateway = FieldUtils.readField(commandGateway, "delegate", true);
+            Object commandBus = FieldUtils.readField(delegatingCommandGateway, "commandBus", true);
+            Object retryingCommandBus = FieldUtils.readField(commandBus, "delegate", true);
+            Object actualRetryScheduler = FieldUtils.readField(retryingCommandBus, "retryScheduler", true);
             assertThat(actualRetryScheduler).isSameAs(retryScheduler);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

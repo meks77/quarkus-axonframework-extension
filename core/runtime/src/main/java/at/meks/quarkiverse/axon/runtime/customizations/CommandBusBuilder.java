@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.common.configuration.AxonConfiguration;
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.CommandBus;
 
 /**
@@ -8,5 +8,5 @@ import org.axonframework.messaging.commandhandling.CommandBus;
  */
 public interface CommandBusBuilder {
 
-    CommandBus build(AxonConfiguration configuration);
+    CommandBus build(Configuration configuration);
 }
