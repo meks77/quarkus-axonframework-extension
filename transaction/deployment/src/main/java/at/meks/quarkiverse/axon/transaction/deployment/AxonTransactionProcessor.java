@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.transaction.deployment;
 
-import at.meks.quarkiverse.axon.transaction.runtime.JdbcTransactionManager;
+import at.meks.quarkiverse.axon.transaction.runtime.QuarkusTransactionManager;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -17,7 +17,7 @@ public class AxonTransactionProcessor {
     @BuildStep
     AdditionalBeanBuildItem tokenStoreConfigurer() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClass(JdbcTransactionManager.class)
+                .addBeanClass(QuarkusTransactionManager.class)
                 .build();
     }
 }
