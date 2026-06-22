@@ -3,6 +3,7 @@ package at.meks.quarkiverse.axon.server.runtime;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.AbstractEventProcessingConfigurer;
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
 
 // TODO: uncomment code as soon as AxonFramework support PersistentStream again
 @ApplicationScoped
@@ -30,7 +32,8 @@ public class PersistentStreamEventProcessingConfigurer extends AbstractEventProc
     AxonConfiguration axonConfiguration;
 
     @Override
-    public void configure(EventSourcingConfigurer configurer, Set<Object> eventHandler) {
+    public void configure(EventSourcingConfigurer configurer,
+                          Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler) {
         //        ConfigOfOneProcessor defaultConfig = persistentStreamProcessorConf.eventprocessorConfigs().get("default");
         //        if (defaultConfig.processingGroupNames().isPresent()) {
         //            LOG.warn(
