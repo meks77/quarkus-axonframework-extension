@@ -33,7 +33,7 @@ public class PersistentStreamEventProcessingConfigurer extends AbstractEventProc
 
     @Override
     public void configure(EventSourcingConfigurer configurer,
-                          Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler) {
+            Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler) {
         //        ConfigOfOneProcessor defaultConfig = persistentStreamProcessorConf.eventprocessorConfigs().get("default");
         //        if (defaultConfig.processingGroupNames().isPresent()) {
         //            LOG.warn(
