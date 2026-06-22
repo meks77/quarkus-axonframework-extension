@@ -21,6 +21,7 @@ public interface AxonEventProcessingConfigurer {
      * @param configurer the {@link EventSourcingConfigurer} to be customized
      * @param eventHandler contains the namespaces and handlers, which should used by pooled event processors
      */
-    void configure(EventSourcingConfigurer configurer, Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler);
+    void configure(EventSourcingConfigurer configurer,
+            Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler);
 
 }

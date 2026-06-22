@@ -44,9 +44,9 @@ public class CommandBusConfigurer {
                 cr -> cr.registerComponent(CommandBus.class, config -> commandBusProducer.get().createCommandBus(config)));
     }
 
-        private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
-            configurer.messaging(messagingConfigurer -> messagingConfigurer.registerCommandBus(this::createCommandBusWithBuilder));
-        }
+    private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
+        configurer.messaging(messagingConfigurer -> messagingConfigurer.registerCommandBus(this::createCommandBusWithBuilder));
+    }
 
     private CommandBus createCommandBusWithBuilder(org.axonframework.common.configuration.Configuration axonConfiguration) {
         return commandBusBuilder

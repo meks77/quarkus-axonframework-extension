@@ -3,8 +3,6 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 import java.util.*;
 import java.util.stream.Stream;
 
-import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
-
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
@@ -27,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.SubscribingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
 import io.quarkus.arc.DefaultBean;
 
 @Dependent
@@ -124,7 +123,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                     .map(EventhandlersPerNamespace.NamespaceName::new)
                     .toList();
 
-            assignProcessingGroupsToSubscribingEventProcessor(configurer, eventhandlersPerNamespace.getEventhandlers(subscribingProcessorNamespaceNames));
+            assignProcessingGroupsToSubscribingEventProcessor(configurer,
+                    eventhandlersPerNamespace.getEventhandlers(subscribingProcessorNamespaceNames));
 
             tokenStoreConfigurer.configureTokenStore(configurer);
             eventProcessingConfigurers.handles().forEach(
@@ -133,22 +133,30 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         }
     }
 
-    private static @NonNull Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventhandlersForPoolProcessors(EventhandlersPerNamespace eventhandlersPerNamespace, List<EventhandlersPerNamespace.NamespaceName> subscribingProcessorNamespaceNames) {
+    private static @NonNull Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventhandlersForPoolProcessors(
+            EventhandlersPerNamespace eventhandlersPerNamespace,
+            List<EventhandlersPerNamespace.NamespaceName> subscribingProcessorNamespaceNames) {
         return eventhandlersPerNamespace.stream()
                 .filter(namespace -> !subscribingProcessorNamespaceNames.contains(namespace.namespaceName()));
     }
 
     // TODO: Refactor code into new class in evenprocessor package and optimize code(eg. reduce duplicates, remove visibility of records)
-    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer, Stream<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
+    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer,
+            Stream<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
         SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();
-        List<EventhandlersPerNamespace.NamespaceName> namespacenames = conf.processingGroupNames().stream().flatMap(List::stream).map(EventhandlersPerNamespace.NamespaceName::new).toList();
+        List<EventhandlersPerNamespace.NamespaceName> namespacenames = conf.processingGroupNames().stream()
+                .flatMap(List::stream).map(EventhandlersPerNamespace.NamespaceName::new).toList();
         if (!namespacenames.isEmpty()) {
 
-        configurer.messaging(messagingConfigurer -> messagingConfigurer.eventProcessing(
-                eventProcessingConfigurer -> eventProcessingConfigurer.subscribing(
-                        subscribingEventProcessorsConfigurer ->  subscribingEventProcessorsConfigurer.processor(conf.name().orElse("Subscribing"),
-                                config -> config.eventHandlingComponents(requiredComponentPhase ->
-                                        configureHandlingComponents(requiredComponentPhase, eventhandlers.toList())).notCustomized()))));
+            configurer.messaging(messagingConfigurer -> messagingConfigurer.eventProcessing(
+                    eventProcessingConfigurer -> eventProcessingConfigurer.subscribing(
+                            subscribingEventProcessorsConfigurer -> subscribingEventProcessorsConfigurer
+                                    .processor(conf.name().orElse("Subscribing"),
+                                            config -> config
+                                                    .eventHandlingComponents(
+                                                            requiredComponentPhase -> configureHandlingComponents(
+                                                                    requiredComponentPhase, eventhandlers.toList()))
+                                                    .notCustomized()))));
         }
     }
 

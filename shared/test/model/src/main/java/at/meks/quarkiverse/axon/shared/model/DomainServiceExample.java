@@ -36,7 +36,8 @@ public class DomainServiceExample {
             throws ExecutionException, InterruptedException {
         CompletableFuture<ManagedEntity<String, Giftcard>> giftcardAggregate = giftcardRepository.load(command.id(),
                 processingContext);
-        ofNullable(giftcardAggregate.get().entity()).orElseThrow(() -> new IllegalStateException("The aggregate was not found in the event store"))
+        ofNullable(giftcardAggregate.get().entity())
+                .orElseThrow(() -> new IllegalStateException("The aggregate was not found in the event store"))
                 .requestRedeem(command.amount(), eventAppender);
     }
 
