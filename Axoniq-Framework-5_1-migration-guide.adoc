@@ -73,7 +73,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] setup the default event processor in the axon framework
 ** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
 * [ ] Eventstore configuration
-** [ ] Replace JpaEventStorageEngine by PostgresqlEventStorageEngine
+** [ ] Replace JpaEventStorageEngine by AggregateBasedJpaEventStorageEngine
 ** [ ] migrate Axon-Server-EventStore
 * [ ] DCB Support?
 * [ ] LiveReloadTest -> fixed code replacement, the thrown exception leads to HTTP 500 in the API
@@ -85,6 +85,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
 * [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
 * [ ] Upgrade "Persisteent Streams" as soon as it is available in Axon Framework 5.x
+* [ ] Support for PostgresqlEventStorageEngine
 
 === DONE
 
