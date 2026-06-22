@@ -28,7 +28,7 @@ public class LiveReloadTest {
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
                     .addPackage(AnotherProjection.class.getPackage())
-                    .addClasses(GiftcardResource.class, DomainServiceForLiveReloading.class)
+                    .addClasses(GiftcardResource.class, EventHandlerForLiveReloading.class)
                     .addAsResource(JavaArchiveTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));
 
@@ -45,14 +45,9 @@ public class LiveReloadTest {
         assertSuccess(issueCard(cardId));
         assertSuccess(redeemCardResponse(cardId, 1));
 
-        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/DomainServiceForLiveReloading.java",
+        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/EventHandlerForLiveReloading.java",
                 source -> source.replace(
-                        """
-                                        giftcardAggregate.applyStateChange(giftcard -> {
-                                            giftcard.requestRedeem(command.amount(), eventAppender);
-                                            return giftcard;
-                                        });
-                                """,
+                        "//simply do nothing",
                         "throw new java.lang.IllegalStateException(\"whatever\");"));
 
         // After reloading, the InMemoryEventStore created new and therefore empty
