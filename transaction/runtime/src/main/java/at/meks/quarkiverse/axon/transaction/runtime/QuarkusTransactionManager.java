@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.transaction.runtime;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.RequestContextController;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.axonframework.common.jpa.EntityManagerExecutor;
@@ -19,7 +20,7 @@ public class QuarkusTransactionManager implements TransactionManager {
     RequestContextController requestContextController;
 
     @Inject
-    EntityManagerProvider entityManagerProvider;
+    Instance<EntityManagerProvider> entityManagerProvider;
 
     @Override
     public Transaction startTransaction() {
@@ -32,10 +33,10 @@ public class QuarkusTransactionManager implements TransactionManager {
         processingLifecycle.runOnPreInvocation(pc -> {
             Transaction transaction = startTransaction();
 
-            if (entityManagerProvider != null) {
+            if (entityManagerProvider.isResolvable()) {
                 pc.putResource(
                         JpaTransactionalExecutorProvider.SUPPLIER_KEY,
-                        CachingSupplier.of(() -> new EntityManagerExecutor(entityManagerProvider)));
+                        CachingSupplier.of(() -> new EntityManagerExecutor(entityManagerProvider.get())));
             }
 
             //            TODO no connection provider here
