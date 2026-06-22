@@ -21,8 +21,16 @@ public class WithMetricsTest extends JavaArchiveTest {
         String response = RestAssured.when().get("/q/metrics")
                 .then().statusCode(200).extract().body().asString();
         assertThat(response)
-                .contains("eventProcessor_")
-                .contains("commandBus_")
-                .contains("eventStore_");
+                .contains("CommandBus_messageTimer")
+                .contains("CommandBus_messageCounter")
+                .contains("CommandBus_capacity")
+                .contains("QueryBus_messageTimer")
+                .contains("QueryBus_messageCounter")
+                .contains("QueryBus_capacity")
+                .contains("at_meks_quarkiverse_axon_shared_projection_messageTimer")
+                .contains("at_meks_quarkiverse_axon_shared_projection_messageCounter")
+                .contains("at_meks_quarkiverse_axon_shared_projection_capacity")
+                .contains("at_meks_quarkiverse_axon_shared_projection_latency")
+                .contains("EventStore_");
     }
 }
