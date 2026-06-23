@@ -69,7 +69,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 === Prio 1
 * [ ] Event Processing configuration
-** [ ] Replace ProcessingGroup by Namespace
 ** [ ] group eventhandlers by namespace at compile time
 ** [ ] Warning for configured, but unused event processors
 ** [ ] throw exception if more processors are responsible for one namespace
