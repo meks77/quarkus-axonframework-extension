@@ -165,7 +165,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
             Collection<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
         EventHandlingComponentsConfigurer.AdditionalComponentPhase componentPhase = null;
         for (var eventhandler : eventhandlers) {
-            componentPhase = requiredComponentPhase.autodetected(eventhandler.name(), config -> eventhandler.instance());
+            componentPhase = requiredComponentPhase.autodetected(eventhandler.name(),
+                    config -> eventhandler.instance());
         }
 
         return componentPhase;
