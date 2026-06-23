@@ -437,9 +437,9 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-processing-groups[`+++quarkus.axon.subscribingprocessor.processing-groups+++`]##
+a| [[quarkus-axon_quarkus-axon-subscribingprocessor-namespaces]] [.property-path]##link:#quarkus-axon_quarkus-axon-subscribingprocessor-namespaces[`+++quarkus.axon.subscribingprocessor.namespaces+++`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.subscribingprocessor.processing-groups+++[]
+config_property_copy_button:+++quarkus.axon.subscribingprocessor.namespaces+++[]
 endif::add-copy-button-to-config-props[]
 
 
@@ -449,10 +449,10 @@ The names of the processing groups for which the processor is responsible.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SUBSCRIBINGPROCESSOR_PROCESSING_GROUPS+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SUBSCRIBINGPROCESSOR_NAMESPACES+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_SUBSCRIBINGPROCESSOR_PROCESSING_GROUPS+++`
+Environment variable: `+++QUARKUS_AXON_SUBSCRIBINGPROCESSOR_NAMESPACES+++`
 endif::add-copy-button-to-env-var[]
 --
 |list of string
@@ -614,15 +614,15 @@ endif::add-copy-button-to-env-var[]
 |link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-axon_quarkus-axon[icon:question-circle[title=More information about the Duration format]]
 |
 
-a| [[quarkus-axon_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-processing-groups[`+++quarkus.axon.pooledprocessor.processing-groups+++`]##
+a| [[quarkus-axon_quarkus-axon-pooledprocessor-namespaces]] [.property-path]##link:#quarkus-axon_quarkus-axon-pooledprocessor-namespaces[`+++quarkus.axon.pooledprocessor.namespaces+++`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.namespaces+++[]
 endif::add-copy-button-to-config-props[]
 
 
-`+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++`
+`+++quarkus.axon.pooledprocessor."processor-name".namespaces+++`
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".processing-groups+++[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".namespaces+++[]
 endif::add-copy-button-to-config-props[]
 
 [.description]
@@ -631,10 +631,10 @@ The names of the processing groups for which the processor is responsible.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_NAMESPACES+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_PROCESSING_GROUPS+++`
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_NAMESPACES+++`
 endif::add-copy-button-to-env-var[]
 --
 |list of string

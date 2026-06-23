@@ -15,7 +15,7 @@ public interface SubscribingProcessorConf {
     /**
      * The names of the processing groups for which the processor is responsible.
      */
-    @WithName("processing-groups")
-    Optional<List<String>> processingGroupNames();
+    @WithName("namespaces")
+    Optional<List<String>> namespaces();
 
 }

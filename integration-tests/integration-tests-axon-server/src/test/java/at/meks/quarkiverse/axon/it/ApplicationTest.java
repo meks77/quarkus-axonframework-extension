@@ -148,9 +148,9 @@ class ApplicationTest {
     //    }
 
     //        TODO persistent stream currently not supported
-   // private void assertPersistentStreams() {
-        //        assertEventProcessorIsPersistentStream("at.meks.quarkiverse.axon.shared.projection2", "streams1");
-        //        assertEventProcessorIsPersistentStream("EventProcessorGroup6", "streams1");
-   // }
+    // private void assertPersistentStreams() {
+    //        assertEventProcessorIsPersistentStream("at.meks.quarkiverse.axon.shared.projection2", "streams1");
+    //        assertEventProcessorIsPersistentStream("EventProcessorGroup6", "streams1");
+    // }
 
 }

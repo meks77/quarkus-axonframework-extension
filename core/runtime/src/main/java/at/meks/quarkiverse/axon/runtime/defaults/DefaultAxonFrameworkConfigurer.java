@@ -118,12 +118,12 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         if (!eventhandlers.isEmpty()) {
             EventhandlersPerNamespace eventhandlersPerNamespace = new EventhandlersPerNamespace(this.eventhandlers);
             List<EventhandlersPerNamespace.NamespaceName> subscribingProcessorNamespaceNames = axonConfiguration
-                    .subscribingProcessorConf().processingGroupNames().stream()
+                    .subscribingProcessorConf().namespaces().stream()
                     .flatMap(List::stream)
                     .map(EventhandlersPerNamespace.NamespaceName::new)
                     .toList();
 
-            assignProcessingGroupsToSubscribingEventProcessor(configurer,
+            assignNamespacesToSubscribingEventProcessor(configurer,
                     eventhandlersPerNamespace.getEventhandlers(subscribingProcessorNamespaceNames));
 
             tokenStoreConfigurer.configureTokenStore(configurer);
@@ -141,10 +141,10 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     // TODO: Refactor code into new class in evenprocessor package and optimize code(eg. reduce duplicates, remove visibility of records)
-    private void assignProcessingGroupsToSubscribingEventProcessor(EventSourcingConfigurer configurer,
+    private void assignNamespacesToSubscribingEventProcessor(EventSourcingConfigurer configurer,
             Stream<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
         SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();
-        List<EventhandlersPerNamespace.NamespaceName> namespacenames = conf.processingGroupNames().stream()
+        List<EventhandlersPerNamespace.NamespaceName> namespacenames = conf.namespaces().stream()
                 .flatMap(List::stream).map(EventhandlersPerNamespace.NamespaceName::new).toList();
         if (!namespacenames.isEmpty()) {
 

@@ -87,8 +87,8 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
             EventhandlersPerNamespace.EventhandlersOfANamespace namespace) {
         List<Map.Entry<String, ConfigOfOneProcessor>> processorConfigs = nonDefaultProcessorConfigurations()
                 .stream()
-                .filter(entry -> entry.getValue().processingGroupNames()
-                        .map(groupNames -> groupNames.contains(namespace.namespaceName().value()))
+                .filter(entry -> entry.getValue().namespaces()
+                        .map(namespaces -> namespaces.contains(namespace.namespaceName().value()))
                         .orElse(false))
                 .toList();
         if (processorConfigs.size() > 1) {

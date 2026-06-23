@@ -63,7 +63,7 @@ public interface PersistentStreamProcessorConf {
         /**
          * The names of the processing groups for which the processor is responsible.
          */
-        @WithName("processing-groups")
+        @WithName("namespaces")
         Optional<List<String>> processingGroupNames();
 
         /**
