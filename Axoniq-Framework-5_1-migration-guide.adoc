@@ -69,8 +69,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 === Prio 1
 * [ ] Event Processing configuration
-** [ ] group eventhandlers by namespace at compile time
-** [ ] Warning for configured, but unused event processors
 ** [ ] throw exception if more processors are responsible for one namespace
 ** [ ] rename group to namespace
 * [ ] remove wrapping of exceptions for query handlers, because the framework does it automatically
@@ -80,7 +78,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] Error/Warning for others if configured
 
 === for later
-
+* [ ] Event Processing configuration
+** [ ] group eventhandlers by namespace at compile time
+** [ ] Warning for configured, but unused event processors
 * [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
 * Configuration
 ** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
