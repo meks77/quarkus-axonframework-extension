@@ -69,7 +69,6 @@ public class ResetEventprocessorsTest {
                         .isNotEmpty()
                         .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L)));
 
-
         pauseEventprocessors(eventProcessors);
 
         resetTokens(eventProcessors);
