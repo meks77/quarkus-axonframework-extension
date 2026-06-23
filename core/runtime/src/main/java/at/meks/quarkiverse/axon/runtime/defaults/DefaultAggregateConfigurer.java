@@ -4,12 +4,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import org.axonframework.eventsourcing.configuration.EventSourcedEntityModule;
 
-import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.EventAggregateConfigurer;
 import io.quarkus.arc.DefaultBean;
 
 @ApplicationScoped
 @DefaultBean
-public class DefaultAggregateConfigurer implements QuarkusAggregateConfigurer {
+public class DefaultAggregateConfigurer implements EventAggregateConfigurer {
 
     @Override
     public <ID, T> EventSourcedEntityModule<ID, T> createConfigurer(Class<T> eventSourcedEntity) {

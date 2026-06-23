@@ -72,6 +72,8 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] For InMemory
 ** [ ] For AxonServer
 ** [ ] Error/Warning for others if configured
+* [ ] Jpa Eventstore
+** [ ] remove JpaEventstoreConfig.explicitFlush if Axon Framework doesn't support it anymore
 
 === for later
 * [ ] Event Processing configuration
@@ -130,6 +132,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** replace tracking processor with pooled processor
 ** configuration of processing-groups renamed to namespaces, to fit to the Axon Framework namings
 ** wrapOnQueryHandler is removed, because the framework does it automatically
+* QuarkusAggregateConfigurer: named to QuarkusEntityConfigurer, because name in AxonFramework changed to Entity
+* Entities are only automatically registered if they have an String as Id. If the Entities have a different type as entity, the EventAggregateConfigurer needs to be implemented
+
 
 == Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter

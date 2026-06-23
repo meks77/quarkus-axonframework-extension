@@ -39,14 +39,6 @@ public class QuarkusTransactionManager implements TransactionManager {
                         CachingSupplier.of(() -> new EntityManagerExecutor(entityManagerProvider.get())));
             }
 
-            //            TODO no connection provider here
-            //            if (connectionProvider != null) {
-            //                pc.putResource(
-            //                        JdbcTransactionalExecutorProvider.SUPPLIER_KEY,
-            //                        CachingSupplier.of(() -> new ConnectionExecutor(connectionProvider))
-            //                );
-            //            }
-
             pc.runOnCommit(p -> transaction.commit());
             pc.onError((p, phase, e) -> transaction.rollback());
         });

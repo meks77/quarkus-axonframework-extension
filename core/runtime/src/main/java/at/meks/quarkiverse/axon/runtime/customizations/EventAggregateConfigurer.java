@@ -6,7 +6,7 @@ import org.axonframework.eventsourcing.configuration.EventSourcedEntityModule;
  * Interface for configuring aggregates in a Quarkus-based Axon Framework application.
  * Provides methods to create aggregate-specific configurations.
  */
-public interface QuarkusAggregateConfigurer {
+public interface EventAggregateConfigurer {
 
     /**
      * Creates an {@link EventSourcedEntityModule} for a specific eventSourcedEntity type.

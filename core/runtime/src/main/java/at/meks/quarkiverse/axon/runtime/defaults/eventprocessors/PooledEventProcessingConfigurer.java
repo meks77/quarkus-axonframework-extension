@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
 import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.common.configuration.Configuration;
@@ -29,8 +28,11 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
 
     private static final Logger LOG = LoggerFactory.getLogger(PooledEventProcessingConfigurer.class);
 
-    @Inject
-    PooledProcessorConf pooledProcessorConf;
+    private final PooledProcessorConf pooledProcessorConf;
+
+    public PooledEventProcessingConfigurer(PooledProcessorConf pooledProcessorConf) {
+        this.pooledProcessorConf = pooledProcessorConf;
+    }
 
     @Override
     public void configure(EventSourcingConfigurer configurer,
@@ -51,8 +53,6 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                         defaultConfig, defaultConfig));
         // TODO: group eventhandlers by namespace at compile time!!!
         // TODO: Warning for configured, but unused event processors
-        // TODO: throw exception if more processors are responsible for one namespace
-        // TODO: rename group to namespace
         eventhandlers
                 .forEach(namespace -> {
                     LOG.info("registering pooled event processor for namespaces {}", namespace.namespaceName().value());

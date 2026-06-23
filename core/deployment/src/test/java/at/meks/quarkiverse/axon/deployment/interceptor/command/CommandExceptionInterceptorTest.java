@@ -15,7 +15,7 @@ import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
 
-public class CommandExceptionInterceptorTest {
+class CommandExceptionInterceptorTest {
 
     @Inject
     CommandGateway commandGateway;
@@ -32,7 +32,7 @@ public class CommandExceptionInterceptorTest {
         assertThatException()
                 .isThrownBy(() -> commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 10)))
                 .isInstanceOf(CommandExecutionException.class)
-                // TODO: clarifiy with Axoniq why the command name is not at.meks.quarkiverse.axon.shared.model.Api$RedeemCardCommand
+                // As soon as the fix https://github.com/AxonIQ/AxonFramework/pull/4630 is available the message will also contain Api in the qualified name
                 .withMessageContaining(
                         "error while executing command handler for command at.meks.quarkiverse.axon.shared.model.RedeemCardCommand")
                 .withStackTraceContaining("amount must be less than current card amount");
