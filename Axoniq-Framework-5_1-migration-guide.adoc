@@ -69,10 +69,16 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 === Prio 1
 * [ ] Event Processing configuration
-** [ ] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
-** [ ] setup the default event processor in the axon framework
-** [ ] Replace ProcessingGroup by the official replacement, which will be provided soon by Axoniq(Pooled & Subscribing)
-** [ ] replace jdbc integration tests by jpa eventstore integration tests, if necessary
+** [ ] Replace ProcessingGroup by Namespace
+** [ ] group eventhandlers by namespace at compile time
+** [ ] Warning for configured, but unused event processors
+** [ ] throw exception if more processors are responsible for one namespace
+** [ ] rename group to namespace
+* [ ] remove wrapping of exceptions for query handlers, because the framework does it automatically
+* [ ] Snapshots
+** [ ] For InMemory
+** [ ] For AxonServer
+** [ ] Error/Warning for others if configured
 
 === for later
 
@@ -92,6 +98,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [x] Entity Configuration with Id Type <> String
 * [x] Remove TrackingEventProcessor
 * [x] Repositories: In AxonExtension#repository: Produce the repository and get it from the framework
+* Event Processing configuration
+** [x] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
+** [x] setup the default event processor in the axon framework
 * Eventstore Configuration
 ** [x] Remove JdbcEventStorageEngine
 * Configuration
@@ -118,6 +127,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Interceptors have changed APIs, existing Axon 4 Interceptors will not work in Axon 5
 * Retry Scheduling: backoff-factor replaced by backoff-initial-wait
 * Metric names changed
+* Snapshots are not supported anymore, except for AxonServer and InMemoryEventStorageEngine
 
 == Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter

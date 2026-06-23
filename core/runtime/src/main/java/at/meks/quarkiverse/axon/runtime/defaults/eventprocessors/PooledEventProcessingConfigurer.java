@@ -51,7 +51,6 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                         defaultConfig, defaultConfig));
         // TODO: group eventhandlers by namespace at compile time!!!
         // TODO: Warning for configured, but unused event processors
-        // TODO: exclude eventhandlers with namespaces, configured for subscribing processors
         // TODO: throw exception if more processors are responsible for one namespace
         // TODO: rename group to namespace
         eventhandlers
