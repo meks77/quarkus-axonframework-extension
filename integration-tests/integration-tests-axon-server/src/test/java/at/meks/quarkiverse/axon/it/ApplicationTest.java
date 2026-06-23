@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
@@ -12,10 +11,6 @@ import jakarta.inject.Inject;
 import org.awaitility.Awaitility;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.eventhandling.processing.EventProcessor;
-import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessor;
-import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
-import org.axonframework.messaging.eventhandling.processing.streaming.token.store.inmemory.InMemoryTokenStore;
-import org.axonframework.messaging.eventhandling.processing.streaming.token.store.jdbc.JdbcTokenStore;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
@@ -152,10 +147,10 @@ class ApplicationTest {
     //                .isInstanceOf(PersistentStreamMessageSource.class);
     //    }
 
-    private void assertPersistentStreams() {
-        //        TODO persistent stream currently not supported
+    //        TODO persistent stream currently not supported
+   // private void assertPersistentStreams() {
         //        assertEventProcessorIsPersistentStream("at.meks.quarkiverse.axon.shared.projection2", "streams1");
         //        assertEventProcessorIsPersistentStream("EventProcessorGroup6", "streams1");
-    }
+   // }
 
 }

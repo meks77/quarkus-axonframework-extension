@@ -75,7 +75,6 @@ public class InterceptorConfigurer {
 
     private void configureCommandHandlerInterceptors(MessagingConfigurer messagingConfigurer) {
         if (axonConfiguration.exceptionHandling().wrapOnCommandHandler()) {
-            //noinspection resource
             messagingConfigurer.registerCommandHandlerInterceptor(config -> handleExceptionInCommandHandling());
         }
         if (commandHandlerInterceptorProducers.isAmbiguous()) {
@@ -92,14 +91,15 @@ public class InterceptorConfigurer {
     private @NonNull MessageHandlerInterceptor<CommandMessage> handleExceptionInCommandHandling() {
         return (message, context, interceptorChain) -> {
             MessageStream<?> messageStream = interceptorChain.proceed(message, context);
-            messageStream.error().ifPresent(e -> {
-                if (!(e instanceof CommandExecutionException)) {
-                    throw new CommandExecutionException(
-                            "error while executing command handler for command %s".formatted(
-                                    message.payloadType().getCanonicalName()),
-                            e);
-                }
-            });
+            if (messageStream.error().isPresent()) {
+                return messageStream.onErrorContinue(e -> {
+                    String messageClassType = message.type().qualifiedName().fullName();
+                    return MessageStream.failed(new CommandExecutionException(
+                            "error while executing command handler for command " + messageClassType + " with message "
+                                    + e.getMessage(),
+                            e));
+                });
+            }
             return messageStream;
         };
     }
@@ -135,7 +135,6 @@ public class InterceptorConfigurer {
 
     private void configureQueryExceptionInterceptors(MessagingConfigurer messagingConfigurer) {
         if (axonConfiguration.exceptionHandling().wrapOnQueryHandler()) {
-            //noinspection resource
             // TODO no query exception interceptors???
             messagingConfigurer.registerQueryHandlerInterceptor(config -> handleExceptionInQueryHandling());
         }

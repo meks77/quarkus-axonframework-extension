@@ -32,8 +32,9 @@ public class CommandExceptionInterceptorTest {
         assertThatException()
                 .isThrownBy(() -> commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 10)))
                 .isInstanceOf(CommandExecutionException.class)
+                // TODO: clarifiy with Axoniq why the command name is not at.meks.quarkiverse.axon.shared.model.Api$RedeemCardCommand
                 .withMessageContaining(
-                        "error while executing command handler for command at.meks.quarkiverse.axon.shared.model.Api.RedeemCardCommand")
+                        "error while executing command handler for command at.meks.quarkiverse.axon.shared.model.RedeemCardCommand")
                 .withStackTraceContaining("amount must be less than current card amount");
     }
 }
