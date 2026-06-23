@@ -69,7 +69,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 
 === Prio 1
 * [ ] Event Processing configuration
-** [ ] throw exception if more processors are responsible for one namespace
 ** [ ] rename group to namespace
 * [ ] remove wrapping of exceptions for query handlers, because the framework does it automatically
 * [ ] Snapshots
@@ -100,6 +99,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Event Processing configuration
 ** [x] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
 ** [x] setup the default event processor in the axon framework
+** [x] throw exception if more processors are responsible for one namespace
 * Eventstore Configuration
 ** [x] Remove JdbcEventStorageEngine
 * Configuration
@@ -127,6 +127,9 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Retry Scheduling: backoff-factor replaced by backoff-initial-wait
 * Metric names changed
 * Snapshots are not supported anymore, except for AxonServer and InMemoryEventStorageEngine
+* Eventprocessors
+** replace tracking processor with pooled processor
+** configuration of processing-groups renamed to namespaces, to fit to the Axon Framework namings
 
 == Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter
