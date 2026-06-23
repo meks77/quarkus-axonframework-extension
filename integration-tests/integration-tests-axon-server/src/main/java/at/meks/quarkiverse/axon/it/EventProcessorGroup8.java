@@ -6,6 +6,7 @@ import org.axonframework.messaging.core.annotation.Namespace;
 import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
+import io.quarkus.logging.Log;
 
 @ApplicationScoped
 @Namespace("EventProcessorGroup8")
@@ -13,7 +14,7 @@ public class EventProcessorGroup8 {
 
     @EventHandler
     public void on(Api.CardIssuedEvent event) {
-
+        Log.infof("Event handled %s", event);
     }
 
 }

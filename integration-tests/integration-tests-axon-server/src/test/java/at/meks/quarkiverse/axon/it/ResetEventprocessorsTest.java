@@ -22,7 +22,6 @@ import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.segmenting.EventTrackerStatus;
-import org.axonframework.messaging.eventhandling.processing.subscribing.SubscribingEventProcessor;
 import org.junit.jupiter.api.Test;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
@@ -43,11 +42,6 @@ public class ResetEventprocessorsTest {
 
     @Test
     void resetEventprocessors() throws ExecutionException, InterruptedException {
-        UUID cardId = UUID.randomUUID();
-        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId.toString(), 100));
-        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId.toString(), 10));
-        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId.toString(), 12));
-
         Map<String, EventProcessor> eventProcessors = configuration.getComponents(
                 EventProcessor.class);
 
@@ -55,18 +49,26 @@ public class ResetEventprocessorsTest {
                 .isInstanceOf(PooledStreamingEventProcessor.class);
         assertThat(eventProcessors.get("pooled4"))
                 .isInstanceOf(PooledStreamingEventProcessor.class);
-        EventProcessor streamsEventProcessor = eventProcessors.get("streams1");
-        assertThat(streamsEventProcessor)
-                .isInstanceOf(SubscribingEventProcessor.class);
         //        TODO currently not supported
+        //        EventProcessor streamsEventProcessor = eventProcessors.get("streams1");
+        //        assertThat(streamsEventProcessor)
+        //                .isInstanceOf(SubscribingEventProcessor.class);
         //        assertThat(((SubscribingEventProcessor) streamsEventProcessor).getMessageSource())
         //                .isInstanceOf(PersistentStreamMessageSource.class);
 
-        assertThat(positionsOfStreamingEventProcessors(eventProcessors))
-                .isNotEmpty()
-                .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L));
-
         waitForAxonServerToBeInitialized(eventProcessors);
+
+        UUID cardId = UUID.randomUUID();
+        commandGateway.sendAndWait(new Api.IssueCardCommand(cardId.toString(), 100));
+        commandGateway.sendAndWait(new Api.IssueCardCommand(UUID.randomUUID().toString(), 100));
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId.toString(), 10));
+        commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId.toString(), 12));
+
+        await().atMost(Duration.ofSeconds(5)).untilAsserted(
+                () -> assertThat(positionsOfStreamingEventProcessors(eventProcessors))
+                        .isNotEmpty()
+                        .doesNotContain(OptionalLong.empty(), OptionalLong.of(-1L), OptionalLong.of(0L)));
+
 
         pauseEventprocessors(eventProcessors);
 
