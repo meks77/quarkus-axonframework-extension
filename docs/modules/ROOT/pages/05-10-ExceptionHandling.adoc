@@ -11,19 +11,6 @@ To disable this feature, set the following configuration variable:
 quarkus.axon.exception-handling.wrap-on-command-handler=false
 ----
 
-== Handling Exceptions in Query Handler
-
-Automatically all Exceptions, which are thrown in Query-Handler-Methods, are wrapped into `QueryExecutionException`.
-
-To disable this feature, set the following configuration variable:
-
-[source,properties]
-----
-quarkus.axon.exception-handling.wrap-on-query-handler=false
-----
-
-'''
-
 link:index.adoc[Index]
 
 link:05-09-Sagas.adoc[← Previous: Sagas]

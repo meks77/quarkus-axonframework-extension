@@ -68,7 +68,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 == TODOS
 
 === Prio 1
-* [ ] remove wrapping of exceptions for query handlers, because the framework does it automatically
 * [ ] Snapshots
 ** [ ] For InMemory
 ** [ ] For AxonServer
@@ -110,6 +109,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [x] migrate Axon-Server-EventStore
 * [x] Migrate JPA Tokenstore
 * [x] Migration Metrics
+* [x] remove wrapping of exceptions for query handlers, because the framework does it automatically
 
 
 
@@ -129,6 +129,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * Eventprocessors
 ** replace tracking processor with pooled processor
 ** configuration of processing-groups renamed to namespaces, to fit to the Axon Framework namings
+** wrapOnQueryHandler is removed, because the framework does it automatically
 
 == Offene Fragen an Axoniq:
 * Unterschied JacksonConverter vs. Jackson2Converter

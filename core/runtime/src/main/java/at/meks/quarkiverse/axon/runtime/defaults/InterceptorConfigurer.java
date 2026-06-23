@@ -122,7 +122,6 @@ public class InterceptorConfigurer {
     }
 
     private void configureQueryHandlerInterceptors(MessagingConfigurer messagingConfigurer) {
-        configureQueryExceptionInterceptors(messagingConfigurer);
         if (queryHandlerInterceptorProducers.isAmbiguous()) {
             throw new IllegalStateException("multiple implementations of %s found: %s".formatted(
                     QueryHandlerInterceptorsProducer.class.getName(),
@@ -130,13 +129,6 @@ public class InterceptorConfigurer {
         } else if (queryHandlerInterceptorProducers.isResolvable()) {
             queryHandlerInterceptorProducers.get().createHandlerInterceptor()
                     .forEach(interceptor -> messagingConfigurer.registerQueryHandlerInterceptor(config -> interceptor));
-        }
-    }
-
-    private void configureQueryExceptionInterceptors(MessagingConfigurer messagingConfigurer) {
-        if (axonConfiguration.exceptionHandling().wrapOnQueryHandler()) {
-            // TODO no query exception interceptors???
-            messagingConfigurer.registerQueryHandlerInterceptor(config -> handleExceptionInQueryHandling());
         }
     }
 
