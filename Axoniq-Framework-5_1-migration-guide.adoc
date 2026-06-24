@@ -68,6 +68,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 == TODOS
 
 === Prio 1
+* [ ] Migrate JdbcTokenStore
 * [ ] Snapshots
 ** [ ] For InMemory
 ** [ ] For AxonServer
