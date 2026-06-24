@@ -135,6 +135,7 @@ class ApplicationTest {
                         "no processor with random name found for configured name " + configuredName));
     }
 
+    //        TODO persistent stream currently not supported
     //    private void assertEventProcessorIsPersistentStream(String eventProcessingGroup, String expectedProcessorName) {
     //        EventProcessingConfiguration eventProcessingConfiguration = configuration.eventProcessingConfiguration();
     //
