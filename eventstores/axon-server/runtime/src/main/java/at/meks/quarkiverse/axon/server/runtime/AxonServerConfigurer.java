@@ -55,7 +55,7 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     }
 
     private void configureSnapshotStore(EventSourcingConfigurer configurer, AxonServerConfiguration axonServerConfiguration,
-                                        AxonServerConnectionManager cm) {
+            AxonServerConnectionManager cm) {
         if (snapshotStoreConfigurer.isAmbiguous()) {
             throw new IllegalStateException("More than one snapshot store configured");
         }
@@ -65,12 +65,10 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         } else {
             LOG.infof("Snapshot Store not configured, using default Axon Snapshot store");
             configurer.componentRegistry(
-                    registry -> {
-                        registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
-                                c -> new AxonServerSnapshotStore(
-                                        cm.getConnection(axonServerConfiguration.getContext()), c.getComponent(
-                                        GeneralConverter.class)));
-                    });
+                    registry -> registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
+                            c -> new AxonServerSnapshotStore(
+                                    cm.getConnection(axonServerConfiguration.getContext()),
+                                    c.getComponent(GeneralConverter.class))));
         }
     }
 
