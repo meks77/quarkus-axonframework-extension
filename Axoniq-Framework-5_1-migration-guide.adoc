@@ -68,7 +68,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 == TODOS
 
 === Prio 1
-* [ ] Migrate JdbcTokenStore
 * [ ] Snapshots
 ** [ ] For InMemory
 ** [ ] For AxonServer
@@ -113,6 +112,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 * [x] Migrate JPA Tokenstore
 * [x] Migration Metrics
 * [x] remove wrapping of exceptions for query handlers, because the framework does it automatically
+* [x] Migrate JdbcTokenStore
 
 
 
