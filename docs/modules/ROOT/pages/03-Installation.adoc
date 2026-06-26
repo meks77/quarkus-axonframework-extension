@@ -3,6 +3,11 @@
 All you need is to define the necessary dependencies for the features you'd like to have.
 Minimum is the dependency to quarkus-axon.
 
+There are 2 different versions maintained:
+
+* Major Version 1(e.g. 1.0.0-RC1): for Quarkus 3.x and Axon Framework 4.x
+* Major Version 2(e.g. 2.0.0-alpha1): for Quarkus 3.x and Axon Framework 5.x
+
 There exists a BOM which you can use.
 
 == Maven
