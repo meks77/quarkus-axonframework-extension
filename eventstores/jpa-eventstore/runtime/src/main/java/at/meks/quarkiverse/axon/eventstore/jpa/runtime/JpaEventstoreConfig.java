@@ -22,16 +22,6 @@ public interface JpaEventstoreConfig {
     int batchSize();
 
     /**
-     * TODO: not present in axon framework 5?
-     * Sets the explicitFlush field specifying whether to explicitly call EntityManager. flush() after inserting the Events
-     * published in this Unit of Work.
-     *
-     * @see AggregateBasedJpaEventStorageEngineConfiguration#explicitFlush(boolean)
-     */
-    @WithDefault("false")
-    boolean explicitFlush();
-
-    /**
      * Sets the threshold of number of gaps in a token before an attempt to clean gaps up is taken.
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework

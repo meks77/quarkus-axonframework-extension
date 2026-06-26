@@ -34,7 +34,6 @@ public class JpaEventstoreConfigurer implements EventstoreConfigurer {
                             lowestGlobalSequence().ifPresent(engineConfig::lowestGlobalSequence);
                             gapTimeout().ifPresent(engineConfig::gapTimeout);
                             maxGapOffset().ifPresent(engineConfig::maxGapOffset);
-                            //                    config.explicitFlush()?
                             return engineConfig;
                         }));
     }

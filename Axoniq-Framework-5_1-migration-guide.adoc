@@ -72,8 +72,6 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [ ] For InMemory
 ** [ ] For AxonServer
 ** [ ] Error/Warning for others if configured
-* [ ] Jpa Eventstore
-** [ ] remove JpaEventstoreConfig.explicitFlush if Axon Framework doesn't support it anymore
 
 === for later
 * [ ] Event Processing configuration
@@ -104,6 +102,7 @@ Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht m
 ** [x] Remove JdbcEventStorageEngine
 * Configuration
 ** [x] Replace JpaEventStorageEngine by AggregateBasedJpaEventStorageEngine
+** [x] remove JpaEventstoreConfig.explicitFlush if Axon Framework doesn't support it anymore
 ** [x] Migrate AsynchronousCommandBus.
 ** [x] upgraded use of transactions
 ** [x] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
