@@ -37,6 +37,11 @@ public interface AxonConfiguration {
     LiveReloadConfig liveReload();
 
     /**
+     * Serialization configuration for Axon messages, events and snapshots.
+     */
+    SerializationConfig serialization();
+
+    /**
      * Configuration for Exception Handling in the Axon framework.
      */
     ExceptionHandlingConfig exceptionHandling();
@@ -100,6 +105,25 @@ public interface AxonConfiguration {
          */
         @WithDefault("500")
         long amount();
+
+    }
+
+    interface SerializationConfig {
+
+        /**
+         * Configuration for the Jackson Blackbird module used by the default Axon serializer.
+         */
+        BlackbirdConfig blackbird();
+
+    }
+
+    interface BlackbirdConfig {
+
+        /**
+         * If true, the default Axon Jackson serializer uses an Axon-specific ObjectMapper copy with Blackbird enabled.
+         */
+        @WithDefault("false")
+        boolean enabled();
 
     }
 
