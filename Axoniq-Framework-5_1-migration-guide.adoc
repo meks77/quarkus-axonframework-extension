@@ -4,181 +4,21 @@
 - https://docs.axoniq.io/axon-framework-reference/5.1/migration/[Official Migration Guide]
 - https://docs.axoniq.io/axon-framework-reference/5.1/migration/paths/[Official Migration Path]
 
-== Notes from webinar
-
-I made some notes(in german, I am sorry), while joining a webinar for the upgrade to 5.1.
-
-* Event haben neues Format
-* Die AggregateId wird als Tag migriert
-* Migration passiert im Hintergrund, am Ende gibts ein paar Sekunden eine "Hickup" danach ist alles migriert
-* keine Migration möglich wenn
-* Transformation APi was used
-* Multi-Tier Storage is used
-
-* Routing by TargetAggregateIdentifier gibts nicht mehr ->
-* TargetAggregateIdentifier -> TargetEntityId
-* neue Annotation Command ist notwendig auf den Commands
-* enthält routingKey
-* Events
-* neue Annotation Event welche die version enhält
-* Revision Annotation is gone
-* namespace = packagename
-* name = ClassName
-* Annotation EventTag muss auf die Id(aggregateId) gesetzt werden -> Wir haben Events ohne AggregateIdId :(
-* Eventhandlers können unterschiedliche Version der Event empfangen(1 handler pro version) -> Upcaster größtenteils nicht mehr notwendig
-* Aggregates
-* AggregateLifecycle -> inject argument EventAppender und call auf append
-* Aggreate -> EventSourced
-* AggregateId ->
-* CommandHandler am Konstruktor geht nicht mehr -> repalce with static void Methode  und default Construtor mit Annotation EntityCreator
-* DispatchInterceptor
-* CommandMessage nicht mehr generic
-* Signatur hat sich etwas geändert
-* EventHandler
-* QueryHandler
-* Query Klassen müssen mit der Annotation @Query versehen werden
-* CommandGateway: APi changed -> getResultMessage
-* AggregateTextFixture -> AggregateTestFixture
-* Konfi guration nicht mehr notwendig, das produktivkonfiguration verwendet werden kann???
-* api hat sich geändert bei given, when, then
-
-* Um DCB nicht standardmäßig aktiviert zu haben. Die EventStorageEngine muss als AggregateBaseAxonServerEventStorageEngine konfiguriert werden.
-* Das ist notwendig wenn der AxonServer nicht migriert wird
-
-* ProcessingContext ersetzt UnitOfWork
-
-
-
-
-* Es gibt eine API um Events um Tags zu ergänzen
-
-
-Migrationsschritte
-
-* Simple Migration (Entity centric)
-* Dann weiter auf Command centric falls sinnvoll
-* Dann DCB falls sinnvoll
-
-Ein Command kann zu Events führen, welche mehrere Entities betreffen. Wie wird dafür der Routing Key definiert, damit es nicht zu paralleler Verarbeitung kommt?
-
-=== DCB
-
-Nachträgliches tagging -> Server reindexing -> Best Practise wurde noch nicht mitgeteilt(e.g. wie bei flyway, neue Tags schon vorab, und später funktionalität deployen)
-
-== TODOS
-
-=== Prio 1
-* [ ] Snapshots
-** [ ] For InMemory
-** [ ] For AxonServer
-** [ ] Error/Warning for others if configured
-
-=== for later
-* [ ] Event Processing configuration
-** [ ] group eventhandlers by namespace at compile time
-** [ ] Warning for configured, but unused event processors
-* [ ] Tracing configuration as soon as it is supported by Axoniq Framework 5.x
-* Configuration
-** [ ] SnapshotConfiguration using Quarkus Configuration additionally to annotations
-* [ ] migrate EventUpcaster as soon as it is supported by Axon Framework
-* [ ] Upgrade "Persisteent Streams" as soon as it is available in Axon Framework 5.x
-* [ ] Support for PostgresqlEventStorageEngine
-* [ ] DCB Support?
-
-=== DONE
-
-* Aggregate configuration
-** [x] Aggregate configuration: Search for EventSourcedAggregate and configure them
-** [x] Remove consideration of annotation AggregateIdentifier
-** [x] Entity Configuration with Id Type <> String
-* [x] Remove TrackingEventProcessor
-* [x] Repositories: In AxonExtension#repository: Produce the repository and get it from the framework
-* Event Processing configuration
-** [x] Intermediate replacement of the ProcessingGroup(maybe an annotation named EventProcessor?), if necessary
-** [x] setup the default event processor in the axon framework
-** [x] throw exception if more processors are responsible for one namespace
-** [x] rename group to namespace
-* Eventstore Configuration
-** [x] Remove JdbcEventStorageEngine
-* Configuration
-** [x] Replace JpaEventStorageEngine by AggregateBasedJpaEventStorageEngine
-** [x] remove JpaEventstoreConfig.explicitFlush if Axon Framework doesn't support it anymore
-** [x] Migrate AsynchronousCommandBus.
-** [x] upgraded use of transactions
-** [x] upgrade RetryScheduler(RetryCommandBus), remove it for QueryGateway (configuration)
-** [x] remove of DuplicateCommandHandlerResolver
-** [x] migrate Axon-Server-EventStore
-* [x] Migrate JPA Tokenstore
-* [x] Migration Metrics
-* [x] remove wrapping of exceptions for query handlers, because the framework does it automatically
-* [x] Migrate JdbcTokenStore
-
-
 
 == Migration Guide for Extension Users
 * AxonSerializerProducer renamed AxonConverterProducer, because Axon Classes have been renamed too
 * QuarkusAggregateConfigurer: signature of createConfigurer changed
-* Micrometer Metrics withTags is now useDimensions
-* migrate Snapshot configuration to Annotations
-* snapshots are only supported in memory and in AxonServer
+* Micrometer Metrics withTags renamed to useDimensions
+* Metric names changed
 * Configuration
 ** quarkus.axon.discovery aggregates renamed to event-sourced-entities
 ** implement QuarkusAggregateConfigurer if id of EventSourcedEntities is not of type String (the default implementation maybe change in the future to consider the type of the id somehow else)
 * Interceptors have changed APIs, existing Axon 4 Interceptors will not work in Axon 5
 * Retry Scheduling: backoff-factor replaced by backoff-initial-wait
-* Metric names changed
-* Snapshots are not supported anymore, except for AxonServer and InMemoryEventStorageEngine
 * Eventprocessors
 ** replace tracking processor with pooled processor
 ** configuration of processing-groups renamed to namespaces, to fit to the Axon Framework namings
 ** wrapOnQueryHandler is removed, because the framework does it automatically
 * QuarkusAggregateConfigurer: named to QuarkusEntityConfigurer, because name in AxonFramework changed to Entity
-* Entities are only automatically registered if they have an String as Id. If the Entities have a different type as entity, the EventAggregateConfigurer needs to be implemented
-
-
-== Offene Fragen an Axoniq:
-* Unterschied JacksonConverter vs. Jackson2Converter
-* Wie kann ich eine Instanz eines JacksonConverters erstellen, dem ich einen Jackson ObjectMapper setzen kann. Ist der richtige Weg der Jackson2Converter?
-* Tracing ist lt. Doku nicht in 5.0 unterstützt. Wann steht es bereit?
-* Keine Snapshots mehr für Relationale Datenbanken?(nicht so wichtig)
-* CommandBusBuilder: War notwendig um Tracing zu konfigurieren
-** Ist es nun nicht mehr notwendig einen CommandBus manuell zu erstellen?
-* EventProcessor-Config:
-** Wie muss ich die EventProcessors mit den EventHandlern verbinden? Muss ich jede Handlerinstanz mit einem EventProcessor verbinden, oder nur jene für welche der Prozessor zuständig ist? Früher war dafür die Annotation ProcessingGroup zuständig. Die wurde ersetzt durch Namespace, aber scheinbar muss man trotzdem gleich die richtigen Eventhandler beim Prozessor registrieren?
-** Wie wird der default EventProcessor konfiguriert? Pooled WithDefaultsTest funktioniert nur, wenn ich den EventProcessor explizit konfiguriere, aber laut Doku soll es doch einen Default geben.
-* AsynchronousCommandBus nicht mehr verfügbar?
-* Interceptor für das Wrappen beliebiger Throwables in EventExecutionException obsolet?
-Interceptor bekommen bereits diesen Exception Typ im MessageStream
-
-=== API existiert nicht wie in Doku beschrieben und ist irritierend
-
-API existiert so nicht. Ich habe es nun anders implementiert:
-
-Doku(nicht kompilierbar):
-[source,java]
-----
-configurer.modelling().registerEventSourcedEntity(
-EventSourcedEntityModule.autodetected(String.class, GiftCard.class)
-);
-----
-
-Wie ist es nun richtig?
-
-So:
-[source,java]
-----
-configurer
-    .modelling(mc -> mc.registerEntity(aggregateConfigurer.createConfigurer(id, entity)));
-----
-
-oder so:
-
-[source,java]
-----
-configurer
-    .modelling(mc -> {})
-    .registerEntity(aggregateConfigurer.createConfigurer(id, entity)));
-----
-
-
-
+* Snapshots are not supported anymore, except for AxonServer and InMemoryEventStorageEngine
+* migrate Snapshot configuration to Annotations

@@ -8,6 +8,19 @@ The goal of this extension is to provide a solution which
 * provides dev services for the event stores
 * provides an integration similar to the spring integration
 
+## Supported Axon Framework Versions
+
+Currently, the extension supports Axon Framework 4 and 5.
+On the main branch, the AF 5 is used. Releases for AF 5 have the version 2.*.*
+
+On the support/axon4 branch, Axon Framework 4 is used. Releases for AF 4 have the version 1.*.*. 
+
+Since the upgrade to AF 5, the release version for AF 4 has been moved to 1.*.*. 
+
+## Upgrade from Version 0.* or 1.* to version 2.*.
+Because I don't know from a lot of users I just created some notes. These notes can be found in the [migration guide](Axoniq-Framework-5_1-migration-guide.adoc).
+
+
 ## Documentation & User Guide
 Please follow the [user guide](docs/modules/ROOT/pages/index.adoc) to get started with this extension.
 
@@ -15,9 +28,6 @@ Please follow the [user guide](docs/modules/ROOT/pages/index.adoc) to get starte
 
 ### Quarkus Versions
 On the main branch, the most recent quarkus version is used.
-To also support the latest LTS version of quarkus, a release branch for this LTS version is also maintained.
-
-Currently, the LTS version 3.15 is supported in the branch release/quarkus-3.15
 
 ### Injectable Beans
 
@@ -68,8 +78,7 @@ You can provide your own setup for
 ### supported event stores
 
 * Axon Server
-* JPA Event Store
-* JDBC Event Store
+* JPA Aggregate Based Event Store
 * Custom Event Store
 
 ### supported Token Stores
@@ -81,7 +90,6 @@ You can provide your own setup for
 ### Interceptors
 
 * command dispatch and handler interceptors
-* query dispatch and handler interceptors
 * event dispatch and default handler interceptors
 
 ### Exceptions Handling
@@ -89,28 +97,18 @@ You can provide your own setup for
 * wrapping Exceptions into CommandExecutionException
 * wrapping Exceptions into QueryExecutionException
 
-### Sagas and Saga Stores
-
-Sagas are automatically registered.
-
-There are different saga stores you can use
-
-* InMemory
-* Jdbc
-* JPA
-
 ### other supported stuff
 
 * transaction handling
 * custom setup of transaction handling
 * dev service for the axon server
 * live reloading
-* snapshots
+* snapshots(currently not working since upgrade to AF5)
 * inject cdi beans into methods annotated with
   * CommandHandler
   * EventHandler
   * QueryHandler
-* Upcasters
+* Upcasters(currently not working since upgrade to AF5)
 * custom Jackson Serialization
 * Information provided to Dev-UI
 
@@ -122,13 +120,6 @@ For some reason, when shutting down the axon configuration, it must be wait, tha
 If the wait time is too less, an error can occur that no command handler for your command is available.
 If that happens, please try to increase the wait time. For details please read [the config documenation](docs/modules/ROOT/pages/index.adoc) for more details how to configure.
 
-## Future features
-
-The extension is just at the beginning. In the project tab are some of the features, which are currently planned.
-
-While implementing, new features will be created and the order of the features can change.
-
-Help for implementing the features is welcome.
 
 ## Usage
 
