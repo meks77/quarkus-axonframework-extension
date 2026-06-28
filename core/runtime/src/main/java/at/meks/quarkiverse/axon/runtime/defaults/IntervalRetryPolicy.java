@@ -22,6 +22,6 @@ public class IntervalRetryPolicy implements RetryPolicy {
 
     @Override
     public void describeTo(ComponentDescriptor descriptor) {
-
+        descriptor.describeProperty("interval in milliseconds", this.interval);
     }
 }

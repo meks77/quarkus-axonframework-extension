@@ -30,7 +30,7 @@ public class RetrySchedulerConfigurer {
     Optional<RetryScheduler> retryScheduler() {
         validateRetryConfiguration();
         if (intervalRetrySchedulerIsConfigured()) {
-            return Optional.of(intervalRetryScheduler(retryConfig().fixedRetryInterval().get(),
+            return Optional.of(intervalRetryScheduler(retryConfig().fixedRetryIntervalMillis().get(),
                     retryConfig().maxRetryCount().get()));
         } else if (exponentialBackoffIntervalRetrySchedulerIsConfigured()) {
             return Optional.of(backoffIntervalRetryScheduler(retryConfig().backoffInitialWait().get(),
@@ -66,12 +66,12 @@ public class RetrySchedulerConfigurer {
     }
 
     private boolean isOnlyFixedIntervalConfigured() {
-        return retryConfig().fixedRetryInterval().isPresent() && retryConfig().maxRetryCount().isEmpty();
+        return retryConfig().fixedRetryIntervalMillis().isPresent() && retryConfig().maxRetryCount().isEmpty();
     }
 
     private boolean isOnlyMaxRetryConfigured() {
         return retryConfig().maxRetryCount().isPresent() &&
-                retryConfig().fixedRetryInterval().isEmpty() &&
+                retryConfig().fixedRetryIntervalMillis().isEmpty() &&
                 retryConfig().backoffInitialWait().isEmpty();
     }
 
@@ -87,7 +87,7 @@ public class RetrySchedulerConfigurer {
     }
 
     private boolean intervalRetrySchedulerIsConfigured() {
-        return retryConfig().fixedRetryInterval().isPresent() &&
+        return retryConfig().fixedRetryIntervalMillis().isPresent() &&
                 retryConfig().maxRetryCount().isPresent();
     }
 

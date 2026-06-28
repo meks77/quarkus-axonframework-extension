@@ -99,10 +99,10 @@ public interface AxonConfiguration {
          * interval is configured, a maximum retry count must also be specified to ensure
          * proper retry behavior.
          */
-        Optional<Integer> fixedRetryInterval();
+        Optional<Integer> fixedRetryIntervalMillis();
 
         /**
-         * if you have configured either the {@link #fixedRetryInterval()} or the {@link #backoffInitialWait()} you must
+         * if you have configured either the {@link #fixedRetryIntervalMillis()} or the {@link #backoffInitialWait()} you must
          * configure the maximum retries as well.
          */
         Optional<Integer> maxRetryCount();
