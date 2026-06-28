@@ -6,6 +6,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.common.configuration.Configuration;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.CommandBus;
 
@@ -48,7 +49,7 @@ public class CommandBusConfigurer {
         configurer.messaging(messagingConfigurer -> messagingConfigurer.registerCommandBus(this::createCommandBusWithBuilder));
     }
 
-    private CommandBus createCommandBusWithBuilder(org.axonframework.common.configuration.Configuration axonConfiguration) {
+    private CommandBus createCommandBusWithBuilder(Configuration axonConfiguration) {
         return commandBusBuilder
                 .build(axonConfiguration);
     }

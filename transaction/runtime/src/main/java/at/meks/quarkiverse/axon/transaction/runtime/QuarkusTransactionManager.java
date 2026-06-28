@@ -43,7 +43,6 @@ public class QuarkusTransactionManager implements TransactionManager {
 
     @Override
     public void attachToProcessingLifecycle(ProcessingLifecycle processingLifecycle) {
-        //        borrowed from spring extension org.axonframework.extension.spring.messaging.unitofwork.SpringTransactionManager#attachToProcessingLifecycle
         processingLifecycle.runOnPreInvocation(pc -> {
             Transaction transaction = startTransaction();
             try {

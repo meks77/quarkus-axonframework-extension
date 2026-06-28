@@ -13,9 +13,6 @@ import org.axonframework.messaging.core.retry.ExponentialBackOffRetryPolicy;
 import org.axonframework.messaging.core.retry.MaxAttemptsPolicy;
 import org.axonframework.messaging.core.retry.RetryScheduler;
 
-//import org.axonframework.messaging.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
-//import org.axonframework.messaging.commandhandling.gateway.IntervalRetryScheduler;
-//import org.axonframework.messaging.commandhandling.gateway.RetryScheduler;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 
 @ApplicationScoped
