@@ -183,50 +183,6 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-enabled[`+++quarkus.axon.discovery.saga-handlers.enabled+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-if true, the discovery will be enabled.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
-a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages]] [.property-path]##link:#quarkus-axon_quarkus-axon-discovery-saga-handlers-included-packages[`+++quarkus.axon.discovery.saga-handlers.included-packages+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.discovery.saga-handlers.included-packages+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-list of packages to include for component discovery.
-
-If not set, all packages are included.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_INCLUDED_PACKAGES+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_DISCOVERY_SAGA_HANDLERS_INCLUDED_PACKAGES+++`
-endif::add-copy-button-to-env-var[]
---
-|list of string
-|
-
 a|icon:lock[title=Fixed at build time] [[quarkus-axon_quarkus-axon-health-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-health-enabled[`+++quarkus.axon.health-enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.health-enabled+++[]
