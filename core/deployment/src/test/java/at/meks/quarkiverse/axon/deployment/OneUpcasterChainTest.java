@@ -8,8 +8,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
 
-@Disabled("Upcaster not available at the moment")
-
+@Disabled("TODO: Reactive as soon as upcaster are supported by Axon Framework 5")
 public class OneUpcasterChainTest extends JavaArchiveTest {
 
     @RegisterExtension
