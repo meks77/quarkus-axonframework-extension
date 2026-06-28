@@ -288,9 +288,9 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval[`+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval+++`]##
+a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval-millis]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval-millis[`+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval-millis+++`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval+++[]
+config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval-millis+++[]
 endif::add-copy-button-to-config-props[]
 
 
@@ -300,10 +300,10 @@ The fixed retry interval for retry scheduling(IntervalRetryScheduler), if config
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL_MILLIS+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL+++`
+Environment variable: `+++QUARKUS_AXON_COMMAND_GATEWAY_RETRY_SCHEDULING_FIXED_RETRY_INTERVAL_MILLIS+++`
 endif::add-copy-button-to-env-var[]
 --
 |int
@@ -317,7 +317,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-if you have configured either the `fixed-retry-interval()` or the `backoff-initial-wait()` you must configure the maximum retries as well.
+if you have configured either the `fixed-retry-interval-millis()` or the `backoff-initial-wait()` you must configure the maximum retries as well.
 
 
 ifdef::add-copy-button-to-env-var[]
