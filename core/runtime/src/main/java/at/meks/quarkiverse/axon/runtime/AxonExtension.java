@@ -49,7 +49,7 @@ public class AxonExtension {
     String profile;
 
     private org.axonframework.common.configuration.AxonConfiguration configuration;
-    private final Set<Class<?>> aggregateClasses = new HashSet<>();
+    private final Set<Class<?>> eventSourcedEntityClasses = new HashSet<>();
     private final Set<Object> evenhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
@@ -60,7 +60,7 @@ public class AxonExtension {
     @ActivateRequestContext
     void init() {
         if (configuration == null) {
-            axonFrameworkConfigurer.aggregateClasses(Set.copyOf(aggregateClasses));
+            axonFrameworkConfigurer.eventSourcedEntityClasses(Set.copyOf(eventSourcedEntityClasses));
             axonFrameworkConfigurer.eventhandlers(Set.copyOf(evenhandlers));
             axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
@@ -74,8 +74,8 @@ public class AxonExtension {
         }
     }
 
-    public void addAggregateForRegistration(Class<?> aggregateClass) {
-        aggregateClasses.add(aggregateClass);
+    public void addEventSourcedEntityForRegistration(Class<?> eventSourcedEntityClass) {
+        eventSourcedEntityClasses.add(eventSourcedEntityClass);
     }
 
     public void addEventhandlerForRegistration(Object eventhandler) {
@@ -159,16 +159,8 @@ public class AxonExtension {
     public <ID, T> Repository<ID, T> repository(InjectionPoint injectionPoint) {
         Type[] actualTypeArguments = ((ParameterizedType) injectionPoint.getType()).getActualTypeArguments();
         Class<ID> idClass = (Class<ID>) actualTypeArguments[0];
-        Class<T> aggregateClass = (Class<T>) actualTypeArguments[1];
-        return configuration.getComponent(StateManager.class).repository(aggregateClass, idClass);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> Class<T> aggregateClass(String typeName) {
-        return (Class<T>) aggregateClasses.stream()
-                .filter(clazz -> clazz.getTypeName().equals(typeName))
-                .findFirst()
-                .orElse(null);
+        Class<T> eventSourcedEntityClass = (Class<T>) actualTypeArguments[1];
+        return configuration.getComponent(StateManager.class).repository(eventSourcedEntityClass, idClass);
     }
 
     public <T> void addInjectableBean(Class<? extends T> clazz, T bean) {

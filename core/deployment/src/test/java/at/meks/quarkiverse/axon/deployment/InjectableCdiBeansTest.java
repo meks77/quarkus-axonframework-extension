@@ -48,7 +48,7 @@ public class InjectableCdiBeansTest {
     static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
-    record CommandHandledByAggregate(@TargetEntityId String id) {
+    record CommandHandledByEntity(@TargetEntityId String id) {
     }
 
     record CommandHandledByDomainService(@TargetEntityId String id) {
@@ -74,7 +74,7 @@ public class InjectableCdiBeansTest {
         void doSomething();
     }
 
-    static class InjectableCdiBeanForAggregate {
+    static class InjectableCdiBeanForEntity {
 
         void doSomething() {
             logger.debug("do something");
@@ -83,8 +83,8 @@ public class InjectableCdiBeansTest {
 
     @Produces
     @Dependent
-    InjectableCdiBeanForAggregate produceInjectableCdiBeanForAggregate() {
-        return new InjectableCdiBeanForAggregate();
+    InjectableCdiBeanForEntity produceInjectableCdiBeanForAggregate() {
+        return new InjectableCdiBeanForEntity();
     }
 
     @ApplicationScoped
@@ -117,18 +117,18 @@ public class InjectableCdiBeansTest {
 
     @SuppressWarnings("unused")
     @EventSourcedEntity
-    static class AggregateCommandHandlerUsingCdiBean {
+    static class EntityCommandHandlerUsingCdiBean {
 
         String id;
 
         @EntityCreator
         @SuppressWarnings("unused")
-        AggregateCommandHandlerUsingCdiBean() {
+        EntityCommandHandlerUsingCdiBean() {
             //necessary for axon framework
         }
 
         @CommandHandler
-        public static void handle(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
+        public static void handle(CommandHandledByEntity command, InjectableCdiBeanForEntity bean,
                 TestModelConfig testModelConfig) {
             bean.doSomething();
         }
@@ -167,8 +167,8 @@ public class InjectableCdiBeansTest {
     }
 
     @Test
-    void cdiBeanIsInjectedInAggregateCommandHandler() {
-        commandGateway.sendAndWait(new CommandHandledByAggregate("1"));
+    void cdiBeanIsInjectedInEntityCommandHandler() {
+        commandGateway.sendAndWait(new CommandHandledByEntity("1"));
         verify(logger).debug("do something");
     }
 

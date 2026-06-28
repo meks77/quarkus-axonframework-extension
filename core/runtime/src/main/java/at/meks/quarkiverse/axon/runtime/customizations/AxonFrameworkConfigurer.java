@@ -6,7 +6,7 @@ import java.util.Set;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 /**
- * Interface for configuring Axon Framework components such as aggregates, handlers, and general configurations.
+ * Interface for configuring Axon Framework components such as event sourced entities, handlers, and general configurations.
  */
 public interface AxonFrameworkConfigurer {
     /**
@@ -17,11 +17,11 @@ public interface AxonFrameworkConfigurer {
     EventSourcingConfigurer configure();
 
     /**
-     * Registers the aggregate classes with the Axon Framework configuration.
+     * Registers the event sourced entities classes with the Axon Framework configuration.
      *
-     * @param aggregateClasses a set of aggregate class types to be registered.
+     * @param eventSourcedEntityClasses a set of aggregate class types to be registered.
      */
-    void aggregateClasses(Set<Class<?>> aggregateClasses);
+    void eventSourcedEntityClasses(Set<Class<?>> eventSourcedEntityClasses);
 
     /**
      * Registers event handler instances with the Axon Framework configuration.
@@ -45,9 +45,9 @@ public interface AxonFrameworkConfigurer {
     void queryhandlers(Set<Object> queryhandlerInstances);
 
     /**
-     * CDI Beans which are added to the Axon framework as componentent, to inject them at aggregates command handlers.
+     * CDI Beans which are added to the Axon framework as componentent, to inject them at entity command handlers.
      *
-     * @param injectableBeans a set of CDI beans that will be injected into aggregates command handler methods
+     * @param injectableBeans a set of CDI beans that will be injected into entity command handler methods
      */
     void injectableBeans(Map<Class<?>, Object> injectableBeans);
 

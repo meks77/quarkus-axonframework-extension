@@ -1,6 +1,6 @@
-= Custom Aggregate Configurer
+= Custom Event Sourced Entity Configurer
 
-If you decide to provode your own EventSourcedEntity-Configurer, which creates Axon's `EventsourcedEntityModule`, you have to implement the interface `at.meks.quarkiverse.axon.runtime.api.QuarkusAggregateConfigurer`.
+If you decide to provode your own EventSourcedEntity-Configurer, which creates Axon's `EventsourcedEntityModule`, you have to implement the interface `at.meks.quarkiverse.axon.runtime.customizations.EventSourcedEntityConfigurer`.
 
 For each event sourced entity, the method `createConfigurer` is invoked. This method must return Axon's `EventsourcedEntityModule`
 

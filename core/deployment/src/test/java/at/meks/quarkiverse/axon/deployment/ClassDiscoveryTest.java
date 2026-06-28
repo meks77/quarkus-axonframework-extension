@@ -57,11 +57,11 @@ class ClassDiscoveryTest {
         ComponentDiscovery componentDiscovery;
 
         @ParameterizedTest
-        @ValueSource(strings = { "aggregate", "eventhandler", "commandhandler", "queryhandler", "sagahandler" })
+        @ValueSource(strings = { "event sourced entity", "eventhandler", "commandhandler", "queryhandler", "sagahandler" })
         void enabledDiscovery(String type) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.empty());
-            List<? extends ClassProvider> axonClassBuildItems = List.of(new AggregateBeanBuildItem(Giftcard.class));
+            List<? extends ClassProvider> axonClassBuildItems = List.of(new EventSourcedEntityBeanBuildItem(Giftcard.class));
 
             Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, type, componentDiscovery);
 
@@ -73,9 +73,9 @@ class ClassDiscoveryTest {
         void includedPackageMatches(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            List<? extends ClassProvider> axonClassBuildItems = List.of(new AggregateBeanBuildItem(Giftcard.class));
+            List<? extends ClassProvider> axonClassBuildItems = List.of(new EventSourcedEntityBeanBuildItem(Giftcard.class));
 
-            Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, "aggregate", componentDiscovery);
+            Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, "event sourced entity", componentDiscovery);
 
             assertThat(result).containsExactly(Giftcard.class);
         }
@@ -85,18 +85,18 @@ class ClassDiscoveryTest {
         void includedPackageDontMatch(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            List<? extends ClassProvider> axonClassBuildItems = List.of(new AggregateBeanBuildItem(Giftcard.class));
+            List<? extends ClassProvider> axonClassBuildItems = List.of(new EventSourcedEntityBeanBuildItem(Giftcard.class));
 
-            Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, "aggregate", componentDiscovery);
+            Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, "event sourced entity", componentDiscovery);
 
             assertThat(result).isEmpty();
         }
 
         @ParameterizedTest
-        @ValueSource(strings = { "aggregate", "eventhandler", "commandhandler", "queryhandler", "sagahandler" })
+        @ValueSource(strings = { "event sourced entity", "eventhandler", "commandhandler", "queryhandler", "sagahandler" })
         void disabledDiscovery(String type) {
             when(componentDiscovery.enabled()).thenReturn(false);
-            List<? extends ClassProvider> axonClassBuildItems = List.of(new AggregateBeanBuildItem(Giftcard.class));
+            List<? extends ClassProvider> axonClassBuildItems = List.of(new EventSourcedEntityBeanBuildItem(Giftcard.class));
 
             Set<Class<?>> result = ClassDiscovery.classes(axonClassBuildItems, type, componentDiscovery);
 
@@ -117,9 +117,9 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void enabledAggregateDiscovery() {
+        void enabledEventSourcedEntityDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(true);
-            givenGiftcardIsDiscoveredAsAggregateInIndex();
+            givenGiftcardIsDiscoveredAsEventSourcedEntityInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -131,7 +131,7 @@ class ClassDiscoveryTest {
         void includedPackageMatch(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenGiftcardIsDiscoveredAsAggregateInIndex();
+            givenGiftcardIsDiscoveredAsEventSourcedEntityInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -143,7 +143,7 @@ class ClassDiscoveryTest {
         void includedPackageDontMatch(String packageName) {
             when(componentDiscovery.enabled()).thenReturn(true);
             when(componentDiscovery.includedPackages()).thenReturn(Optional.of(Set.of(packageName)));
-            givenGiftcardIsDiscoveredAsAggregateInIndex();
+            givenGiftcardIsDiscoveredAsEventSourcedEntityInIndex();
 
             Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
 
@@ -151,7 +151,7 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void disabledAggregateDiscovery() {
+        void disabledEventSourcedEntityDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
             Stream<Class<?>> result = ClassDiscovery.eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration);
             assertThat(result).isEmpty();
@@ -159,7 +159,7 @@ class ClassDiscoveryTest {
 
     }
 
-    private void givenGiftcardIsDiscoveredAsAggregateInIndex() {
+    private void givenGiftcardIsDiscoveredAsEventSourcedEntityInIndex() {
         AnnotationInstance annotationInstance = mock(AnnotationInstance.class,
                 Mockito.withSettings().strictness(Strictness.LENIENT));
         AnnotationTarget annotationTarget = mock(AnnotationTarget.class, Mockito.withSettings().strictness(Strictness.LENIENT));
@@ -195,14 +195,14 @@ class ClassDiscoveryTest {
         private ComponentDiscovery componentDiscovery;
 
         @Mock(strictness = Mock.Strictness.LENIENT)
-        private ComponentDiscovery aggregateDiscovery;
+        private ComponentDiscovery eventSourcedEntityDiscovery;
 
         @BeforeEach
         void setUp() {
             when(discoveryConfiguration.commandHandlers()).thenReturn(componentDiscovery);
-            when(discoveryConfiguration.eventSourcedEntities()).thenReturn(aggregateDiscovery);
-            when(aggregateDiscovery.enabled()).thenReturn(true);
-            givenGiftcardIsDiscoveredAsAggregateInIndex();
+            when(discoveryConfiguration.eventSourcedEntities()).thenReturn(eventSourcedEntityDiscovery);
+            when(eventSourcedEntityDiscovery.enabled()).thenReturn(true);
+            givenGiftcardIsDiscoveredAsEventSourcedEntityInIndex();
         }
 
         @Test
@@ -243,7 +243,7 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void disabledAggregateDiscovery() {
+        void disabledCommandHandlerDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
             Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(DomainServiceExample.class));
             Stream<Class<?>> result = ClassDiscovery.commandhandlerClasses(discoveryAttributes(discoveredBeanClasses));
@@ -305,7 +305,7 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void disabledAggregateDiscovery() {
+        void disabledEventhHandlerDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
             Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
             Stream<Class<?>> result = ClassDiscovery.eventhandlerClasses(discoveryAttributes(discoveredBeanClasses));
@@ -362,7 +362,7 @@ class ClassDiscoveryTest {
         }
 
         @Test
-        void disabledAggregateDiscovery() {
+        void disabledQueryHandlerDiscovery() {
             when(componentDiscovery.enabled()).thenReturn(false);
             Set<DotName> discoveredBeanClasses = Set.of(DotName.createSimple(GiftcardQueryHandler.class));
             Stream<Class<?>> result = ClassDiscovery.queryhandlerClasses(discoveryAttributes(discoveredBeanClasses));

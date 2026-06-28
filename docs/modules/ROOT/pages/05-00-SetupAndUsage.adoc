@@ -14,7 +14,7 @@ Content
 * link:05-02-CommandHandler.adoc[Command Handlers]
 * link:05-03-EventStores.adoc[Event Stores]
 * link:05-04-Snapshots.adoc[Snapshots]
-* link:05-05-CustomAggregateConfigurer.adoc[Custom Aggregate Configurer]
+* link:05-05-CustomEventSourcedEntityConfigurer.adoc[Custom Event Sourced Entity Configurer]
 * link:05-06-EventProcessors.adoc[Event Processors]
 * link:05-07-TokenStores.adoc[Token Stores]
 * link:05-08-EventUpcasting.adoc[Event Upcasting]

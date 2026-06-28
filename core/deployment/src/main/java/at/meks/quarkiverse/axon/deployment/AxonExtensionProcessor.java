@@ -38,7 +38,7 @@ class AxonExtensionProcessor {
     @BuildStep
     AdditionalBeanBuildItem registerExtensionBeans() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultAggregateConfigurer.class,
+                .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultEventSourceEntityConfigurer.class,
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
                         InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
                         NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
@@ -50,12 +50,13 @@ class AxonExtensionProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForAggregates(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+    void scanForEventSourcedEntities(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<AggregateBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
+            BuildProducer<EventSourcedEntityBeanBuildItem> beanProducer,
+            ComponentDiscoveryConfiguration discoveryConfiguration) {
         eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration)
                 .forEach(beanClass -> {
-                    beanProducer.produce(new AggregateBeanBuildItem(beanClass));
+                    beanProducer.produce(new EventSourcedEntityBeanBuildItem(beanClass));
                     Log.debugf("Configured bean: %s", beanClass);
                 });
     }
@@ -84,14 +85,14 @@ class AxonExtensionProcessor {
     @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void startAxon(AxonInitializationRecorder recorder,
-            List<AggregateBeanBuildItem> aggregateBeanBuildItems,
+            List<EventSourcedEntityBeanBuildItem> eventSourcedEntityBeanBuildItems,
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
             List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
-        Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate",
+        Set<Class<?>> eventSourcedEntityClasses = classes(eventSourcedEntityBeanBuildItems, "event sourced entities",
                 discoveryConfiguration.eventSourcedEntities());
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler",
                 discoveryConfiguration.eventHandlers());
@@ -102,7 +103,7 @@ class AxonExtensionProcessor {
         Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean",
                 discoveryConfiguration.eventSourcedEntities());
         recorder.startAxon(beanContainerBuildItem.getValue(),
-                aggregateClasses,
+                eventSourcedEntityClasses,
                 commandhandlerClasses,
                 queryhandlerClasses,
                 eventhandlerClasses,

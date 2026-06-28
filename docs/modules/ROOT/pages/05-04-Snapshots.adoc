@@ -3,14 +3,14 @@
 To enable snapshots, you have to configure
 
 - the annotation Snapshotting on the event sourced entity
-- set a JSON annotation at the Root Aggregate and its Entities
+- set a JSON annotation at the root event sourced entity and its entities
 
 Axon supports snapshots only for in-memory and AxonServer event stores.
 
 CAUTION: When a snapshot is created, the entity is serialized using JSON.
 
-You have to take care that all properties of the aggregate are serialized.
-If fields of a Class(Root Aggregate, Value Objects, Entities) do not have accessors,
+You have to take care that all properties of the event sourced entity are serialized.
+If fields of a Class(Root Event Sourced Entity, Value Objects, Entities) do not have accessors,
 a possibility is to add the annotation `@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)` to the Class.
 
 This strategy was chosen because it doesn't have an impact on the serialization of other classes(e.g. the return values of Web Services).
@@ -24,4 +24,4 @@ link:index.adoc[Index]
 
 link:05-03-EventStores.adoc[← Previous: Event Stores]
 
-link:05-05-CustomAggregateConfigurer.adoc[Next: Custom Aggregate Configurer →]
+link:05-05-CustomEventSourcedEntityConfigurer.adoc[Next: Custom Event Sourced Entity Configurer →]

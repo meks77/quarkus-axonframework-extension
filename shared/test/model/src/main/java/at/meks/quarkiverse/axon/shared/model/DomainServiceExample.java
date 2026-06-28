@@ -25,19 +25,19 @@ public class DomainServiceExample {
     @CommandHandler
     void handle(Api.UndoLatestRedemptionCommand command, ProcessingContext processingContext, EventAppender eventAppender)
             throws ExecutionException, InterruptedException {
-        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardAggregate = giftcardRepository.load(command.id(),
+        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardEntity = giftcardRepository.load(command.id(),
                 processingContext);
-        ofNullable(giftcardAggregate.get().entity()).orElseThrow()
+        ofNullable(giftcardEntity.get().entity()).orElseThrow()
                 .undoRedemption(command.amount(), eventAppender);
     }
 
     @CommandHandler
     void handle(Api.RedeemCardCommand command, ProcessingContext processingContext, EventAppender eventAppender)
             throws ExecutionException, InterruptedException {
-        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardAggregate = giftcardRepository.load(command.id(),
+        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardEntity = giftcardRepository.load(command.id(),
                 processingContext);
-        ofNullable(giftcardAggregate.get().entity())
-                .orElseThrow(() -> new IllegalStateException("The aggregate was not found in the event store"))
+        ofNullable(giftcardEntity.get().entity())
+                .orElseThrow(() -> new IllegalStateException("The event sourced entity was not found in the event store"))
                 .requestRedeem(command.amount(), eventAppender);
     }
 

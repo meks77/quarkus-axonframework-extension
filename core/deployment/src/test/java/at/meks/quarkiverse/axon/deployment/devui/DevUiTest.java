@@ -10,7 +10,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -20,7 +19,6 @@ import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 
-@Disabled("This Test is disabled because it leads to a timeout in a linux wsl vm")
 class DevUiTest {
 
     @RegisterExtension
@@ -51,28 +49,20 @@ class DevUiTest {
     @Test
     void testAllFeaturesInDevUi() throws Exception {
         Thread.sleep(1000);
-        assertAggregates();
-        assertSagaEventHandler();
+        assertEntities();
         assertEventHandler();
         assertQueryHandler();
         assertCommandHandler();
     }
 
-    private void assertAggregates() {
+    private void assertEntities() {
         Awaitility.await()
                 .atMost(2, TimeUnit.MINUTES)
-                .untilAsserted(() -> assertThat(uiAsserter.isLineInCard("Aggregates")).isTrue());
-        uiAsserter.assertLineInCard("Aggregates", "1");
+                .untilAsserted(() -> assertThat(uiAsserter.isLineInCard("Event sourced entities")).isTrue());
+        uiAsserter.assertLineInCard("Event sourced entities", "1");
         uiAsserter.itemListEqualsTo(
-                "Aggregates",
+                "Event sourced entities",
                 "at.meks.quarkiverse.axon.shared.model.Giftcard");
-    }
-
-    private void assertSagaEventHandler() {
-        uiAsserter.assertLineInCard("Saga Event Handlers", "1");
-        uiAsserter.itemListEqualsTo(
-                "Saga Event Handlers",
-                "at.meks.quarkiverse.axon.shared.model.CardReturnSaga");
     }
 
     private void assertEventHandler() {

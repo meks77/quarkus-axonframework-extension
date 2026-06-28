@@ -111,12 +111,12 @@ class ApplicationTest {
                 .body("id", CoreMatchers.equalTo(this.cardId), "currentAmount", CoreMatchers.equalTo(expectedAmount));
     }
 
-    private void assertAtLeastOneSnapshotExists(String aggregateId) {
+    private void assertAtLeastOneSnapshotExists(String entityId) {
         Awaitility.await()
                 .pollInterval(Duration.ofMillis(500)).atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> {
-                    String snapshotCount = RestAssured.given().basePath("system/snapshots/{aggregateId}/count")
-                            .pathParam("aggregateId", aggregateId)
+                    String snapshotCount = RestAssured.given().basePath("system/snapshots/{entityId}/count")
+                            .pathParam("entityId", entityId)
                             .when().get()
                             .then().extract().body().asString();
                     assertThat(snapshotCount).asLong().isGreaterThanOrEqualTo(1L);

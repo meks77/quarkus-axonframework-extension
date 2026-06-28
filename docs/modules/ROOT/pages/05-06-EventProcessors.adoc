@@ -4,7 +4,7 @@
 
 link:index.adoc[Index]
 
-link:05-05-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-05-CustomEventSourcedEntityConfigurer.adoc[← Previous: Custom Event Sourced Entity Configurer]
 
 link:05-07-TokenStores.adoc[Next: Token Stores →]
 
@@ -149,6 +149,6 @@ include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=op
 
 link:index.adoc[Index]
 
-link:05-05-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-05-CustomEventSourcedEntityConfigurer.adoc[← Previous: Custom Event Sourced Entity Configurer]
 
 link:05-07-TokenStores.adoc[Next: Token Stores →]

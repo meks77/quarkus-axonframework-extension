@@ -50,12 +50,12 @@ public class LiveReloadTest {
                         "//simply do nothing",
                         "throw new java.lang.IllegalStateException(\"whatever\");"));
 
-        // After reloading, the InMemoryEventStore created new and therefore empty
+        // After reloading, the InMemoryEventStore was recreated. No events in the event store
         Awaitility.await().atMost(5, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> redeemCardResponse(cardId, 2)
                         .then().assertThat()
-                        .body(CoreMatchers.containsString("The aggregate was not found in the event store")));
+                        .body(CoreMatchers.containsString("The event sourced entity was not found in the event store")));
     }
 
     private void assertSuccess(Response response) {

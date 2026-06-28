@@ -75,7 +75,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonComponentenSetup axonComponentSetup;
 
-    private Set<Class<?>> aggregateClasses;
+    private Set<Class<?>> eventSourcedEntityClasses;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
     private Set<Object> queryhandlers;
@@ -95,7 +95,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 });
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
-        axonComponentSetup.configureAggregates(configurer, aggregateClasses);
+        axonComponentSetup.configureEventSourcedEntities(configurer, eventSourcedEntityClasses);
         configureMessageHandler(configurer);
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
@@ -208,8 +208,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     @Override
-    public void aggregateClasses(Set<Class<?>> aggregateClasses) {
-        this.aggregateClasses = aggregateClasses;
+    public void eventSourcedEntityClasses(Set<Class<?>> eventSourcedEntityClasses) {
+        this.eventSourcedEntityClasses = eventSourcedEntityClasses;
     }
 
     @Override

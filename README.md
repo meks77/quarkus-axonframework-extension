@@ -37,7 +37,7 @@ On the main branch, the most recent quarkus version is used.
 * CommandGateway
 * QueryBus
 * QueryGateway
-* Repository\<T>(e.g. Repository\<GiftCard> if GiftCard is a aggregate)
+* Repository\<T>(e.g. Repository\<GiftCard> if GiftCard is an event sourced entity)
 
 ### supported message types
 
@@ -49,7 +49,7 @@ On the main branch, the most recent quarkus version is used.
 
 #### automatically registered
 
-* aggregates
+* event sourced entities
 * event handlers
 * command handlers
 * query handlers
@@ -63,7 +63,7 @@ You can provide your own setup for
 * custom event store
 * custom metrics
 * custom token store
-* custom aggregate configuration
+* custom event sourced entity configuration
 
 ### supported event processors
 

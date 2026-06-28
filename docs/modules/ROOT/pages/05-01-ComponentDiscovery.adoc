@@ -22,12 +22,12 @@ For each type you can either disable the discovery or only include selected pack
 
 == Examples
 
-=== Disable discovery for aggregates
+=== Disable discovery for event sourced entities
 The use case could be that you have a maven or gradle module, where your domain classes are, which are containing the annotation `EventSourcedEntity`.
 
-In the referencing module you would like to implement event handlers and simply resuse some of the classes in the 'domain module'. But this doesn't work, because automatically the aggregate with it's command handler is registered.
+In the referencing module you would like to implement event handlers and simply resuse some of the classes in the 'domain module'. But this doesn't work, because automatically the event sourced entities with it's command handler is registered.
 
-The solution is to disable discovery for aggregates.
+The solution is to disable discovery for event sourced entities.
 
 [source,properties]
 ----
@@ -35,9 +35,9 @@ quarkus.axon.discovery.event-sourced-entity.enabled=false
 ----
 
 === Only consider a package for discovery
-The use case is again that you have a referenced module, where aggreates, command handlers, event handlers and query handlers are defined. In the referencing module you also have aggregates and all types of message handlers.
+The use case is again that you have a referenced module, where aggreates, command handlers, event handlers and query handlers are defined. In the referencing module you also have event sourced entities and all types of message handlers.
 
-You would like to reference it to reuse some of the classes e.g. of the aggreates or entities. But by default, when you start the quarkus instance, all event, command and query handlers and all aggregates are registered, and that's not valid for you.
+You would like to reference it to reuse some of the classes e.g. of the aggreates or entities. But by default, when you start the quarkus instance, all event, command and query handlers and all event sourced entities are registered, and that's not valid for you.
 
 The solution is to define the included packages for the different types:
 
