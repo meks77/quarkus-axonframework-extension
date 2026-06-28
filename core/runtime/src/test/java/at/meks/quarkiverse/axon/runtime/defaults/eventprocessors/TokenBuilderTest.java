@@ -2,24 +2,29 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import org.axonframework.eventhandling.GlobalSequenceTrackingToken;
-import org.axonframework.eventhandling.TrackedEventMessage;
-import org.axonframework.eventhandling.TrackingToken;
-import org.axonframework.messaging.StreamableMessageSource;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.GlobalSequenceTrackingToken;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
+import org.axonframework.messaging.eventstreaming.TrackingTokenSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.meks.quarkiverse.axon.runtime.conf.HeadOrTail;
@@ -32,7 +37,7 @@ class TokenBuilderTest {
     private final Random random = new Random();
 
     @Mock
-    StreamableMessageSource<TrackedEventMessage<?>> messageSource;
+    TrackingTokenSource messageSource;
 
     @Mock
     InitialPosition initialPositionOfProcessor;
@@ -43,63 +48,71 @@ class TokenBuilderTest {
         when(initialPositionOfProcessor.atSequence())
                 .thenReturn(Optional.of(startingSequence));
 
-        TrackingToken result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
+        CompletableFuture<TrackingToken> result = TokenBuilder.with(PROCESSOR_NAME, messageSource)
+                .and(initialPositionOfProcessor);
 
-        assertThat(result.position()).hasValue(startingSequence);
+        assertThat(result.getNow(null).position()).hasValue(startingSequence);
     }
 
     @Test
     void atHead() {
         long expectedPosition = random.nextLong();
-        when(messageSource.createHeadToken())
-                .thenReturn(new GlobalSequenceTrackingToken(expectedPosition));
+        when(messageSource.latestToken(null))
+                .thenReturn(CompletableFuture.completedFuture(new GlobalSequenceTrackingToken(expectedPosition)));
         when(initialPositionOfProcessor.atHeadOrTail())
                 .thenReturn(Optional.of(HeadOrTail.HEAD));
 
-        TrackingToken result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
+        var result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(
+                initialPositionOfProcessor);
 
-        assertThat(result.position()).hasValue(expectedPosition);
+        assertThat(result.getNow(null).position()).hasValue(expectedPosition);
     }
 
     @Test
     void atTail() {
         long expectedPosition = new Random().nextLong();
-        when(messageSource.createTailToken())
-                .thenReturn(new GlobalSequenceTrackingToken(expectedPosition));
+        when(messageSource.firstToken(null))
+                .thenReturn(CompletableFuture.completedFuture(new GlobalSequenceTrackingToken(expectedPosition)));
         when(initialPositionOfProcessor.atHeadOrTail())
                 .thenReturn(Optional.of(HeadOrTail.TAIL));
 
-        TrackingToken result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
+        var result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
 
-        assertThat(result.position()).hasValue(expectedPosition);
+        assertThat(result.getNow(null).position()).hasValue(expectedPosition);
     }
 
     @Test
     void atTimestamp() {
         long expectedPosition = new Random().nextLong();
         ZonedDateTime startPosition = ZonedDateTime.now().minusHours(6);
-        when(messageSource.createTokenAt(startPosition.toInstant()))
-                .thenReturn(new GlobalSequenceTrackingToken(expectedPosition));
+        when(messageSource.tokenAt(startPosition.toInstant(), null))
+                .thenReturn(CompletableFuture.completedFuture(new GlobalSequenceTrackingToken(expectedPosition)));
         when(initialPositionOfProcessor.atTimestamp())
                 .thenReturn(Optional.of(startPosition));
 
-        TrackingToken result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
+        var result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
 
-        assertThat(result.position()).hasValue(expectedPosition);
+        assertThat(result.getNow(null).position()).hasValue(expectedPosition);
     }
 
     @Test
     void atDuration() {
         long expectedPosition = new Random().nextLong();
         Duration startPosition = Duration.ofDays(-4);
-        when(messageSource.createTokenSince(startPosition))
-                .thenReturn(new GlobalSequenceTrackingToken(expectedPosition));
+        Temporal expectedTimeOfPosition = startPosition.addTo(ZonedDateTime.now());
+        when(messageSource.tokenAt(Mockito.any(Instant.class), Mockito.isNull()))
+                .thenReturn(CompletableFuture.completedFuture(new GlobalSequenceTrackingToken(expectedPosition)));
         when(initialPositionOfProcessor.atDuration())
                 .thenReturn(Optional.of(startPosition));
 
-        TrackingToken result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
+        var result = TokenBuilder.with(PROCESSOR_NAME, messageSource).and(initialPositionOfProcessor);
 
-        assertThat(result.position()).hasValue(expectedPosition);
+        ArgumentCaptor<Instant> instantCaptor = ArgumentCaptor.forClass(Instant.class);
+        verify(messageSource).tokenAt(instantCaptor.capture(), Mockito.isNull());
+
+        Instant actualTimeOfPosition = instantCaptor.getValue();
+        assertThat(actualTimeOfPosition).isAfterOrEqualTo(Instant.from(expectedTimeOfPosition));
+        assertThat(result.getNow(null).position()).hasValue(expectedPosition);
     }
 
     @ParameterizedTest

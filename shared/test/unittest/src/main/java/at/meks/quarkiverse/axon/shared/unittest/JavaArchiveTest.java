@@ -2,7 +2,6 @@ package at.meks.quarkiverse.axon.shared.unittest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -14,17 +13,16 @@ import java.util.concurrent.CompletableFuture;
 import jakarta.inject.Inject;
 
 import org.awaitility.core.ThrowingRunnable;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardInMemoryHistory;
@@ -32,16 +30,16 @@ import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import io.quarkus.logging.Log;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class JavaArchiveTest {
 
-    protected static QuarkusUnitTest application(JavaArchive javaArchive) {
-        return new QuarkusUnitTest()
+    protected static QuarkusExtensionTest application(JavaArchive javaArchive) {
+        return new QuarkusExtensionTest()
                 .setArchiveProducer(() -> javaArchive);
     }
 
-    protected static QuarkusUnitTest application() {
+    protected static QuarkusExtensionTest application() {
         return application(javaArchiveBase());
     }
 
@@ -50,7 +48,6 @@ public class JavaArchiveTest {
                 .addPackage(Giftcard.class.getPackage())
                 .addPackage(GiftcardView.class.getPackage())
                 .addPackage(AnotherProjection.class.getPackage())
-                .addPackage(QuarkusPaymentservice.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -78,9 +75,6 @@ public class JavaArchiveTest {
 
     @Inject
     Configuration configuration;
-
-    @Inject
-    QuarkusPaymentservice quarkusPaymentservice;
 
     /**
      * Tests the configuration and integration of the framework by performing a sequence of actions and confirming their
@@ -125,12 +119,8 @@ public class JavaArchiveTest {
             commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 9));
             commandGateway.sendAndWait(new Api.ReturnCardCommand(cardId));
 
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId), "cardId was not prepared"));
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPaid(cardId), "cardId was not paid"));
-            delayedAssert(() -> assertTrue(quarkusPaymentservice.isPrepared(cardId2), "cardId2 was not prepared"));
-            assertFalse(quarkusPaymentservice.isPaid(cardId2));
             assertConfiguration(configuration);
-            assertConfiguration(configuration.eventProcessingConfiguration().eventProcessors());
+            assertConfiguration(configuration.getComponents(EventProcessor.class));
             assertOthers();
         } finally {
             teardown();

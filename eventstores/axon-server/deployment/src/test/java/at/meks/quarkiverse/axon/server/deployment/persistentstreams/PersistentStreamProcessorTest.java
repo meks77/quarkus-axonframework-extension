@@ -8,17 +8,18 @@ import java.util.stream.Collectors;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.axonserver.connector.event.axon.PersistentStreamMessageSource;
-import org.axonframework.config.Configuration;
-import org.axonframework.eventhandling.EventProcessor;
-import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.eventhandling.processing.EventProcessor;
+import org.axonframework.messaging.eventhandling.processing.subscribing.SubscribingEventProcessor;
+import org.junit.jupiter.api.Disabled;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.axoniq.axonserver.connector.event.EventChannel;
 import io.axoniq.axonserver.grpc.streams.StreamStatus;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 
+@Disabled("TODO: Activate as soon as AxonFramework supports Persistent Streams again")
 public abstract class PersistentStreamProcessorTest extends JavaArchiveTest {
 
     @Inject
@@ -38,7 +39,8 @@ public abstract class PersistentStreamProcessorTest extends JavaArchiveTest {
                 .filter(e -> e.getValue() instanceof SubscribingEventProcessor)
                 .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
                 .map(entry -> Map.entry(entry.getKey(), (SubscribingEventProcessor) entry.getValue()))
-                .filter(entry -> entry.getValue().getMessageSource() instanceof PersistentStreamMessageSource)
+                // TODO: uncomment as soon as AxonFramework supports PersistentStreams again
+                //                .filter(entry -> entry.getValue().getMessageSource() instanceof PersistentStreamMessageSource)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertThat(pooledStreamingEventProcessors)

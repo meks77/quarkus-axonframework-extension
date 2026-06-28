@@ -3,7 +3,7 @@ package at.meks.quarkiverse.axon.transaction.runtime;
 import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.transaction.Status;
 
-import org.axonframework.common.transaction.Transaction;
+import org.axonframework.messaging.core.unitofwork.transaction.Transaction;
 import org.jboss.logging.Logger;
 
 import io.quarkus.narayana.jta.QuarkusTransaction;

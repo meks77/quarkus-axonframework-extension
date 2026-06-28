@@ -7,12 +7,11 @@ import java.util.Optional;
 import at.meks.quarkiverse.axon.runtime.conf.EventProcessorConfiguration;
 import io.quarkus.runtime.annotations.ConfigDocMapKey;
 import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigPhase;
-import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.*;
 
-@ConfigMapping(prefix = "quarkus.axon.persistentstreams")
-@ConfigRoot(phase = ConfigPhase.RUN_TIME)
+// TODO: uncomment as soon as AxonFramework supports Persistent Streams again
+//@ConfigMapping(prefix = "quarkus.axon.persistentstreams")
+//@ConfigRoot(phase = ConfigPhase.RUN_TIME)
 public interface PersistentStreamProcessorConf {
 
     /**
@@ -64,7 +63,7 @@ public interface PersistentStreamProcessorConf {
         /**
          * The names of the processing groups for which the processor is responsible.
          */
-        @WithName("processing-groups")
+        @WithName("namespaces")
         Optional<List<String>> processingGroupNames();
 
         /**

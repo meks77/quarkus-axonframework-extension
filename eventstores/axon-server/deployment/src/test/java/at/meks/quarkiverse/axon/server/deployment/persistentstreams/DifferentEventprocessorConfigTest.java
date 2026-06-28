@@ -8,19 +8,21 @@ import java.util.Map;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.messaging.eventhandling.processing.subscribing.SubscribingEventProcessor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import io.axoniq.axonserver.connector.AxonServerConnection;
 import io.axoniq.axonserver.grpc.streams.StreamStatus;
-import io.quarkus.test.QuarkusUnitTest;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
+import io.quarkus.test.QuarkusExtensionTest;
 
+@Disabled("TODO: Activate as soon as it is available again in Axon Framework")
 public class DifferentEventprocessorConfigTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("persistenstreams/differentProcessorConfigs.properties");
 
     @Inject

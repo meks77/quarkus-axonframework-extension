@@ -1,14 +1,13 @@
 package at.meks.quarkiverse.axon.runtime.conf;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import io.quarkus.runtime.annotations.ConfigDocMapKey;
-import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
-import io.smallrye.config.*;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
 
 @ConfigMapping(prefix = "quarkus.axon")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
@@ -19,17 +18,6 @@ public interface AxonConfiguration {
      */
     @WithDefault("quarkus-axon")
     String axonApplicationName();
-
-    /**
-     * Configuration for snapshots in the event store.
-     * <p/>
-     * When using no name, the default is defined. If you want to config for an aggregate, the class name must be used as key.
-     */
-    @ConfigDocMapKey("aggregate-name")
-    @WithName("snapshots")
-    @WithDefaults
-    @WithUnnamedKey("<default>")
-    Map<String, SnapshotConfiguration> snapshotConfigs();
 
     /**
      * additional configuration for live reloading for axon.
@@ -46,16 +34,6 @@ public interface AxonConfiguration {
      */
     @WithName("command-gateway.retry.scheduling")
     CommandRetryScheduling commandGatewayRetryScheduling();
-
-    /**
-     * configuration for the local command bus.
-     */
-    CommandBusConfiguration commandBus();
-
-    /**
-     * general configuration for event processing.
-     */
-    EventProcessingConfig eventProcessing();
 
     /**
      * configuration for the subscribing processor.
@@ -103,29 +81,6 @@ public interface AxonConfiguration {
 
     }
 
-    @ConfigGroup
-    interface SnapshotConfiguration {
-
-        /**
-         * Defines the type of the trigger.
-         */
-        @WithDefault("no-snapshots")
-        TriggerType triggerType();
-
-        /**
-         * If the type is LoadTime, then it's value is the max load time of an aggregate, before a snapshot creation is
-         * triggered.
-         * <p>
-         * If the type is EventCount, then it's value is the max number of events, which are read from the repository, before a
-         * snapshot creation is triggered.
-         * <p>
-         * if the type is NoSnapshot, then the value is ignored.
-         */
-        @WithDefault("-1")
-        int threshold();
-
-    }
-
     interface ExceptionHandlingConfig {
 
         /**
@@ -134,11 +89,6 @@ public interface AxonConfiguration {
         @WithDefault("true")
         boolean wrapOnCommandHandler();
 
-        /**
-         * if true, the thrown exception will be wrapped into the recommended QueryExecutionException.
-         */
-        @WithDefault("true")
-        boolean wrapOnQueryHandler();
     }
 
     interface CommandRetryScheduling {
@@ -149,47 +99,23 @@ public interface AxonConfiguration {
          * interval is configured, a maximum retry count must also be specified to ensure
          * proper retry behavior.
          */
-        Optional<Integer> fixedRetryInterval();
+        Optional<Integer> fixedRetryIntervalMillis();
 
         /**
-         * if you have configured either the {@link #fixedRetryInterval()} or the {@link #backoffFactor()} you must
+         * if you have configured either the {@link #fixedRetryIntervalMillis()} or the {@link #backoffInitialWait()} you must
          * configure the maximum retries as well.
          */
         Optional<Integer> maxRetryCount();
 
         /**
-         * backoff factor for retry scheduling(ExponentialBackOffIntervalRetryScheduler). This value is used in
-         * conjunction with an exponential backoff retry mechanism, where the interval
-         * between retries increases over time based on this factor. If configured, the
-         * maximum retries must also be set.
+         * backoff initial wait for {@link org.axonframework.messaging.core.retry.ExponentialBackOffRetryPolicy}.
+         * This initial wait time is doubled on every retry by the default axon framework implementation used.
          */
-        Optional<Integer> backoffFactor();
-    }
-
-    interface CommandBusConfiguration {
-
-        /**
-         * Configure how duplicate commands are handled. If not set, the defaults of the Axonframework are used.
-         */
-        @WithName("duplicate-command-handler-resolver")
-        @WithDefault("rejectDuplicates")
-        DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType();
-
-    }
-
-    interface EventProcessingConfig {
-
-        /**
-         * The event processor type for processing groups, which are not assigned to a processor.
-         * If not set, default of the Axon Framework is used.
-         */
-        Optional<EventProcessorType> defaultEventProcessingType();
-
+        Optional<Integer> backoffInitialWait();
     }
 
     enum EventProcessorType {
         SUBSCRIBING,
-        TRACKING,
         POOLED
     }
 }

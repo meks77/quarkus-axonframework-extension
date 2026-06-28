@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.config.Configurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 /**
  * Interface for customizing the configuration of the token store used in Axon Framework.
@@ -10,12 +10,12 @@ import org.axonframework.config.Configurer;
 public interface TokenStoreConfigurer {
 
     /**
-     * Configures the token store using the provided {@link Configurer}.
+     * Configures the token store using the provided {@link EventSourcingConfigurer}.
      * This method allows implementations to customize the token store's behavior or enable
      * specific configurations required for the application.
      *
-     * @param configurer the {@link Configurer} to be used for applying token store configurations
+     * @param configurer the {@link EventSourcingConfigurer} to be used for applying token store configurations
      */
-    void configureTokenStore(Configurer configurer);
+    void configureTokenStore(EventSourcingConfigurer configurer);
 
 }

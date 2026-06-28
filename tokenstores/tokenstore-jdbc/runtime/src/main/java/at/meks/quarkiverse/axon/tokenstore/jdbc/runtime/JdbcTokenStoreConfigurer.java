@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.temporal.TemporalAmount;
 
 import javax.sql.DataSource;
 
@@ -11,16 +12,22 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.tokenstore.jdbc.*;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.conversion.GeneralConverter;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.core.unitofwork.transaction.jdbc.JdbcTransactionalExecutorProvider;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.jdbc.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.customizations.TokenStoreConfigurer;
 
 @ApplicationScoped
 public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTokenStoreConfigurer.class);
 
     @Inject
     Instance<DataSource> dataSource;
@@ -32,22 +39,23 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
     String dbKind;
 
     @Override
-    public void configureTokenStore(Configurer configurer) {
+    public void configureTokenStore(EventSourcingConfigurer configurer) {
         if (dataSource.isAmbiguous()) {
             throw new IllegalStateException("Cannot configure token store with ambiguous datasource");
         } else if (dataSource.isUnsatisfied()) {
             throw new IllegalStateException("Cannot configure token store with unsatisfied datasource");
         }
-        configureAndSetupTokenstore(configurer.eventProcessing());
+        configureAndSetupTokenstore(configurer);
     }
 
-    private void configureAndSetupTokenstore(EventProcessingConfigurer eventProcessingConfigurer) {
-        eventProcessingConfigurer.registerTokenStore(conf -> {
+    private void configureAndSetupTokenstore(EventSourcingConfigurer configurer) {
+        configurer.componentRegistry(cr -> cr.registerComponent(TokenStore.class, configuration -> {
+            JdbcTokenStore tokenStore = createTokenStore(configuration);
             TokenSchema tokenSchema = tokenSchema();
-            JdbcTokenStore store = createTokenStore(conf);
-            autoCreateJdbcTokenTable(tokenSchema, store);
-            return store;
-        });
+            autoCreateJdbcTokenTable(tokenSchema, tokenStore);
+            return tokenStore;
+        }));
+
     }
 
     private void autoCreateJdbcTokenTable(TokenSchema tokenSchema, JdbcTokenStore store) {
@@ -66,27 +74,27 @@ public class JdbcTokenStoreConfigurer implements TokenStoreConfigurer {
                     ResultSet tables = connection.getMetaData().getTables(null, null, tokenSchema.tokenTable(), null)) {
                 tableExists = tables.next();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
         } else {
             tokenTableFactory = GenericTokenTableFactory.INSTANCE;
         }
         if (!dbIsOracle || !tableExists) {
+            LOGGER.info("Creating database token table");
             store.createSchema(tokenTableFactory);
         }
     }
 
     private JdbcTokenStore createTokenStore(Configuration configuration) {
         TokenSchema tokenSchema = tokenSchema();
-        JdbcTokenStore.Builder builder = JdbcTokenStore.builder();
-        tokenConfiguration.claimTimeout()
-                .map(timeout -> Duration.of(timeout.amount(), timeout.unit().toChronoUnit()))
-                .ifPresent(builder::claimTimeout);
-        return builder
-                .connectionProvider(() -> dataSource.get().getConnection())
-                .serializer(configuration.serializer())
-                .schema(tokenSchema)
-                .build();
+        JdbcTokenStoreConfiguration defaultAxonTokenStoreConf = JdbcTokenStoreConfiguration.DEFAULT;
+        TemporalAmount claimTimeout = tokenConfiguration.claimTimeout()
+                .map(timeout -> (TemporalAmount) Duration.of(timeout.amount(), timeout.unit().toChronoUnit()))
+                .orElseGet(defaultAxonTokenStoreConf::claimTimeout);
+        JdbcTokenStoreConfiguration axonTokenStoreConf = new JdbcTokenStoreConfiguration(tokenSchema, claimTimeout,
+                defaultAxonTokenStoreConf.nodeId());
+        return new JdbcTokenStore(new JdbcTransactionalExecutorProvider(dataSource.get()), configuration.getComponent(
+                GeneralConverter.class), axonTokenStoreConf);
     }
 
     private TokenSchema tokenSchema() {

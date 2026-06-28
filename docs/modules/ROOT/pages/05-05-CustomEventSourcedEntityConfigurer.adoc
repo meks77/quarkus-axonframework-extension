@@ -1,0 +1,13 @@
+= Custom Event Sourced Entity Configurer
+
+If you decide to provode your own EventSourcedEntity-Configurer, which creates Axon's `EventsourcedEntityModule`, you have to implement the interface `at.meks.quarkiverse.axon.runtime.customizations.EventSourcedEntityConfigurer`.
+
+For each event sourced entity, the method `createConfigurer` is invoked. This method must return Axon's `EventsourcedEntityModule`
+
+'''
+
+link:index.adoc[Index]
+
+link:05-04-Snapshots.adoc[← Previous: Snapshots]
+
+link:05-06-EventProcessors.adoc[Next: Event Processors →]

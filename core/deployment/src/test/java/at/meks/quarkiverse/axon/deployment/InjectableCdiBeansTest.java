@@ -10,17 +10,16 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.modelling.command.AggregateIdentifier;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-import org.axonframework.modelling.saga.SagaEventHandler;
-import org.axonframework.modelling.saga.StartSaga;
-import org.axonframework.queryhandling.QueryGateway;
-import org.axonframework.queryhandling.QueryHandler;
+import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
+import org.axonframework.eventsourcing.annotation.reflection.EntityCreator;
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.gateway.EventGateway;
+import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
+import org.axonframework.modelling.annotation.TargetEntityId;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,12 +29,11 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import at.meks.quarkiverse.axon.shared.TestModelConfig;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class InjectableCdiBeansTest {
 
     private static Logger logger;
-    private static Logger sagaLogger;
 
     @Inject
     CommandGateway commandGateway;
@@ -47,13 +45,13 @@ public class InjectableCdiBeansTest {
     QueryGateway queryGateway;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
-    record CommandHandledByAggregate(@TargetAggregateIdentifier String id) {
+    record CommandHandledByEntity(@TargetEntityId String id) {
     }
 
-    record CommandHandledByDomainService(@TargetAggregateIdentifier String id) {
+    record CommandHandledByDomainService(@TargetEntityId String id) {
     }
 
     record MyEvent(String id) {
@@ -76,7 +74,7 @@ public class InjectableCdiBeansTest {
         void doSomething();
     }
 
-    static class InjectableCdiBeanForAggregate {
+    static class InjectableCdiBeanForEntity {
 
         void doSomething() {
             logger.debug("do something");
@@ -85,8 +83,8 @@ public class InjectableCdiBeansTest {
 
     @Produces
     @Dependent
-    InjectableCdiBeanForAggregate produceInjectableCdiBeanForAggregate() {
-        return new InjectableCdiBeanForAggregate();
+    InjectableCdiBeanForEntity produceInjectableCdiBeanForAggregate() {
+        return new InjectableCdiBeanForEntity();
     }
 
     @ApplicationScoped
@@ -106,15 +104,6 @@ public class InjectableCdiBeansTest {
 
     }
 
-    @ApplicationScoped
-    static class InjectableCdiBeanForSagaEventHandler {
-
-        void doSomething() {
-            sagaLogger.debug("do something");
-        }
-
-    }
-
     @SuppressWarnings("unused")
     @ApplicationScoped
     static class DomainServiceCommandHandlerUsingCdiBean {
@@ -127,18 +116,19 @@ public class InjectableCdiBeansTest {
     }
 
     @SuppressWarnings("unused")
-    static class AggregateCommandHandlerUsingCdiBean {
+    @EventSourcedEntity
+    static class EntityCommandHandlerUsingCdiBean {
 
-        @AggregateIdentifier
         String id;
 
+        @EntityCreator
         @SuppressWarnings("unused")
-        AggregateCommandHandlerUsingCdiBean() {
+        EntityCommandHandlerUsingCdiBean() {
             //necessary for axon framework
         }
 
         @CommandHandler
-        AggregateCommandHandlerUsingCdiBean(CommandHandledByAggregate command, InjectableCdiBeanForAggregate bean,
+        public static void handle(CommandHandledByEntity command, InjectableCdiBeanForEntity bean,
                 TestModelConfig testModelConfig) {
             bean.doSomething();
         }
@@ -171,30 +161,14 @@ public class InjectableCdiBeansTest {
 
     }
 
-    @SuppressWarnings("unused")
-    public static class SagaEventHandlerUsingCdiBean {
-
-        @SuppressWarnings("QsPrivateBeanMembersInspection")
-        @Inject
-        private transient InjectableCdiBeanForSagaEventHandler bean;
-
-        @StartSaga
-        @SagaEventHandler(associationProperty = "id")
-        void on(MyEvent event) {
-            bean.doSomething();
-        }
-
-    }
-
     @BeforeEach
     void setup() {
         logger = Mockito.mock(Logger.class);
-        sagaLogger = Mockito.mock(Logger.class);
     }
 
     @Test
-    void cdiBeanIsInjectedInAggregateCommandHandler() {
-        commandGateway.sendAndWait(new CommandHandledByAggregate("1"));
+    void cdiBeanIsInjectedInEntityCommandHandler() {
+        commandGateway.sendAndWait(new CommandHandledByEntity("1"));
         verify(logger).debug("do something");
     }
 
@@ -206,7 +180,7 @@ public class InjectableCdiBeansTest {
 
     @Test
     void cdiBeanIsInjectedInEventHandler() {
-        eventGateway.publish(new MyEvent("1"));
+        eventGateway.publish(null, new MyEvent("1"));
         await().atMost(Duration.ofSeconds(3))
                 .untilAsserted(() -> verify(logger).debug("do something"));
     }
@@ -215,13 +189,6 @@ public class InjectableCdiBeansTest {
     void cdiBeanIsInjectedInQueryHandler() {
         queryGateway.query(new MyQuery("1"), Boolean.class).join();
         verify(logger).debug("do something");
-    }
-
-    @Test
-    void cdiBeanIsInjectedInSagaEventHandler() {
-        eventGateway.publish(new MyEvent("1"));
-        await().atMost(Duration.ofSeconds(3))
-                .untilAsserted(() -> verify(sagaLogger).debug("do something"));
     }
 
 }

@@ -17,8 +17,8 @@ public interface StreamingProcessorConf extends EventProcessorConfiguration {
     /**
      * The names of the processing groups for which the processor is responsible.
      */
-    @WithName("processing-groups")
-    Optional<List<String>> processingGroupNames();
+    @WithName("namespaces")
+    Optional<List<String>> namespaces();
 
     /**
      * if set to true, the name of the processor will be suffixed with a random UUID.

@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 
 import java.util.List;
 
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.commandhandling.CommandMessage;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
 
 /**
  * Provides a mechanism for creating a list of command handler interceptors.
@@ -20,6 +20,6 @@ public interface CommandHandlerInterceptorsProducer {
      * @return a list of {@link MessageHandlerInterceptor} objects
      *         for handling {@link CommandMessage} instances.
      */
-    List<MessageHandlerInterceptor<CommandMessage<?>>> createHandlerInterceptor();
+    List<MessageHandlerInterceptor<CommandMessage>> createHandlerInterceptor();
 
 }

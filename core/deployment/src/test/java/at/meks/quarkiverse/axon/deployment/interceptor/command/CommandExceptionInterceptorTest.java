@@ -6,22 +6,22 @@ import java.util.UUID;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandExecutionException;
-import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.commandhandling.CommandExecutionException;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
-public class CommandExceptionInterceptorTest {
+class CommandExceptionInterceptorTest {
 
     @Inject
     CommandGateway commandGateway;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase);
 
     @Test
@@ -32,8 +32,9 @@ public class CommandExceptionInterceptorTest {
         assertThatException()
                 .isThrownBy(() -> commandGateway.sendAndWait(new Api.RedeemCardCommand(cardId, 10)))
                 .isInstanceOf(CommandExecutionException.class)
+                // As soon as the fix https://github.com/AxonIQ/AxonFramework/pull/4630 is available the message will also contain Api in the qualified name
                 .withMessageContaining(
-                        "error while executing command handler for command at.meks.quarkiverse.axon.shared.model.Api$RedeemCardCommand")
+                        "error while executing command handler for command at.meks.quarkiverse.axon.shared.model.RedeemCardCommand")
                 .withStackTraceContaining("amount must be less than current card amount");
     }
 }

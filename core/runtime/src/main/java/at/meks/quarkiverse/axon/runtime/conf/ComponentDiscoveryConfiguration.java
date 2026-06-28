@@ -8,16 +8,17 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.*;
 
 /**
- * Configuration for Axon component discovery (aggregates, event handlers, command handlers, query handlers, saga handlers).
+ * Configuration for Axon component discovery (event sourced entities, event handlers, command handlers, query handlers, saga
+ * handlers).
  */
 @ConfigMapping(prefix = "quarkus.axon.discovery")
 @ConfigRoot(phase = ConfigPhase.BUILD_TIME)
 public interface ComponentDiscoveryConfiguration {
 
     /**
-     * the configuration for the discovery of axon aggregates.
+     * the configuration for the discovery of axon event sourced entities.
      */
-    ComponentDiscovery aggregates();
+    ComponentDiscovery eventSourcedEntities();
 
     /**
      * the configuration for the discovery of axon command handlers.
@@ -35,12 +36,7 @@ public interface ComponentDiscoveryConfiguration {
     ComponentDiscovery queryHandlers();
 
     /**
-     * the configuration for the discovery of axon saga handlers.
-     */
-    ComponentDiscovery sagaHandlers();
-
-    /**
-     * Configuration for discovery of axon components like aggregates, event handlers, command handlers, ...
+     * Configuration for discovery of axon components like event sourced entities, event handlers, command handlers, ...
      * </br>
      * Currently, it is only possible to enable or disable the discovery. A future version will provide more configuration
      * like included and excluded packages.

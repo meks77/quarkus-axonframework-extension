@@ -1,5 +1,7 @@
 package at.meks.quarkiverse.axon.eventstore.jpa.runtime;
 
+import org.axonframework.eventsourcing.eventstore.jpa.AggregateBasedJpaEventStorageEngineConfiguration;
+
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -14,26 +16,17 @@ public interface JpaEventstoreConfig {
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework.
      *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#batchSize(int)
+     * @see AggregateBasedJpaEventStorageEngineConfiguration#batchSize(int)
      */
     @WithDefault("-1")
     int batchSize();
-
-    /**
-     * Sets the explicitFlush field specifying whether to explicitly call EntityManager. flush() after inserting the Events
-     * published in this Unit of Work.
-     *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#explicitFlush(boolean)
-     */
-    @WithDefault("false")
-    boolean explicitFlush();
 
     /**
      * Sets the threshold of number of gaps in a token before an attempt to clean gaps up is taken.
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework
      *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#gapCleaningThreshold(int)
+     * @see AggregateBasedJpaEventStorageEngineConfiguration#gapCleaningThreshold(int)
      */
     @WithDefault("-1")
     int gapCleaningThreshold();
@@ -43,7 +36,7 @@ public interface JpaEventstoreConfig {
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework
      *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#lowestGlobalSequence(long)
+     * @see AggregateBasedJpaEventStorageEngineConfiguration#lowestGlobalSequence(long)
      */
     @WithDefault("-1")
     long lowestGlobalSequence();
@@ -53,7 +46,7 @@ public interface JpaEventstoreConfig {
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework
      *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#gapTimeout(int)
+     * @see AggregateBasedJpaEventStorageEngineConfiguration#gapTimeout(int)
      */
     @WithDefault("-1")
     int gapTimeout();
@@ -63,7 +56,7 @@ public interface JpaEventstoreConfig {
      * <p>
      * Set to a value smaller than 0 to use the default of the Axon framework
      *
-     * @see org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine.Builder#maxGapOffset(int)
+     * @see AggregateBasedJpaEventStorageEngineConfiguration#maxGapOffset(int)
      */
     @WithDefault("-1")
     int maxGapOffset();

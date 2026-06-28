@@ -5,8 +5,8 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-import org.axonframework.messaging.MessageHandlerInterceptor;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InOrder;
@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 
 import at.meks.quarkiverse.axon.runtime.customizations.QueryHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
 
@@ -39,27 +39,27 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageHandlerInterceptor<QueryMessage<?, ?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<QueryMessage>> createHandlerInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageHandlerInterceptor<QueryMessage<?, ?>> interceptor(String interceptorName) {
-            return (unitOfWork, interceptorChain) -> {
-                logger.debug(interceptorName + " logs query");
-                return interceptorChain.proceed();
-            };
+        private @NotNull MessageHandlerInterceptor<QueryMessage> interceptor(String interceptorName) {
+            return ((message, context, interceptorChain) -> {
+                logger.debug("{} logs query", interceptorName);
+                return interceptorChain.proceed(message, context);
+            });
         }
 
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(InterceptorsProducer.class, LoggerProducer.class));
 
     @Override
     protected void assertOthers() {
         InOrder inOrder = Mockito.inOrder(LOGGER);
-        inOrder.verify(LOGGER).debug("Interceptor 1 logs query");
-        inOrder.verify(LOGGER).debug("Interceptor 2 logs query");
+        inOrder.verify(LOGGER).debug("{} logs query", "Interceptor 1");
+        inOrder.verify(LOGGER).debug("{} logs query", "Interceptor 2");
     }
 }

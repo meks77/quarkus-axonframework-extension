@@ -4,8 +4,8 @@
 
 The annotation `@CommandHandler` can be set on methods of
 
-* Root Aggregates
-* Entities which are annotated with `@AggregateMember` at the field declaration of a Root Aggregate or another Entity
+* Root Event Sourced Entities
+* Entities which are annotated with `@EntityMember` at the field declaration of a Root event sourced entity, or another Entity
 * ApplicationScoped CDI Bean
 
 If the annotation `@CommandHandler` is used in a class which doesn't match to one of the three conditions above, it will not be registered in the Axon Framwork. This means that the Command Handler will not be found for the Command of this annotated method at runtime.

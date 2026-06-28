@@ -1,44 +1,39 @@
 package at.meks.quarkiverse.axon.deployment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Produces;
 
-import org.axonframework.config.Configuration;
-import org.axonframework.serialization.upcasting.event.EventUpcaster;
-import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.Mockito;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
+@Disabled("TODO: Reactive as soon as upcaster are supported by Axon Framework 5")
 public class OneUpcasterChainTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
+    static final QuarkusExtensionTest config = application(javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
 
-    private static EventUpcasterChain producedChain;
+    //    private static EventUpcasterChain producedChain;
 
     @ApplicationScoped
     static class EventUpcasterChainProducer {
 
-        @Produces
-        EventUpcasterChain eventUpcasterChain() {
-            producedChain = new EventUpcasterChain(
-                    Mockito.mock(EventUpcaster.class),
-                    Mockito.mock(EventUpcaster.class));
-
-            return producedChain;
-        }
+        //        @Produces
+        //        EventUpcasterChain eventUpcasterChain() {
+        //            producedChain = new EventUpcasterChain(
+        //                    Mockito.mock(EventUpcaster.class),
+        //                    Mockito.mock(EventUpcaster.class));
+        //
+        //            return producedChain;
+        //        }
 
     }
 
-    @Override
-    protected void assertConfiguration(Configuration configuration) {
-        assertThat(configuration.upcasterChain())
-                .usingRecursiveComparison()
-                .isEqualTo(new EventUpcasterChain(producedChain));
-    }
+    //    @Override
+    //    protected void assertConfiguration(Configuration configuration) {
+    //        assertThat(configuration.upcasterChain())
+    //                .usingRecursiveComparison()
+    //                .isEqualTo(new EventUpcasterChain(producedChain));
+    //    }
 }

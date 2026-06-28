@@ -1,11 +1,10 @@
 package at.meks.quarkiverse.axon.deployment;
 
 import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.*;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.aggregateClasses;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.classes;
-import static at.meks.quarkiverse.axon.deployment.ClassDiscovery.sagaEventhandlerClasses;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jboss.jandex.DotName;
@@ -17,10 +16,11 @@ import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.defaults.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.PooledEventProcessingConfigurer;
-import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.TrackingEventProcessingConfigurer;
 import at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration;
 import io.quarkus.arc.deployment.*;
-import io.quarkus.deployment.annotations.*;
+import io.quarkus.deployment.annotations.BuildProducer;
+import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.ExecutionTime;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.logging.Log;
@@ -38,24 +38,25 @@ class AxonExtensionProcessor {
     @BuildStep
     AdditionalBeanBuildItem registerExtensionBeans() {
         return AdditionalBeanBuildItem.builder()
-                .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultAggregateConfigurer.class,
+                .addBeanClasses(AxonExtension.class, CommandBusConfigurer.class, DefaultEventSourceEntityConfigurer.class,
                         DefaultAxonFrameworkConfigurer.class, InMemoryEventStoreConfigurer.class,
-                        InMemorySagaStoreConfigurer.class, InMemoryTokenStoreConfigurer.class,
-                        InterceptorConfigurer.class, LocalCommandBusBuilder.class, NoMetricsConfigurer.class,
-                        NoTransactionManager.class, QuarkusAxonSerializerProducer.class, RetrySchedulerConfigurer.class,
-                        TrackingEventProcessingConfigurer.class, PooledEventProcessingConfigurer.class,
+                        InMemoryTokenStoreConfigurer.class, InterceptorConfigurer.class, LocalCommandBusBuilder.class,
+                        NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
+                        RetrySchedulerConfigurer.class,
+                        PooledEventProcessingConfigurer.class,
                         AxonComponentenSetup.class)
                 .build();
     }
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void scanForAggregates(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
+    void scanForEventSourcedEntities(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
             BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<AggregateBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        aggregateClasses(beanArchiveIndex, discoveryConfiguration)
+            BuildProducer<EventSourcedEntityBeanBuildItem> beanProducer,
+            ComponentDiscoveryConfiguration discoveryConfiguration) {
+        eventSourcedEntityClasses(beanArchiveIndex, discoveryConfiguration)
                 .forEach(beanClass -> {
-                    beanProducer.produce(new AggregateBeanBuildItem(beanClass));
+                    beanProducer.produce(new EventSourcedEntityBeanBuildItem(beanClass));
                     Log.debugf("Configured bean: %s", beanClass);
                 });
     }
@@ -82,30 +83,17 @@ class AxonExtensionProcessor {
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
-    void scanForSagaEventhandlers(@SuppressWarnings("unused") AxonInitializationRecorder recorder,
-            BeanArchiveIndexBuildItem beanArchiveIndex,
-            BuildProducer<SagaEventhandlerBeanBuildItem> beanProducer, ComponentDiscoveryConfiguration discoveryConfiguration) {
-        sagaEventhandlerClasses(beanArchiveIndex, discoveryConfiguration)
-                .forEach(clazz -> {
-                    beanProducer.produce(new SagaEventhandlerBeanBuildItem(clazz));
-                    Log.debugf("Configured saga eventhandler class: %s", clazz);
-                });
-    }
-
-    @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void startAxon(AxonInitializationRecorder recorder,
-            List<AggregateBeanBuildItem> aggregateBeanBuildItems,
+            List<EventSourcedEntityBeanBuildItem> eventSourcedEntityBeanBuildItems,
             List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandhandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems,
-            List<SagaEventhandlerBeanBuildItem> sagaEventhandlerBeanBuildItems,
             List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
-        Set<Class<?>> aggregateClasses = classes(aggregateBeanBuildItems, "aggregate",
-                discoveryConfiguration.aggregates());
+        Set<Class<?>> eventSourcedEntityClasses = classes(eventSourcedEntityBeanBuildItems, "event sourced entities",
+                discoveryConfiguration.eventSourcedEntities());
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler",
                 discoveryConfiguration.eventHandlers());
         Set<Class<?>> commandhandlerClasses = classes(commandhandlerBeanBuildItems, "commandhandler",
@@ -113,15 +101,12 @@ class AxonExtensionProcessor {
         Set<Class<?>> queryhandlerClasses = classes(queryhandlerBeanBuildItems, "queryhandler",
                 discoveryConfiguration.queryHandlers());
         Set<Class<?>> injectableBeanClasses = classes(injectableBeanBuildItems, "injectable bean",
-                discoveryConfiguration.aggregates());
-        Set<Class<?>> sagaEventhandlerClasses = classes(sagaEventhandlerBeanBuildItems,
-                "saga eventhandler", discoveryConfiguration.sagaHandlers());
+                discoveryConfiguration.eventSourcedEntities());
         recorder.startAxon(beanContainerBuildItem.getValue(),
-                aggregateClasses,
+                eventSourcedEntityClasses,
                 commandhandlerClasses,
                 queryhandlerClasses,
                 eventhandlerClasses,
-                sagaEventhandlerClasses,
                 injectableBeanClasses);
     }
 
@@ -164,7 +149,8 @@ class AxonExtensionProcessor {
             BeanDiscoveryFinishedBuildItem beanDiscovery) {
         ArrayList<Class<?>> unremovableItems = new ArrayList<>();
         Set<DotName> discoveredBeanClasses = discoveredBeanClasses(beanDiscovery);
-        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses, discoveryConfiguration);
+        var discoveyAttributes = new BeanDiscoveyAttributes(beanArchiveIndex, discoveredBeanClasses,
+                discoveryConfiguration);
         unremovableItems.addAll(ClassDiscovery.eventhandlerClasses(discoveyAttributes).toList());
         unremovableItems.addAll(ClassDiscovery.commandhandlerClasses(discoveyAttributes).toList());
         unremovableItems.addAll(ClassDiscovery.queryhandlerClasses(discoveyAttributes).toList());

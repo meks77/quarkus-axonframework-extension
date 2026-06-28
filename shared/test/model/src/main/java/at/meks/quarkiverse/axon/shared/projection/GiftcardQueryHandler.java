@@ -5,9 +5,9 @@ import java.util.Map;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.ResetHandler;
-import org.axonframework.queryhandling.QueryHandler;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.replay.annotation.ResetHandler;
+import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 

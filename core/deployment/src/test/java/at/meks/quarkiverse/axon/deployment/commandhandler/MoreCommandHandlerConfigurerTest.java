@@ -2,13 +2,13 @@ package at.meks.quarkiverse.axon.deployment.commandhandler;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.CommandBus;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
 
@@ -33,7 +33,7 @@ public class MoreCommandHandlerConfigurerTest extends JavaArchiveTest {
     }
 
     @RegisterExtension()
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(CommandHandlerProducer1.class, CommandHandlerProducer2.class))
             .setExpectedException(IllegalStateException.class, true);
 

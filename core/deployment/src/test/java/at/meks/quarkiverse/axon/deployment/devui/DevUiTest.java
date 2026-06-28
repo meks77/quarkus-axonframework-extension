@@ -13,22 +13,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusDevModeTest;
 
-public class DevUiTest {
+class DevUiTest {
 
     @RegisterExtension
-    final static QuarkusDevModeTest test = new QuarkusDevModeTest()
+    static final QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
                     .addPackage(AnotherProjection.class.getPackage())
-                    .addPackage(QuarkusPaymentservice.class.getPackage())
                     .addAsResource(JavaArchiveTest.propertiesFile("/devUiTest.properties"), "application.properties")
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
@@ -51,28 +49,20 @@ public class DevUiTest {
     @Test
     void testAllFeaturesInDevUi() throws Exception {
         Thread.sleep(1000);
-        assertAggregates();
-        assertSagaEventHandler();
+        assertEntities();
         assertEventHandler();
         assertQueryHandler();
         assertCommandHandler();
     }
 
-    private void assertAggregates() {
+    private void assertEntities() {
         Awaitility.await()
                 .atMost(2, TimeUnit.MINUTES)
-                .untilAsserted(() -> assertThat(uiAsserter.isLineInCard("Aggregates")).isTrue());
-        uiAsserter.assertLineInCard("Aggregates", "1");
+                .untilAsserted(() -> assertThat(uiAsserter.isLineInCard("Event sourced entities")).isTrue());
+        uiAsserter.assertLineInCard("Event sourced entities", "1");
         uiAsserter.itemListEqualsTo(
-                "Aggregates",
+                "Event sourced entities",
                 "at.meks.quarkiverse.axon.shared.model.Giftcard");
-    }
-
-    private void assertSagaEventHandler() {
-        uiAsserter.assertLineInCard("Saga Event Handlers", "1");
-        uiAsserter.itemListEqualsTo(
-                "Saga Event Handlers",
-                "at.meks.quarkiverse.axon.shared.model.CardReturnSaga");
     }
 
     private void assertEventHandler() {
