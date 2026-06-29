@@ -37,7 +37,7 @@ class ApplicationTest {
 
     @Test
     void wholeUseCaseTest() {
-        assertAxonSerializerRoundTrip();
+        assertAxonConverterRoundTrip();
 
         cardId = UUID.randomUUID().toString();
         issueNewCard(20);
@@ -114,7 +114,7 @@ class ApplicationTest {
                 });
     }
 
-    private static void assertAxonSerializerRoundTrip() {
+    private static void assertAxonConverterRoundTrip() {
         RestAssured.given().basePath("system/serialization/axon-roundtrip")
                 .when().get()
                 .then()
