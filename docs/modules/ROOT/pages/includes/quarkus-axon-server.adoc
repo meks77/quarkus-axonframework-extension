@@ -49,6 +49,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-axon-server_quarkus-axon-server-dev-services-use-dcb]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-dev-services-use-dcb[`+++quarkus.axon.server.dev-services.use-dcb+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.server.dev-services.use-dcb+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+specifies, if the Axon Server container should be started with dcb
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_DEV_SERVICES_USE_DCB+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERVER_DEV_SERVICES_USE_DCB+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a| [[quarkus-axon-server_quarkus-axon-server-servers]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-servers[`+++quarkus.axon.server.servers+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.server.servers+++[]
@@ -58,7 +79,7 @@ endif::add-copy-button-to-config-props[]
 [.description]
 --
 A comma separated list of Axon Server servers. Each element is hostname or hostname:grpcPort. When no grpcPort is specified, the port of `QuarkusAxonServerConfiguration++#++defaultGrpcPort()` is used. The following examples are valid configurations:
- -
+
 axon-server-name
 
 
@@ -235,7 +256,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-the number of threads used as commands threads. If not set, the default of the axon framework is used. The value is set to `org.axonframework.axonserver.connector.AxonServerConfiguration++#++setCommandThreads(int)`
+the number of threads used as commands threads. If not set, the default of the axon framework is used. The value is set to `io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration++#++setCommandThreads(int)`
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -248,213 +269,26 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-batch-size]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-batch-size[`+++quarkus.axon.persistentstreams.batch-size+++`]##
+a| [[quarkus-axon-server_quarkus-axon-server-storage-engine]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-server-storage-engine[`+++quarkus.axon.server.storage-engine+++`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.batch-size+++[]
+config_property_copy_button:+++quarkus.axon.server.storage-engine+++[]
 endif::add-copy-button-to-config-props[]
 
-
-`+++quarkus.axon.persistentstreams."processor-name".batch-size+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".batch-size+++[]
-endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Set the maximum number of events that may be processed in a single transaction. If -1 is set, the default of the Axon framework is used.
+The type of storage engine for the axon server
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_BATCH_SIZE+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERVER_STORAGE_ENGINE+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_BATCH_SIZE+++`
+Environment variable: `+++QUARKUS_AXON_SERVER_STORAGE_ENGINE+++`
 endif::add-copy-button-to-env-var[]
 --
-|int
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-segments[`+++quarkus.axon.persistentstreams.initial-segments+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.initial-segments+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".initial-segments+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".initial-segments+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-Sets the initial number of segments for asynchronous processing. For more information please read axon documentation.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_INITIAL_SEGMENTS+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_INITIAL_SEGMENTS+++`
-endif::add-copy-button-to-env-var[]
---
-|int
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-context]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-context[`+++quarkus.axon.persistentstreams.context+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.context+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".context+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".context+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The context of the axon server, this stream is active for. Defaults to 'default'.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_CONTEXT+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_CONTEXT+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-segments]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-segments[`+++quarkus.axon.persistentstreams.segments+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.segments+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".segments+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".segments+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The initial number of segments. Defaults to 4.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_SEGMENTS+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_SEGMENTS+++`
-endif::add-copy-button-to-env-var[]
---
-|int
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-initial-position]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-initial-position[`+++quarkus.axon.persistentstreams.initial-position+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.initial-position+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".initial-position+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".initial-position+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-First token to read. This can be number of the token where should be started, or HEAD, or TAIL. Defaults to TAIL.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_INITIAL_POSITION+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_INITIAL_POSITION+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-filter]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-filter[`+++quarkus.axon.persistentstreams.filter+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.filter+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".filter+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".filter+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The filter to use for the stream. The syntax for this filter is from the axon server.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_FILTER+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_FILTER+++`
-endif::add-copy-button-to-env-var[]
---
-|string
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-processing-groups[`+++quarkus.axon.persistentstreams.processing-groups+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".processing-groups+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".processing-groups+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-The names of the processing groups for which the processor is responsible.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_PROCESSING_GROUPS+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_PROCESSING_GROUPS+++`
-endif::add-copy-button-to-env-var[]
---
-|list of string
-|
-
-a| [[quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix]] [.property-path]##link:#quarkus-axon-server_quarkus-axon-persistentstreams-use-random-uuid-suffix[`+++quarkus.axon.persistentstreams.use-random-uuid-suffix+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams.use-random-uuid-suffix+++[]
-endif::add-copy-button-to-config-props[]
-
-
-`+++quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix+++`
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.persistentstreams."processor-name".use-random-uuid-suffix+++[]
-endif::add-copy-button-to-config-props[]
-
-[.description]
---
-if set to true, the name of the processor will be suffixed with a random UUID.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_PERSISTENTSTREAMS_USE_RANDOM_UUID_SUFFIX+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_PERSISTENTSTREAMS_USE_RANDOM_UUID_SUFFIX+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|
+a|`aggregate-based`, `dcb`
+|required icon:exclamation-circle[title=Configuration property is required]
 
 |===
 

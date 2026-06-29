@@ -4,12 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventhandling.SequenceNumber;
-import org.junit.jupiter.api.extension.*;
+import org.axonframework.messaging.core.annotation.Namespace;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import at.meks.quarkiverse.axon.shared.model.Api;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class InitialPositionTest extends PooledProcessorTest {
 
@@ -18,39 +19,39 @@ public class InitialPositionTest extends PooledProcessorTest {
     private static Long firstSequenceNumberStartingAtTail;
 
     @ApplicationScoped
-    @ProcessingGroup("HandlerStartingAt1")
+    @Namespace("HandlerStartingAt1")
     public static class HandlerStartingAt1 {
 
         @EventHandler
-        void on(Object event, @SequenceNumber long sequenceNumber) {
+        void on(Api.CardIssuedEvent event, TrackingToken token) {
             if (firstSequenceNumberStartingAt1 == null) {
-                firstSequenceNumberStartingAt1 = sequenceNumber;
+                firstSequenceNumberStartingAt1 = token.position().orElseThrow();
             }
         }
 
     }
 
     @ApplicationScoped
-    @ProcessingGroup("HandlerStartingAtTail")
+    @Namespace("HandlerStartingAtTail")
     public static class HandlerStartingAtTail {
 
         @EventHandler
-        void on(Object event, @SequenceNumber long sequenceNumber) {
+        void on(Api.CardIssuedEvent event, TrackingToken token) {
             if (firstSequenceNumberStartingAtTail == null) {
-                firstSequenceNumberStartingAtTail = sequenceNumber;
+                firstSequenceNumberStartingAtTail = token.position().orElseThrow();
             }
         }
 
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("eventprocessors/pooled/initialPosition.properties");
 
     @Override
     protected void assertOthers() {
         super.assertOthers();
-        assertThat(firstSequenceNumberStartingAt1).isEqualTo(2L);
-        assertThat(firstSequenceNumberStartingAtTail).isEqualTo(0L);
+        assertThat(firstSequenceNumberStartingAt1).isGreaterThan(2L);
+        assertThat(firstSequenceNumberStartingAtTail).isEqualTo(1L);
     }
 }

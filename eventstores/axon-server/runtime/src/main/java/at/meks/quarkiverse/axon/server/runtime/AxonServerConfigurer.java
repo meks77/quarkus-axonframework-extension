@@ -1,29 +1,34 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
+import static io.quarkus.arc.ComponentsProvider.LOG;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConfiguration;
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.axonserver.connector.event.axon.AxonServerEventStore;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
-import org.axonframework.eventhandling.EventBusSpanFactory;
-import org.axonframework.eventsourcing.eventstore.EventStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.conversion.GeneralConverter;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
+import org.axonframework.eventsourcing.snapshot.store.SnapshotStore;
+import org.axonframework.messaging.eventhandling.conversion.EventConverter;
+import org.jspecify.annotations.NonNull;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.SnapshotStoreConfigurer;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
+import io.axoniq.framework.axonserver.connector.event.AggregateBasedAxonServerEventStorageEngine;
+import io.axoniq.framework.axonserver.connector.event.AxonServerEventStorageEngine;
+import io.axoniq.framework.axonserver.connector.snapshot.AxonServerSnapshotStore;
 
 @ApplicationScoped
 public class AxonServerConfigurer implements EventstoreConfigurer {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AxonServerConfigurer.class);
 
     @Inject
     QuarkusAxonServerConfiguration serverConfiguration;
@@ -32,14 +37,50 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     AxonConfiguration axonConfiguration;
 
     @Inject
+    Instance<SnapshotStoreConfigurer> snapshotStoreConfigurer;
+
+    @Inject
     AxonServers axonSevers;
 
-    public void configure(Configurer configurer) {
+    public void configure(EventSourcingConfigurer configurer) {
         AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
-        configurer.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
-                .registerComponent(AxonServerConnectionManager.class,
-                        cfg -> axonServerConnectionManager(axonServerConfiguration))
-                .configureEventStore(this::axonserverEventStore);
+        AxonServerConnectionManager connectionManager = axonServerConnectionManager(axonServerConfiguration);
+        configurer.componentRegistry(
+                cr -> cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
+                        .registerComponent(AxonServerConnectionManager.class, cfg -> connectionManager));
+
+        configurer.registerEventStorageEngine(config -> configureStorageEngine(config, connectionManager));
+
+        configureSnapshotStore(configurer, axonServerConfiguration, connectionManager);
+    }
+
+    private void configureSnapshotStore(EventSourcingConfigurer configurer, AxonServerConfiguration axonServerConfiguration,
+            AxonServerConnectionManager cm) {
+        if (snapshotStoreConfigurer.isAmbiguous()) {
+            throw new IllegalStateException("More than one snapshot store configured");
+        }
+
+        if (snapshotStoreConfigurer.isResolvable()) {
+            snapshotStoreConfigurer.get().configure(configurer);
+        } else {
+            LOG.infof("Snapshot Store not configured, using default Axon Snapshot store");
+            configurer.componentRegistry(
+                    registry -> registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
+                            c -> new AxonServerSnapshotStore(
+                                    cm.getConnection(axonServerConfiguration.getContext()),
+                                    c.getComponent(GeneralConverter.class))));
+        }
+    }
+
+    private @NonNull EventStorageEngine configureStorageEngine(Configuration config,
+            AxonServerConnectionManager connectionManager) {
+        if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
+            return new AxonServerEventStorageEngine(connectionManager.getConnection(), config.getComponent(
+                    EventConverter.class));
+        }
+        return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
+                config.getComponent(
+                        EventConverter.class));
     }
 
     private AxonServerConfiguration axonServerConfiguration() {
@@ -75,18 +116,4 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
                 .build();
     }
 
-    private EventStore axonserverEventStore(Configuration conf) {
-        LOG.info("configure connection to axon server");
-        return AxonServerEventStore.builder()
-                .configuration(axonServerConfiguration())
-                .platformConnectionManager(conf.getComponent(AxonServerConnectionManager.class))
-                .defaultContext(serverConfiguration.context())
-                .messageMonitor(conf.messageMonitor(AxonServerEventStore.class, "eventStore"))
-                .snapshotSerializer(conf.serializer())
-                .eventSerializer(conf.eventSerializer())
-                .snapshotFilter(conf.snapshotFilter())
-                .upcasterChain(conf.upcasterChain())
-                .spanFactory(conf.getComponent(EventBusSpanFactory.class))
-                .build();
-    }
 }

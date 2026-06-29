@@ -4,23 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.gateway.EventGateway;
-import org.axonframework.modelling.command.Repository;
-import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.messaging.commandhandling.CommandBus;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.eventhandling.EventBus;
+import org.axonframework.messaging.eventhandling.gateway.EventGateway;
+import org.axonframework.messaging.queryhandling.gateway.QueryGateway;
+import org.axonframework.modelling.repository.Repository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class ProducedBeansTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase);
 
     @Inject
@@ -35,7 +35,7 @@ public class ProducedBeansTest {
     QueryGateway queryGateway;
 
     @Inject
-    Repository<Giftcard> giftcardRepository;
+    Repository<String, Giftcard> giftcardRepository;
 
     @Test
     void eventGatewayIsProduced() {

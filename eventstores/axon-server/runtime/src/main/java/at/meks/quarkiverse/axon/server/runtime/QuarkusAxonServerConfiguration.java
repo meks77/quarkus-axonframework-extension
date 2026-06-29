@@ -73,7 +73,7 @@ public interface QuarkusAxonServerConfiguration {
 
     /**
      * the number of threads used as commands threads. If not set, the default of the axon framework is used.
-     * The value is set to {@link org.axonframework.axonserver.connector.AxonServerConfiguration#setCommandThreads(int)}
+     * The value is set to {@link io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration#setCommandThreads(int)}
      */
     Optional<Integer> commandThreads();
 
@@ -104,6 +104,18 @@ public interface QuarkusAxonServerConfiguration {
          */
         @WithDefault("Bytes")
         Unit unit();
+    }
+
+    /**
+     * The type of storage engine for the axon server
+     *
+     * @return
+     */
+    StorageEngineType storageEngine();
+
+    enum StorageEngineType {
+        AGGREGATE_BASED,
+        DCB;
     }
 
 }

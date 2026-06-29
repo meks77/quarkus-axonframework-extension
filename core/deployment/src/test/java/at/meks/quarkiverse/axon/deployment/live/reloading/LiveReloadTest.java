@@ -11,7 +11,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.shared.adapter.QuarkusPaymentservice;
 import at.meks.quarkiverse.axon.shared.model.Giftcard;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
@@ -29,8 +28,7 @@ public class LiveReloadTest {
                     .addPackage(Giftcard.class.getPackage())
                     .addPackage(GiftcardView.class.getPackage())
                     .addPackage(AnotherProjection.class.getPackage())
-                    .addPackage(QuarkusPaymentservice.class.getPackage())
-                    .addClasses(GiftcardResource.class, DomainServiceForLiveReloading.class)
+                    .addClasses(GiftcardResource.class, EventHandlerForLiveReloading.class)
                     .addAsResource(JavaArchiveTest.propertiesFile("/live/reloading/application.properties"),
                             "application.properties"));
 
@@ -47,17 +45,17 @@ public class LiveReloadTest {
         assertSuccess(issueCard(cardId));
         assertSuccess(redeemCardResponse(cardId, 1));
 
-        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/DomainServiceForLiveReloading.java",
+        test.modifySourceFile("at/meks/quarkiverse/axon/deployment/live/reloading/EventHandlerForLiveReloading.java",
                 source -> source.replace(
-                        "giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));",
+                        "//simply do nothing",
                         "throw new java.lang.IllegalStateException(\"whatever\");"));
 
-        // After reloading, the InMemoryEventStore created new and therefore empty
+        // After reloading, the InMemoryEventStore was recreated. No events in the event store
         Awaitility.await().atMost(5, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> redeemCardResponse(cardId, 2)
                         .then().assertThat()
-                        .body(CoreMatchers.containsString("The aggregate was not found in the event store")));
+                        .body(CoreMatchers.containsString("The event sourced entity was not found in the event store")));
     }
 
     private void assertSuccess(Response response) {

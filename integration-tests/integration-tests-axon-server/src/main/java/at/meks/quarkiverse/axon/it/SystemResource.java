@@ -6,9 +6,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.reactive.RestPath;
+
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 
 @Path("system")
 public class SystemResource {

@@ -2,18 +2,19 @@ package at.meks.quarkiverse.axon.it;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.core.annotation.Namespace;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
+import io.quarkus.logging.Log;
 
 @ApplicationScoped
-@ProcessingGroup("EventProcessorGroup8")
+@Namespace("EventProcessorGroup8")
 public class EventProcessorGroup8 {
 
     @EventHandler
     public void on(Api.CardIssuedEvent event) {
-
+        Log.infof("Event handled %s", event);
     }
 
 }

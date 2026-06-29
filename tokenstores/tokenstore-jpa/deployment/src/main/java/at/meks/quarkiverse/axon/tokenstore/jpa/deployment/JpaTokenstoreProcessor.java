@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.tokenstore.jpa.deployment;
 
-import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.store.jpa.TokenEntry;
 
 import at.meks.quarkiverse.axon.tokenstore.jpa.JpaTokenstoreConfigurer;
 import at.meks.quarkiverse.axon.tokenstore.jpa.QuarkusAxonEntityManagerProvider;

@@ -1,28 +1,44 @@
 package at.meks.quarkiverse.axon.shared.model;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import static java.util.Optional.ofNullable;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.modelling.command.Aggregate;
-import org.axonframework.modelling.command.Repository;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+import jakarta.enterprise.context.ApplicationScoped;
+
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
+import org.axonframework.messaging.core.unitofwork.ProcessingContext;
+import org.axonframework.messaging.eventhandling.gateway.EventAppender;
+import org.axonframework.modelling.repository.ManagedEntity;
+import org.axonframework.modelling.repository.Repository;
 
 @ApplicationScoped
 public class DomainServiceExample {
 
-    @Inject
-    Repository<Giftcard> giftcardRepository;
+    private final Repository<String, Giftcard> giftcardRepository;
 
-    @CommandHandler
-    void handle(Api.UndoLatestRedemptionCommand command) {
-        Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id());
-        giftcardAggregate.execute(giftcard -> giftcard.undoRedemption(command.amount()));
+    public DomainServiceExample(Repository<String, Giftcard> giftcardRepository) {
+        this.giftcardRepository = giftcardRepository;
     }
 
     @CommandHandler
-    void handle(Api.RedeemCardCommand command) {
-        Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id());
-        giftcardAggregate.execute(giftcard -> giftcard.requestRedeem(command.amount()));
+    void handle(Api.UndoLatestRedemptionCommand command, ProcessingContext processingContext, EventAppender eventAppender)
+            throws ExecutionException, InterruptedException {
+        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardEntity = giftcardRepository.load(command.id(),
+                processingContext);
+        ofNullable(giftcardEntity.get().entity()).orElseThrow()
+                .undoRedemption(command.amount(), eventAppender);
+    }
+
+    @CommandHandler
+    void handle(Api.RedeemCardCommand command, ProcessingContext processingContext, EventAppender eventAppender)
+            throws ExecutionException, InterruptedException {
+        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardEntity = giftcardRepository.load(command.id(),
+                processingContext);
+        ofNullable(giftcardEntity.get().entity())
+                .orElseThrow(() -> new IllegalStateException("The event sourced entity was not found in the event store"))
+                .requestRedeem(command.amount(), eventAppender);
     }
 
 }

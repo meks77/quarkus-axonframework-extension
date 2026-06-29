@@ -5,37 +5,40 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.config.ProcessingGroup;
-import org.axonframework.eventhandling.*;
+import org.axonframework.messaging.core.annotation.Namespace;
+import org.axonframework.messaging.eventhandling.annotation.EventHandler;
+import org.axonframework.messaging.eventhandling.processing.streaming.token.TrackingToken;
+import org.axonframework.messaging.eventhandling.replay.ReplayStatus;
+import org.axonframework.messaging.eventhandling.replay.annotation.ResetHandler;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped
-@ProcessingGroup("GiftCardInMemory")
+@Namespace("GiftCardInMemory")
 public class GiftcardInMemoryHistory {
 
     private final List<Object> history = new ArrayList<>();
     private boolean cardIssuedEventWasHandled = false;
 
     @EventHandler
-    void handle(Api.CardIssuedEvent event, @SequenceNumber long sequenceNumber) {
-        Log.debugf("handling event %s", event);
+    void handle(Api.CardIssuedEvent event) {
+        Log.infof("handling event %s", event);
         cardIssuedEventWasHandled = true;
         history.add(event);
     }
 
     @EventHandler
-    void handle(Api.CardIssuedEvent event, TrackingToken trackingToken, @SequenceNumber Long sequenceNumber,
+    void handle(Api.CardIssuedEvent event, TrackingToken trackingToken,
             ReplayStatus replayStatus) {
-        Log.debugf("handling event %s", event);
+        Log.infof("handling event %s", event);
         cardIssuedEventWasHandled = true;
         history.add(event);
     }
 
     @EventHandler
     void handle(Api.CardRedeemedEvent event) {
-        Log.debugf("handling event %s", event);
+        Log.infof("handling event %s", event);
         history.add(event);
     }
 

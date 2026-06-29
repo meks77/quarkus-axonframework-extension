@@ -1,0 +1,24 @@
+= Axoniq Framework 5.1 Migration Guide
+
+== Links
+- https://docs.axoniq.io/axon-framework-reference/5.1/migration/[Official Migration Guide]
+- https://docs.axoniq.io/axon-framework-reference/5.1/migration/paths/[Official Migration Path]
+
+
+== Migration Guide for Extension Users
+* AxonSerializerProducer renamed AxonConverterProducer, because Axon Classes have been renamed too
+* QuarkusAggregateConfigurer: signature of createConfigurer changed
+* Micrometer Metrics withTags renamed to useDimensions
+* Metric names changed
+* Configuration
+** quarkus.axon.discovery aggregates renamed to event-sourced-entities
+** implement QuarkusAggregateConfigurer if id of EventSourcedEntities is not of type String (the default implementation maybe change in the future to consider the type of the id somehow else)
+* Interceptors have changed APIs, existing Axon 4 Interceptors will not work in Axon 5
+* Retry Scheduling: backoff-factor replaced by backoff-initial-wait
+* Eventprocessors
+** replace tracking processor with pooled processor
+** configuration of processing-groups renamed to namespaces, to fit to the Axon Framework namings
+** wrapOnQueryHandler is removed, because the framework does it automatically
+* QuarkusAggregateConfigurer: named to QuarkusEntityConfigurer, because name in AxonFramework changed to Entity
+* Snapshots are not supported anymore, except for AxonServer and InMemoryEventStorageEngine
+* migrate Snapshot configuration to Annotations

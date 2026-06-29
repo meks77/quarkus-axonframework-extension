@@ -6,14 +6,10 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
-import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.CommandBus;
 
-import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
-import at.meks.quarkiverse.axon.runtime.conf.DuplicateCommandHandlerResolverType;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 
@@ -26,10 +22,7 @@ public class CommandBusConfigurer {
     @Inject
     CommandBusBuilder commandBusBuilder;
 
-    @Inject
-    AxonConfiguration axonConfiguration;
-
-    void configureCommandBus(Configurer configurer) {
+    void configureCommandBus(EventSourcingConfigurer configurer) {
         verifyProvidedBeans();
         if (commandBusProducer.isResolvable()) {
             configureCommandBusUsingCustomProducer(configurer);
@@ -47,30 +40,18 @@ public class CommandBusConfigurer {
         }
     }
 
-    private void configureCommandBusUsingCustomProducer(Configurer configurer) {
-        configurer.configureCommandBus(configuration -> commandBusProducer.get().createCommandBus(configuration));
+    private void configureCommandBusUsingCustomProducer(EventSourcingConfigurer configurer) {
+        configurer.componentRegistry(
+                cr -> cr.registerComponent(CommandBus.class, config -> commandBusProducer.get().createCommandBus(config)));
     }
 
-    private void configureCommandBusUsingBuilder(Configurer configurer) {
-        configurer.configureCommandBus(this::createCommandBusWithBuilder);
+    private void configureCommandBusUsingBuilder(EventSourcingConfigurer configurer) {
+        configurer.messaging(messagingConfigurer -> messagingConfigurer.registerCommandBus(this::createCommandBusWithBuilder));
     }
 
     private CommandBus createCommandBusWithBuilder(Configuration axonConfiguration) {
         return commandBusBuilder
-                .duplicateCommandHandlerResolver(toResolver(duplicateCommandHandlerResolverType()))
                 .build(axonConfiguration);
-    }
-
-    private DuplicateCommandHandlerResolverType duplicateCommandHandlerResolverType() {
-        return axonConfiguration.commandBus().duplicateCommandHandlerResolverType();
-    }
-
-    private DuplicateCommandHandlerResolver toResolver(DuplicateCommandHandlerResolverType resolverType) {
-        return switch (resolverType) {
-            case logAndOverride -> DuplicateCommandHandlerResolution.logAndOverride();
-            case rejectDuplicates -> DuplicateCommandHandlerResolution.rejectDuplicates();
-            case silentOverride -> DuplicateCommandHandlerResolution.silentOverride();
-        };
     }
 
 }

@@ -4,45 +4,36 @@ import java.util.Set;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.config.Configurer;
-import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.configuration.CommandHandlingModule;
+import org.axonframework.messaging.queryhandling.configuration.QueryHandlingModule;
 
-import at.meks.quarkiverse.axon.runtime.customizations.QuarkusAggregateConfigurer;
-import at.meks.quarkiverse.axon.runtime.customizations.SagaStoreConfigurer;
+import at.meks.quarkiverse.axon.runtime.customizations.EventSourcedEntityConfigurer;
 
 public class AxonComponentenSetup {
 
     @Inject
-    SagaStoreConfigurer sagaStoreConfigurer;
+    EventSourcedEntityConfigurer entityConfigurer;
 
-    @Inject
-    QuarkusAggregateConfigurer aggregateConfigurer;
-
-    void configureAggregates(Configurer configurer, Set<Class<?>> aggregateClasses) {
-        aggregateClasses.forEach(
-                aggregate -> configurer.configureAggregate(aggregateConfigurer.createConfigurer(aggregate)));
+    void configureEventSourcedEntities(EventSourcingConfigurer configurer, Set<Class<?>> eventSourcedEntityClasses) {
+        eventSourcedEntityClasses.forEach(
+                entity -> configurer.modelling(
+                        mc -> mc.registerEntity(entityConfigurer.createConfigurer(entity))));
     }
 
-    void configureSagas(Configurer configurer, Set<Class<?>> sagaEventhandlerClasses) {
-        if (!sagaEventhandlerClasses.isEmpty()) {
-            sagaStoreConfigurer.configureSagaStore(configurer);
-            EventProcessingConfigurer eventProcessingConfigurer = configurer.eventProcessing();
-            sagaEventhandlerClasses.forEach(eventProcessingConfigurer::registerSaga);
-        }
-
+    void configureCommandHandlers(EventSourcingConfigurer configurer, Set<Object> commandhandlers) {
+        CommandHandlingModule.CommandHandlerPhase chm = CommandHandlingModule
+                .named("command-handler")
+                .commandHandlers();
+        commandhandlers.forEach(handler -> chm.autodetectedCommandHandlingComponent(config -> handler));
+        configurer.registerCommandHandlingModule(chm.build());
     }
 
-    void configureCommandHandlers(Configurer configurer, Set<Object> commandhandlers) {
-        commandhandlers.forEach(handler -> configurer.registerCommandHandler(conf -> handler));
+    void configureQueryHandlers(EventSourcingConfigurer configurer, Set<Object> queryhandlers) {
+        var qhm = QueryHandlingModule.named(
+                "query-handler").queryHandlers();
+        queryhandlers.forEach(handler -> qhm.autodetectedQueryHandlingComponent(config -> handler));
+        configurer.messaging(mc -> mc.registerQueryHandlingModule(qhm.build()));
     }
 
-    void configureQueryHandlers(Configurer configurer, Set<Object> queryhandlers) {
-        queryhandlers.forEach(handler -> configurer.registerQueryHandler(conf -> handler));
-    }
-
-    void configureEventHandlers(Configurer configurer, Set<Object> eventhandlers) {
-        if (!eventhandlers.isEmpty()) {
-            eventhandlers.forEach(handler -> configurer.eventProcessing().registerEventHandler(conf -> handler));
-        }
-    }
 }

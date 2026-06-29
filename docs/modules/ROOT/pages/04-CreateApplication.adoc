@@ -44,11 +44,11 @@ You can now create the commands, events and the model.
 [source,java]
 ----
 public class Api {
-    public record IssueCardCommand(@TargetAggregateIdentifier String id, int initialAmount) { }
+    public record IssueCardCommand(@TargetEntityId String id, int initialAmount) { }
     public record CardIssuedEvent(String id, int amount) { }
-    public record RedeemCardCommand(@TargetAggregateIdentifier String id, int amount) { }
+    public record RedeemCardCommand(@TargetEntityId String id, int amount) { }
     public record CardRedeemedEvent(String id, int amount) { }
-    public record UndoLatestRedemptionCommand(@TargetAggregateIdentifier String id, int amount) { }
+    public record UndoLatestRedemptionCommand(@TargetEntityId String id, int amount) { }
     public record LatestRedemptionUndoneEvent(String id, int amount) { }
 }
 ----
@@ -60,15 +60,14 @@ The model contains the domain logic. It contains the handlers
 * CommandHandler and
 * EventSourcingHandler
 
-As an example for a domain service, the Command UndoLatestRedemptionCommand is handled not by the root aggregate, but by a domain service.
+As an example for a domain service, the Command UndoLatestRedemptionCommand is handled not by the event source entity, but by a domain service.
 
-The EventSourcingHandler methods are necessary for tracking the state of the aggregate, which is used for validation.
+The EventSourcingHandler methods are necessary for tracking the state of the event sourced entity, which is used for validation.
 
 [source,java]
 ----
 public class Giftcard {
 
-    @AggregateIdentifier
     private String id;
     private int currentAmount;
     private final List<Integer> cardRedemptions = new ArrayList<>();
@@ -138,18 +137,18 @@ public class Giftcard {
 
 }
 ----
-<1> An empty constructor is necessary for the axon framework that it is able to load the aggregate from the event store and apply its events
+<1> An empty constructor is necessary for the axon framework that it is able to load the event sourced entity from the event store and apply its events
 <2> the command handler methods, which handle the requested commands
 <3> the event is applied if the validation was successful
-<4> the event sourcing handler methods, which are invoked when an aggregate is read from the repository and when a command handling method applies an event
+<4> the event sourcing handler methods, which are invoked when an event sourced entity is read from the repository and when a command handling method applies an event
 <5> this methode is executed by the domain service
 
 
 == Domain service
 The domain service gets the repository for the gift card injected. +
-It handles the undo command by loading the aggregate from the repository and then invoking a method on the aggregate.
+It handles the undo command by loading the event sourced entity from the repository and then invoking a method on the event sourced entity.
 
-This is useful if one command modifies more aggregates.
+This is useful if one command modifies more event sourced entities.
 
 [source,java]
 ----
@@ -160,9 +159,11 @@ public class DomainServiceExample {
     Repository<Giftcard> giftcardRepository; // <1>
 
     @CommandHandler
-    void handle(Api.UndoLatestRedemptionCommand command) { // <2>
-        Aggregate<Giftcard> giftcardAggregate = giftcardRepository.load(command.id()); // <3>
-        giftcardAggregate.execute(giftcard -> giftcard.undoRedemption(command.amount())); // <4>
+    void handle(Api.UndoLatestRedemptionCommand command, ProcessingContext processingContext, EventAppender eventAppender) { // <2>
+        CompletableFuture<ManagedEntity<String, Giftcard>> giftcardEntity = giftcardRepository.load(command.id(),
+                processingContext); // <3>
+        ofNullable(giftcardEntity.get().entity()).orElseThrow()
+                .undoRedemption(command.amount(), eventAppender); // <4>
     }
 
     @ExceptionHandler
@@ -175,8 +176,8 @@ public class DomainServiceExample {
 ----
 <1> the axon repository is injected
 <2> the handler method for the command
-<3> First the aggregate is read, using the injected repository
-<4> A method of the aggregate is executed
+<3> First the event sourced entity is read, using the injected repository
+<4> A method of the event sourced entity is executed
 
 == Projection
 The current amount is built and queried using a projection.

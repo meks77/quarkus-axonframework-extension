@@ -13,19 +13,18 @@ import io.smallrye.config.SmallRyeConfig;
 @Recorder
 public class AxonInitializationRecorder {
 
-    public void startAxon(BeanContainer beanContainer, Collection<Class<?>> aggregateClasses,
+    public void startAxon(BeanContainer beanContainer, Collection<Class<?>> eventSourcedEntityClasses,
             Collection<Class<?>> commandhandlerClasses, Collection<Class<?>> queryhandlerClasses,
-            Collection<Class<?>> eventhandlerClasses, Set<Class<?>> sagaEventhandlerClasses,
+            Collection<Class<?>> eventhandlerClasses,
             Set<Class<?>> injectableBeanClasses) {
         AxonExtension axonExtension = beanContainer.beanInstance(AxonExtension.class);
-        aggregateClasses.forEach(axonExtension::addAggregateForRegistration);
+        eventSourcedEntityClasses.forEach(axonExtension::addEventSourcedEntityForRegistration);
         commandhandlerClasses.stream().map(clz -> beanContainer.beanInstance(clz))
                 .forEach(axonExtension::addCommandhandlerForRegistration);
         queryhandlerClasses.stream().map(clz -> beanContainer.beanInstance(clz))
                 .forEach(axonExtension::addQueryHandlerForRegistration);
         eventhandlerClasses.stream().map(clz -> beanContainer.beanInstance(clz))
                 .forEach(axonExtension::addEventhandlerForRegistration);
-        axonExtension.setSagaClasses(sagaEventhandlerClasses);
         injectableBeanClasses
                 .forEach(clazz -> axonExtension.addInjectableBean(clazz, getBean(beanContainer, clazz)));
         axonExtension.init();

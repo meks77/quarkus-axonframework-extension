@@ -1,7 +1,6 @@
 package at.meks.quarkiverse.axon.eventstore.jpa.deployment;
 
-import org.axonframework.eventsourcing.eventstore.jpa.DomainEventEntry;
-import org.axonframework.eventsourcing.eventstore.jpa.SnapshotEventEntry;
+import org.axonframework.eventsourcing.eventstore.jpa.AggregateEventEntry;
 
 import at.meks.quarkiverse.axon.eventstore.jpa.runtime.JpaEventstoreConfigurer;
 import at.meks.quarkiverse.axon.eventstore.jpa.runtime.QuarkusAxonEntityManagerProvider;
@@ -36,8 +35,7 @@ public class JpaEventstoreProcessor {
 
     @BuildStep
     void registerJpaEntities(BuildProducer<AdditionalJpaModelBuildItem> additionalJpaModel) {
-        additionalJpaModel.produce(new AdditionalJpaModelBuildItem(DomainEventEntry.class.getName()));
-        additionalJpaModel.produce(new AdditionalJpaModelBuildItem(SnapshotEventEntry.class.getName()));
+        additionalJpaModel.produce(new AdditionalJpaModelBuildItem(AggregateEventEntry.class.getName()));
     }
 
 }

@@ -4,7 +4,7 @@
 
 link:index.adoc[Index]
 
-link:05-05-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-05-CustomEventSourcedEntityConfigurer.adoc[← Previous: Custom Event Sourced Entity Configurer]
 
 link:05-07-TokenStores.adoc[Next: Token Stores →]
 
@@ -88,6 +88,9 @@ For details about the different event processors and the token store,
 please read the documentation of the Axon framework.
 
 == Persistent Stream Event Processors
+
+CAUTION: Persistent Streams are currently not supported, because they were not supported in the Axon Framework in version 5.1.0.
+
 Persistent streams are available as soon as you have added the dependency for the link:05-03-EventStores.adoc[Axon Server Event Store].
 
 For Persistent Streams it is not possible to set a default processor, which is used in the case, that `Subscribing Event Processors` should be used by default. The reason is that it wouldn't be possible
@@ -129,7 +132,7 @@ This is an example of a configuration of the Subscribing Event Processor.
 [source,properties]
 ----
 quarkus.axon.subscribingprocessor.name=My-Subscribing-Processor
-quarkus.axon.subscribingprocessor.processing-groups=GiftCardInMemory
+quarkus.axon.subscribingprocessor.namespaces=GiftCardInMemory
 ----
 
 == Persistent Stream Configuration Reference
@@ -146,6 +149,6 @@ include::includes/quarkus-axon-pooled-eventprocessor.adoc[leveloffset=+1,opts=op
 
 link:index.adoc[Index]
 
-link:05-05-CustomAggregateConfigurer.adoc[← Previous: Custom Aggregate Configurer]
+link:05-05-CustomEventSourcedEntityConfigurer.adoc[← Previous: Custom Event Sourced Entity Configurer]
 
 link:05-07-TokenStores.adoc[Next: Token Stores →]

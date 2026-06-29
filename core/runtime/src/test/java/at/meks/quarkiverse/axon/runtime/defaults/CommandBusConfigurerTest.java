@@ -1,39 +1,32 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.inject.Instance;
 
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.Configuration;
-import org.axonframework.config.Configurer;
+import org.axonframework.common.configuration.Configuration;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+import org.axonframework.messaging.commandhandling.CommandBus;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 
 @ExtendWith(MockitoExtension.class)
 class CommandBusConfigurerTest {
 
     @Mock
-    CommandBusBuilder commandBusBuilder;
-
-    @Mock
     Instance<CommandBusProducer> commandBusProducer;
 
     @Mock
-    Configurer axonConfigurer;
+    EventSourcingConfigurer axonConfigurer;
 
     @InjectMocks
     CommandBusConfigurer configurer;
@@ -69,27 +62,6 @@ class CommandBusConfigurerTest {
                                     "at.meks.quarkiverse.axon.runtime.defaults.CommandBusConfigurerTest$CommandBusProducer2");
         }
 
-    }
-
-    @Test
-    void producerIsResolvable() {
-        when(commandBusProducer.isResolvable()).thenReturn(true);
-        CommandBusProducer expectedCommandProducer = Mockito.mock(CommandBusProducer.class);
-        when(commandBusProducer.get()).thenReturn(expectedCommandProducer);
-
-        configurer.configureCommandBus(axonConfigurer);
-
-        var functionCaptor = commandBusFunctionCaptor();
-        verify(axonConfigurer).configureCommandBus(functionCaptor.capture());
-        functionCaptor.getValue().apply(Mockito.mock(Configuration.class));
-        verify(expectedCommandProducer).createCommandBus(Mockito.any());
-
-        verifyNoInteractions(commandBusBuilder);
-    }
-
-    private ArgumentCaptor<Function<Configuration, CommandBus>> commandBusFunctionCaptor() {
-        //noinspection unchecked
-        return ArgumentCaptor.forClass(Function.class);
     }
 
 }

@@ -13,19 +13,18 @@ import io.quarkus.devui.spi.page.TableDataPageBuilder;
 
 public class DevUiProcessor {
 
-    public static final String SAGA_EVENTHANDLER_BUILD_TIME_DATA_KEY = "sagaEventHandlers";
     public static final String EVENTHANDLER_BUILD_TIME_DATA_KEY = "eventHandlers";
-    public static final String AGGREGATES_BUILD_TIME_DATA_KEY = "aggregates";
+    public static final String EVENT_SOURCED_ENTITIES_BUILD_TIME_DATA_KEY = "entities";
     private static final String QUERY_HANDLER_BUILD_TIME_DATA_KEY = "queryHandlers";
     private static final String COMMAMND_HANDLER_BUILD_TIME_DATA_KEY = "commandHandlers";
 
     @BuildStep(onlyIf = IsDevelopment.class)
-    CardPageBuildItem create(List<AggregateBeanBuildItem> aggregateBeanBuildItem,
+    CardPageBuildItem create(List<EventSourcedEntityBeanBuildItem> eventSourcedEntityBeanBuildItems,
             List<SagaEventhandlerBeanBuildItem> sagaEventHandlerBeanBuildItem,
             List<EventhandlerBeanBuildItem> eventHandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryHandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandHandlerBeanBuildItems) {
-        var buildInfo = buildInfo(aggregateBeanBuildItem, sagaEventHandlerBeanBuildItem, eventHandlerBeanBuildItems,
+        var buildInfo = buildInfo(eventSourcedEntityBeanBuildItems, sagaEventHandlerBeanBuildItem, eventHandlerBeanBuildItems,
                 queryHandlerBeanBuildItems, commandHandlerBeanBuildItems);
         CardPageBuildItem card = new CardPageBuildItem();
         card.setLogo("AxonFramework-DarkIcon.svg", "AxonFramework-DarkIcon.svg");
@@ -34,11 +33,8 @@ public class DevUiProcessor {
         card.addLibraryVersion("org.axonframework", "axon-messaging", "Axon Messaging",
                 "https://www.axoniq.io/products/axon-framework");
 
-        card.addBuildTimeData(AGGREGATES_BUILD_TIME_DATA_KEY, buildInfo.aggregates());
-        card.addPage(aggregatesPage(aggregateBeanBuildItem));
-
-        card.addBuildTimeData(SAGA_EVENTHANDLER_BUILD_TIME_DATA_KEY, buildInfo.sagaEventHandlers());
-        card.addPage(sagaEventHandlerPage(sagaEventHandlerBeanBuildItem));
+        card.addBuildTimeData(EVENT_SOURCED_ENTITIES_BUILD_TIME_DATA_KEY, buildInfo.eventSourcedEntities());
+        card.addPage(eventSourcedEntitiesPage(eventSourcedEntityBeanBuildItems));
 
         card.addBuildTimeData(EVENTHANDLER_BUILD_TIME_DATA_KEY, buildInfo.eventHandlers());
         card.addPage(eventHandlerPage(eventHandlerBeanBuildItems));
@@ -52,9 +48,10 @@ public class DevUiProcessor {
         return card;
     }
 
-    private static TableDataPageBuilder aggregatesPage(List<AggregateBeanBuildItem> aggregateBeanBuildItem) {
-        return newTableDataPageBuilder("Aggregates", "egg", AGGREGATES_BUILD_TIME_DATA_KEY,
-                aggregateBeanBuildItem.size());
+    private static TableDataPageBuilder eventSourcedEntitiesPage(
+            List<EventSourcedEntityBeanBuildItem> eventSourcedEntityBeanBuildItems) {
+        return newTableDataPageBuilder("Event sourced entities", "egg", EVENT_SOURCED_ENTITIES_BUILD_TIME_DATA_KEY,
+                eventSourcedEntityBeanBuildItems.size());
     }
 
     private static TableDataPageBuilder newTableDataPageBuilder(String title, String iconName, String buildTimeDataKey,
@@ -66,14 +63,9 @@ public class DevUiProcessor {
                 .staticLabel(String.valueOf(counter));
     }
 
-    private static TableDataPageBuilder sagaEventHandlerPage(List<SagaEventhandlerBeanBuildItem> aggregateBeanBuildItem) {
-        return newTableDataPageBuilder("Saga Event Handlers", "timeline", SAGA_EVENTHANDLER_BUILD_TIME_DATA_KEY,
-                aggregateBeanBuildItem.size());
-    }
-
-    private static TableDataPageBuilder eventHandlerPage(List<EventhandlerBeanBuildItem> aggregateBeanBuildItem) {
+    private static TableDataPageBuilder eventHandlerPage(List<EventhandlerBeanBuildItem> eventhandlerBeanBuildItems) {
         return newTableDataPageBuilder("Event Handlers", "bell", EVENTHANDLER_BUILD_TIME_DATA_KEY,
-                aggregateBeanBuildItem.size());
+                eventhandlerBeanBuildItems.size());
     }
 
     private TableDataPageBuilder queryHandlerPage(List<QueryhandlerBeanBuildItem> queryhandlerBeanBuildItems) {
@@ -86,17 +78,17 @@ public class DevUiProcessor {
                 commandHandlerBeanBuildItems.size());
     }
 
-    private BuildInfoApi.BuildInfo buildInfo(List<AggregateBeanBuildItem> aggregateBeanBuildItem,
+    private BuildInfoApi.BuildInfo buildInfo(List<EventSourcedEntityBeanBuildItem> eventSourcedEntityBeanBuildItem,
             List<SagaEventhandlerBeanBuildItem> sagaEventHandlerBeanBuildItem,
             List<EventhandlerBeanBuildItem> eventHandlerBeanBuildItems,
             List<QueryhandlerBeanBuildItem> queryHandlerBeanBuildItems,
             List<CommandhandlerBeanBuildItem> commandHandlerBeanBuildItems) {
-        var aggregates = getSortedClassNames(aggregateBeanBuildItem, BuildInfoApi.Aggregate::new);
+        var entities = getSortedClassNames(eventSourcedEntityBeanBuildItem, BuildInfoApi.EventSourcedEntity::new);
         var sagaEventHandler = getSortedClassNames(sagaEventHandlerBeanBuildItem, BuildInfoApi.SagaEventHandler::new);
         var eventHandler = getSortedClassNames(eventHandlerBeanBuildItems, BuildInfoApi.EventHandler::new);
         var queryHandler = getSortedClassNames(queryHandlerBeanBuildItems, BuildInfoApi.QueryHandler::new);
         var commandHandler = getSortedClassNames(commandHandlerBeanBuildItems, BuildInfoApi.CommandHandler::new);
-        return new BuildInfoApi.BuildInfo(aggregates, sagaEventHandler, eventHandler, queryHandler, commandHandler);
+        return new BuildInfoApi.BuildInfo(entities, sagaEventHandler, eventHandler, queryHandler, commandHandler);
     }
 
     private static <T extends ClassProvider, X> List<X> getSortedClassNames(List<T> items, Function<String, X> mapper) {

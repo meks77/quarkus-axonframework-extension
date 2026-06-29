@@ -8,9 +8,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.IntervalRetryScheduler;
-import org.axonframework.commandhandling.gateway.RetryScheduler;
+import org.axonframework.messaging.core.retry.AsyncRetryScheduler;
+import org.axonframework.messaging.core.retry.ExponentialBackOffRetryPolicy;
+import org.axonframework.messaging.core.retry.MaxAttemptsPolicy;
+import org.axonframework.messaging.core.retry.RetryScheduler;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 
@@ -29,9 +30,11 @@ public class RetrySchedulerConfigurer {
     Optional<RetryScheduler> retryScheduler() {
         validateRetryConfiguration();
         if (intervalRetrySchedulerIsConfigured()) {
-            return Optional.of(intervalRetryScheduler());
+            return Optional.of(intervalRetryScheduler(retryConfig().fixedRetryIntervalMillis().get(),
+                    retryConfig().maxRetryCount().get()));
         } else if (exponentialBackoffIntervalRetrySchedulerIsConfigured()) {
-            return Optional.of(backoffIntervalRetryScheduler());
+            return Optional.of(backoffIntervalRetryScheduler(retryConfig().backoffInitialWait().get(),
+                    retryConfig().maxRetryCount().get()));
         } else if (customRetrySchedulerIsProvided()) {
             return Optional.of(customRetryScheduler());
         }
@@ -59,17 +62,17 @@ public class RetrySchedulerConfigurer {
     }
 
     private boolean isOnlyBackoffFactorConfigured() {
-        return retryConfig().backoffFactor().isPresent() && retryConfig().maxRetryCount().isEmpty();
+        return retryConfig().backoffInitialWait().isPresent() && retryConfig().maxRetryCount().isEmpty();
     }
 
     private boolean isOnlyFixedIntervalConfigured() {
-        return retryConfig().fixedRetryInterval().isPresent() && retryConfig().maxRetryCount().isEmpty();
+        return retryConfig().fixedRetryIntervalMillis().isPresent() && retryConfig().maxRetryCount().isEmpty();
     }
 
     private boolean isOnlyMaxRetryConfigured() {
         return retryConfig().maxRetryCount().isPresent() &&
-                retryConfig().fixedRetryInterval().isEmpty() &&
-                retryConfig().backoffFactor().isEmpty();
+                retryConfig().fixedRetryIntervalMillis().isEmpty() &&
+                retryConfig().backoffInitialWait().isEmpty();
     }
 
     private void validateCustomRetrySchedulerProducer() {
@@ -84,16 +87,13 @@ public class RetrySchedulerConfigurer {
     }
 
     private boolean intervalRetrySchedulerIsConfigured() {
-        return retryConfig().fixedRetryInterval().isPresent() &&
+        return retryConfig().fixedRetryIntervalMillis().isPresent() &&
                 retryConfig().maxRetryCount().isPresent();
     }
 
-    private IntervalRetryScheduler intervalRetryScheduler() {
-        return new IntervalRetryScheduler.Builder()
-                .retryInterval(retryConfig().fixedRetryInterval().orElseThrow())
-                .maxRetryCount(retryConfig().maxRetryCount().orElseThrow())
-                .retryExecutor(executorService)
-                .build();
+    private AsyncRetryScheduler intervalRetryScheduler(int interval, int maxRetryCount) {
+        return new AsyncRetryScheduler(new MaxAttemptsPolicy(new IntervalRetryPolicy(interval), maxRetryCount),
+                executorService);
     }
 
     private AxonConfiguration.CommandRetryScheduling retryConfig() {
@@ -101,16 +101,14 @@ public class RetrySchedulerConfigurer {
     }
 
     private boolean exponentialBackoffIntervalRetrySchedulerIsConfigured() {
-        return retryConfig().backoffFactor().isPresent() &&
+        return retryConfig().backoffInitialWait().isPresent() &&
                 retryConfig().maxRetryCount().isPresent();
     }
 
-    private ExponentialBackOffIntervalRetryScheduler backoffIntervalRetryScheduler() {
-        return new ExponentialBackOffIntervalRetryScheduler.Builder()
-                .maxRetryCount(retryConfig().maxRetryCount().orElseThrow())
-                .backoffFactor(retryConfig().backoffFactor().orElseThrow())
-                .retryExecutor(executorService)
-                .build();
+    private AsyncRetryScheduler backoffIntervalRetryScheduler(int backoffInitialWait, int maxRetryCount) {
+        return new AsyncRetryScheduler(
+                new MaxAttemptsPolicy(new ExponentialBackOffRetryPolicy(backoffInitialWait), maxRetryCount),
+                executorService);
     }
 
     private boolean customRetrySchedulerIsProvided() {

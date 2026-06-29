@@ -4,8 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
-import org.axonframework.axonserver.connector.AxonServerConnectionManager;
-import org.axonframework.config.Configuration;
+import org.axonframework.common.configuration.Configuration;
+
+import io.axoniq.framework.axonserver.connector.api.AxonServerConnectionManager;
 
 @ApplicationScoped
 public class AxonServerComponentProducer {

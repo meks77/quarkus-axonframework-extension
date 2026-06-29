@@ -1,6 +1,10 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.config.EventProcessingConfigurer;
+import java.util.stream.Stream;
+
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
+
+import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
 
 /**
  * An interface to customize the configuration of Axon Framework's event processing.
@@ -10,12 +14,14 @@ import org.axonframework.config.EventProcessingConfigurer;
 public interface AxonEventProcessingConfigurer {
 
     /**
-     * Configures the provided {@link EventProcessingConfigurer} instance.
+     * Configures the provided {@link EventSourcingConfigurer} instance.
      * This method allows for applying customizations to the event processing components,
      * such as event processors, within the Axon Framework's configuration.
      *
-     * @param configurer the {@link EventProcessingConfigurer} to be customized
+     * @param configurer the {@link EventSourcingConfigurer} to be customized
+     * @param eventHandler contains the namespaces and handlers, which should used by event processors
      */
-    void configure(EventProcessingConfigurer configurer);
+    void configure(EventSourcingConfigurer configurer,
+            Stream<EventhandlersPerNamespace.EventhandlersOfANamespace> eventHandler);
 
 }

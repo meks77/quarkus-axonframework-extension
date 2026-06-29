@@ -1,7 +1,7 @@
 package at.meks.quarkiverse.axon.shared.model;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
+import org.axonframework.messaging.eventhandling.gateway.EventAppender;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 public class PersonalInformation {
 
     @CommandHandler
-    void handle(Api.AddPersonalInformationCommand command) {
-        AggregateLifecycle.apply(new Api.PersonalInformationAddedEvent(command.id(), command.personName()));
+    void handle(Api.AddPersonalInformationCommand command, EventAppender eventAppender) {
+        eventAppender.append(new Api.PersonalInformationAddedEvent(command.id(), command.personName()));
     }
 
 }

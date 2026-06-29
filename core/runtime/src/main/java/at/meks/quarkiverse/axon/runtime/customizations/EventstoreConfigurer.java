@@ -1,6 +1,6 @@
 package at.meks.quarkiverse.axon.runtime.customizations;
 
-import org.axonframework.config.Configurer;
+import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
 /**
  * Provides a mechanism to customize the configuration of the Axon Event Store.
@@ -12,9 +12,9 @@ import org.axonframework.config.Configurer;
 public interface EventstoreConfigurer {
 
     /**
-     * Applies custom configurations to the given {@link Configurer} instance.
+     * Applies custom configurations to the given {@link EventSourcingConfigurer} instance.
      *
      * @param configurer the Axon {@code Configurer} instance to be customized
      */
-    void configure(Configurer configurer);
+    void configure(EventSourcingConfigurer configurer);
 }

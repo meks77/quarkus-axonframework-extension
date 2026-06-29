@@ -8,12 +8,12 @@ import java.util.UUID;
 
 import jakarta.inject.Inject;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.model.Api;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class NoCommandExceptionInterceptorTest {
 
@@ -21,7 +21,7 @@ public class NoCommandExceptionInterceptorTest {
     CommandGateway commandGateway;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(() -> javaArchiveBase()
                     .addAsResource(
                             propertiesFile("/interceptor.command/noCommandExceptionInterceptor.properties"),

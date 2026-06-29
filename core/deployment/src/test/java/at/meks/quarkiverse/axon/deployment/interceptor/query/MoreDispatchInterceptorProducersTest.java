@@ -4,14 +4,14 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.axonframework.messaging.MessageDispatchInterceptor;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.core.MessageDispatchInterceptor;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.QueryDispatchInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
 
@@ -19,7 +19,7 @@ public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer1 implements QueryDispatchInterceptorsProducer {
 
         @Override
-        public List<MessageDispatchInterceptor<QueryMessage<?, ?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<QueryMessage>> createDispatchInterceptor() {
             return List.of(interceptor());
         }
 
@@ -29,18 +29,18 @@ public class MoreDispatchInterceptorProducersTest extends JavaArchiveTest {
     public static class InterceptorsProducer2 implements QueryDispatchInterceptorsProducer {
 
         @Override
-        public List<MessageDispatchInterceptor<QueryMessage<?, ?>>> createDispatchInterceptor() {
+        public List<MessageDispatchInterceptor<QueryMessage>> createDispatchInterceptor() {
             return List.of(interceptor());
         }
 
     }
 
-    private static @NotNull MessageDispatchInterceptor<QueryMessage<?, ?>> interceptor() {
-        return messages -> (index, query) -> query;
+    private static @NotNull MessageDispatchInterceptor<QueryMessage> interceptor() {
+        return ((message, context, interceptorChain) -> interceptorChain.proceed(message, context));
     }
 
     @RegisterExtension()
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(InterceptorsProducer1.class, InterceptorsProducer2.class))
             .setExpectedException(IllegalStateException.class, true);
 

@@ -2,8 +2,8 @@ package at.meks.quarkiverse.axon.runtime.customizations;
 
 import java.util.List;
 
-import org.axonframework.messaging.MessageHandlerInterceptor;
-import org.axonframework.queryhandling.QueryMessage;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
+import org.axonframework.messaging.queryhandling.QueryMessage;
 
 /**
  * Provides a mechanism for creating a list of query handler interceptors.
@@ -20,6 +20,6 @@ public interface QueryHandlerInterceptorsProducer {
      * @return a list of {@link MessageHandlerInterceptor} objects
      *         for handling {@link QueryMessage} instances.
      */
-    List<MessageHandlerInterceptor<QueryMessage<?, ?>>> createHandlerInterceptor();
+    List<MessageHandlerInterceptor<QueryMessage>> createHandlerInterceptor();
 
 }

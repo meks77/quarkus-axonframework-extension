@@ -28,9 +28,9 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a| [[quarkus-axon-metrics_quarkus-axon-metrics-with-tags]] [.property-path]##link:#quarkus-axon-metrics_quarkus-axon-metrics-with-tags[`+++quarkus.axon.metrics.with-tags+++`]##
+a| [[quarkus-axon-metrics_quarkus-axon-metrics-use-dimensions]] [.property-path]##link:#quarkus-axon-metrics_quarkus-axon-metrics-use-dimensions[`+++quarkus.axon.metrics.use-dimensions+++`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.axon.metrics.with-tags+++[]
+config_property_copy_button:+++quarkus.axon.metrics.use-dimensions+++[]
 endif::add-copy-button-to-config-props[]
 
 
@@ -40,10 +40,10 @@ enables or disables tags for the metrics.
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_METRICS_WITH_TAGS+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_METRICS_USE_DIMENSIONS+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_AXON_METRICS_WITH_TAGS+++`
+Environment variable: `+++QUARKUS_AXON_METRICS_USE_DIMENSIONS+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean

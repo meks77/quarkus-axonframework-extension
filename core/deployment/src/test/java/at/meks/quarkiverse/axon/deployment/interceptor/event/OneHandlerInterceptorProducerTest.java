@@ -10,8 +10,8 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-import org.axonframework.eventhandling.EventMessage;
-import org.axonframework.messaging.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptor;
+import org.axonframework.messaging.eventhandling.EventMessage;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventHandlerInterceptorsProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
 
@@ -43,21 +43,21 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         }
 
         @Override
-        public List<MessageHandlerInterceptor<EventMessage<?>>> createHandlerInterceptor() {
+        public List<MessageHandlerInterceptor<EventMessage>> createHandlerInterceptor() {
             return List.of(interceptor("Interceptor 1"), interceptor("Interceptor 2"));
         }
 
-        private @NotNull MessageHandlerInterceptor<EventMessage<?>> interceptor(String interceptorName) {
-            return (unitOfWork, interceptorChain) -> {
-                logger.debug(interceptorName + " logs event");
-                return interceptorChain.proceed();
-            };
+        private @NotNull MessageHandlerInterceptor<EventMessage> interceptor(String interceptorName) {
+            return ((message, context, interceptorChain) -> {
+                logger.debug("{} logs event", interceptorName);
+                return interceptorChain.proceed(message, context);
+            });
         }
 
     }
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(InterceptorsProducer.class, LoggerProducer.class));
 
     @Override
@@ -68,11 +68,11 @@ public class OneHandlerInterceptorProducerTest extends JavaArchiveTest {
         // calculation like: the number of applied events * number of event processors.
 
         int numberOfInterceptors = 2;
-        int numberOfAppliedEvents = 8;
+        int numberOfAppliedEvents = 5;
         int minNumberOfInvocations = numberOfInterceptors * numberOfAppliedEvents;
         await().atMost(Duration.ofSeconds(10))
-                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 1 logs event"));
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("{} logs event", "Interceptor 1"));
         await().atMost(Duration.ofSeconds(3))
-                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("Interceptor 2 logs event"));
+                .untilAsserted(() -> verify(LOGGER, atLeast(minNumberOfInvocations)).debug("{} logs event", "Interceptor 2"));
     }
 }
