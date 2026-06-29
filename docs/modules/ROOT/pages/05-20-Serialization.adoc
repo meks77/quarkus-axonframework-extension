@@ -13,6 +13,10 @@ To enable Jackson Blackbird only for Axon's default converters, set:
 quarkus.axon.serialization.blackbird.enabled=true
 ----
 
+This configures only the Axon converter ObjectMapper copy. The Quarkus REST ObjectMapper is not modified.
+
+Native image compatibility for this option is not validated by the default test suite. If you enable Blackbird for a native image build, run the native integration tests for your application before relying on it in production.
+
 == Use-cases for custom converters
 
 === Events or value objects are not records and do not follow the Bean Standard

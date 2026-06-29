@@ -15,14 +15,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
+import at.meks.quarkiverse.axon.runtime.conf.SerializationConfig;
 import at.meks.quarkiverse.axon.shared.model.Api;
 
 class QuarkusAxonConverterProducerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final AxonConfiguration axonConfiguration = mock(AxonConfiguration.class);
-    private final AxonConfiguration.SerializationConfig serializationConfig = mock(AxonConfiguration.SerializationConfig.class);
-    private final AxonConfiguration.BlackbirdConfig blackbirdConfig = mock(AxonConfiguration.BlackbirdConfig.class);
+    private final SerializationConfig serializationConfig = mock(SerializationConfig.class);
+    private final SerializationConfig.BlackbirdConfig blackbirdConfig = mock(SerializationConfig.BlackbirdConfig.class);
 
     private QuarkusAxonConverterProducer producer;
 
