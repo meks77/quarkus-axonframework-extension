@@ -57,7 +57,6 @@
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jackson.version>2.20.1</jackson.version>
         <quarkus.version>3.37.0</quarkus.version>
     </properties>
 
@@ -76,11 +75,6 @@
                 <version>5.1.2</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-blackbird</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <!-- The dependency is necessary, because the axon framework and the axon server connector use different

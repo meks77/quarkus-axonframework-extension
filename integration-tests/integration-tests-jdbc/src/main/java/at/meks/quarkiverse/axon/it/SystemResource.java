@@ -13,9 +13,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-import org.axonframework.serialization.Serializer;
+import org.axonframework.conversion.Converter;
 
-import at.meks.quarkiverse.axon.runtime.customizations.AxonSerializerProducer;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.model.Api;
 
 @Path("system")
@@ -25,7 +27,7 @@ public class SystemResource {
     DataSource dataSource;
 
     @Inject
-    AxonSerializerProducer axonSerializerProducer;
+    AxonConverterProducer axonConverterProducer;
 
     @GET
     @Path("snapshots/count")
@@ -46,17 +48,17 @@ public class SystemResource {
     @Path("serialization/axon-roundtrip")
     @Produces(MediaType.TEXT_PLAIN)
     public String axonSerializationRoundTrip() {
-        assertRoundTrip(axonSerializerProducer.createSerializer(), new Api.CardIssuedEvent("native-card", 20));
-        assertRoundTrip(axonSerializerProducer.createEventSerializer(), new Api.CardRedeemedEvent("native-card", 3));
-        assertRoundTrip(axonSerializerProducer.createMessageSerializer(), new Api.IssueCardCommand("native-card", 20));
+        assertRoundTrip(axonConverterProducer.createGeneralConverter(), new Api.CardIssuedEvent("native-card", 20));
+        assertRoundTrip(axonConverterProducer.createEventConverter(), new Api.CardRedeemedEvent("native-card", 3));
+        assertRoundTrip(axonConverterProducer.createMessageConverter(), new Api.IssueCardCommand("native-card", 20));
         return "ok";
     }
 
-    private static <T> void assertRoundTrip(Serializer serializer, T value) {
-        var serialized = serializer.serialize(value, String.class);
-        Object deserialized = serializer.deserialize(serialized);
+    private static <T> void assertRoundTrip(Converter converter, T value) {
+        JsonNode serialized = converter.convert(value, JsonNode.class);
+        Object deserialized = converter.convert(serialized, value.getClass());
         if (!value.equals(deserialized)) {
-            throw new IllegalStateException("Axon serializer round trip failed for " + value.getClass().getName());
+            throw new IllegalStateException("Axon converter round trip failed for " + value.getClass().getName());
         }
     }
 
