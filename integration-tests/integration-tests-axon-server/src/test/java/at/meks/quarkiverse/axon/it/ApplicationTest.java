@@ -68,7 +68,7 @@ class ApplicationTest {
                 .untilAsserted(() -> assertCurrentAmount(14));
 
         // TODO: uncomment as soon as snapshots exist
-        //        assertAtLeastOneSnapshotExists(cardId);
+        assertAtLeastOneSnapshotExists(cardId);
     }
 
     private void issueNewCard(@SuppressWarnings("SameParameterValue") int initialAmount) {

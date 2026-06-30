@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import org.axonframework.eventsourcing.annotation.EventSourcedEntity;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
+import org.axonframework.eventsourcing.annotation.Snapshotting;
 import org.axonframework.eventsourcing.annotation.reflection.EntityCreator;
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler;
+import org.axonframework.messaging.eventhandling.annotation.Event;
 import org.axonframework.messaging.eventhandling.gateway.EventAppender;
 import org.axonframework.modelling.entity.annotation.EntityMember;
 
@@ -18,8 +20,9 @@ import io.quarkus.logging.Log;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @EventSourcedEntity
+@Event(name = "Giftcard", namespace = "giftcard")
 // TODO: uncomment as soon as Snapshots work
-//@Snapshotting(afterEvents = 2)
+@Snapshotting(afterEvents = 1)
 public class Giftcard {
 
     private String id;

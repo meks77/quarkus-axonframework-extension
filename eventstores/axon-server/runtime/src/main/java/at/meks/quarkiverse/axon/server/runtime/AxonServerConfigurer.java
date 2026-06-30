@@ -1,7 +1,5 @@
 package at.meks.quarkiverse.axon.server.runtime;
 
-import static io.quarkus.arc.ComponentsProvider.LOG;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -14,7 +12,7 @@ import org.axonframework.common.configuration.Configuration;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
-import org.axonframework.eventsourcing.snapshot.store.SnapshotStore;
+import org.axonframework.eventsourcing.eventstore.SnapshotCapableEventStorageEngine;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 import org.jspecify.annotations.NonNull;
 
@@ -49,27 +47,36 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
                 cr -> cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
                         .registerComponent(AxonServerConnectionManager.class, cfg -> connectionManager));
 
-        configurer.registerEventStorageEngine(config -> configureStorageEngine(config, connectionManager));
-
-        configureSnapshotStore(configurer, axonServerConfiguration, connectionManager);
+        configurer.registerEventStorageEngine(
+                config -> createStorageEngine(config, connectionManager, axonServerConfiguration));
     }
 
-    private void configureSnapshotStore(EventSourcingConfigurer configurer, AxonServerConfiguration axonServerConfiguration,
-            AxonServerConnectionManager cm) {
-        if (snapshotStoreConfigurer.isAmbiguous()) {
-            throw new IllegalStateException("More than one snapshot store configured");
+    /*
+     * TODO snapshot store config
+     * some way to configure snapshot capabilities:
+     * add some config to enable it or
+     * activate snapshot capabilities by analyzing if entities are annotated with @Snapshotting
+     * how to deal with stores, that do not (or not by itself alone) snapshotting
+     * entity annotation without snapshot store currently throws an error on start (more of a test problem)
+     * can we somehow make this a warning and proceed without the desired snapshotting?
+     * how to make this approach (wrapping in snapshotcapable...) work with SnapshotStoreConfigurer Interface
+     * -> maybe property would be better? what are the potential use cases / permutations?
+     *
+     * further: snapshot trigger definition, declarative way for global config? looks to me as this is only per entity as well
+     */
+    private @NonNull EventStorageEngine createStorageEngine(Configuration config, AxonServerConnectionManager connectionManager,
+                                                            AxonServerConfiguration axonServerConfiguration) {
+        EventStorageEngine axonStorageEngine = configureStorageEngine(config, connectionManager);
+        if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.AGGREGATE_BASED) {
+            // the aggregate based store does not support snapshotting by itself and might require an additional DCB context store
+            // details are unclear, therefor we disabled it for now
+            return axonStorageEngine;
         }
-
-        if (snapshotStoreConfigurer.isResolvable()) {
-            snapshotStoreConfigurer.get().configure(configurer);
-        } else {
-            LOG.infof("Snapshot Store not configured, using default Axon Snapshot store");
-            configurer.componentRegistry(
-                    registry -> registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
-                            c -> new AxonServerSnapshotStore(
-                                    cm.getConnection(axonServerConfiguration.getContext()),
-                                    c.getComponent(GeneralConverter.class))));
-        }
+        // we configure snapshot capable storage engine, if we're on DCB regardless of actual usage
+        return new SnapshotCapableEventStorageEngine(axonStorageEngine,
+                new AxonServerSnapshotStore(connectionManager.getConnection(axonServerConfiguration.getContext()),
+                        config.getComponent(
+                                GeneralConverter.class)));
     }
 
     private @NonNull EventStorageEngine configureStorageEngine(Configuration config,
