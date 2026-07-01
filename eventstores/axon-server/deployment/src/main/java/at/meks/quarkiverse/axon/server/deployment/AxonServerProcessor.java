@@ -67,7 +67,7 @@ public class AxonServerProcessor {
         Map<String, String> configOverrides = Map.of(
                 "quarkus.axon.server.default-grpc-port", apiPort.toString());
         return DevServicesResultBuildItem.discovered()
-                .name(FEATURE)
+                .feature(FEATURE)
                 .containerId(container.getContainerId())
                 .config(configOverrides)
                 .build();
