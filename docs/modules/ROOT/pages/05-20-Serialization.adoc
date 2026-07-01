@@ -1,21 +1,32 @@
 = Serialization
 
-By default, the Jackson Serializer of quarkus is used. It is the same that is used for REST services.
+By default, the Jackson ObjectMapper of Quarkus is used for Axon converters. It is the same ObjectMapper that is used for REST services.
 
-If you need to adapt the serializer, keep in mind that also the serialization for the REST services is changed.
+If you need to adapt that ObjectMapper, keep in mind that serialization for REST services is changed as well.
 
-If you want to configure only the serialization of Axon releated data, you can implement `AxonConverterProducer`.
+If you want to configure only the conversion of Axon related data, you can implement `AxonConverterProducer`.
 
-== Use-cases for custom serializers
+To enable Jackson Blackbird only for Axon's default converters, set:
+
+[source,properties]
+----
+quarkus.axon.serialization.blackbird.enabled=true
+----
+
+This configures only the Axon converter ObjectMapper copy. The Quarkus REST ObjectMapper is not modified.
+
+Native image compatibility for this option is not validated by the default test suite. If you enable Blackbird for a native image build, run the native integration tests for your application before relying on it in production.
+
+== Use-cases for custom converters
 
 === Events or value objects are not records and do not follow the Bean Standard
-If your events or one of its classes in the object hierarchy doesn't follow the Bean Standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the event serializer((AxonSerializerProducer.createEventSerializer).
+If your events or one of the classes in their object hierarchy does not follow the Bean Standard, configure an event converter through `AxonConverterProducer.createEventConverter()`.
 
 === Event Sourced Entities and Entities do hide its fields
-In the case snapshotting is activated and the Event Sourced Entities and Entities hide their fields, which is a common pattern, the field visibility ANY must be configured in the object mapper for the serializer(AxonSerializerProducer.createSerializer).
+If snapshotting is activated and Event Sourced Entities hide their fields, configure a general converter through `AxonConverterProducer.createGeneralConverter()`.
 
 === Commands or Queries are not records, and its object hierarchies do not follow the Bean Standard
-If your commands or queries or one of its classes in the object hierarchy doesn't follow the Bean standard, the solution can be to set the field visibility ANY must be configured in the object mapper for the message serializer(AxonSerializerProducer.createMessageSerializer).
+If your commands, queries, or one of the classes in their object hierarchy does not follow the Bean Standard, configure a message converter through `AxonConverterProducer.createMessageConverter()`.
 
 '''
 

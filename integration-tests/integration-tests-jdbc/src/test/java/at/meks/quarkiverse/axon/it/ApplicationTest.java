@@ -37,6 +37,8 @@ class ApplicationTest {
 
     @Test
     void wholeUseCaseTest() {
+        assertAxonConverterRoundTrip();
+
         cardId = UUID.randomUUID().toString();
         issueNewCard(20);
         redeemCard(2);
@@ -110,6 +112,14 @@ class ApplicationTest {
                             .then().extract().body().asString();
                     assertThat(snapshotCount).isGreaterThanOrEqualTo("1");
                 });
+    }
+
+    private static void assertAxonConverterRoundTrip() {
+        RestAssured.given().basePath("system/serialization/axon-roundtrip")
+                .when().get()
+                .then()
+                .statusCode(200)
+                .body(CoreMatchers.equalTo("ok"));
     }
 
 }

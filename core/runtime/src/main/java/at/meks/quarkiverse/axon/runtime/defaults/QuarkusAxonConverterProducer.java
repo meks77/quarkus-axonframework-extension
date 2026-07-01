@@ -8,7 +8,9 @@ import org.axonframework.conversion.Converter;
 import org.axonframework.conversion.jackson2.Jackson2Converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import io.quarkus.arc.DefaultBean;
 
@@ -19,26 +21,36 @@ public class QuarkusAxonConverterProducer implements AxonConverterProducer {
     @Inject
     ObjectMapper objectMapper;
 
-    private Jackson2Converter serializer;
+    @Inject
+    AxonConfiguration axonConfiguration;
+
+    private Jackson2Converter converter;
 
     @PostConstruct
     void init() {
-        serializer = new Jackson2Converter(objectMapper);
+        converter = new Jackson2Converter(objectMapper());
+    }
+
+    private ObjectMapper objectMapper() {
+        if (!axonConfiguration.serialization().blackbird().enabled()) {
+            return objectMapper;
+        }
+        return objectMapper.copy().registerModule(new BlackbirdModule());
     }
 
     @Override
     public Converter createGeneralConverter() {
-        return serializer;
+        return converter;
     }
 
     @Override
     public Converter createEventConverter() {
-        return serializer;
+        return converter;
     }
 
     @Override
     public Converter createMessageConverter() {
-        return serializer;
+        return converter;
     }
 
 }

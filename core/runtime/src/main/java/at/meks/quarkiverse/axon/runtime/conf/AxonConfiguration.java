@@ -25,6 +25,11 @@ public interface AxonConfiguration {
     LiveReloadConfig liveReload();
 
     /**
+     * Serialization configuration for Axon messages, events and snapshots.
+     */
+    SerializationConfig serialization();
+
+    /**
      * Configuration for Exception Handling in the Axon framework.
      */
     ExceptionHandlingConfig exceptionHandling();
