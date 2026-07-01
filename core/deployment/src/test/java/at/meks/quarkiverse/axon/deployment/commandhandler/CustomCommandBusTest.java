@@ -4,19 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.CommandBus;
 import org.axonframework.messaging.commandhandling.SimpleCommandBus;
 import org.axonframework.messaging.core.unitofwork.ProcessingContext;
 import org.axonframework.messaging.core.unitofwork.UnitOfWorkFactory;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
 
-@Disabled("kein AsynchronousCommandBus?")
 public class CustomCommandBusTest extends JavaArchiveTest {
 
     @RegisterExtension
@@ -48,7 +47,13 @@ public class CustomCommandBusTest extends JavaArchiveTest {
 
     @Override
     protected void assertConfiguration(Configuration configuration) {
-        CommandBus commandBus = configuration.getComponent(CommandBus.class);
+        CommandBus delegatingCommandBus = configuration.getComponent(CommandBus.class);
+        Object commandBus = null;
+        try {
+            commandBus = FieldUtils.readField(delegatingCommandBus, "delegate", true);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
         assertThat(commandBus).isInstanceOf(MyCommandBus.class);
     }
 
