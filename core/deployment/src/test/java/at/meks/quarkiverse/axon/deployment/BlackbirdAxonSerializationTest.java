@@ -13,12 +13,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class BlackbirdAxonSerializationTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(JavaArchiveTest::javaArchiveBase)
             .withConfigurationResource("serialization/blackbird.properties");
 

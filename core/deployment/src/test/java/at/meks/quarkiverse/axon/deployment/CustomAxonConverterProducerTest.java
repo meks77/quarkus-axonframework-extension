@@ -16,12 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class CustomAxonConverterProducerTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = new QuarkusUnitTest()
+    static final QuarkusExtensionTest config = new QuarkusExtensionTest()
             .setArchiveProducer(() -> JavaArchiveTest.javaArchiveBase().addClasses(CustomConverterProducer.class))
             .withConfigurationResource("serialization/blackbird.properties");
 
