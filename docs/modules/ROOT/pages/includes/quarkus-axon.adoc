@@ -267,6 +267,27 @@ endif::add-copy-button-to-env-var[]
 |long
 |`+++500+++`
 
+a| [[quarkus-axon_quarkus-axon-serialization-blackbird-enabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-serialization-blackbird-enabled[`+++quarkus.axon.serialization.blackbird.enabled+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.serialization.blackbird.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+If true, the default Axon Jackson converters use an Axon-specific ObjectMapper copy with Blackbird enabled.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_SERIALIZATION_BLACKBIRD_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_SERIALIZATION_BLACKBIRD_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a| [[quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-wrap-on-command-handler[`+++quarkus.axon.exception-handling.wrap-on-command-handler+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.exception-handling.wrap-on-command-handler+++[]
