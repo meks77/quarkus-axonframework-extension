@@ -44,7 +44,7 @@ mvn -P publish -B release:prepare release:perform -DreleaseVersion=0.4.1 -Ddevel
 ----
 git checkout quarkus-3.15
 read -s -p "Enter your GnuPG key passphrase: " MAVEN_GPG_PASSPHRASE
-mvn -P ossrh -B release:prepare release:perform -DreleaseVersion=2.0.0 -DdevelopmentVersion=2.1.0-SNAPSHOT -Dgpg.passphrase="${GPG_PASSPHRASE}"
+mvn -Ppublish -B release:prepare release:perform -DreleaseVersion=2.0.0 -DdevelopmentVersion=2.1.0-SNAPSHOT -Dgpg.passphrase="${GPG_PASSPHRASE}"
 ----
 
 === Unset the gpg passprhase
