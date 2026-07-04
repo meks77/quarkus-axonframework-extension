@@ -3,6 +3,8 @@ package at.meks.quarkiverse.axon.runtime.defaults.eventprocessors;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -149,10 +151,23 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 .or(defaultConfig::workerThreadPoolSize)
                 .filter(poolSize -> poolSize > 0)
                 .ifPresent(size -> pooledStreamingEventProcessorConfiguration.workerExecutor(
-                        newScheduledThreadPool(size, new AxonThreadFactory(
-                                "Worker - " + pooledStreamingEventProcessorConfiguration.processorName()))));
+                        createWorkerExecutor(size, pooledStreamingEventProcessorConfiguration.processorName(),
+                                namedConfig, defaultConfig)));
         // TODO configure coordinatorExecutor?
         return pooledStreamingEventProcessorConfiguration;
+    }
+
+    private static ScheduledExecutorService createWorkerExecutor(int poolSize, String processorName,
+            ConfigOfOneProcessor namedConfig, ConfigOfOneProcessor defaultConfig) {
+        ThreadFactory threadFactory = shouldUseVirtualThreads(namedConfig, defaultConfig)
+                ? Thread.ofVirtual().name("Worker - " + processorName + "-", 0).factory()
+                : new AxonThreadFactory("Worker - " + processorName);
+        return newScheduledThreadPool(poolSize, threadFactory);
+    }
+
+    private static boolean shouldUseVirtualThreads(ConfigOfOneProcessor namedConfig,
+            ConfigOfOneProcessor defaultConfig) {
+        return namedConfig.useVirtualThreads().or(defaultConfig::useVirtualThreads).orElse(false);
     }
 
     private static boolean shouldUseInMemoryTokenStore(ConfigOfOneProcessor configOfOneProcessor,

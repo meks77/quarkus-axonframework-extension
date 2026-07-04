@@ -46,6 +46,19 @@ quarkus.axon.pooledprocessor.processor1.initial-position=head
 quarkus.axon.pooledprocessor.processor2.batch-size=10
 ----
 
+=== Virtual Threads
+
+Pooled event processors can use virtual threads for their worker executor.
+This is opt-in per processor, or on the default pooled processor configuration.
+Virtual threads are useful for I/O-bound event handlers, for example projections that write to a database.
+
+[source,properties]
+----
+quarkus.axon.pooledprocessor.worker-thread-pool-size=4
+quarkus.axon.pooledprocessor.use-virtual-threads=true
+quarkus.axon.pooledprocessor.processor1.use-virtual-threads=false
+----
+
 === Random Processor Name
 
 For this both processor types, you can define that the processor should be registered with a random name. This is useful, if you want to hold a In-Memory projection. Using a random processor name has the impact, that on startup all events are processed from the initial position.

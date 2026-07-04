@@ -163,6 +163,32 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
+a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-use-virtual-threads]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-use-virtual-threads[`quarkus.axon.pooledprocessor.use-virtual-threads`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor.use-virtual-threads+++[]
+endif::add-copy-button-to-config-props[]
+
+
+`quarkus.axon.pooledprocessor."processor-name".use-virtual-threads`
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.pooledprocessor."processor-name".use-virtual-threads+++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+If true, virtual threads are used for the worker executor of this processor.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_POOLEDPROCESSOR_USE_VIRTUAL_THREADS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_POOLEDPROCESSOR_USE_VIRTUAL_THREADS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 a| [[quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-processing-groups]] [.property-path]##link:#quarkus-axon-pooled-eventprocessor_quarkus-axon-pooledprocessor-processing-groups[`quarkus.axon.pooledprocessor.processing-groups`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.pooledprocessor.processing-groups+++[]
