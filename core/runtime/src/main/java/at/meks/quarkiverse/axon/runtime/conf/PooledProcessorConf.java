@@ -41,6 +41,11 @@ public interface PooledProcessorConf {
          */
         Optional<Integer> workerThreadPoolSize();
 
+        /**
+         * If true, virtual threads are used for the worker executor of this processor.
+         */
+        Optional<Boolean> useVirtualThreads();
+
     }
 
 }
