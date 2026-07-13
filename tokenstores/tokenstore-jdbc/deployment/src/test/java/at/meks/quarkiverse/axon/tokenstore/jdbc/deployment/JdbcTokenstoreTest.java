@@ -53,7 +53,7 @@ public abstract class JdbcTokenstoreTest extends JavaArchiveTest {
     }
 
     private Multi<String> queryTokenText() {
-        return client.query("select token from " + getTokenTabelName())
+        return client.query("select token from " + getTokenTabelName() + " where processorname <> '__config'")
                 .execute()
                 .onItem()
                 .transformToMulti(Multi.createFrom()::iterable)

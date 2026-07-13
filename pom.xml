@@ -49,7 +49,6 @@
           causes other problems, especially when quarkus-hibernate-orm is in the build classpath. -->
         <module>docs</module>
         <module>bom</module>
-        <module>tracing</module>
     </modules>
 
     <properties>
@@ -72,7 +71,7 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-framework-bom</artifactId>
-                <version>5.1.2</version>
+                <version>5.2.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
