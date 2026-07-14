@@ -3,6 +3,7 @@ The latest LTS is not supported anymore because of build issues. The current ver
 
 |===
 | Extension Version | tested with Quarkus | Axon framework | Notes
+| 2.0.0-alpha4 | 3.37.2 | 5.2.0 |
 | 2.0.0-alpha3 | 3.37.0, 3.37.1| 5.1.2 |
 | 2.0.0-alpha2 | 3.37.0 | 5.1.2 |
 | 0.1.0-RC29 | 3.34.3 | 4.13.0 | test potentially not compatible with quarkus < 3.31
