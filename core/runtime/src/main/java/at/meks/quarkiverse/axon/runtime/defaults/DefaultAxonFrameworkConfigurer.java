@@ -18,6 +18,7 @@ import org.axonframework.messaging.eventhandling.configuration.EventHandlingComp
 import org.axonframework.messaging.eventhandling.conversion.DelegatingEventConverter;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 //import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
+import org.axonframework.update.configuration.UsagePropertyProvider;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +93,9 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                             axonConverterProducer.createMessageConverter()));
                     registry.registerComponent(EventConverter.class, c -> new DelegatingEventConverter(
                             axonConverterProducer.createEventConverter()));
+                    if (axonConfiguration.updateCheckDisabled()) {
+                        registry.registerComponent(UsagePropertyProvider.class, c -> new DisableUpdateCheck());
+                    }
                 });
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);

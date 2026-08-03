@@ -20,6 +20,13 @@ public interface AxonConfiguration {
     String axonApplicationName();
 
     /**
+     * configuration to disable update check and usage data reporting
+     */
+    @WithName("update-check.disabled")
+    @WithDefault("false")
+    boolean updateCheckDisabled();
+
+    /**
      * additional configuration for live reloading for axon.
      */
     LiveReloadConfig liveReload();

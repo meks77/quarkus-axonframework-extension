@@ -225,6 +225,27 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++quarkus-axon+++`
 
+a| [[quarkus-axon_quarkus-axon-update-check-disabled]] [.property-path]##link:#quarkus-axon_quarkus-axon-update-check-disabled[`+++quarkus.axon.update-check.disabled+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.update-check.disabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+configuration to disable update check and usage data reporting
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_UPDATE_CHECK_DISABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_UPDATE_CHECK_DISABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a| [[quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit]] [.property-path]##link:#quarkus-axon_quarkus-axon-live-reload-shutdown-wait-duration-unit[`+++quarkus.axon.live-reload.shutdown.wait-duration.unit+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.live-reload.shutdown.wait-duration.unit+++[]
