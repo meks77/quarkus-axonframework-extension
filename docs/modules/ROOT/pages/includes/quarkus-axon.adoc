@@ -330,6 +330,69 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
+a| [[quarkus-axon_quarkus-axon-exception-handling-log-event-handling-errors]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-log-event-handling-errors[`+++quarkus.axon.exception-handling.log-event-handling-errors+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.exception-handling.log-event-handling-errors+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Log errors when handling an event
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_EVENT_HANDLING_ERRORS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_EVENT_HANDLING_ERRORS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-exception-handling-log-query-handling-errors]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-log-query-handling-errors[`+++quarkus.axon.exception-handling.log-query-handling-errors+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.exception-handling.log-query-handling-errors+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Log errors when handling an query
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_QUERY_HANDLING_ERRORS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_QUERY_HANDLING_ERRORS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-axon_quarkus-axon-exception-handling-log-command-handling-errors]] [.property-path]##link:#quarkus-axon_quarkus-axon-exception-handling-log-command-handling-errors[`+++quarkus.axon.exception-handling.log-command-handling-errors+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.axon.exception-handling.log-command-handling-errors+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Log errors when handling a command
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_COMMAND_HANDLING_ERRORS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_AXON_EXCEPTION_HANDLING_LOG_COMMAND_HANDLING_ERRORS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
 a| [[quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval-millis]] [.property-path]##link:#quarkus-axon_quarkus-axon-command-gateway-retry-scheduling-fixed-retry-interval-millis[`+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval-millis+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.axon.command-gateway.retry.scheduling.fixed-retry-interval-millis+++[]

@@ -9,12 +9,17 @@ import jakarta.inject.Inject;
 
 import org.axonframework.messaging.commandhandling.CommandExecutionException;
 import org.axonframework.messaging.commandhandling.CommandMessage;
+import org.axonframework.messaging.core.Message;
 import org.axonframework.messaging.core.MessageHandlerInterceptor;
+import org.axonframework.messaging.core.MessageHandlerInterceptorChain;
 import org.axonframework.messaging.core.MessageStream;
 import org.axonframework.messaging.core.configuration.MessagingConfigurer;
+import org.axonframework.messaging.core.unitofwork.ProcessingContext;
 import org.axonframework.messaging.queryhandling.QueryExecutionException;
 import org.axonframework.messaging.queryhandling.QueryMessage;
 import org.jspecify.annotations.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
@@ -86,6 +91,9 @@ public class InterceptorConfigurer {
                     .forEach(interceptor -> messagingConfigurer.registerCommandHandlerInterceptor(
                             config -> interceptor));
         }
+        if (axonConfiguration.exceptionHandling().logCommandHandlingErrors()) {
+            messagingConfigurer.registerCommandHandlerInterceptor(config -> new LoggingInterceptor());
+        }
     }
 
     private @NonNull MessageHandlerInterceptor<CommandMessage> handleExceptionInCommandHandling() {
@@ -130,6 +138,9 @@ public class InterceptorConfigurer {
             queryHandlerInterceptorProducers.get().createHandlerInterceptor()
                     .forEach(interceptor -> messagingConfigurer.registerQueryHandlerInterceptor(config -> interceptor));
         }
+        if (axonConfiguration.exceptionHandling().logQueryHandlingErrors()) {
+            messagingConfigurer.registerQueryHandlerInterceptor(config -> new LoggingInterceptor());
+        }
     }
 
     private @NonNull MessageHandlerInterceptor<QueryMessage> handleExceptionInQueryHandling() {
@@ -172,6 +183,22 @@ public class InterceptorConfigurer {
             eventHandlerInterceptorProducers.get().createHandlerInterceptor()
                     .forEach(interceptor -> messagingConfigurer
                             .registerEventHandlerInterceptor((configuration -> interceptor)));
+        }
+        if (axonConfiguration.exceptionHandling().logEventHandlingErrors()) {
+            messagingConfigurer.registerEventHandlerInterceptor(config -> new LoggingInterceptor());
+        }
+    }
+
+    private static final class LoggingInterceptor implements MessageHandlerInterceptor<Message> {
+        private static final Logger LOG = LoggerFactory.getLogger(LoggingInterceptor.class);
+
+        @Override
+        public MessageStream<?> interceptOnHandle(@NonNull Message message,
+                                                  ProcessingContext context,
+                                                  MessageHandlerInterceptorChain interceptorChain) {
+            context.onError((ctx, phase, error) -> LOG.error("Error handling {}: {}", message.type(),
+                    error.getMessage(), error));
+            return interceptorChain.proceed(message, context);
         }
     }
 }
