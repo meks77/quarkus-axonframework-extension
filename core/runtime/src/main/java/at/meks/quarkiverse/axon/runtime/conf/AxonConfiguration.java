@@ -101,6 +101,24 @@ public interface AxonConfiguration {
         @WithDefault("true")
         boolean wrapOnCommandHandler();
 
+        /**
+         * Log errors when handling an event
+         */
+        @WithDefault("true")
+        boolean logEventHandlingErrors();
+
+        /**
+         * Log errors when handling an query
+         */
+        @WithDefault("true")
+        boolean logQueryHandlingErrors();
+
+        /**
+         * Log errors when handling a command
+         */
+        @WithDefault("true")
+        boolean logCommandHandlingErrors();
+
     }
 
     interface CommandRetryScheduling {
