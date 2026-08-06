@@ -194,8 +194,8 @@ public class InterceptorConfigurer {
 
         @Override
         public MessageStream<?> interceptOnHandle(@NonNull Message message,
-                                                  ProcessingContext context,
-                                                  MessageHandlerInterceptorChain interceptorChain) {
+                ProcessingContext context,
+                MessageHandlerInterceptorChain interceptorChain) {
             context.onError((ctx, phase, error) -> LOG.error("Error handling {}: {}", message.type(),
                     error.getMessage(), error));
             return interceptorChain.proceed(message, context);
