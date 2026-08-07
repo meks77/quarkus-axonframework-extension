@@ -10,11 +10,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import at.meks.quarkiverse.axon.annotations.IdType;
-import at.meks.quarkiverse.axon.runtime.defaults.DefaultEventSourceEntityConfigurer;
 
-class EvaluateIdTypeAnnotationTest {
-
-    DefaultEventSourceEntityConfigurer eventSourceEntityConfigurer = new DefaultEventSourceEntityConfigurer();
+class EventSourcedEntityBeanBuildItemTest {
 
     public static Stream<Arguments> testIdTypeAnnotation() {
         return Stream.of(Arguments.of(EntityWithDefaults.class, String.class),
@@ -24,8 +21,9 @@ class EvaluateIdTypeAnnotationTest {
     @ParameterizedTest
     @MethodSource
     void testIdTypeAnnotation(Class<?> entityClass, Class<?> expectedIdClass) {
-        var entity = eventSourceEntityConfigurer.createConfigurer(entityClass);
-        assertEquals(expectedIdClass, entity.idType());
+        var entityDefinition = new EventSourcedEntityBeanBuildItem(entityClass);
+        assertEquals(entityClass, entityDefinition.itemClass());
+        assertEquals(expectedIdClass, entityDefinition.getIdClass());
     }
 
     @EventSourcedEntity

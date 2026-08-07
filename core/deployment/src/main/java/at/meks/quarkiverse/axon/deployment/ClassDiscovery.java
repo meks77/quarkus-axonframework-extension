@@ -14,6 +14,7 @@ import org.axonframework.messaging.eventhandling.annotation.EventHandler;
 import org.axonframework.messaging.queryhandling.annotation.QueryHandler;
 import org.jboss.jandex.*;
 
+import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration.ComponentDiscovery;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
@@ -38,6 +39,23 @@ class ClassDiscovery {
                 .collect(Collectors.toSet());
         axonClasses.forEach(clz -> Log.infof("Register " + objectType + " %s", clz));
         return axonClasses;
+    }
+
+    static Set<EventSourcedEntityDefinition> eventSourcedClasses(List<EventSourcedEntityBeanBuildItem> axonClassBuildItems,
+            ComponentDiscovery discovery) {
+        if (!discovery.enabled()) {
+            return Collections.emptySet();
+        }
+
+        Set<EventSourcedEntityDefinition> entityDefinitions = axonClassBuildItems.stream()
+                .filter(buildItem -> shouldBeDiscovered(buildItem.itemClass(), discovery))
+                .map(buildItem -> new EventSourcedEntityDefinition(buildItem.itemClass(), buildItem.getIdClass()))
+                .collect(Collectors.toSet());
+
+        entityDefinitions.forEach(ed -> Log.infof("Register event sourced entity %s with idClass", ed.entityClass(),
+                ed.idClass()));
+        return entityDefinitions;
+
     }
 
     private static boolean shouldBeDiscovered(Class<?> clazz, ComponentDiscovery discovery) {

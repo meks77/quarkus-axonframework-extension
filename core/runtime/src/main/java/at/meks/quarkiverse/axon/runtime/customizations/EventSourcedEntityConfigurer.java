@@ -13,7 +13,8 @@ public interface EventSourcedEntityConfigurer {
      *
      * @param <T> the type of the eventSourcedEntity
      * @param eventSourcedEntity the class of the eventSourcedEntity type
+     * @param idClass the class of the entity id
      * @return an {@link EventSourcedEntityModule} instance for the given eventSourcedEntity type
      */
-    <T> EventSourcedEntityModule<?, T> createConfigurer(Class<T> eventSourcedEntity);
+    <T> EventSourcedEntityModule<?, T> createConfigurer(Class<T> eventSourcedEntity, Class<?> idClass);
 }

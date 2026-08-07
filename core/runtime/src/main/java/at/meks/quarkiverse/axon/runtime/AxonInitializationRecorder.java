@@ -13,7 +13,7 @@ import io.smallrye.config.SmallRyeConfig;
 @Recorder
 public class AxonInitializationRecorder {
 
-    public void startAxon(BeanContainer beanContainer, Collection<Class<?>> eventSourcedEntityClasses,
+    public void startAxon(BeanContainer beanContainer, Collection<EventSourcedEntityDefinition> eventSourcedEntityClasses,
             Collection<Class<?>> commandhandlerClasses, Collection<Class<?>> queryhandlerClasses,
             Collection<Class<?>> eventhandlerClasses,
             Set<Class<?>> injectableBeanClasses) {
