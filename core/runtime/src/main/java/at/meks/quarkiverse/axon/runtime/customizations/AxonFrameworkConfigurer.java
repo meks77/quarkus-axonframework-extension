@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 
+import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
+
 /**
  * Interface for configuring Axon Framework components such as event sourced entities, handlers, and general configurations.
  */
@@ -21,7 +23,7 @@ public interface AxonFrameworkConfigurer {
      *
      * @param eventSourcedEntityClasses a set of aggregate class types to be registered.
      */
-    void eventSourcedEntityClasses(Set<Class<?>> eventSourcedEntityClasses);
+    void eventSourcedEntityClasses(Set<EventSourcedEntityDefinition> eventSourcedEntityClasses);
 
     /**
      * Registers event handler instances with the Axon Framework configuration.

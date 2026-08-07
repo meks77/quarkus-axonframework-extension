@@ -49,7 +49,7 @@ public class AxonExtension {
     String profile;
 
     private org.axonframework.common.configuration.AxonConfiguration configuration;
-    private final Set<Class<?>> eventSourcedEntityClasses = new HashSet<>();
+    private final Set<EventSourcedEntityDefinition> eventSourcedEntityClasses = new HashSet<>();
     private final Set<Object> evenhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
@@ -74,7 +74,7 @@ public class AxonExtension {
         }
     }
 
-    public void addEventSourcedEntityForRegistration(Class<?> eventSourcedEntityClass) {
+    public void addEventSourcedEntityForRegistration(EventSourcedEntityDefinition eventSourcedEntityClass) {
         eventSourcedEntityClasses.add(eventSourcedEntityClass);
     }
 

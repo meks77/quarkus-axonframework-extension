@@ -119,6 +119,11 @@
                 <artifactId>quarkus-axon-tracing-deployment</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
+                <artifactId>quarkus-axon-annotations</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
