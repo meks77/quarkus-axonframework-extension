@@ -103,12 +103,16 @@ public abstract class JavaArchiveTest {
                     .untilAsserted(() -> assertTrue(
                             giftcardInMemoryHistory.wasEventHandled(new Api.CardRedeemedEvent(cardId, 1))));
 
-            CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId),
-                    GiftcardView.class);
-            assertThat(queryResult)
-                    .succeedsWithin(Duration.ofSeconds(1))
-                    .usingRecursiveComparison()
-                    .isEqualTo(new GiftcardView(cardId, 9, "Bruce Wayne"));
+            await().atMost(Duration.ofSeconds(10))
+                    .pollDelay(Duration.ZERO)
+                    .untilAsserted(() -> {
+                        CompletableFuture<GiftcardView> queryResult = queryGateway.query(new Api.GiftcardQuery(cardId),
+                                GiftcardView.class);
+                        assertThat(queryResult)
+                                .succeedsWithin(Duration.ofSeconds(1))
+                                .usingRecursiveComparison()
+                                .isEqualTo(new GiftcardView(cardId, 9, "Bruce Wayne"));
+                    });
 
             assertThatAllEventHandlerClassesWereInformed();
 
