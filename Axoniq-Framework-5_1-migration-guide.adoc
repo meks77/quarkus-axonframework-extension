@@ -24,4 +24,4 @@
 * migrate Snapshot configuration to Annotations
 * Aggregates -> Entities
 ** The ID is not annotated any more, but we have to know it's type for registering the Entity.
-If the entity has an ID that is not if type `String`, annotate the Entity with `@IdType(YourIdType.class)`
+If the entity has an ID that is not of type `String`, annotate the Entity with `@IdType(YourIdType.class)`
