@@ -8,6 +8,7 @@ import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.commandhandling.configuration.CommandHandlingModule;
 import org.axonframework.messaging.queryhandling.configuration.QueryHandlingModule;
 
+import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
 import at.meks.quarkiverse.axon.runtime.customizations.EventSourcedEntityConfigurer;
 
 public class AxonComponentenSetup {
@@ -15,10 +16,11 @@ public class AxonComponentenSetup {
     @Inject
     EventSourcedEntityConfigurer entityConfigurer;
 
-    void configureEventSourcedEntities(EventSourcingConfigurer configurer, Set<Class<?>> eventSourcedEntityClasses) {
-        eventSourcedEntityClasses.forEach(
-                entity -> configurer.modelling(
-                        mc -> mc.registerEntity(entityConfigurer.createConfigurer(entity))));
+    void configureEventSourcedEntities(EventSourcingConfigurer configurer,
+            Set<EventSourcedEntityDefinition> eventSourcedEntityDefinition) {
+        eventSourcedEntityDefinition.forEach(
+                esed -> configurer.modelling(
+                        mc -> mc.registerEntity(entityConfigurer.createConfigurer(esed.entityClass(), esed.idClass()))));
     }
 
     void configureCommandHandlers(EventSourcingConfigurer configurer, Set<Object> commandhandlers) {

@@ -32,7 +32,7 @@ import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import io.quarkus.logging.Log;
 import io.quarkus.test.QuarkusExtensionTest;
 
-public class JavaArchiveTest {
+public abstract class JavaArchiveTest {
 
     protected static QuarkusExtensionTest application(JavaArchive javaArchive) {
         return new QuarkusExtensionTest()

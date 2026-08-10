@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import at.meks.quarkiverse.axon.runtime.AxonExtension;
 import at.meks.quarkiverse.axon.runtime.AxonInitializationRecorder;
+import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
 import at.meks.quarkiverse.axon.runtime.conf.ComponentDiscoveryConfiguration;
 import at.meks.quarkiverse.axon.runtime.defaults.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.PooledEventProcessingConfigurer;
@@ -92,7 +93,7 @@ class AxonExtensionProcessor {
             List<InjectableBeanBuildItem> injectableBeanBuildItems,
             BeanContainerBuildItem beanContainerBuildItem, ComponentDiscoveryConfiguration discoveryConfiguration) {
 
-        Set<Class<?>> eventSourcedEntityClasses = classes(eventSourcedEntityBeanBuildItems, "event sourced entities",
+        Set<EventSourcedEntityDefinition> eventSourcedEntityClasses = eventSourcedClasses(eventSourcedEntityBeanBuildItems,
                 discoveryConfiguration.eventSourcedEntities());
         Set<Class<?>> eventhandlerClasses = classes(eventhandlerBeanBuildItems, "eventhandler",
                 discoveryConfiguration.eventHandlers());

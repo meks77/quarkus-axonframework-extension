@@ -23,6 +23,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.SubscribingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
@@ -76,7 +77,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     @Inject
     AxonComponentenSetup axonComponentSetup;
 
-    private Set<Class<?>> eventSourcedEntityClasses;
+    private Set<EventSourcedEntityDefinition> eventSourcedEntityDefinitions;
     private Set<Object> eventhandlers;
     private Set<Object> commandhandlers;
     private Set<Object> queryhandlers;
@@ -99,7 +100,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 });
         configureTracing(configurer);
         eventstoreConfigurer.configure(configurer);
-        axonComponentSetup.configureEventSourcedEntities(configurer, eventSourcedEntityClasses);
+        axonComponentSetup.configureEventSourcedEntities(configurer, eventSourcedEntityDefinitions);
         configureMessageHandler(configurer);
         configureTransactionManagement(configurer);
         metricsConfigurer.configure(configurer);
@@ -212,8 +213,8 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     }
 
     @Override
-    public void eventSourcedEntityClasses(Set<Class<?>> eventSourcedEntityClasses) {
-        this.eventSourcedEntityClasses = eventSourcedEntityClasses;
+    public void eventSourcedEntityClasses(Set<EventSourcedEntityDefinition> eventSourcedEntityDefinitions) {
+        this.eventSourcedEntityDefinitions = eventSourcedEntityDefinitions;
     }
 
     @Override

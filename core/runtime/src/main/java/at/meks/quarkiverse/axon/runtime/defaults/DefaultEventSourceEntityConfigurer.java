@@ -12,9 +12,8 @@ import io.quarkus.arc.DefaultBean;
 public class DefaultEventSourceEntityConfigurer implements EventSourcedEntityConfigurer {
 
     @Override
-    public <ID, T> EventSourcedEntityModule<ID, T> createConfigurer(Class<T> eventSourcedEntity) {
-        // TODO: Fix this by supporting entities with other id types than string
-        return EventSourcedEntityModule.autodetected((Class<ID>) String.class, eventSourcedEntity);
+    public <T> EventSourcedEntityModule<?, T> createConfigurer(Class<T> eventSourcedEntity, Class<?> idClass) {
+        return EventSourcedEntityModule.autodetected(idClass, eventSourcedEntity);
     }
 
 }
