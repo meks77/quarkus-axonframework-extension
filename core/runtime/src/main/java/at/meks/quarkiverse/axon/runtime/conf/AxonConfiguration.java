@@ -139,6 +139,34 @@ public interface AxonConfiguration {
          */
         @WithDefault("true")
         boolean wrapOnQueryHandler();
+
+        /**
+         * exception handling for event processors.
+         */
+        EventProcessorsErrorHandling eventprocessors();
+
+    }
+
+    interface EventProcessorsErrorHandling {
+
+        /**
+         * exception handling for streaming event processors.
+         */
+        StreamingEventProcessorErrorHandling streaming();
+    }
+
+    interface StreamingEventProcessorErrorHandling {
+
+        /**
+         * if set to true, the streaming event processors retry processing an event in case of an exception.
+         * That means that the processor will not be able to catch up to the head of the events, as long as processing an event
+         * fails.
+         * If set to false, the axon framework default behavior is used.
+         */
+        @WithDefault("true")
+        @WithName("retry") // if set to a more complex name like retry-on-error the build fails SRCFG00027: Could not find a mapping for at.meks.quarkiverse.axon.runtime.health.AxonBuildTimeConfiguration
+        boolean retryOnError();
+
     }
 
     interface CommandRetryScheduling {

@@ -17,6 +17,7 @@ import org.axonframework.config.Configuration;
 import org.axonframework.config.Configurer;
 import org.axonframework.config.DefaultConfigurer;
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.eventhandling.PropagatingErrorHandler;
 import org.axonframework.serialization.upcasting.event.EventUpcasterChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,6 +115,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private void configureEventHandling(Configurer configurer) {
         setDefaultEventProcessorType(configurer);
+        setEventProcessorErrorHandling(configurer.eventProcessing());
         EventProcessingConfigurer processingConfigurer = configurer.eventProcessing();
         assignProcessingGroupsToSubscribingEventProcessor(processingConfigurer);
         if (!eventhandlers.isEmpty() || !sagaEventhandlerClasses.isEmpty()) {
@@ -133,6 +135,13 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 case POOLED -> eventProcessingConfigurer.usingPooledStreamingEventProcessors();
             }
         });
+    }
+
+    private void setEventProcessorErrorHandling(EventProcessingConfigurer eventProcessingConfigurer) {
+        if (axonConfiguration.exceptionHandling().eventprocessors().streaming().retryOnError()) {
+            eventProcessingConfigurer
+                    .registerDefaultListenerInvocationErrorHandler(conf -> PropagatingErrorHandler.instance());
+        }
     }
 
     private void assignProcessingGroupsToSubscribingEventProcessor(EventProcessingConfigurer configurer) {
