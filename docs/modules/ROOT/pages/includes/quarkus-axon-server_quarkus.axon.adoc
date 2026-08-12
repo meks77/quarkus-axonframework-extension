@@ -58,7 +58,7 @@ endif::add-copy-button-to-config-props[]
 [.description]
 --
 A comma separated list of Axon Server servers. Each element is hostname or hostname:grpcPort. When no grpcPort is specified, the port of `QuarkusAxonServerConfiguration++#++defaultGrpcPort()` is used. The following examples are valid configurations:
- -
+
 axon-server-name
 
 
