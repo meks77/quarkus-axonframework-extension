@@ -15,6 +15,7 @@ import org.axonframework.config.EventProcessingConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf;
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf.ConfigOfOneProcessor;
 
@@ -22,6 +23,9 @@ import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf.ConfigOfOneProc
 public class PooledEventProcessingConfigurer extends AbstractEventProcessingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(PooledEventProcessingConfigurer.class);
+
+    @Inject
+    AxonConfiguration axonConfiguration;
 
     @Inject
     PooledProcessorConf pooledProcessorConf;
@@ -63,7 +67,10 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
 
             configOfOneProcessor.processingGroupNames()
                     .ifPresentOrElse(
-                            groupNames -> assignProcessingGroupsToProcessor(configurer, groupNames, processorName),
+                            groupNames -> {
+                                assignProcessingGroupsToProcessor(configurer, groupNames, processorName);
+                                registerListenerInvocationErrorHandler(axonConfiguration, configurer, groupNames);
+                            },
                             () -> LOG.warn(
                                     "processing group names not configured for the processor {}",
                                     processorName));

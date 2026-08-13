@@ -9,6 +9,6 @@ public class OnErrorBlocksTest extends AbstractOnErrorBlocksTest {
 
     @RegisterExtension
     static final QuarkusExtensionTest quarkusExtensionTest = application()
-            .withConfigurationResource("eventprocessors/tracking/defaults.properties");
+            .withConfigurationResource("eventprocessors/tracking/errorBlocks.properties");
 
 }

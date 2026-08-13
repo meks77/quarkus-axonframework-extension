@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.eventhandling.PropagatingErrorHandler;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.StreamingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.conf.StreamingProcessorConf.InitialPosition;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonEventProcessingConfigurer;
@@ -60,5 +62,15 @@ public abstract class AbstractEventProcessingConfigurer implements AxonEventProc
             }
         }
         return Optional.empty();
+    }
+
+    protected static void registerListenerInvocationErrorHandler(AxonConfiguration axonConfiguration,
+            EventProcessingConfigurer configurer,
+            List<String> groupNames) {
+        if (axonConfiguration.exceptionHandling().eventprocessors().streaming().retryOnError()) {
+            // if only the defaultListenerInvocationErrorHandler is registered, the binding between the processors and the processorGroups is removed by the framework
+            groupNames.forEach(groupName -> configurer.registerListenerInvocationErrorHandler(groupName,
+                    conf -> PropagatingErrorHandler.instance()));
+        }
     }
 }
