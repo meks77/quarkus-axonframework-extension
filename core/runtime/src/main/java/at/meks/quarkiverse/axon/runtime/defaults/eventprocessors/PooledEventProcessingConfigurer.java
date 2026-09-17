@@ -14,6 +14,7 @@ import org.axonframework.common.AxonThreadFactory;
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.messaging.eventhandling.configuration.EventHandlingComponentsConfigurer;
+import org.axonframework.messaging.eventhandling.processing.errorhandling.PropagatingErrorHandler;
 import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessorConfiguration;
 import org.axonframework.messaging.eventhandling.processing.streaming.pooled.PooledStreamingEventProcessorsConfigurer;
 import org.axonframework.messaging.eventhandling.processing.streaming.token.store.TokenStore;
@@ -22,6 +23,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf;
 import at.meks.quarkiverse.axon.runtime.conf.PooledProcessorConf.ConfigOfOneProcessor;
 
@@ -30,9 +32,12 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
 
     private static final Logger LOG = LoggerFactory.getLogger(PooledEventProcessingConfigurer.class);
 
+    private final AxonConfiguration axonConfiguration;
     private final PooledProcessorConf pooledProcessorConf;
 
-    public PooledEventProcessingConfigurer(PooledProcessorConf pooledProcessorConf) {
+    public PooledEventProcessingConfigurer(AxonConfiguration axonConfiguration,
+            PooledProcessorConf pooledProcessorConf) {
+        this.axonConfiguration = axonConfiguration;
         this.pooledProcessorConf = pooledProcessorConf;
     }
 
@@ -119,9 +124,18 @@ public class PooledEventProcessingConfigurer extends AbstractEventProcessingConf
                 .collect(Collectors.toSet());
     }
 
-    private static @NonNull PooledStreamingEventProcessorConfiguration configureEventProcessor(
+    private @NonNull PooledStreamingEventProcessorConfiguration configureEventProcessor(
             PooledStreamingEventProcessorConfiguration pooledStreamingEventProcessorConfiguration, Configuration configuration,
             ConfigOfOneProcessor namedConfig, ConfigOfOneProcessor defaultConfig) {
+        if (axonConfiguration.exceptionHandling().eventprocessors().streaming().retryOnError()) {
+            pooledStreamingEventProcessorConfiguration.errorHandler(PropagatingErrorHandler.instance());
+        } else {
+            pooledStreamingEventProcessorConfiguration.errorHandler(errorContext -> {
+                if (axonConfiguration.exceptionHandling().logEventHandlingErrors()) {
+                    LOG.error("Error handling event in processor {}", errorContext.eventProcessor(), errorContext.error());
+                }
+            });
+        }
         getInitialPositionConfig(namedConfig, defaultConfig)
                 .ifPresent(posConfig -> pooledStreamingEventProcessorConfiguration.initialToken(
                         trackingTokenSource -> TokenBuilder.with(

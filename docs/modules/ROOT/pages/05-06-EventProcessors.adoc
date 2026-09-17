@@ -16,27 +16,15 @@ This information is stored in a token store.
 
 CAUTION: By default an in-memory token store is used. This normally shouldn't be used in production systems because on shutdown the token store is lost.
 
-You can set the default event processor type by setting the property `quarkus.axon.event-processing.default-event-processing-type`.
-
-== Tracking and Pooled Streaming Processor
+== Pooled Streaming Processor
 
 === Default values
-For the tracking processor you can set properties for the default tracking processor using the properties of 'quarkus.axon.tracking processor' without a processor name. +
+For the pooled processor you can set properties for the default pooled processor using the properties of 'quarkus.axon.pooledprocessor' without a processor name. +
 Those values are also used as default for the other defined tracking processors.
 
-In the following example a default tracking processor is defined with a batch size of 100 and the initial position tail. +
+In the following example a default pooled processor is defined with a batch size of 100 and the initial position tail. +
 The processor `processor1` inherits the batch size while it overrides the initial position using the value head. +
 The processor `processor2` inherits the initial position while it overrides the batch size using value 10.
-
-[source,properties]
-----
-quarkus.axon.trackingprocessor.batch-size=100
-quarkus.axon.trackingprocessor.initial-position=tail
-quarkus.axon.trackingprocessor.processor1.initial-position=head
-quarkus.axon.trackingprocessor.processor2.batch-size=10
-----
-
-The same works for pooled processor with the following example:
 
 [source,properties]
 ----
