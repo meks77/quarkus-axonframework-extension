@@ -66,7 +66,7 @@ class DefaultAxonFrameworkConfigurerConverterTest {
         configurer.commandBusConfigurer = mock(CommandBusConfigurer.class);
         configurer.axonTracingConfigurer = mock(Instance.class);
         configurer.axonConfiguration = mock(at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration.class);
-        configurer.axonComponentSetup = mock(AxonComponentenSetup.class);
+        configurer.axonComponentSetup = mock(AxonComponentSetup.class);
 
         when(configurer.axonTracingConfigurer.isResolvable()).thenReturn(false);
 

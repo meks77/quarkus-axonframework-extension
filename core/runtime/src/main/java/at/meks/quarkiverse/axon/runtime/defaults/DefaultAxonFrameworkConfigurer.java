@@ -75,7 +75,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
     AxonConfiguration axonConfiguration;
 
     @Inject
-    AxonComponentenSetup axonComponentSetup;
+    AxonComponentSetup axonComponentSetup;
 
     private Set<EventSourcedEntityDefinition> eventSourcedEntityDefinitions;
     private Set<Object> eventhandlers;
@@ -108,7 +108,6 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
         registerInjectableBeans(configurer);
         registerEventUpcasters(configurer);
         commandBusConfigurer.configureCommandBus(configurer);
-        //        configureCommandGateway(configurer);
         return configurer;
     }
 
@@ -145,7 +144,7 @@ public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
                 .filter(namespace -> !subscribingProcessorNamespaceNames.contains(namespace.namespaceName()));
     }
 
-    // TODO: Refactor code into new class in evenprocessor package and optimize code(eg. reduce duplicates, remove visibility of records)
+    // TODO: Refactor code into new class in eventprocessor package and optimize code(eg. reduce duplicates, remove visibility of records)
     private void assignNamespacesToSubscribingEventProcessor(EventSourcingConfigurer configurer,
             Stream<EventhandlersPerNamespace.Eventhandler> eventhandlers) {
         SubscribingProcessorConf conf = axonConfiguration.subscribingProcessorConf();

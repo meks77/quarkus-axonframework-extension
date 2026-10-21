@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.axonframework.messaging.eventhandling.processing.EventProcessor;
 import org.axonframework.messaging.eventhandling.processing.streaming.StreamingEventProcessor;
@@ -33,16 +32,10 @@ public abstract class AbstractRandomProcessorNamesTest extends JavaArchiveTest {
     }
 
     private Optional<String> getEventProcessorNameForGiftCardInMemory(Map<String, EventProcessor> eventProcessors) {
-        return processors(eventProcessors)
+        return eventProcessors
                 .keySet()
                 .stream().filter(name -> name.startsWith("GiftCardInMemory"))
                 .findFirst();
-    }
-
-    private static Map<String, EventProcessor> processors(Map<String, EventProcessor> eventProcessors) {
-        return eventProcessors.entrySet().stream()
-                .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

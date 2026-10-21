@@ -36,11 +36,6 @@
             </dependency>
             <dependency>
                 <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-jdbc-eventstore-deployment</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
                 <artifactId>quarkus-axon-jpa-eventstore</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -57,26 +52,6 @@
             <dependency>
                 <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
                 <artifactId>quarkus-axon-metrics-deployment</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-sagastore-jdbc</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-sagastore-jdbc-deployment</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-sagastore-jpa</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>at.meks.quarkiverse.axonframework-extension</groupId>
-                <artifactId>quarkus-axon-sagastore-jpa-deployment</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

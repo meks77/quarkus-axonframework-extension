@@ -45,7 +45,7 @@ class AxonExtensionProcessor {
                         NoMetricsConfigurer.class, NoTransactionManager.class, QuarkusAxonConverterProducer.class,
                         RetrySchedulerConfigurer.class,
                         PooledEventProcessingConfigurer.class,
-                        AxonComponentenSetup.class)
+                        AxonComponentSetup.class)
                 .build();
     }
 

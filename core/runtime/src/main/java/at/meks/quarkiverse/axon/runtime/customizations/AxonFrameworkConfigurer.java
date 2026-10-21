@@ -21,7 +21,7 @@ public interface AxonFrameworkConfigurer {
     /**
      * Registers the event sourced entities classes with the Axon Framework configuration.
      *
-     * @param eventSourcedEntityClasses a set of aggregate class types to be registered.
+     * @param eventSourcedEntityClasses a set of event sourced entity types to be registered.
      */
     void eventSourcedEntityClasses(Set<EventSourcedEntityDefinition> eventSourcedEntityClasses);
 
