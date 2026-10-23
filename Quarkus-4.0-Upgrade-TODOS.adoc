@@ -1,0 +1,17 @@
+= Quarkus Upgrade 4.0 TODOs
+
+== Persistence 4.0 incompatibility
+The method `EntityManager#find(Class<T> entityClass, Object primaryKey, LockModeType lockMode)` was removed in Jakarta Persistence 4.0 M4, but this method is used by the AxonFramework.
+
+Because of incompatibility the JPA modules
+
+- jpa-eventstore
+- tokenstore-jpa
+
+have been disabled for the moment.
+
+Furthermore, in the integration-tests-axon-server, the tokenstore was switched from jpa to jdbc.
+
+In the poms TODOs have been added.
+
+As soon as the problem is solved, the things must be undone and the TODOs have to be removed.

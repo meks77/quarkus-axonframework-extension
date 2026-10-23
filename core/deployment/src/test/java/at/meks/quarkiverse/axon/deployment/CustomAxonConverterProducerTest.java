@@ -8,15 +8,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import org.axonframework.conversion.Converter;
-import org.axonframework.conversion.jackson2.Jackson2Converter;
+import org.axonframework.conversion.jackson.JacksonConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
+import tools.jackson.databind.ObjectMapper;
 
 public class CustomAxonConverterProducerTest {
 
@@ -42,10 +41,10 @@ public class CustomAxonConverterProducerTest {
     }
 
     private static boolean hasBlackbirdModule(Converter converter) throws Exception {
-        Field objectMapper = Jackson2Converter.class.getDeclaredField("objectMapper");
+        Field objectMapper = JacksonConverter.class.getDeclaredField("objectMapper");
         objectMapper.setAccessible(true);
         ObjectMapper mapper = (ObjectMapper) objectMapper.get(converter);
-        return mapper.getRegisteredModuleIds().stream()
+        return mapper.registeredModules().stream()
                 .map(Object::toString)
                 .anyMatch(moduleId -> moduleId.toLowerCase().contains("blackbird"));
     }
@@ -53,9 +52,9 @@ public class CustomAxonConverterProducerTest {
     @ApplicationScoped
     public static class CustomConverterProducer implements AxonConverterProducer {
 
-        static final Jackson2Converter generalConverter = converter();
-        static final Jackson2Converter eventConverter = converter();
-        static final Jackson2Converter messageConverter = converter();
+        static final JacksonConverter generalConverter = converter();
+        static final JacksonConverter eventConverter = converter();
+        static final JacksonConverter messageConverter = converter();
 
         @Override
         public Converter createGeneralConverter() {
@@ -72,8 +71,8 @@ public class CustomAxonConverterProducerTest {
             return messageConverter;
         }
 
-        private static Jackson2Converter converter() {
-            return new Jackson2Converter(new ObjectMapper());
+        private static JacksonConverter converter() {
+            return new JacksonConverter(new ObjectMapper());
         }
 
     }

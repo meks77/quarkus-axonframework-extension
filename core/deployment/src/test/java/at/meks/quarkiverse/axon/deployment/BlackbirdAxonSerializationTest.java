@@ -8,12 +8,11 @@ import org.axonframework.conversion.Converter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.model.Api;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.quarkus.test.QuarkusExtensionTest;
+import tools.jackson.databind.JsonNode;
 
 public class BlackbirdAxonSerializationTest {
 

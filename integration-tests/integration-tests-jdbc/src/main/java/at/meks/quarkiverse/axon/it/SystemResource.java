@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 
 import org.axonframework.conversion.Converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
 import at.meks.quarkiverse.axon.shared.model.Api;

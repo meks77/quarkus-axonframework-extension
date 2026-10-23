@@ -2,7 +2,9 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 
 import java.util.Optional;
 
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Reserve;
 
 import org.axonframework.common.configuration.Configuration;
 import org.axonframework.messaging.commandhandling.CommandBus;
@@ -11,10 +13,10 @@ import org.axonframework.messaging.commandhandling.retry.RetryingCommandBus;
 import org.axonframework.messaging.core.unitofwork.UnitOfWorkFactory;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusBuilder;
-import io.quarkus.arc.DefaultBean;
 
 @Dependent
-@DefaultBean
+@Reserve
+@Priority(0)
 public class LocalCommandBusBuilder implements CommandBusBuilder {
 
     private final RetrySchedulerConfigurer retrySchedulerConfigurer;

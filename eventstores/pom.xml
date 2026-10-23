@@ -13,7 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>axon-server</module>
-        <module>jpa-eventstore</module>
+<!--        TODO: find(Class<T> entityClass, Object primaryKey, LockModeType lockMode) was removed but used by AxonFramework -->
+<!--        <module>jpa-eventstore</module>-->
     </modules>
 
 

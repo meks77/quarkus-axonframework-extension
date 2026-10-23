@@ -1,41 +1,44 @@
 package at.meks.quarkiverse.axon.runtime.defaults;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Reserve;
 import jakarta.inject.Inject;
 
 import org.axonframework.conversion.Converter;
-import org.axonframework.conversion.jackson2.Jackson2Converter;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
+import org.axonframework.conversion.jackson.JacksonConverter;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.customizations.AxonConverterProducer;
-import io.quarkus.arc.DefaultBean;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.module.blackbird.BlackbirdModule;
 
-@DefaultBean
+@Reserve
+@Priority(0)
 @ApplicationScoped
 public class QuarkusAxonConverterProducer implements AxonConverterProducer {
 
     @Inject
-    ObjectMapper objectMapper;
+    JsonMapper objectMapper;
 
     @Inject
     AxonConfiguration axonConfiguration;
 
-    private Jackson2Converter converter;
+    private JacksonConverter converter;
 
     @PostConstruct
     void init() {
-        converter = new Jackson2Converter(objectMapper());
+        converter = new JacksonConverter(objectMapper());
     }
 
-    private ObjectMapper objectMapper() {
+    private JsonMapper objectMapper() {
         if (!axonConfiguration.serialization().blackbird().enabled()) {
             return objectMapper;
         }
-        return objectMapper.copy().registerModule(new BlackbirdModule());
+        return objectMapper.rebuild()
+                .addModule(new BlackbirdModule())
+                .build();
     }
 
     @Override

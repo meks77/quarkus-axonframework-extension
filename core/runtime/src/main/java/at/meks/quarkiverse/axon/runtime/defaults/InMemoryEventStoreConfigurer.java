@@ -2,8 +2,10 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 
 import static io.quarkus.arc.ComponentsProvider.LOG;
 
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Reserve;
 import jakarta.inject.Inject;
 
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
@@ -13,10 +15,10 @@ import org.axonframework.eventsourcing.snapshot.store.SnapshotStore;
 
 import at.meks.quarkiverse.axon.runtime.customizations.EventstoreConfigurer;
 import at.meks.quarkiverse.axon.runtime.customizations.SnapshotStoreConfigurer;
-import io.quarkus.arc.DefaultBean;
 
 @ApplicationScoped
-@DefaultBean
+@Reserve
+@Priority(0)
 public class InMemoryEventStoreConfigurer implements EventstoreConfigurer {
 
     @Inject

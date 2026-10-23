@@ -2,6 +2,7 @@ package at.meks.quarkiverse.axon.server.runtime;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Reserve;
 import jakarta.inject.Inject;
 
 import org.axonframework.common.configuration.Configuration;
@@ -12,10 +13,9 @@ import at.meks.quarkiverse.axon.runtime.defaults.LocalCommandBusBuilder;
 import io.axoniq.framework.messaging.commandhandling.distributed.CommandBusConnector;
 import io.axoniq.framework.messaging.commandhandling.distributed.DistributedCommandBus;
 import io.axoniq.framework.messaging.commandhandling.distributed.DistributedCommandBusConfiguration;
-import io.quarkus.arc.DefaultBean;
 
 @Dependent
-@DefaultBean
+@Reserve
 @Priority(5)
 public class AxonServerCommandBusBuilder implements CommandBusBuilder {
 

@@ -7,20 +7,20 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 
 import org.axonframework.conversion.Converter;
-import org.axonframework.conversion.jackson2.Jackson2Converter;
+import org.axonframework.conversion.jackson.JacksonConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.SerializationConfig;
 import at.meks.quarkiverse.axon.shared.model.Api;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class QuarkusAxonConverterProducerTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final JsonMapper objectMapper = new JsonMapper();
     private final AxonConfiguration axonConfiguration = mock(AxonConfiguration.class);
     private final SerializationConfig serializationConfig = mock(SerializationConfig.class);
     private final SerializationConfig.BlackbirdConfig blackbirdConfig = mock(SerializationConfig.BlackbirdConfig.class);
@@ -70,13 +70,13 @@ class QuarkusAxonConverterProducerTest {
     }
 
     private static ObjectMapper objectMapper(Converter converter) throws Exception {
-        Field objectMapper = Jackson2Converter.class.getDeclaredField("objectMapper");
+        Field objectMapper = JacksonConverter.class.getDeclaredField("objectMapper");
         objectMapper.setAccessible(true);
         return (ObjectMapper) objectMapper.get(converter);
     }
 
     private static boolean hasBlackbirdModule(ObjectMapper mapper) {
-        return mapper.getRegisteredModuleIds().stream()
+        return mapper.registeredModules().stream()
                 .map(Object::toString)
                 .anyMatch(moduleId -> moduleId.toLowerCase().contains("blackbird"));
     }

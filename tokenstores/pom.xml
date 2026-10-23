@@ -14,6 +14,7 @@
 
     <modules>
         <module>tokenstore-jdbc</module>
-        <module>tokenstore-jpa</module>
+<!--        TODO: find(Class<T> entityClass, Object primaryKey, LockModeType lockMode) was removed but used by AxonFramework -->
+<!--        <module>tokenstore-jpa</module>-->
     </modules>
 </project>

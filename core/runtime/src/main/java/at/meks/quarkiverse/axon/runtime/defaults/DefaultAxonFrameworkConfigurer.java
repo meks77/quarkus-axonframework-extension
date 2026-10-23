@@ -3,8 +3,10 @@ package at.meks.quarkiverse.axon.runtime.defaults;
 import java.util.*;
 import java.util.stream.Stream;
 
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Reserve;
 import jakarta.inject.Inject;
 
 import org.axonframework.conversion.DelegatingGeneralConverter;
@@ -28,10 +30,10 @@ import at.meks.quarkiverse.axon.runtime.conf.AxonConfiguration;
 import at.meks.quarkiverse.axon.runtime.conf.SubscribingProcessorConf;
 import at.meks.quarkiverse.axon.runtime.customizations.*;
 import at.meks.quarkiverse.axon.runtime.defaults.eventprocessors.EventhandlersPerNamespace;
-import io.quarkus.arc.DefaultBean;
 
 @Dependent
-@DefaultBean
+@Reserve
+@Priority(0)
 public class DefaultAxonFrameworkConfigurer implements AxonFrameworkConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultAxonFrameworkConfigurer.class);

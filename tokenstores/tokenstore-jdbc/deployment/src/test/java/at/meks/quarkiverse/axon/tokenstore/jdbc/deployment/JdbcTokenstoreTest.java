@@ -10,12 +10,11 @@ import jakarta.inject.Inject;
 import org.awaitility.Awaitility;
 import org.jspecify.annotations.NonNull;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.smallrye.mutiny.Multi;
 import io.vertx.mutiny.sqlclient.Pool;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public abstract class JdbcTokenstoreTest extends JavaArchiveTest {
 
