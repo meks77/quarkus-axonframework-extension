@@ -15,12 +15,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import io.axoniq.axonserver.connector.AxonServerConnection;
 import io.axoniq.axonserver.grpc.streams.StreamStatus;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class DifferentEventprocessorConfigTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("persistenstreams/differentProcessorConfigs.properties");
 
     @Inject

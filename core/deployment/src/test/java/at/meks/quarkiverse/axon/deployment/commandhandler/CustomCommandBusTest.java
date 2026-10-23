@@ -11,12 +11,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.runtime.customizations.CommandBusProducer;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class CustomCommandBusTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(MyCommandBusProducer.class));
 
     @ApplicationScoped

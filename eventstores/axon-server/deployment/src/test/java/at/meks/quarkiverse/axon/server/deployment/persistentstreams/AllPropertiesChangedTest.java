@@ -3,7 +3,7 @@ package at.meks.quarkiverse.axon.server.deployment.persistentstreams;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 /**
  * There is nothing that can be asserted, except that commands and events are processed.
@@ -14,7 +14,7 @@ import io.quarkus.test.QuarkusUnitTest;
 public class AllPropertiesChangedTest extends PersistentStreamProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = JavaArchiveTest.application()
+    static final QuarkusExtensionTest config = JavaArchiveTest.application()
             .withConfigurationResource("persistenstreams/propertiesChanged.properties");
 
 }

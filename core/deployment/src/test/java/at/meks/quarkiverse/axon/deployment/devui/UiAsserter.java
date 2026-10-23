@@ -1,6 +1,10 @@
 package at.meks.quarkiverse.axon.deployment.devui;
 
+import java.time.Duration;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
+import org.awaitility.Awaitility;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
@@ -20,8 +24,13 @@ public class UiAsserter implements AutoCloseable {
     }
 
     void itemListEqualsTo(String lineTitle, String... expectedLines) {
-        Assertions.assertThat(devUiBrowser.getSingleColumnTableAfterClickOnLine(lineTitle))
-                .containsExactly(expectedLines);
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(30))
+                .untilAsserted(() -> {
+                    List<String> tableContent = devUiBrowser.getSingleColumnTableAfterClickOnLine(lineTitle);
+                    Assertions.assertThat(tableContent)
+                            .containsExactly(expectedLines);
+                });
     }
 
     @Override

@@ -8,12 +8,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import at.meks.quarkiverse.shared.test.jdbc.SqlExecutor;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class JdbcSagaStoreTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("application.properties");
 
     @Inject
