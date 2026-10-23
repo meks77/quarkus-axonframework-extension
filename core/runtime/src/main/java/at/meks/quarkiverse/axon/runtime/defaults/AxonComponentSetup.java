@@ -11,7 +11,7 @@ import org.axonframework.messaging.queryhandling.configuration.QueryHandlingModu
 import at.meks.quarkiverse.axon.runtime.EventSourcedEntityDefinition;
 import at.meks.quarkiverse.axon.runtime.customizations.EventSourcedEntityConfigurer;
 
-public class AxonComponentenSetup {
+public class AxonComponentSetup {
 
     @Inject
     EventSourcedEntityConfigurer entityConfigurer;

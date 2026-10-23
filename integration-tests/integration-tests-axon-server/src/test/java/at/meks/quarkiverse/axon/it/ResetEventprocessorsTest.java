@@ -105,7 +105,7 @@ public class ResetEventprocessorsTest {
                 .toList();
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        assertThat(futures.get(0).get()).isEqualTo(Result.SUCCESS);
+        assertThat(futures.getFirst().get()).isEqualTo(Result.SUCCESS);
     }
 
     private static CompletableFuture<Result> pauseEventProcessor(AdminChannel adminChannel, StreamingEventProcessor processor) {
@@ -140,9 +140,8 @@ public class ResetEventprocessorsTest {
 
     private static Stream<StreamingEventProcessor> streamingEventProcessors(
             Map<String, EventProcessor> eventProcessors) {
-        return eventProcessors.entrySet().stream()
-                .filter(entry -> !entry.getKey().equals("CardReturnSagaProcessor"))
-                .filter(entry -> entry.getValue() instanceof StreamingEventProcessor)
-                .map(entry -> (StreamingEventProcessor) entry.getValue());
+        return eventProcessors.values().stream()
+                .filter(entry -> entry instanceof StreamingEventProcessor)
+                .map(entry -> (StreamingEventProcessor) entry);
     }
 }

@@ -18,7 +18,7 @@ Content
 * link:05-06-EventProcessors.adoc[Event Processors]
 * link:05-07-TokenStores.adoc[Token Stores]
 * link:05-08-EventUpcasting.adoc[Event Upcasting]
-* link:05-09-Sagas.adoc[Sagas]
+* link:05-09-Sagas.adoc[Sagas (not supported in Axon 5.x)]
 * link:05-10-ExceptionHandling.adoc[Exception Handling]
 * link:05-11-CommandBus.adoc[CommandBus]
 * link:05-12-CommandGateway.adoc[CommandGateway]

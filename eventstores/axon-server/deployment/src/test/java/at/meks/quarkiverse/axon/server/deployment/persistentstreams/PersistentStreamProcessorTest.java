@@ -37,7 +37,6 @@ public abstract class PersistentStreamProcessorTest extends JavaArchiveTest {
 
         Map<String, SubscribingEventProcessor> pooledStreamingEventProcessors = eventProcessors.entrySet().stream()
                 .filter(e -> e.getValue() instanceof SubscribingEventProcessor)
-                .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
                 .map(entry -> Map.entry(entry.getKey(), (SubscribingEventProcessor) entry.getValue()))
                 // TODO: uncomment as soon as AxonFramework supports PersistentStreams again
                 //                .filter(entry -> entry.getValue().getMessageSource() instanceof PersistentStreamMessageSource)

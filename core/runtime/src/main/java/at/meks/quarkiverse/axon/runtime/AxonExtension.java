@@ -50,18 +50,18 @@ public class AxonExtension {
 
     private org.axonframework.common.configuration.AxonConfiguration configuration;
     private final Set<EventSourcedEntityDefinition> eventSourcedEntityClasses = new HashSet<>();
-    private final Set<Object> evenhandlers = new HashSet<>();
+    private final Set<Object> eventhandlers = new HashSet<>();
     private final Set<Object> commandhandlers = new HashSet<>();
     private final Set<Object> queryHandlers = new HashSet<>();
     private final Map<Class<?>, Object> injectableBeans = new HashMap<>();
 
-    // the request context is necessary in the case if the jpa saga store is active.
+    // the request context is necessary during initialization,
     // otherwise an exception ContextNotActiveException is thrown
     @ActivateRequestContext
     void init() {
         if (configuration == null) {
             axonFrameworkConfigurer.eventSourcedEntityClasses(Set.copyOf(eventSourcedEntityClasses));
-            axonFrameworkConfigurer.eventhandlers(Set.copyOf(evenhandlers));
+            axonFrameworkConfigurer.eventhandlers(Set.copyOf(eventhandlers));
             axonFrameworkConfigurer.commandhandlers(Set.copyOf(commandhandlers));
             axonFrameworkConfigurer.queryhandlers(Set.copyOf(queryHandlers));
             axonFrameworkConfigurer.injectableBeans(Map.copyOf(injectableBeans));
@@ -79,7 +79,7 @@ public class AxonExtension {
     }
 
     public void addEventhandlerForRegistration(Object eventhandler) {
-        evenhandlers.add(eventhandler);
+        eventhandlers.add(eventhandler);
     }
 
     public void addQueryHandlerForRegistration(Object queryHandler) {

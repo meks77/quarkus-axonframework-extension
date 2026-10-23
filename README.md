@@ -37,7 +37,7 @@ On the main branch, the most recent quarkus version is used.
 * CommandGateway
 * QueryBus
 * QueryGateway
-* Repository\<T>(e.g. Repository\<GiftCard> if GiftCard is an event sourced entity)
+* Repository\<ID, T>(e.g. Repository\<String, GiftCard> if GiftCard is an event sourced entity)
 
 ### supported message types
 
@@ -67,18 +67,16 @@ You can provide your own setup for
 
 ### supported event processors
 
-#### Subscribing processors
-
 * "simple" subscribing event processor
-* persistent streams
-* tracking event processor
+* persistent streams (currently disabled until AF 5 supports them)
 * pooled event processor
 * custom setup of event processors
 
 ### supported event stores
 
 * Axon Server
-* JPA Aggregate Based Event Store
+* JPA Event Store
+* In-Memory Event Store
 * Custom Event Store
 
 ### supported Token Stores

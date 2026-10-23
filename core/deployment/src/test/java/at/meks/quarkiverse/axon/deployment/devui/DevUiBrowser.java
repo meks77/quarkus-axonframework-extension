@@ -15,7 +15,9 @@ public class DevUiBrowser implements AutoCloseable {
 
     public DevUiBrowser() {
         playwright = Playwright.create();
-        browser = playwright.firefox().launch();
+        BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                .setHeadless(true);
+        browser = playwright.chromium().launch(options);
         newPage();
     }
 
@@ -55,6 +57,12 @@ public class DevUiBrowser implements AutoCloseable {
 
     @Override
     public void close() {
+        if (devUiPage != null) {
+            devUiPage.close();
+        }
+        if (browser != null) {
+            browser.close();
+        }
         if (playwright != null) {
             playwright.close();
         }

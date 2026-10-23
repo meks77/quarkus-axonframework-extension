@@ -22,7 +22,6 @@ public abstract class PooledProcessorTest extends JavaArchiveTest {
 
         Map<String, PooledStreamingEventProcessor> pooledStreamingEventProcessors = eventProcessors.entrySet().stream()
                 .filter(e -> e.getValue() instanceof PooledStreamingEventProcessor)
-                .filter(e -> !e.getKey().equals("CardReturnSagaProcessor"))
                 .map(entry -> Map.entry(entry.getKey(), (PooledStreamingEventProcessor) entry.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
