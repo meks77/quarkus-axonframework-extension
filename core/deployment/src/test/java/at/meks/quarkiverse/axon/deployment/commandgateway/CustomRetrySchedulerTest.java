@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class CustomRetrySchedulerTest extends JavaArchiveTest {
 
@@ -22,7 +22,7 @@ public class CustomRetrySchedulerTest extends JavaArchiveTest {
     RetryScheduler retryScheduler;
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase()
+    static final QuarkusExtensionTest config = application(javaArchiveBase()
             .addClasses(MyRetrySchedulerProducer.class));
 
     public static class MyRetrySchedulerProducer {

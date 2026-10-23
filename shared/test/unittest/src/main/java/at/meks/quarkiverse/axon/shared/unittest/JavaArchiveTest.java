@@ -32,16 +32,16 @@ import at.meks.quarkiverse.axon.shared.projection.GiftcardQueryHandler;
 import at.meks.quarkiverse.axon.shared.projection.GiftcardView;
 import at.meks.quarkiverse.axon.shared.projection2.AnotherProjection;
 import io.quarkus.logging.Log;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class JavaArchiveTest {
 
-    protected static QuarkusUnitTest application(JavaArchive javaArchive) {
-        return new QuarkusUnitTest()
+    protected static QuarkusExtensionTest application(JavaArchive javaArchive) {
+        return new QuarkusExtensionTest()
                 .setArchiveProducer(() -> javaArchive);
     }
 
-    protected static QuarkusUnitTest application() {
+    protected static QuarkusExtensionTest application() {
         return application(javaArchiveBase());
     }
 

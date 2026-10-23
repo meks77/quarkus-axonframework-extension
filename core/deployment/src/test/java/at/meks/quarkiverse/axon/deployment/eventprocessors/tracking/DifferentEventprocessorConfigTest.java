@@ -7,12 +7,12 @@ import java.util.Map;
 import org.axonframework.eventhandling.TrackingEventProcessor;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class DifferentEventprocessorConfigTest extends TrackingProcessorTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application()
+    static final QuarkusExtensionTest config = application()
             .withConfigurationResource("eventprocessors/tracking/differentProcessorConfig.properties");
 
     @Override

@@ -12,12 +12,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 public class OneUpcasterChainTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusUnitTest config = application(javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
+    static final QuarkusExtensionTest config = application(javaArchiveBase().addClasses(EventUpcasterChainProducer.class));
 
     private static EventUpcasterChain producedChain;
 
