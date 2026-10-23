@@ -12,4 +12,23 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
+      interval: "daily"
+  - package-ecosystem: "maven"
+    directory: "/"
+    target-branch: "support/axon4"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "org.axonframework:*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.axonframework.*:*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.axonframework:*"
+        versions: [">= 5.0.0"]
+      - dependency-name: "org.axonframework.*:*"
+        versions: [">= 5.0.0"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "support/axon4"
+    schedule:
+      interval: "daily"
