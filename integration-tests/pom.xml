@@ -13,6 +13,7 @@
 
     <modules>
         <module>integration-tests-axon-server</module>
+        <module>integration-tests-jdbc</module>
     </modules>
 
     <properties>

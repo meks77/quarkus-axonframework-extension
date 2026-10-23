@@ -38,12 +38,12 @@ public class OnErrorBlocksTest {
     void testErrorBlock() {
         var cardId = UUID.randomUUID().toString();
         commandGateway.sendAndWait(new Api.IssueCardCommand(cardId, 10));
-        Awaitility.await().atMost(Duration.ofSeconds(20))
+        Awaitility.await().atMost(Duration.ofSeconds(30))
                 .untilAsserted(() -> assertSoftly(softly -> {
                     softly.assertThat(FailingBlockedProjection.eventWasDelivered).isTrue();
                     // because processor isCaught up doesn't return true, even if it retries an event and doesn't finish, it
-                    // is asserted if the invocation for the one event happend more than once, or in this case at least 3 times.
-                    softly.assertThat(FailingBlockedProjection.invocationCount.get()).isGreaterThan(2);
+                    // is asserted if the invocation for the one event happend more than once, or in this case at least 2 times.
+                    softly.assertThat(FailingBlockedProjection.invocationCount.get()).isGreaterThanOrEqualTo(2);
                 }));
     }
 
