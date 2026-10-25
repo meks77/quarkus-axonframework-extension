@@ -1,5 +1,30 @@
 # Quarkus Axon framework extension
 
+## Current state
+
+### Support for Axon Framework 4
+
+The extension for Axon Framework 4 is currently used in production environments. Please note that AxonIQ only provides commercial/enterprise support for this framework version.
+
+This version is maintained on the `support/axon4` branch (releases `1.*.*`). It remains in **maintenance mode**:
+* Releases focus on critical bug fixes and dependency updates.
+* New features are generally not backported.
+* If Quarkus 4 is released before the Axon Framework 5 migration is finalized, support for Quarkus 4 will be provided if compatible.
+
+### Support for Axon Framework 5
+
+Work on Axon Framework 5 support is available on the `main` branch (releases `2.*.*`).
+
+* **Status:** Migration is currently on hold.
+* **Timeline:** Active development is scheduled to resume in 2027.
+
+### Support for Quarkus 4
+
+Work on the Quarkus 4 upgrade is available on the `quarkus-4.0-upgrade` branch (currently covering only the `main` branch / Axon Framework 5).
+
+* **Current Status:** The build is successful, but JPA-related modules (JPA Event Store and JPA Token Store) are currently disabled because the Persistence 4 API is incompatible with Axon Framework 5.
+* **Next Steps:** Quarkus 4 is currently in beta. The upgrade will be finalized and merged into the `main` branch once Quarkus 4 reaches a stable release and JPA compatibility is resolved. Afterwards, Quarkus 4 support will also be prepared for the `support/axon4` branch.
+
 ## Goal
 
 The goal of this extension is to provide a solution which
