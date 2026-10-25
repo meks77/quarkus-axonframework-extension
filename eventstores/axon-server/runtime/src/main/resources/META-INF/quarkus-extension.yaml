@@ -9,4 +9,4 @@ metadata:
 #  guide: https://quarkiverse.github.io/quarkiverse-docs/axonframework-extension/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
   categories:
     - "data"
-  status: "experimental"
+  status: "preview"
