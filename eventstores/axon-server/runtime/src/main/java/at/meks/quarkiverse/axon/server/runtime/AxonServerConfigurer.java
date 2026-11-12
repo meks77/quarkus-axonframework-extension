@@ -10,7 +10,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.common.configuration.ComponentDefinition;
 import org.axonframework.common.configuration.Configuration;
+import org.axonframework.common.lifecycle.Phase;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
@@ -40,14 +42,18 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     Instance<SnapshotStoreConfigurer> snapshotStoreConfigurer;
 
     @Inject
-    AxonServers axonSevers;
+    AxonServers axonServers;
 
     public void configure(EventSourcingConfigurer configurer) {
         AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
         AxonServerConnectionManager connectionManager = axonServerConnectionManager(axonServerConfiguration);
         configurer.componentRegistry(
-                cr -> cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
-                        .registerComponent(AxonServerConnectionManager.class, cfg -> connectionManager));
+                cr -> {
+                    cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration);
+                    cr.registerComponent(ComponentDefinition.ofType(AxonServerConnectionManager.class).withBuilder(
+                            config -> connectionManager).onShutdown(Phase.EXTERNAL_CONNECTIONS,
+                                    AxonServerConnectionManager::shutdown));
+                });
 
         configurer.registerEventStorageEngine(config -> configureStorageEngine(config, connectionManager));
 
@@ -85,7 +91,7 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
 
     private AxonServerConfiguration axonServerConfiguration() {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
-                .servers(axonSevers.axonServersAsConnectionString())
+                .servers(axonServers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
         if (serverConfiguration.sslTrustStore().isPresent()) {
             Path sslTrustStorePath = serverConfiguration.sslTrustStore().get();
