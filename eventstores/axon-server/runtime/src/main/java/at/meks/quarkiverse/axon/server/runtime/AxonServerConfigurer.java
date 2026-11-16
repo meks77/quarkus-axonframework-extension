@@ -40,22 +40,20 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     Instance<SnapshotStoreConfigurer> snapshotStoreConfigurer;
 
     @Inject
-    AxonServers axonSevers;
+    AxonServers axonServers;
 
     public void configure(EventSourcingConfigurer configurer) {
         AxonServerConfiguration axonServerConfiguration = axonServerConfiguration();
-        AxonServerConnectionManager connectionManager = axonServerConnectionManager(axonServerConfiguration);
         configurer.componentRegistry(
-                cr -> cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration)
-                        .registerComponent(AxonServerConnectionManager.class, cfg -> connectionManager));
+                cr -> cr.registerComponent(AxonServerConfiguration.class, cfg -> axonServerConfiguration));
 
-        configurer.registerEventStorageEngine(config -> configureStorageEngine(config, connectionManager));
+        configurer.registerEventStorageEngine(config -> configureStorageEngine(config, config.getComponent(
+                AxonServerConnectionManager.class)));
 
-        configureSnapshotStore(configurer, axonServerConfiguration, connectionManager);
+        configureSnapshotStore(configurer, axonServerConfiguration);
     }
 
-    private void configureSnapshotStore(EventSourcingConfigurer configurer, AxonServerConfiguration axonServerConfiguration,
-            AxonServerConnectionManager cm) {
+    private void configureSnapshotStore(EventSourcingConfigurer configurer, AxonServerConfiguration axonServerConfiguration) {
         if (snapshotStoreConfigurer.isAmbiguous()) {
             throw new IllegalStateException("More than one snapshot store configured");
         }
@@ -67,7 +65,8 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
             configurer.componentRegistry(
                     registry -> registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
                             c -> new AxonServerSnapshotStore(
-                                    cm.getConnection(axonServerConfiguration.getContext()),
+                                    c.getComponent(AxonServerConnectionManager.class)
+                                            .getConnection(axonServerConfiguration.getContext()),
                                     c.getComponent(GeneralConverter.class))));
         }
     }
@@ -85,7 +84,7 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
 
     private AxonServerConfiguration axonServerConfiguration() {
         AxonServerConfiguration.Builder builder = AxonServerConfiguration.builder()
-                .servers(axonSevers.axonServersAsConnectionString())
+                .servers(axonServers.axonServersAsConnectionString())
                 .componentName(axonConfiguration.axonApplicationName());
         if (serverConfiguration.sslTrustStore().isPresent()) {
             Path sslTrustStorePath = serverConfiguration.sslTrustStore().get();
@@ -108,12 +107,6 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     Optional<Integer> maxGrpcMessageSize() {
         var grpcMessageSize = serverConfiguration.maxMessageSize();
         return grpcMessageSize.value().map(size -> size * grpcMessageSize.unit().factor());
-    }
-
-    private static AxonServerConnectionManager axonServerConnectionManager(AxonServerConfiguration axonServerConfiguration) {
-        return AxonServerConnectionManager.builder()
-                .axonServerConfiguration(axonServerConfiguration)
-                .build();
     }
 
 }
