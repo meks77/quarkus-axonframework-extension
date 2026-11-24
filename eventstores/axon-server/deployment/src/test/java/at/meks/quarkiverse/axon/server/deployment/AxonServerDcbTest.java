@@ -8,6 +8,7 @@ import org.axonframework.common.configuration.Configuration;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import at.meks.quarkiverse.axon.server.deployment.snapshotting.SnapshottedEntity;
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
@@ -17,8 +18,8 @@ import io.restassured.RestAssured;
 public class AxonServerDcbTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusExtensionTest config = application()
-            .withConfigurationResource("axonserverdcbtest.properties");
+    static final QuarkusExtensionTest config = application(javaArchiveBase().addClass(SnapshottedEntity.class))
+            .withConfigurationResource("axonserver-dcb-test.properties");
 
     @Inject
     QuarkusAxonServerConfiguration configuration;

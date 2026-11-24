@@ -8,17 +8,18 @@ import org.axonframework.common.configuration.Configuration;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import at.meks.quarkiverse.axon.server.deployment.snapshotting.SnapshottedEntity;
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
 import io.quarkus.test.QuarkusExtensionTest;
 import io.restassured.RestAssured;
 
-public class AxonServerTest extends JavaArchiveTest {
+public class AxonServerAggregateBasedTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusExtensionTest config = application()
-            .withConfigurationResource("axonservertest.properties");
+    static final QuarkusExtensionTest config = application(javaArchiveBase().addClass(SnapshottedEntity.class))
+            .withConfigurationResource("axonserver-aggregatebased-test.properties");
 
     @Inject
     QuarkusAxonServerConfiguration configuration;

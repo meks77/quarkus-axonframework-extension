@@ -14,6 +14,7 @@ import org.axonframework.common.configuration.Configuration;
 import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
+import org.axonframework.eventsourcing.eventstore.SnapshotCapableEventStorageEngine;
 import org.axonframework.eventsourcing.snapshot.store.SnapshotStore;
 import org.axonframework.messaging.eventhandling.conversion.EventConverter;
 import org.jspecify.annotations.NonNull;
@@ -74,12 +75,17 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
     private @NonNull EventStorageEngine configureStorageEngine(Configuration config,
             AxonServerConnectionManager connectionManager) {
         if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
+            // axon framework automatically creates a snapshot capable storage engine for dcb context, if snapshotting is used
             return new AxonServerEventStorageEngine(connectionManager.getConnection(), config.getComponent(
                     EventConverter.class));
         }
-        return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
-                config.getComponent(
-                        EventConverter.class));
+        // for aggregate based engines, we have to wrap it ourselves
+        return new SnapshotCapableEventStorageEngine(
+                new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
+                        config.getComponent(
+                                EventConverter.class)),
+                new AxonServerSnapshotStore(connectionManager.getConnection(), config.getComponent(
+                        GeneralConverter.class)));
     }
 
     private AxonServerConfiguration axonServerConfiguration() {

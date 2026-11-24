@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.axonframework.conversion.GeneralConverter;
 import org.axonframework.eventsourcing.configuration.EventSourcingConfigurer;
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
 import org.axonframework.eventsourcing.snapshot.inmemory.InMemorySnapshotStore;
@@ -37,8 +38,11 @@ public class InMemoryEventStoreConfigurer implements EventstoreConfigurer {
             snapshotStoreConfigurer.get().configure(configurer);
         } else {
             LOG.infof("Snapshot Store not configured, using default In Mem Snapshot store");
+            // for in memory event store, we only have to register snapshot store, no wrapping of storage engine required
             configurer.componentRegistry(
-                    registry -> registry.registerComponent(SnapshotStore.class, c -> new InMemorySnapshotStore()));
+                    registry -> registry.registerComponent(SnapshotStore.class,
+                            c -> new InMemorySnapshotStore(c.getComponent(
+                                    GeneralConverter.class))));
         }
     }
 
