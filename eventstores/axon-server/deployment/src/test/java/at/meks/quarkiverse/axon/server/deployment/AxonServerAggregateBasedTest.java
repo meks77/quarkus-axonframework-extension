@@ -1,14 +1,15 @@
 package at.meks.quarkiverse.axon.server.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.inject.Inject;
 
 import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import at.meks.quarkiverse.axon.server.deployment.snapshotting.SnapshottedEntity;
 import at.meks.quarkiverse.axon.server.runtime.QuarkusAxonServerConfiguration;
 import at.meks.quarkiverse.axon.shared.unittest.JavaArchiveTest;
 import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
@@ -18,7 +19,7 @@ import io.restassured.RestAssured;
 public class AxonServerAggregateBasedTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusExtensionTest config = application(javaArchiveBase().addClass(SnapshottedEntity.class))
+    static final QuarkusExtensionTest config = application(javaArchiveBase())
             .withConfigurationResource("axonserver-aggregatebased-test.properties");
 
     @Inject
@@ -26,6 +27,9 @@ public class AxonServerAggregateBasedTest extends JavaArchiveTest {
 
     @Inject
     Configuration axonConfiguration;
+
+    @Inject
+    CommandGateway commandGateway;
 
     @Override
     protected void assertOthers() {
@@ -42,4 +46,5 @@ public class AxonServerAggregateBasedTest extends JavaArchiveTest {
         assertThat(serverConfiguration.getCommandThreads())
                 .isEqualTo(9);
     }
+
 }
