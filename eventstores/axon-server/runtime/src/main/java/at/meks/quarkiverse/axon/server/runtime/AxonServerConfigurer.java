@@ -61,22 +61,29 @@ public class AxonServerConfigurer implements EventstoreConfigurer {
         if (snapshotStoreConfigurer.isResolvable()) {
             snapshotStoreConfigurer.get().configure(configurer);
         } else {
-            LOG.infof("Snapshot Store not configured, using default Axon Snapshot store");
-            configurer.componentRegistry(
-                    registry -> registry.registerComponent(SnapshotStore.class, axonServerConfiguration.getContext(),
-                            c -> new AxonServerSnapshotStore(
-                                    c.getComponent(AxonServerConnectionManager.class)
-                                            .getConnection(axonServerConfiguration.getContext()),
-                                    c.getComponent(GeneralConverter.class))));
+            if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
+                LOG.infof("Snapshot Store not configured via configurer, using default Axon Snapshot store");
+                configurer.componentRegistry(
+                        registry -> registry.registerComponent(SnapshotStore.class,
+                                c -> new AxonServerSnapshotStore(
+                                        c.getComponent(AxonServerConnectionManager.class)
+                                                .getConnection(axonServerConfiguration.getContext()),
+                                        c.getComponent(GeneralConverter.class))));
+            } else {
+                LOG.infof("Aggregate based context does not support snapshotting.\n" +
+                        "Please switch to DCB or configure the snapshot store manually");
+            }
         }
     }
 
     private @NonNull EventStorageEngine configureStorageEngine(Configuration config,
             AxonServerConnectionManager connectionManager) {
         if (serverConfiguration.storageEngine() == QuarkusAxonServerConfiguration.StorageEngineType.DCB) {
+            // axon framework automatically creates a snapshot capable storage engine for dcb context, if snapshotting is used
             return new AxonServerEventStorageEngine(connectionManager.getConnection(), config.getComponent(
                     EventConverter.class));
         }
+        // for aggregate based engines, we have to wrap it ourselves
         return new AggregateBasedAxonServerEventStorageEngine(connectionManager.getConnection(),
                 config.getComponent(
                         EventConverter.class));

@@ -18,8 +18,6 @@ import io.quarkus.logging.Log;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @EventSourcedEntity
-// TODO: uncomment as soon as Snapshots work
-//@Snapshotting(afterEvents = 2)
 public class Giftcard {
 
     private String id;
@@ -41,7 +39,8 @@ public class Giftcard {
             throw new IllegalArgumentException("command mustn't be null");
         }
         eventAppender.append(new Api.CardIssuedEvent(command.id(), command.initialAmount()));
-        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(), command.initialAmount());
+        Log.infof("new card with the id %s and the initial amount %s was issued", command.id(),
+                command.initialAmount());
     }
 
     @EventSourcingHandler

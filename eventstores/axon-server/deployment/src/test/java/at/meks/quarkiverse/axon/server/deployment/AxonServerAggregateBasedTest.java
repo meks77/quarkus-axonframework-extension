@@ -1,10 +1,12 @@
 package at.meks.quarkiverse.axon.server.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.inject.Inject;
 
 import org.axonframework.common.configuration.Configuration;
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -14,17 +16,20 @@ import io.axoniq.framework.axonserver.connector.api.AxonServerConfiguration;
 import io.quarkus.test.QuarkusExtensionTest;
 import io.restassured.RestAssured;
 
-public class AxonServerDcbTest extends JavaArchiveTest {
+public class AxonServerAggregateBasedTest extends JavaArchiveTest {
 
     @RegisterExtension
-    static final QuarkusExtensionTest config = application()
-            .withConfigurationResource("axonserverdcbtest.properties");
+    static final QuarkusExtensionTest config = application(javaArchiveBase())
+            .withConfigurationResource("axonserver-aggregatebased-test.properties");
 
     @Inject
     QuarkusAxonServerConfiguration configuration;
 
     @Inject
     Configuration axonConfiguration;
+
+    @Inject
+    CommandGateway commandGateway;
 
     @Override
     protected void assertOthers() {
@@ -41,4 +46,5 @@ public class AxonServerDcbTest extends JavaArchiveTest {
         assertThat(serverConfiguration.getCommandThreads())
                 .isEqualTo(9);
     }
+
 }

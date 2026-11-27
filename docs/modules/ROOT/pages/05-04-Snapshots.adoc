@@ -1,13 +1,15 @@
 = Snapshots
 
-To enable snapshots, you have to configure
+To use the snapshotting feature of Axon framework, you have to configure a snapshotting policy for your entity.
+This can be done by providing a `@Snapshotting` annotation on the entity.
+Please note that at the moment, Axon framework does not provide an easy way to make snapshotting configurable.
+Providing snapshot policies in Java code that reads configuration is only possible if the whole entity is configured
+in a declarative way, i.e. registering the entity and all it's handlers etc. manually.
 
-- the annotation Snapshotting on the event sourced entity
-- set a JSON annotation at the root event sourced entity and its entities
 
-Axon supports snapshots only for in-memory and AxonServer event stores.
-
-CAUTION: When a snapshot is created, the entity is serialized using JSON.
+[CAUTION]
+====
+When a snapshot is created, the entity is serialized using JSON.
 
 You have to take care that all properties of the event sourced entity are serialized.
 If fields of a Class(Root Event Sourced Entity, Value Objects, Entities) do not have accessors,
@@ -17,6 +19,26 @@ This strategy was chosen because it doesn't have an impact on the serialization 
 
 Another possibility is to provide your own serializers, see link:05-20-Serialization.adoc[Serialization].
 
+====
+
+== Configuring a Snapshot Store
+
+There are two event stores, that are capable of storing snapshots out of the box:
+
+* InMemoryEventStore
+* Axon Server with DCB Context
+
+For these, the extension will automatically configure the snapshot store, regardless of Entities being annotated or not.
+
+For other event stores, please provide a configuration by implementing the `SnapshotStoreConfigurer` interface.
+
+[CAUTION]
+====
+Please note that it is strongly recommended to keep the snapshots in the same store as the events.
+Providing a separate store for the snapshots requires two round trips to build an entity (fetching the snapshot from the
+snapshot store, then fetching the remaining events from the event store).
+This can cause performance impacts, and building the entity from events only might be faster that using the snapshotting feature.
+====
 
 '''
 
