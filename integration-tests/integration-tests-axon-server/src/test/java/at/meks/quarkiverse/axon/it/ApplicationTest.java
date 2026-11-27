@@ -66,9 +66,6 @@ class ApplicationTest {
                 .pollInterval(Duration.ofMillis(100))
                 .atMost(Duration.ofSeconds(5))
                 .untilAsserted(() -> assertCurrentAmount(14));
-
-        // TODO: uncomment as soon as snapshots exist
-        //        assertAtLeastOneSnapshotExists(cardId);
     }
 
     private void issueNewCard(@SuppressWarnings("SameParameterValue") int initialAmount) {
@@ -109,18 +106,6 @@ class ApplicationTest {
                 .then()
                 .statusCode(200)
                 .body("id", CoreMatchers.equalTo(this.cardId), "currentAmount", CoreMatchers.equalTo(expectedAmount));
-    }
-
-    private void assertAtLeastOneSnapshotExists(String entityId) {
-        Awaitility.await()
-                .pollInterval(Duration.ofMillis(500)).atMost(Duration.ofSeconds(5))
-                .untilAsserted(() -> {
-                    String snapshotCount = RestAssured.given().basePath("system/snapshots/{entityId}/count")
-                            .pathParam("entityId", entityId)
-                            .when().get()
-                            .then().extract().body().asString();
-                    assertThat(snapshotCount).asLong().isGreaterThanOrEqualTo(1L);
-                });
     }
 
     private void assertEventProcessors() {
